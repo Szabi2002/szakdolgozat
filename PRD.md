@@ -517,7 +517,6 @@ Egy integrált közlekedési platform fejlesztése, amely egyesíti az utazáste
 
 ### Sprint 0 (1 hét): Setup
 - Projekt inicializálás (Angular + Node.js)
-- Git repo, branch stratégia
 - Supabase projekt setup
 - CI/CD pipeline alapok
 - Design system és UI komponens könyvtár alapjai

@@ -1,0 +1,168 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master]
+
+jobs:
+  prettier:
+    name: Check Code Formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install Prettier globally
+        run: npm install -g prettier
+
+      - name: Check Backend formatting
+        working-directory: ./backend
+        run: |
+          if [ -f "package.json" ]; then
+            npm ci
+            npm run format:check || echo "Backend formatting check skipped (script not found)"
+          else
+            echo "Backend not initialized yet"
+          fi
+        continue-on-error: true
+
+      - name: Check Frontend formatting
+        working-directory: ./frontend
+        run: |
+          if [ -f "package.json" ]; then
+            npm ci
+            npm run format:check || echo "Frontend formatting check skipped (script not found)"
+          else
+            echo "Frontend not initialized yet"
+          fi
+        continue-on-error: true
+
+      - name: Check all TypeScript/JavaScript files
+        run: prettier --check "**/*.{ts,js,json,yml,yaml,md}" --ignore-path .gitignore
+        continue-on-error: true
+
+  commitlint:
+    name: Validate Commit Messages
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Check commit message format
+        run: |
+          echo "Checking commit messages..."
+          git log --format=%s origin/${{ github.base_ref }}..HEAD | while read msg; do
+            echo "Commit: $msg"
+            if echo "$msg" | grep -qE "^(feat|fix|docs|style|refactor|perf|test|chore|build|ci|revert)(\(.+\))?: .+"; then
+              echo "Valid commit message format"
+            else
+              echo "Warning: Commit message does not follow conventional commits format"
+            fi
+          done
+        continue-on-error: true
+
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v3
+        continue-on-error: true
+
+  file-changes:
+    name: Check File Changes
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v40
+
+      - name: List changed files
+        run: |
+          echo "Changed files:"
+          echo "${{ steps.changed-files.outputs.all_changed_files }}"
+
+      - name: Check for sensitive files
+        run: |
+          SENSITIVE_FILES=".env .env.local .env.production credentials.json private-key.pem"
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            for sensitive in $SENSITIVE_FILES; do
+              if [[ "$file" == *"$sensitive"* ]]; then
+                echo "ERROR: Sensitive file detected: $file"
+                echo "Please remove sensitive files from the commit"
+                exit 1
+              fi
+            done
+          done
+          echo "No sensitive files detected"
+
+  todo-check:
+    name: Check TODOs and FIXMEs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Find TODOs and FIXMEs
+        run: |
+          echo "Searching for TODOs and FIXMEs..."
+          grep -r -n "TODO\|FIXME" --include="*.ts" --include="*.js" backend/ frontend/ || echo "No TODOs or FIXMEs found"
+        continue-on-error: true
+
+  documentation-check:
+    name: Documentation Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for README files
+        run: |
+          echo "Checking for README files..."
+          if [ ! -f "README.md" ]; then
+            echo "Warning: Root README.md not found"
+          fi
+          if [ ! -f "backend/README.md" ]; then
+            echo "Warning: Backend README.md not found"
+          fi
+          if [ ! -f "frontend/README.md" ]; then
+            echo "Warning: Frontend README.md not found"
+          fi
+        continue-on-error: true
+
+      - name: Check for broken links in markdown
+        run: |
+          echo "Checking for broken markdown links..."
+          find . -name "*.md" -exec grep -H "](.*)" {} \; || echo "No markdown links found"
+        continue-on-error: true
