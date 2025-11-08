@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 56" width="40" height="56">
+  <!-- Marker teardrop shape -->
+  <path d="M20 0 C25 0 40 15 40 28 C40 42 20 56 20 56 C20 56 0 42 0 28 C0 15 15 0 20 0 Z" fill="#FF5722" stroke="#E64A19" stroke-width="1"/>
+  
+  <!-- Bus icon inside marker -->
+  <g transform="translate(20, 20)">
+    <!-- Bus body -->
+    <rect x="-6" y="-4" width="12" height="8" fill="white" stroke="white" stroke-width="0.5" rx="1"/>
+    <!-- Bus front window -->
+    <rect x="-4" y="-2" width="4" height="3" fill="#1976D2" opacity="0.8"/>
+    <!-- Bus rear window -->
+    <rect x="1" y="-2" width="4" height="3" fill="#1976D2" opacity="0.8"/>
+    <!-- Bus wheels -->
+    <circle cx="-4" cy="4" r="1" fill="white"/>
+    <circle cx="4" cy="4" r="1" fill="white"/>
+  </g>
+</svg>

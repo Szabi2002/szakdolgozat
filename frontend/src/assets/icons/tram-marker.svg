@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 56" width="40" height="56">
+  <!-- Marker teardrop shape -->
+  <path d="M20 0 C25 0 40 15 40 28 C40 42 20 56 20 56 C20 56 0 42 0 28 C0 15 15 0 20 0 Z" fill="#FFC107" stroke="#FFA000" stroke-width="1"/>
+  
+  <!-- Tram icon inside marker -->
+  <g transform="translate(20, 20)">
+    <!-- Tram body -->
+    <rect x="-6" y="-4" width="12" height="8" fill="white" stroke="white" stroke-width="0.5" rx="1"/>
+    <!-- Tram windows (3 compartments) -->
+    <rect x="-5" y="-2" width="3" height="3" fill="#1976D2" opacity="0.8"/>
+    <rect x="-1" y="-2" width="3" height="3" fill="#1976D2" opacity="0.8"/>
+    <rect x="3" y="-2" width="3" height="3" fill="#1976D2" opacity="0.8"/>
+    <!-- Tram overhead line -->
+    <line x1="-2" y1="-6" x2="2" y2="-6" stroke="white" stroke-width="0.5"/>
+  </g>
+</svg>
