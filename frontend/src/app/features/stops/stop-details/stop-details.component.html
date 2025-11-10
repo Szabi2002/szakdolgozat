@@ -1,0 +1,54 @@
+<div class="stop-details">
+  <div class="breadcrumbs">
+    <button mat-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Vissza
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <div *ngIf="!isLoading && stop" class="content">
+    <div class="header">
+      <h1>{{ stop.name }}</h1>
+      <p *ngIf="stop.description" class="description">{{ stop.description }}</p>
+    </div>
+
+    <div class="map-section">
+      <app-map
+        [markers]="[{ lat: stop.latitude, lng: stop.longitude, title: stop.name }]"
+        [zoom]="15">
+      </app-map>
+    </div>
+
+    <div class="routes-section">
+      <h2>Járatok ezen a megállón</h2>
+      <mat-list *ngIf="routes.length > 0">
+        <mat-list-item *ngFor="let route of routes">
+          <div matListItemTitle>
+            <strong>{{ route.route_number }}</strong> - {{ route.name }}
+          </div>
+          <div matListItemLine *ngIf="route.direction">
+            Irány: {{ route.direction }}
+          </div>
+          <button
+            mat-icon-button
+            matListItemMeta
+            (click)="goToRoute(route)">
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
+      <p *ngIf="routes.length === 0" class="no-routes">
+        Nincs járat ezen a megállón.
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && (hasError || !stop)" class="not-found">
+    <p>{{ errorMessage || 'Megálló nem található' }}</p>
+    <button mat-raised-button (click)="goBack()">Vissza</button>
+  </div>
+</div>

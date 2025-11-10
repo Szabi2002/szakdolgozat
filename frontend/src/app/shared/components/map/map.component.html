@@ -1,0 +1,25 @@
+<div class="map-container"
+     leaflet
+     [leafletOptions]="options"
+     [leafletLayers]="layers"
+     (leafletMapReady)="onMapReady($event)"
+     (leafletClick)="onMapClick($event)">
+
+  @if (routes.length > 0) {
+    <div class="map-legend">
+      <div class="legend-title">Route Types</div>
+      <div class="legend-item">
+        <span class="legend-color bus"></span>
+        <span class="legend-label">Bus</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color tram"></span>
+        <span class="legend-label">Tram</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color metro"></span>
+        <span class="legend-label">Metro</span>
+      </div>
+    </div>
+  }
+</div>

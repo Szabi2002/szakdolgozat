@@ -1,0 +1,259 @@
+.route-card {
+  position: relative;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid #E0E0E0;
+
+  &:hover {
+    border-color: #2196F3;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+  }
+
+  &.selected {
+    border-color: #2196F3;
+    border-width: 3px;
+    background: linear-gradient(to right, #E3F2FD 0%, #FFFFFF 100%);
+    box-shadow: 0 6px 16px rgba(33, 150, 243, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+
+  &.recommended {
+    background: #4CAF50;
+    color: white;
+  }
+
+  &.direct {
+    background: #FF9800;
+    color: white;
+  }
+
+  &.low-walking {
+    background: #9C27B0;
+    color: white;
+  }
+}
+
+.selection-indicator {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  color: #2196F3;
+
+  mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.card-summary {
+  padding-top: 48px !important; // Increased from 16px to make room for badge at top-right
+}
+
+.metrics {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &.main-metric {
+    .metric-value {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+
+      .value-large {
+        font-size: 32px;
+        font-weight: 700;
+        color: #212121;
+      }
+
+      .unit {
+        font-size: 14px;
+        color: #757575;
+      }
+    }
+  }
+
+  .value {
+    font-weight: 600;
+    font-size: 18px;
+  }
+
+  .label {
+    font-size: 14px;
+    color: #757575;
+  }
+
+  mat-icon {
+    color: #757575;
+  }
+}
+
+.metric-divider {
+  width: 1px;
+  height: 32px;
+  background: #E0E0E0;
+}
+
+.steps-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  padding: 8px 0;
+
+  .step-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 60px;
+
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+
+    &.transit mat-icon {
+      color: #4CAF50;
+    }
+
+    &.walking mat-icon {
+      color: #2196F3;
+    }
+
+    .route-number {
+      font-size: 12px;
+      font-weight: 600;
+      background: #F5F5F5;
+      padding: 2px 8px;
+      border-radius: 8px;
+    }
+  }
+
+  .arrow {
+    color: #BDBDBD;
+    font-size: 20px;
+  }
+}
+
+.expand-btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-details {
+  padding-top: 16px !important;
+}
+
+.detailed-steps {
+  margin-top: 16px;
+}
+
+.step-detail {
+  margin-bottom: 16px;
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+
+      &.transit {
+        color: #4CAF50;
+      }
+
+      &.walking {
+        color: #2196F3;
+      }
+    }
+
+    .step-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      strong {
+        font-size: 16px;
+      }
+
+      .duration {
+        font-size: 14px;
+        color: #757575;
+      }
+    }
+  }
+
+  .step-route {
+    margin-left: 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .stop {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .stop-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        color: #757575;
+      }
+    }
+  }
+}
+
+.transfer-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 12px 44px;
+  color: #F57C00;
+  font-size: 14px;
+  font-weight: 600;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
