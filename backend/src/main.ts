@@ -6,6 +6,8 @@ import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
+import { HttpExceptionFilter } from '@common/filters/http-exception.filter';
+import { LoggingInterceptor } from '@common/interceptors/logging.interceptor';
 
 async function bootstrap() {
   const logger = WinstonModule.createLogger({
@@ -40,12 +42,25 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // Global exception filter
+  app.useGlobalFilters(new HttpExceptionFilter());
+
+  // Global logging interceptor
+  app.useGlobalInterceptors(new LoggingInterceptor());
+
   // Validation
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+      validationError: {
+        target: false,
+        value: false,
+      },
     }),
   );
 
@@ -55,16 +70,45 @@ async function bootstrap() {
     .setDescription('API dokumentáció a Közlekedési Jegykezelő alkalmazáshoz')
     .setVersion('0.1.0')
     .addBearerAuth()
-    .addTag('auth', 'Autentikáció és felhasználókezelés')
-    .addTag('health', 'Health check végpontok')
+    .addTag('Auth', 'Autentikáció és felhasználókezelés')
+    .addTag('Users', 'Felhasználókezelés')
+    .addTag('Routes', 'Járatok kezelése')
+    .addTag('Stops', 'Megállók kezelése')
+    .addTag('ticket-types', 'Jegytípusok kezelése')
+    .addTag('tickets', 'Jegyek vásárlása és kezelése')
+    .addTag('Health', 'Health check végpontok')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+  SwaggerModule.setup('api/docs', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+      tagsSorter: 'alpha',
+      operationsSorter: 'alpha',
+    },
+  });
 
   const port = configService.get('PORT') || 3000;
-  await app.listen(port);
 
-  logger.log(`Alkalmazás fut: http://localhost:${port}`, 'Bootstrap');
-  logger.log(`Swagger docs: http://localhost:${port}/api/docs`, 'Bootstrap');
+  try {
+    await app.listen(port);
+    logger.log(`Alkalmazás fut: http://localhost:${port}`, 'Bootstrap');
+    logger.log(`Swagger docs: http://localhost:${port}/api/docs`, 'Bootstrap');
+  } catch (error) {
+    if (error.code === 'EADDRINUSE') {
+      logger.error(
+        `Port ${port} már használatban van. Kérlek állítsd le a futó folyamatot vagy használj másik portot.`,
+        'Bootstrap',
+      );
+      logger.error(`Windows-on: taskkill //F //PID <process_id>`, 'Bootstrap');
+      logger.error(`Vagy módosítsd a PORT értéket a .env fájlban`, 'Bootstrap');
+    } else {
+      logger.error(`Hiba történt az alkalmazás indításakor: ${error.message}`, 'Bootstrap');
+    }
+    process.exit(1);
+  }
 }
-bootstrap();
+
+bootstrap().catch((error) => {
+  console.error('Fatal error during bootstrap:', error);
+  process.exit(1);
+});
