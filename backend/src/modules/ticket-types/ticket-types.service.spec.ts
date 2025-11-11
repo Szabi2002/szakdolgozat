@@ -88,7 +88,9 @@ describe('TicketTypesService', () => {
         error: { message: 'Database error' },
       });
 
-      await expect(service.create(createDto)).rejects.toThrow();
+      await expect(service.create(createDto)).rejects.toThrow(
+        'Failed to create ticket type',
+      );
     });
   });
 
@@ -128,7 +130,7 @@ describe('TicketTypesService', () => {
         error: { message: 'Database error' },
       });
 
-      await expect(service.findAll()).rejects.toThrow();
+      await expect(service.findAll()).rejects.toThrow('Failed to fetch ticket types');
     });
   });
 
@@ -168,7 +170,9 @@ describe('TicketTypesService', () => {
         error: { message: 'Database error' },
       });
 
-      await expect(service.findAllIncludingInactive()).rejects.toThrow();
+      await expect(service.findAllIncludingInactive()).rejects.toThrow(
+        'Failed to fetch all ticket types',
+      );
     });
   });
 
@@ -265,7 +269,9 @@ describe('TicketTypesService', () => {
         error: { message: 'Update failed' },
       });
 
-      await expect(service.update('123e4567-e89b-12d3-a456-426614174000', { price: 400 })).rejects.toThrow();
+      await expect(
+        service.update('123e4567-e89b-12d3-a456-426614174000', { price: 400 }),
+      ).rejects.toThrow('Failed to update ticket type');
     });
   });
 
@@ -310,10 +316,21 @@ describe('TicketTypesService', () => {
     });
 
     it('should throw NotFoundException when ticket type does not exist', async () => {
-      mockSupabaseClient.single.mockResolvedValue({
-        data: null,
-        error: { message: 'Not found' },
-      });
+      // Mock the entire Supabase chain for findOne that throws NotFoundException
+      const mockSelectChain = {
+        select: jest.fn().mockReturnThis(),
+        eq: jest.fn().mockReturnThis(),
+        single: jest.fn().mockResolvedValue({
+          data: null,
+          error: { message: 'Not found' },
+        }),
+      };
+
+      const mockClient = {
+        from: jest.fn().mockReturnValue(mockSelectChain),
+      };
+
+      mockSupabaseService.getClient.mockReturnValue(mockClient as any);
 
       await expect(service.remove('invalid-id')).rejects.toThrow(NotFoundException);
     });
@@ -351,7 +368,9 @@ describe('TicketTypesService', () => {
 
       mockSupabaseService.getClient.mockReturnValue(mockClient as any);
 
-      await expect(service.remove('123e4567-e89b-12d3-a456-426614174000')).rejects.toThrow();
+      await expect(service.remove('123e4567-e89b-12d3-a456-426614174000')).rejects.toThrow(
+        'Failed to delete ticket type',
+      );
     });
   });
 });

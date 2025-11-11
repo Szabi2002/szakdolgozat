@@ -74,9 +74,7 @@ export class RoutesService {
 
     // Search filter
     if (filters.search) {
-      query = query.or(
-        `route_number.ilike.%${filters.search}%,name.ilike.%${filters.search}%`,
-      );
+      query = query.or(`route_number.ilike.%${filters.search}%,name.ilike.%${filters.search}%`);
     }
 
     // Provider filter
@@ -183,11 +181,7 @@ export class RoutesService {
    * @param dto - Update data
    * @returns Updated route
    */
-  async update(
-    id: string,
-    userId: string,
-    dto: UpdateRouteDto,
-  ): Promise<RouteResponseDto> {
+  async update(id: string, userId: string, dto: UpdateRouteDto): Promise<RouteResponseDto> {
     // Check ownership first
     await this.checkOwnership(id, userId);
 
@@ -358,9 +352,7 @@ export class RoutesService {
       );
 
       if (insertError) {
-        throw new InternalServerErrorException(
-          'Failed to assign stops: ' + insertError.message,
-        );
+        throw new InternalServerErrorException('Failed to assign stops: ' + insertError.message);
       }
     }
   }
@@ -382,7 +374,7 @@ export class RoutesService {
         id,
         stop_order,
         arrival_time,
-        stops (
+        stops!inner (
           id,
           name,
           type,
@@ -404,7 +396,14 @@ export class RoutesService {
       id: rs.id,
       order: rs.stop_order,
       arrival_time: rs.arrival_time,
-      stop: rs.stops,
+      stop: {
+        id: rs.stops.id,
+        name: rs.stops.name,
+        type: rs.stops.type,
+        latitude: rs.stops.latitude,
+        longitude: rs.stops.longitude,
+        is_accessible: rs.stops.is_accessible,
+      },
     }));
   }
 

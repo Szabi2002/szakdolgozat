@@ -88,11 +88,19 @@ async function bootstrap() {
   });
 
   const port = configService.get('PORT') || 3000;
+  const host = configService.get('HOST') || 'localhost';
+  const nodeEnv = configService.get('NODE_ENV') || 'development';
 
   try {
     await app.listen(port);
-    logger.log(`Alkalmazás fut: http://localhost:${port}`, 'Bootstrap');
-    logger.log(`Swagger docs: http://localhost:${port}/api/docs`, 'Bootstrap');
+
+    // Only log URLs in development mode
+    if (nodeEnv === 'development') {
+      logger.log(`Alkalmazás fut: http://${host}:${port}`, 'Bootstrap');
+      logger.log(`Swagger docs: http://${host}:${port}/api/docs`, 'Bootstrap');
+    } else {
+      logger.log(`Alkalmazás fut porton: ${port}`, 'Bootstrap');
+    }
   } catch (error) {
     if (error.code === 'EADDRINUSE') {
       logger.error(
@@ -109,6 +117,10 @@ async function bootstrap() {
 }
 
 bootstrap().catch((error) => {
-  console.error('Fatal error during bootstrap:', error);
+  // Use a basic logger since the app logger might not be available
+  const errorLogger = new (require('winston')).createLogger({
+    transports: [new (require('winston')).transports.Console()],
+  });
+  errorLogger.error('Fatal error during bootstrap:', error);
   process.exit(1);
 });

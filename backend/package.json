@@ -29,6 +29,7 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^10.4.20",
     "@nestjs/swagger": "^7.1.16",
+    "@nestjs/throttler": "^6.4.0",
     "@supabase/supabase-js": "^2.39.0",
     "@types/qrcode": "^1.5.6",
     "class-transformer": "^0.5.1",
