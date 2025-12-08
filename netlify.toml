@@ -27,8 +27,8 @@
 [build.environment]
   NODE_VERSION = "20"
   NPM_VERSION = "10"
-  # NOTE: Do NOT set NODE_ENV=production here - it prevents devDependencies from being installed
-  # and @angular/cli is a devDependency needed for the build
+  # Force npm to install devDependencies (needed for @angular/cli)
+  NPM_FLAGS = "--include=dev"
   # Disable Angular SSR runtime - we're using a simple SPA
   NETLIFY_SKIP_ANGULAR_RUNTIME = "true"
   # Tell Netlify to treat this as a static site
