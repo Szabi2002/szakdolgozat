@@ -33,6 +33,8 @@
   NETLIFY_SKIP_ANGULAR_RUNTIME = "true"
   # Tell Netlify to treat this as a static site
   CI = "true"
+  # Skip secrets scanning for Supabase public keys (they are meant to be public, protected by RLS)
+  SECRETS_SCAN_OMIT_KEYS = "SUPABASE_URL,SUPABASE_ANON_KEY"
 
 # ================================
 # Redirects and Rewrites
