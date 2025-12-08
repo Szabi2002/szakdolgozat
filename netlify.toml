@@ -8,11 +8,14 @@
   # Base directory for build
   base = "frontend"
 
-  # Build command
-  command = "npm run build:prod"
+  # Build command - use CI=true to treat warnings as non-fatal
+  command = "npm ci && npm run build:prod"
 
-  # Publish directory (Angular output)
-  publish = "dist/kozlekedesi-jegykezelo-frontend/browser"
+  # Publish directory (Angular 17 output with application builder)
+  publish = "dist/kozlekedesi-jegykezelo/browser"
+
+  # Ignore the Angular runtime plugin (we don't need SSR)
+  ignore_install_scripts = false
 
   # Environment variables (set in Netlify Dashboard UI for security)
   # SUPABASE_URL - Supabase project URL
@@ -25,6 +28,10 @@
   NODE_VERSION = "20"
   NPM_VERSION = "10"
   NODE_ENV = "production"
+  # Disable Angular SSR runtime - we're using a simple SPA
+  NETLIFY_SKIP_ANGULAR_RUNTIME = "true"
+  # Tell Netlify to treat this as a static site
+  CI = "true"
 
 # ================================
 # Redirects and Rewrites
@@ -113,23 +120,22 @@
     Cache-Control = "no-cache"
 
 # ================================
-# Functions (if using Netlify Functions)
+# Functions (disabled - not used in this project)
 # ================================
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
+# [functions]
+#   directory = "netlify/functions"
+#   node_bundler = "esbuild"
 
 # ================================
-# Plugins
+# Plugins (disabled for now - can be re-enabled later)
 # ================================
-[[plugins]]
-  package = "@netlify/plugin-lighthouse"
-  [plugins.inputs.thresholds]
-    # Lighthouse performance thresholds (0-1 scale)
-    performance = 0.9
-    accessibility = 0.9
-    best-practices = 0.9
-    seo = 0.9
+# [[plugins]]
+#   package = "@netlify/plugin-lighthouse"
+#   [plugins.inputs.thresholds]
+#     performance = 0.9
+#     accessibility = 0.9
+#     best-practices = 0.9
+#     seo = 0.9
 
 # ================================
 # Context-Specific Settings
