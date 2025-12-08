@@ -202,7 +202,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
       width: '800px',
       maxWidth: '95vw',
       data: { report },
-      panelClass: 'report-details-dialog'
+      panelClass: 'glass-dialog-panel'
     });
   }
 

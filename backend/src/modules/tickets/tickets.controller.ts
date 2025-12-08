@@ -174,30 +174,6 @@ export class TicketsController {
     res.send(qrCodeBuffer);
   }
 
-  @Post(':id/send-email')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Resend ticket email' })
-  @ApiParam({
-    name: 'id',
-    description: 'Ticket UUID',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Email sent successfully',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Ticket not found',
-  })
-  async sendEmail(@Req() req: any, @Param('id') id: string) {
-    const userId = req.user.id;
-    return this.ticketsService.sendEmail(id, userId);
-  }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -228,36 +204,4 @@ export class TicketsController {
     await this.ticketsService.cancel(id, userId);
   }
 
-  @Post(':id/resend-email')
-  @Throttle({ default: { ttl: 3600000, limit: 5 } }) // 5 requests per hour
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({
-    summary: 'Resend ticket email',
-    description: 'Resend ticket confirmation email. Rate limited to 5 requests per hour per user.',
-  })
-  @ApiParam({
-    name: 'id',
-    description: 'Ticket UUID',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Email sent successfully',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Ticket not found',
-  })
-  @ApiResponse({
-    status: 429,
-    description: 'Too many requests - Rate limit exceeded (max 5 per hour)',
-  })
-  async resendEmail(@Req() req: any, @Param('id') id: string) {
-    const userId = req.user.id;
-    return this.ticketsService.resendEmail(id, userId);
-  }
 }

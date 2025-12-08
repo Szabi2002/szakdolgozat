@@ -91,7 +91,8 @@
       "Bash(npm start)",
       "Bash(git check-ignore:*)",
       "mcp__playwright__browser_hover",
-      "Bash(npx sass:*)"
+      "Bash(npx sass:*)",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []

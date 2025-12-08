@@ -130,6 +130,7 @@ export class MyRatingsComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(RatingFormComponent, {
       width: '800px',
       maxWidth: '95vw',
+      panelClass: 'glass-dialog-panel',
       data: { existingRating: rating },
       disableClose: true
     });

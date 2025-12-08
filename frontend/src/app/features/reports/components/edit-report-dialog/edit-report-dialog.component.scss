@@ -1,0 +1,243 @@
+@use 'sass:color';
+
+// Persian Blue color palette
+$persian-blue-50: #edf2ff;
+$persian-blue-100: #dee7ff;
+$persian-blue-200: #c4d2ff;
+$persian-blue-300: #a0b5ff;
+$persian-blue-400: #7a8bff;
+$persian-blue-500: #5b64f9;
+$persian-blue-600: #403dee;
+$persian-blue-700: #3c36d4;
+$persian-blue-800: #2c29aa;
+$persian-blue-900: #292986;
+$persian-blue-950: #1a184e;
+
+.edit-report-dialog {
+  padding: 0;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, rgba($persian-blue-600, 0.2), rgba($persian-blue-800, 0.3));
+  border-bottom: 1px solid rgba($persian-blue-400, 0.2);
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .header-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: $persian-blue-400;
+    }
+
+    .header-text {
+      h2 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: $persian-blue-50;
+      }
+
+      .reference-number {
+        font-size: 0.875rem;
+        color: $persian-blue-300;
+        font-family: monospace;
+      }
+    }
+  }
+
+  .close-button {
+    color: $persian-blue-300;
+
+    &:hover {
+      background: rgba($persian-blue-400, 0.1);
+    }
+  }
+}
+
+.report-type-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  background: rgba($persian-blue-900, 0.3);
+  border-bottom: 1px solid rgba($persian-blue-400, 0.1);
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .type-label {
+    font-weight: 500;
+    color: $persian-blue-100;
+    flex: 1;
+  }
+
+  .status-chip {
+    background: rgba($persian-blue-500, 0.2) !important;
+    color: $persian-blue-200 !important;
+    font-size: 0.75rem;
+    height: 24px;
+    padding: 0 12px;
+  }
+}
+
+.edit-form {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+// Form field styling
+::ng-deep {
+  .edit-report-dialog {
+    .mat-mdc-form-field {
+      .mat-mdc-text-field-wrapper {
+        background: rgba($persian-blue-900, 0.4) !important;
+        border-radius: 8px;
+      }
+
+      .mat-mdc-form-field-flex {
+        background: transparent !important;
+      }
+
+      .mdc-text-field--outlined .mdc-notched-outline__leading,
+      .mdc-text-field--outlined .mdc-notched-outline__notch,
+      .mdc-text-field--outlined .mdc-notched-outline__trailing {
+        border-color: rgba($persian-blue-400, 0.3) !important;
+      }
+
+      &.mat-focused {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: $persian-blue-500 !important;
+        }
+      }
+
+      .mat-mdc-form-field-label,
+      .mdc-floating-label {
+        color: $persian-blue-300 !important;
+      }
+
+      input, textarea {
+        color: $persian-blue-50 !important;
+
+        &::placeholder {
+          color: rgba($persian-blue-300, 0.5) !important;
+        }
+      }
+
+      .mat-mdc-form-field-hint {
+        color: $persian-blue-400;
+      }
+
+      .mat-icon {
+        color: $persian-blue-400;
+      }
+    }
+  }
+}
+
+.info-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba($persian-blue-500, 0.1);
+  border-radius: 8px;
+  border-left: 3px solid $persian-blue-500;
+
+  mat-icon {
+    color: $persian-blue-400;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  span {
+    color: $persian-blue-200;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid rgba($persian-blue-400, 0.1);
+
+  button {
+    min-width: 120px;
+
+    &[mat-stroked-button] {
+      border-color: rgba($persian-blue-400, 0.3);
+      color: $persian-blue-200;
+
+      &:hover:not(:disabled) {
+        background: rgba($persian-blue-400, 0.1);
+      }
+    }
+
+    &[mat-flat-button] {
+      background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+      color: white !important;
+
+      &:disabled {
+        background: rgba($persian-blue-500, 0.3) !important;
+        color: rgba(white, 0.5) !important;
+      }
+
+      mat-icon {
+        margin-right: 8px;
+      }
+
+      mat-spinner {
+        margin-right: 8px;
+
+        ::ng-deep circle {
+          stroke: white;
+        }
+      }
+    }
+  }
+}
+
+// Scrollbar styling
+.edit-report-dialog::-webkit-scrollbar {
+  width: 8px;
+}
+
+.edit-report-dialog::-webkit-scrollbar-track {
+  background: rgba($persian-blue-900, 0.3);
+}
+
+.edit-report-dialog::-webkit-scrollbar-thumb {
+  background: rgba($persian-blue-500, 0.5);
+  border-radius: 4px;
+
+  &:hover {
+    background: rgba($persian-blue-500, 0.7);
+  }
+}

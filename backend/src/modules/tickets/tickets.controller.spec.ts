@@ -14,7 +14,6 @@ describe('TicketsController', () => {
     findActiveByUserId: jest.fn(),
     findOne: jest.fn(),
     getQRCodeBuffer: jest.fn(),
-    sendEmail: jest.fn(),
     cancel: jest.fn(),
   };
 
@@ -155,26 +154,6 @@ describe('TicketsController', () => {
       );
       expect(mockResponse.setHeader).toHaveBeenCalledWith('Content-Type', 'image/png');
       expect(mockResponse.send).toHaveBeenCalledWith(mockBuffer);
-    });
-  });
-
-  describe('sendEmail', () => {
-    it('should send email successfully', async () => {
-      const ticketId = '123e4567-e89b-12d3-a456-426614174001';
-      const mockResult = {
-        success: true,
-        message: 'Email sent',
-      };
-
-      mockTicketsService.sendEmail.mockResolvedValue(mockResult);
-
-      const result = await controller.sendEmail(mockRequest, ticketId);
-
-      expect(result).toEqual(mockResult);
-      expect(service.sendEmail).toHaveBeenCalledWith(
-        ticketId,
-        mockRequest.user.id
-      );
     });
   });
 

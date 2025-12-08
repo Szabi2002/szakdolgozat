@@ -194,8 +194,8 @@
 
 .search-card {
   position: relative;
-  border-radius: 20px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: $radius-xl;
+  transition: all $transition-slow $ease-in-out;
   overflow: visible; // Allow icon to overflow
   padding: $spacing-8;
   padding-top: $spacing-12;
@@ -236,7 +236,7 @@
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
     transition: left 0.6s ease;
     pointer-events: none;
-    border-radius: 20px;
+    border-radius: $radius-xl;
   }
 
   &:hover {
@@ -590,16 +590,13 @@
     justify-content: center;
     gap: $spacing-2;
     min-width: 160px;
-    padding: $spacing-3 $spacing-6;
-    height: 56px;
-    font-size: $font-size-base;
-    font-weight: $font-weight-bold;
+    @include button-extra-large;
     font-family: inherit;
     background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600);
     color: white;
     border-radius: $radius-lg;
-    box-shadow: 0 8px 24px rgba($persian-blue-500, 0.4);
-    transition: all 0.3s ease;
+    @include glow-shadow($persian-blue-500, 0.4, 24px);
+    transition: all $transition-medium ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border: none;
@@ -749,10 +746,10 @@
   gap: $spacing-4;
 
   .panel-header {
-    border-left-color: #34d399;
+    border-left-color: $color-bus;
 
     mat-icon {
-      color: #34d399;
+      color: $color-bus;
     }
   }
 }
@@ -798,7 +795,7 @@
   padding: $spacing-12 $spacing-8;
   text-align: center;
   animation: fadeInUp 0.6s ease-out forwards;
-  border-radius: 20px;
+  border-radius: $radius-xl;
 
   // Glassmorphism effect
   background: rgba(255, 255, 255, 0.06);
@@ -925,11 +922,11 @@
     }
 
     &.tram {
-      color: #fbbf24;
+      color: $color-tram;
     }
 
     &.bus {
-      color: #34d399;
+      color: $color-bus;
     }
 
     &.general {

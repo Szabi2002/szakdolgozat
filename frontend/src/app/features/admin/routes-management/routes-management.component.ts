@@ -14,6 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { RoutesService, Route } from '../../../core/services/routes.service';
@@ -35,6 +37,8 @@ import { RouteFormDialogComponent } from '../route-form-dialog/route-form-dialog
     MatDialogModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    MatMenuModule,
+    MatDividerModule,
   ],
   templateUrl: './routes-management.component.html',
   styleUrl: './routes-management.component.scss',

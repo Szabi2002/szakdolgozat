@@ -126,6 +126,7 @@ export class RouteDetailsComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(RatingFormDialogComponent, {
       width: '600px',
       maxWidth: '95vw',
+      panelClass: 'glass-dialog-panel',
       data: {
         routeId: this.route.id,
         routeName: `${this.route.route_number} - ${this.route.name}`

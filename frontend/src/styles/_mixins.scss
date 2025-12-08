@@ -579,3 +579,90 @@
     cursor: not-allowed;
   }
 }
+
+// ===========================
+// ANGULAR MATERIAL FORM FIELD STYLING
+// ===========================
+
+// Dark theme form field styling (glassmorphism)
+@mixin form-field-dark-theme {
+  ::ng-deep {
+    .mat-mdc-form-field {
+      .mat-mdc-text-field-wrapper {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: $radius-md;
+      }
+
+      .mat-mdc-form-field-focus-indicator {
+        display: none;
+      }
+
+      .mdc-text-field--outlined .mdc-notched-outline {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+      }
+
+      &.mat-focused .mdc-notched-outline {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: rgba(255, 255, 255, 0.4);
+        }
+      }
+
+      .mat-mdc-input-element {
+        color: $white;
+        caret-color: $white;
+
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+      }
+
+      .mat-mdc-form-field-icon-suffix {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .mdc-floating-label {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      &.mat-focused .mdc-floating-label {
+        color: $white;
+      }
+    }
+  }
+}
+
+// ===========================
+// GLOW EFFECT SHADOWS
+// ===========================
+
+// Glow shadow mixin for accent effects
+@mixin glow-shadow($color, $intensity: 0.3, $size: 30px) {
+  box-shadow: 0 0 $size rgba($color, $intensity);
+}
+
+// ===========================
+// BUTTON SIZE MIXINS
+// ===========================
+
+// Large button styling
+@mixin button-large {
+  height: $button-height-lg;
+  padding: $button-padding-y $button-padding-x;
+  font-size: 1.125rem; // 18px
+  font-weight: 600;
+}
+
+// Extra large button styling (hero CTAs, primary actions)
+@mixin button-extra-large {
+  height: $button-height-xl;
+  padding: $spacing-4 $spacing-8;
+  font-size: 1.25rem; // 20px
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}

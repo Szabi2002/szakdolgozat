@@ -86,6 +86,7 @@ export class FavoritesListComponent implements OnInit, OnDestroy {
   onEditFavorite(favorite: FavoriteRoute): void {
     const dialogRef = this.dialog.open(SaveFavoriteDialogComponent, {
       width: '500px',
+      panelClass: 'glass-dialog-panel',
       data: {
         mode: 'edit',
         favoriteId: favorite.id,

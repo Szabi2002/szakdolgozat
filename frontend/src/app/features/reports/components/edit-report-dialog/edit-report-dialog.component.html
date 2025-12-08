@@ -1,0 +1,83 @@
+<div class="edit-report-dialog">
+  <!-- Header -->
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">edit</mat-icon>
+      <div class="header-text">
+        <h2>Bejelentés Szerkesztése</h2>
+        <span class="reference-number">{{ referenceNumber }}</span>
+      </div>
+    </div>
+    <button mat-icon-button class="close-button" (click)="onCancel()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Report Type Display (read-only) -->
+  <div class="report-type-display">
+    <mat-icon [style.color]="typeMetadata.color">{{ typeMetadata.icon }}</mat-icon>
+    <span class="type-label">{{ typeMetadata.label }}</span>
+    <mat-chip class="status-chip">{{ report.status === 'pending' ? 'Függőben' : report.status }}</mat-chip>
+  </div>
+
+  <!-- Edit Form -->
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="edit-form">
+    <!-- Title Field -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Cím</mat-label>
+      <input matInput formControlName="title" placeholder="Bejelentés címe">
+      <mat-hint>{{ titleCharCount }}/200 karakter</mat-hint>
+      @if (editForm.get('title')?.hasError('required') && editForm.get('title')?.touched) {
+        <mat-error>A cím megadása kötelező</mat-error>
+      }
+      @if (editForm.get('title')?.hasError('minlength')) {
+        <mat-error>A címnek legalább 10 karakter hosszúnak kell lennie</mat-error>
+      }
+      @if (editForm.get('title')?.hasError('maxlength')) {
+        <mat-error>A cím maximum 200 karakter lehet</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Description Field -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Leírás</mat-label>
+      <textarea matInput formControlName="description" rows="5" placeholder="Részletes leírás a problémáról..."></textarea>
+      <mat-hint>{{ descriptionCharCount }} karakter (minimum 20)</mat-hint>
+      @if (editForm.get('description')?.hasError('required') && editForm.get('description')?.touched) {
+        <mat-error>A leírás megadása kötelező</mat-error>
+      }
+      @if (editForm.get('description')?.hasError('minlength')) {
+        <mat-error>A leírásnak legalább 20 karakter hosszúnak kell lennie</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Location Field (Optional) -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Helyszín (opcionális)</mat-label>
+      <input matInput formControlName="location" placeholder="pl. Megálló neve, járat száma">
+      <mat-icon matSuffix>location_on</mat-icon>
+    </mat-form-field>
+
+    <!-- Info Note -->
+    <div class="info-note">
+      <mat-icon>info</mat-icon>
+      <span>Csak a cím, leírás és helyszín módosítható. A bejelentés típusa nem változtatható.</span>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="dialog-actions">
+      <button mat-stroked-button type="button" (click)="onCancel()" [disabled]="isSubmitting">
+        Mégse
+      </button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="editForm.invalid || isSubmitting || !hasChanges">
+        @if (isSubmitting) {
+          <mat-spinner diameter="20"></mat-spinner>
+          Mentés...
+        } @else {
+          <mat-icon>save</mat-icon>
+          Mentés
+        }
+      </button>
+    </div>
+  </form>
+</div>

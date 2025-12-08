@@ -4,15 +4,11 @@ import {
   NotFoundException,
   BadRequestException,
   InternalServerErrorException,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { SupabaseService } from '@common/supabase/supabase.service';
 import { QrCodeService } from '@common/services/qr-code.service';
-import { EmailService } from '@common/services/email.service';
 import { TransactionsService } from '@modules/transactions/transactions.service';
 import { TicketTypesService } from '@modules/ticket-types/ticket-types.service';
-import { UsersService } from '@modules/users/users.service';
 import { PurchaseTicketDto } from './dto/purchase-ticket.dto';
 import { HistoryFiltersDto } from './dto/history-filters.dto';
 import { PurchaseHistory, PurchaseHistoryResponse } from './entities/purchase-history.entity';
@@ -25,10 +21,8 @@ export class TicketsService {
   constructor(
     private readonly supabaseService: SupabaseService,
     private readonly qrCodeService: QrCodeService,
-    private readonly emailService: EmailService,
     private readonly transactionsService: TransactionsService,
     private readonly ticketTypesService: TicketTypesService,
-    private readonly usersService: UsersService,
   ) {}
 
   /**
@@ -138,13 +132,6 @@ export class TicketsService {
 
       this.logger.log(`Ticket purchased successfully: ${ticket.id} for user ${userId}`);
 
-      // 10. Send automatic email confirmation (fire and forget - don't block ticket creation)
-      this.sendEmailAutomatically(updatedTicket || ticket, userId).catch((emailError) => {
-        this.logger.error(
-          `Failed to send automatic email for ticket ${ticket.id}: ${emailError.message}`,
-          emailError.stack,
-        );
-      });
 
       return updatedTicket || ticket;
     } catch (error) {
@@ -153,42 +140,6 @@ export class TicketsService {
     }
   }
 
-  /**
-   * Internal method to send automatic ticket email after purchase
-   * @param ticket - Created ticket object
-   * @param userId - User ID
-   * @private
-   */
-  private async sendEmailAutomatically(ticket: Ticket, userId: string): Promise<void> {
-    try {
-      const user = await this.usersService.findById(userId);
-
-      if (!user || !user.email) {
-        this.logger.warn(`Cannot send automatic email: User email not found for ticket ${ticket.id}`);
-        return;
-      }
-
-      // Fetch ticket type for QR code generation
-      const ticketType = await this.ticketTypesService.findOne(ticket.ticket_type_id);
-
-      // Generate QR code buffer
-      const qrData = this.qrCodeService.createQRCodeData(
-        ticket.id,
-        ticket.user_id,
-        ticketType.type,
-        ticket.valid_until || '',
-      );
-      const qrCodeBuffer = await this.qrCodeService.generateQRCodeBuffer(qrData);
-
-      // Send email
-      await this.emailService.sendTicketEmail(ticket, user, qrCodeBuffer);
-
-      this.logger.log(`Automatic email sent successfully for ticket ${ticket.id}`);
-    } catch (error) {
-      this.logger.error(`Error in sendEmailAutomatically: ${error.message}`, error.stack);
-      throw error;
-    }
-  }
 
   /**
    * Gets all tickets for a specific user
@@ -353,49 +304,6 @@ export class TicketsService {
     }
   }
 
-  /**
-   * Sends ticket confirmation email with QR code
-   * Uses Nodemailer for real email delivery when SMTP is configured
-   * Falls back to simulation mode if SMTP is not configured
-   * @param id - Ticket ID
-   * @param userId - User ID (for authorization)
-   * @returns Promise with success status and message
-   * @throws NotFoundException if ticket or user not found
-   * @throws InternalServerErrorException if email sending fails
-   */
-  async sendEmail(id: string, userId: string): Promise<{ success: boolean; message: string }> {
-    try {
-      // 1. Fetch ticket details
-      const ticket = await this.findOne(id, userId);
-
-      // 2. Fetch user details for email
-      const user = await this.usersService.findById(userId);
-
-      if (!user || !user.email) {
-        throw new BadRequestException('User email not found');
-      }
-
-      // 3. Generate QR code as buffer for email attachment
-      const qrCodeBuffer = await this.getQRCodeBuffer(id, userId);
-
-      // 4. Send email using email service
-      const result = await this.emailService.sendTicketEmail(ticket, user, qrCodeBuffer);
-
-      this.logger.log(`Email sent for ticket: ${id} to user: ${userId} (${user.email})`);
-
-      return result;
-    } catch (error) {
-      if (
-        error instanceof NotFoundException ||
-        error instanceof BadRequestException ||
-        error instanceof InternalServerErrorException
-      ) {
-        throw error;
-      }
-      this.logger.error(`Error sending email: ${error.message}`, error.stack);
-      throw new InternalServerErrorException('Failed to send ticket email');
-    }
-  }
 
   /**
    * Updates expired tickets to 'expired' status
@@ -499,89 +407,4 @@ export class TicketsService {
     }
   }
 
-  /**
-   * Resend ticket email with rate limiting (max 5 per hour)
-   * Uses the check_email_resend_rate_limit and log_email_resend database functions
-   * @param ticketId - Ticket ID
-   * @param userId - User ID (for authorization)
-   * @returns Promise with success status and message
-   * @throws HttpException(429) if rate limit exceeded
-   */
-  async resendEmail(ticketId: string, userId: string): Promise<{ success: boolean; message: string }> {
-    try {
-      const supabase = this.supabaseService.getClient();
-
-      // 1. Check rate limit using database function
-      const { data: rateLimitData, error: rateLimitError } = await supabase
-        .rpc('check_email_resend_rate_limit', {
-          p_user_id: userId,
-          p_hours: 1,
-          p_max_resends: 5,
-        });
-
-      if (rateLimitError) {
-        this.logger.error(`Failed to check rate limit: ${rateLimitError.message}`, rateLimitError);
-        throw new InternalServerErrorException('Failed to check rate limit');
-      }
-
-      if (rateLimitData && rateLimitData.length > 0) {
-        const limitInfo = rateLimitData[0];
-        if (limitInfo.limit_exceeded) {
-          const retryAfter = limitInfo.retry_after
-            ? new Date(limitInfo.retry_after).toLocaleString('en-US', {
-                timeZone: 'UTC',
-                dateStyle: 'short',
-                timeStyle: 'short',
-              })
-            : 'later';
-          throw new HttpException(
-            `Email resend rate limit exceeded. Max 5 per hour. Retry after ${retryAfter}`,
-            HttpStatus.TOO_MANY_REQUESTS,
-          );
-        }
-      }
-
-      // 2. Fetch ticket and user details
-      const ticket = await this.findOne(ticketId, userId);
-      const user = await this.usersService.findById(userId);
-
-      if (!user || !user.email) {
-        throw new BadRequestException('User email not found');
-      }
-
-      // 3. Generate QR code as buffer for email attachment
-      const qrCodeBuffer = await this.getQRCodeBuffer(ticketId, userId);
-
-      // 4. Send email using email service
-      const result = await this.emailService.sendTicketEmail(ticket, user, qrCodeBuffer);
-
-      // 5. Log the resend using database function
-      const { error: logError } = await supabase.rpc('log_email_resend', {
-        p_user_id: userId,
-        p_ticket_id: ticketId,
-        p_email_type: 'ticket_purchase',
-        p_email_status: result.success ? 'sent' : 'failed',
-      });
-
-      if (logError) {
-        this.logger.error(`Failed to log email resend: ${logError.message}`, logError);
-        // Don't throw - email was sent successfully
-      }
-
-      this.logger.log(`Email resent for ticket: ${ticketId} to user: ${userId} (${user.email})`);
-
-      return result;
-    } catch (error) {
-      if (
-        error instanceof NotFoundException ||
-        error instanceof BadRequestException ||
-        error instanceof HttpException ||
-        error instanceof InternalServerErrorException
-      ) {
-        throw error;
-      }
-      this.logger.error(`Error resending email: ${error.message}`, error.stack);
-      throw new InternalServerErrorException('Failed to resend ticket email');
-    }
-  }
 }

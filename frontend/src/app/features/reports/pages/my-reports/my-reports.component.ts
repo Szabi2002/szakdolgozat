@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ReportCardComponent } from '@shared/components/report-card/report-card.component';
 import { ReportDetailsModalComponent } from '../../components/report-details-modal/report-details-modal.component';
+import { EditReportDialogComponent } from '../../components/edit-report-dialog/edit-report-dialog.component';
 import { Report, ReportStatus, UserReportStats } from '@core/models/report.model';
 import { ReportsService } from '@core/services/reports.service';
 
@@ -137,7 +138,7 @@ export class MyReportsComponent implements OnInit, OnDestroy {
       width: '800px',
       maxWidth: '95vw',
       data: { report },
-      panelClass: 'report-details-dialog'
+      panelClass: 'glass-dialog-panel'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -150,12 +151,32 @@ export class MyReportsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Edit report
+   * Edit report - opens edit dialog
    */
   onEditReport(report: Report): void {
-    // For now, navigate to submit page with edit mode
-    // In a full implementation, you'd pass the report data
-    this.snackBar.open('Szerkesztés funkció hamarosan elérhető', 'Bezár', { duration: 3000 });
+    // Only pending reports can be edited
+    if (report.status !== 'pending') {
+      this.snackBar.open('Csak függőben lévő bejelentések szerkeszthetők', 'Bezár', {
+        duration: 3000,
+        panelClass: 'warning-snackbar'
+      });
+      return;
+    }
+
+    const dialogRef = this.dialog.open(EditReportDialogComponent, {
+      width: '600px',
+      maxWidth: '95vw',
+      data: { report },
+      panelClass: 'glass-dialog-panel'
+    });
+
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
+        if (result?.success) {
+          this.loadReports(); // Refresh the list
+        }
+      });
   }
 
   /**

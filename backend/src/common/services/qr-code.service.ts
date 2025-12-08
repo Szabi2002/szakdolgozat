@@ -13,7 +13,17 @@ export interface QRCodeData {
 @Injectable()
 export class QrCodeService {
   private readonly logger = new Logger(QrCodeService.name);
-  private readonly SECRET_KEY = process.env.QR_CODE_SECRET || 'default-secret-key-change-in-production';
+  private readonly SECRET_KEY: string;
+
+  constructor() {
+    const secret = process.env.QR_CODE_SECRET;
+    if (!secret) {
+      this.logger.warn('QR_CODE_SECRET not set! Using a randomly generated secret for this session. Set QR_CODE_SECRET in .env for production.');
+      this.SECRET_KEY = crypto.randomBytes(32).toString('hex');
+    } else {
+      this.SECRET_KEY = secret;
+    }
+  }
 
   /**
    * Generates a signature for QR code data to prevent tampering

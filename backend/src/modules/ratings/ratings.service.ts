@@ -136,6 +136,23 @@ export class RatingsService {
         this.logger.warn(`Failed to fetch route details: ${routeError.message}`, routeError);
       }
 
+      // Fetch user data for all ratings in a single query
+      const userIds = [...new Set(ratings.map(r => r.user_id))];
+      const { data: usersData, error: usersError } = await supabase
+        .from('users')
+        .select('id, name, email, avatar_url')
+        .in('id', userIds);
+
+      if (usersError) {
+        this.logger.warn(`Failed to fetch user details: ${usersError.message}`, usersError);
+      }
+
+      // Create a map of users by ID for quick lookup
+      const usersById = (usersData || []).reduce((acc, user) => {
+        acc[user.id] = user;
+        return acc;
+      }, {});
+
       // Fetch photos for all ratings in a single query
       const ratingIds = ratings.map(r => r.id);
       const { data: photosData, error: photosError } = await supabase
@@ -159,6 +176,7 @@ export class RatingsService {
       // Combine data
       const result = ratings.map(rating => ({
         ...rating,
+        user: usersById[rating.user_id] || null,
         route: routeData || null,
         photos: photosByRating[rating.id] || [],
       }));
@@ -791,6 +809,112 @@ export class RatingsService {
       }
       this.logger.error(`Error fetching pending ratings: ${error.message}`, error.stack);
       throw new InternalServerErrorException('Failed to fetch pending ratings');
+    }
+  }
+
+  /**
+   * Gets all ratings with optional status filter (admin only)
+   * @param status - Optional status filter (pending, approved, rejected)
+   * @returns Array of ratings matching the filter
+   */
+  async getAllRatings(status?: string): Promise<RatingResponseDto[]> {
+    try {
+      const supabase = this.supabaseService.getAdminClient();
+
+      // Build query with optional status filter
+      let query = supabase
+        .from('ratings')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      // Apply status filter if provided
+      if (status) {
+        query = query.eq('status', status);
+      }
+
+      const { data: ratingsData, error: ratingsError } = await query;
+
+      if (ratingsError) {
+        this.logger.error(`Failed to fetch ratings: ${ratingsError.message}`, ratingsError);
+        throw new InternalServerErrorException('Failed to fetch ratings');
+      }
+
+      const ratings = ratingsData || [];
+
+      if (ratings.length === 0) {
+        return [];
+      }
+
+      // Fetch user data for all ratings in a single query
+      const userIds = [...new Set(ratings.map(r => r.user_id))];
+      const { data: usersData, error: usersError } = await supabase
+        .from('users')
+        .select('id, name, email, avatar_url')
+        .in('id', userIds);
+
+      if (usersError) {
+        this.logger.warn(`Failed to fetch user details: ${usersError.message}`, usersError);
+      }
+
+      // Create a map of users by ID for quick lookup
+      const usersById = (usersData || []).reduce((acc, user) => {
+        acc[user.id] = user;
+        return acc;
+      }, {});
+
+      // Fetch route data for all ratings in a single query
+      const routeIds = [...new Set(ratings.map(r => r.route_id))];
+      const { data: routesData, error: routesError } = await supabase
+        .from('routes')
+        .select('id, route_number, name')
+        .in('id', routeIds);
+
+      if (routesError) {
+        this.logger.warn(`Failed to fetch routes: ${routesError.message}`, routesError);
+      }
+
+      // Create a map of routes by ID for quick lookup
+      const routesById = (routesData || []).reduce((acc, route) => {
+        acc[route.id] = route;
+        return acc;
+      }, {});
+
+      // Fetch photos for all ratings in a single query
+      const ratingIds = ratings.map(r => r.id);
+      const { data: photosData, error: photosError } = await supabase
+        .from('rating_photos')
+        .select('*')
+        .in('rating_id', ratingIds);
+
+      if (photosError) {
+        this.logger.warn(`Failed to fetch rating photos: ${photosError.message}`, photosError);
+      }
+
+      // Group photos by rating_id
+      const photosByRating = (photosData || []).reduce((acc, photo) => {
+        if (!acc[photo.rating_id]) {
+          acc[photo.rating_id] = [];
+        }
+        acc[photo.rating_id].push(photo);
+        return acc;
+      }, {});
+
+      // Combine data
+      const result = ratings.map(rating => ({
+        ...rating,
+        user: usersById[rating.user_id] || null,
+        route: routesById[rating.route_id] || null,
+        photos: photosByRating[rating.id] || [],
+      }));
+
+      this.logger.debug(`Found ${ratings.length} ratings${status ? ` with status ${status}` : ''}`);
+      return result as RatingResponseDto[];
+    } catch (error) {
+      if (error instanceof InternalServerErrorException) {
+        throw error;
+      }
+      this.logger.error(`Error fetching all ratings: ${error.message}`, error.stack);
+      throw new InternalServerErrorException('Failed to fetch ratings');
     }
   }
 }

@@ -127,6 +127,7 @@ export class RouteCardComponent implements OnInit {
 
     const dialogRef = this.dialog.open(SaveFavoriteDialogComponent, {
       width: '500px',
+      panelClass: 'glass-dialog-panel',
       data: {
         mode: 'create',
         fromStopId: this.fromStop.id,

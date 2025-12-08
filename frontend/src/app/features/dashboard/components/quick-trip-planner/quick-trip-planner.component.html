@@ -4,7 +4,21 @@
     <mat-form-field appearance="outline" class="location-field">
       <mat-label>Honnan</mat-label>
       <mat-icon matPrefix>location_on</mat-icon>
-      <input matInput formControlName="from" placeholder="Pl. Deák Ferenc tér" />
+      <input
+        matInput
+        formControlName="from"
+        placeholder="Pl. Deák Ferenc tér"
+        [matAutocomplete]="fromAutocomplete"
+      />
+      <mat-autocomplete
+        #fromAutocomplete="matAutocomplete"
+        [displayWith]="displayStopFn.bind(this)"
+      >
+        <mat-option *ngFor="let stop of filteredFromStops$ | async" [value]="stop">
+          <mat-icon>{{ getStopIcon(stop.type) }}</mat-icon>
+          <span>{{ stop.name }}</span>
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     <!-- Swap Button -->
@@ -22,7 +36,21 @@
     <mat-form-field appearance="outline" class="location-field">
       <mat-label>Hova</mat-label>
       <mat-icon matPrefix>location_on</mat-icon>
-      <input matInput formControlName="to" placeholder="Pl. Keleti pályaudvar" />
+      <input
+        matInput
+        formControlName="to"
+        placeholder="Pl. Keleti pályaudvar"
+        [matAutocomplete]="toAutocomplete"
+      />
+      <mat-autocomplete
+        #toAutocomplete="matAutocomplete"
+        [displayWith]="displayStopFn.bind(this)"
+      >
+        <mat-option *ngFor="let stop of filteredToStops$ | async" [value]="stop">
+          <mat-icon>{{ getStopIcon(stop.type) }}</mat-icon>
+          <span>{{ stop.name }}</span>
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
   </div>
 

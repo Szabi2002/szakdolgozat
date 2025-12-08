@@ -104,6 +104,7 @@ export class TicketPurchaseComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(PaymentSimulationComponent, {
       width: '600px',
       maxWidth: '95vw',
+      panelClass: 'glass-dialog-panel',
       data: paymentData,
       disableClose: true
     });

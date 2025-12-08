@@ -212,13 +212,14 @@ export class MyTicketsComponent implements OnInit, OnDestroy {
       width: '800px',
       maxWidth: '95vw',
       data: ticket,
-      panelClass: 'ticket-details-dialog-container'
+      panelClass: 'glass-dialog-panel'
     });
   }
 
   onCancelTicket(ticket: Ticket): void {
     const dialogRef = this.dialog.open(ConfirmCancelDialogComponent, {
       width: '400px',
+      panelClass: 'glass-dialog-panel',
       data: ticket
     });
 

@@ -122,16 +122,6 @@
     </button>
     <button
       mat-stroked-button
-      (click)="onResendEmail()"
-      [disabled]="isResendingEmail"
-      class="action-btn email"
-      matTooltip="E-mail újraküldése"
-    >
-      <mat-icon>{{ isResendingEmail ? 'hourglass_empty' : 'email' }}</mat-icon>
-      <span>{{ isResendingEmail ? 'Küldés...' : 'E-mail' }}</span>
-    </button>
-    <button
-      mat-stroked-button
       (click)="onCancel()"
       [disabled]="ticket.status !== 'active'"
       class="action-btn cancel"

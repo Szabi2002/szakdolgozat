@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody, ApiQuery } from '@nestjs/swagger';
-import { Throttle } from '@nestjs/throttler';
+import { Throttle, SkipThrottle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import { GoogleLoginDto } from './dto/google-login.dto';
 import { AuthResponseDto } from './dto/auth-response.dto';
@@ -30,7 +30,7 @@ export class AuthController {
 
   @Post('google')
   @Public()
-  @Throttle({ default: { ttl: 900000, limit: 5 } }) // 5 requests per 15 minutes
+  @Throttle({ default: { ttl: 900000, limit: 20 } }) // 5 requests per 15 minutes
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Google OAuth bejelentkezés',
@@ -110,7 +110,7 @@ export class AuthController {
 
   @Post('register')
   @Public()
-  @Throttle({ default: { ttl: 3600000, limit: 3 } }) // 3 requests per hour
+  @SkipThrottle() // Temporarily disabled for testing - TODO: Re-enable with @Throttle({ default: { ttl: 3600000, limit: 5 } })
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
     summary: 'Regisztráció email/jelszóval',

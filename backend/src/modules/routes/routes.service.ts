@@ -20,6 +20,17 @@ export class RoutesService {
   constructor(private readonly supabaseService: SupabaseService) {}
 
   /**
+   * Sanitizes search input to prevent SQL injection in PostgREST filters
+   * Escapes special characters: %, _, *, (, ), comma, dot
+   */
+  private sanitizeSearchInput(input: string): string {
+    return input
+      .replace(/[%_*(),.<>]/g, '') // Remove special PostgREST filter characters
+      .trim()
+      .slice(0, 100); // Limit length to prevent abuse
+  }
+
+  /**
    * Create a new route
    * @param userId - Provider user ID from JWT
    * @param dto - Route creation data
@@ -86,9 +97,12 @@ export class RoutesService {
       .select('*, route_stops(count)', { count: 'exact' })
       .eq('is_active', true);
 
-    // Search filter
+    // Search filter (sanitized to prevent SQL injection)
     if (filters.search) {
-      query = query.or(`route_number.ilike.%${filters.search}%,name.ilike.%${filters.search}%`);
+      const sanitizedSearch = this.sanitizeSearchInput(filters.search);
+      if (sanitizedSearch.length > 0) {
+        query = query.or(`route_number.ilike.%${sanitizedSearch}%,name.ilike.%${sanitizedSearch}%`);
+      }
     }
 
     // Provider filter

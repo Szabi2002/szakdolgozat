@@ -21,8 +21,6 @@ export class TicketCardComponent implements OnInit {
   @Output() cancel = new EventEmitter<Ticket>();
   @Output() refresh = new EventEmitter<void>();
 
-  isResendingEmail = false;
-
   constructor(
     public ticketsService: TicketsService,
     private dialog: MatDialog,
@@ -94,48 +92,7 @@ export class TicketCardComponent implements OnInit {
       width: '600px',
       maxWidth: '95vw',
       data: this.ticket,
-      panelClass: 'qr-code-modal-container'
-    });
-  }
-
-  onResendEmail(): void {
-    this.isResendingEmail = true;
-
-    this.ticketsService.resendEmail(this.ticket.id).subscribe({
-      next: (response) => {
-        this.snackBar.open(
-          response.message || 'Jegy e-mail sikeresen elküldve: ' + (this.ticket.ticket_type?.name || 'az e-mail címedre'),
-          'Bezár',
-          {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          }
-        );
-        this.isResendingEmail = false;
-      },
-      error: (err) => {
-        this.isResendingEmail = false;
-
-        // Handle rate limit error (429)
-        if (err.status === 429) {
-          const retryAfter = err.error?.retry_after || 'néhány perc';
-          this.snackBar.open(
-            `Túl sok próbálkozás. Óránként maximum 5 e-mailt küldhetsz újra. Próbáld újra ${retryAfter} múlva.`,
-            'Bezár',
-            {
-              duration: 7000,
-              panelClass: ['error-snackbar']
-            }
-          );
-        } else {
-          // Generic error handling
-          const errorMessage = err.error?.message || 'Nem sikerült elküldeni az e-mailt. Próbáld újra.';
-          this.snackBar.open(errorMessage, 'Bezár', {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          });
-        }
-      }
+      panelClass: 'glass-dialog-panel'
     });
   }
 

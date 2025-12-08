@@ -46,8 +46,16 @@ export class FavoriteRoutesComponent implements OnInit {
    * Navigate to trip planner with favorite route
    */
   viewRoute(favoriteId: string): void {
-    this.router.navigate(['/trip-planner'], {
-      queryParams: { favoriteId },
+    const favorite = this.favoriteRoutes.find(f => f.id === favoriteId);
+    if (!favorite) {
+      return;
+    }
+
+    this.router.navigate(['/planner'], {
+      queryParams: {
+        from: favorite.from_stop_id,
+        to: favorite.to_stop_id
+      },
     });
   }
 
