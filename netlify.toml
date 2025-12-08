@@ -45,8 +45,6 @@
   from = "/*"
   to = "/index.html"
   status = 200
-  force = false
-  conditions = {Role = [""], Country = [""]}
 
 # API Proxy - Optional: Proxy API requests to backend
 # Uncomment if you want to proxy backend API through Netlify
