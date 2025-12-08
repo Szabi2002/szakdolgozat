@@ -1,0 +1,95 @@
+<!-- Only show for authenticated users -->
+<ng-container *ngIf="isAuthenticated$ | async">
+  <!-- Chat FAB Button -->
+  <button
+    mat-fab
+    class="chatbot-fab"
+    [class.open]="isOpen"
+    (click)="toggleChat()"
+    matTooltip="AI Asszisztens"
+    matTooltipPosition="left"
+    aria-label="AI Chatbot megnyitása">
+    <mat-icon>{{ isOpen ? 'close' : 'smart_toy' }}</mat-icon>
+  </button>
+
+  <!-- Chat Window -->
+  <div class="chatbot-window" *ngIf="isOpen" @fadeSlideIn>
+    <!-- Header -->
+    <div class="chatbot-header">
+      <div class="header-info">
+        <mat-icon class="bot-icon">smart_toy</mat-icon>
+        <div class="header-text">
+          <span class="title">AI Asszisztens</span>
+          <span class="subtitle">Közlekedési segéd</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button mat-icon-button (click)="clearChat()" matTooltip="Beszélgetés törlése">
+          <mat-icon>refresh</mat-icon>
+        </button>
+        <button mat-icon-button (click)="toggleChat()" matTooltip="Bezárás">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Messages Container -->
+    <div class="chatbot-messages" #messagesContainer>
+      <div
+        *ngFor="let message of messages"
+        class="message"
+        [class.user]="message.role === 'user'"
+        [class.assistant]="message.role === 'assistant'">
+        <div class="message-avatar" *ngIf="message.role === 'assistant'">
+          <mat-icon>smart_toy</mat-icon>
+        </div>
+        <div class="message-content">
+          <p>{{ message.content }}</p>
+          <span class="message-time" *ngIf="message.timestamp">
+            {{ message.timestamp | date:'HH:mm' }}
+          </span>
+        </div>
+        <div class="message-avatar" *ngIf="message.role === 'user'">
+          <mat-icon>person</mat-icon>
+        </div>
+      </div>
+
+      <!-- Loading indicator -->
+      <div class="message assistant" *ngIf="isLoading">
+        <div class="message-avatar">
+          <mat-icon>smart_toy</mat-icon>
+        </div>
+        <div class="message-content loading">
+          <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="chatbot-input">
+      <mat-form-field appearance="outline" class="message-input">
+        <input
+          matInput
+          #messageInput
+          [(ngModel)]="userMessage"
+          (keydown)="onKeydown($event)"
+          placeholder="Írj egy üzenetet..."
+          [disabled]="isLoading"
+          maxlength="1000" />
+      </mat-form-field>
+      <button
+        mat-icon-button
+        color="primary"
+        class="send-button"
+        (click)="sendMessage()"
+        [disabled]="!userMessage.trim() || isLoading"
+        matTooltip="Küldés">
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-container>

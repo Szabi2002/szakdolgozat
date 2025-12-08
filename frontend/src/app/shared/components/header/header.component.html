@@ -1,0 +1,261 @@
+<!-- Sidebar Navigation -->
+<aside class="sidebar"
+       [class.open]="isSidebarOpen"
+       [class.collapsed]="isCollapsed() && !isMobile">
+
+  <!-- Sidebar Header -->
+  <div class="sidebar-header">
+    <a routerLink="/" class="logo">
+      <div class="logo-icon">
+        <mat-icon>directions_bus</mat-icon>
+      </div>
+      <span class="logo-text" *ngIf="!isCollapsed() || isMobile">Közlekedési Jegykezelő</span>
+    </a>
+
+    <!-- Close button (mobile) -->
+    <button mat-icon-button class="close-sidebar" (click)="toggleSidebar()" *ngIf="isMobile">
+      <mat-icon>close</mat-icon>
+    </button>
+
+    <!-- Collapse toggle (desktop) -->
+    <button mat-icon-button
+            class="collapse-toggle"
+            (click)="toggleCollapse()"
+            *ngIf="!isMobile"
+            [matTooltip]="isCollapsed() ? 'Kinyitás' : 'Összecsukás'"
+            matTooltipPosition="right">
+      <mat-icon>{{ isCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- User Info Section (Authenticated) -->
+  <div class="sidebar-user" *ngIf="(isAuthenticated$ | async) && (currentUser$ | async) as user">
+    <div class="user-avatar-container" [matTooltip]="isCollapsed() && !isMobile ? getUserDisplayName(user) : ''" matTooltipPosition="right">
+      <!-- Full avatar when expanded -->
+      <ng-container *ngIf="!isCollapsed() || isMobile">
+        <img
+          *ngIf="user.profile_picture_url"
+          [src]="user.profile_picture_url"
+          [alt]="user.name"
+          class="user-avatar-large"
+        />
+        <mat-icon *ngIf="!user.profile_picture_url" class="user-avatar-icon">account_circle</mat-icon>
+      </ng-container>
+
+      <!-- Compact avatar when collapsed -->
+      <ng-container *ngIf="isCollapsed() && !isMobile">
+        <div class="user-avatar-compact" *ngIf="!user.profile_picture_url">
+          {{ getUserInitials(user) }}
+        </div>
+        <img
+          *ngIf="user.profile_picture_url"
+          [src]="user.profile_picture_url"
+          [alt]="user.name"
+          class="user-avatar-small"
+        />
+      </ng-container>
+    </div>
+    <div class="user-details" *ngIf="!isCollapsed() || isMobile">
+      <div class="user-name">{{ getUserDisplayName(user) }}</div>
+      <div class="user-email">{{ user.email }}</div>
+    </div>
+  </div>
+
+  <mat-divider *ngIf="isAuthenticated$ | async" class="section-divider"></mat-divider>
+
+  <!-- Navigation Links -->
+  <nav class="sidebar-nav">
+    <!-- Public Navigation (Landing Page) -->
+    <ng-container *ngIf="!(isAuthenticated$ | async)">
+      <a class="sidebar-item"
+         (click)="scrollToSection('features-section')"
+         [matTooltip]="isCollapsed() && !isMobile ? 'Funkciók' : ''"
+         matTooltipPosition="right">
+        <mat-icon>auto_awesome</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Funkciók</span>
+      </a>
+      <a class="sidebar-item"
+         (click)="scrollToSection('testimonials-section')"
+         [matTooltip]="isCollapsed() && !isMobile ? 'Vélemények' : ''"
+         matTooltipPosition="right">
+        <mat-icon>format_quote</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Vélemények</span>
+      </a>
+      <a class="sidebar-item"
+         routerLink="/about"
+         routerLinkActive="active"
+         [matTooltip]="isCollapsed() && !isMobile ? 'Rólunk' : ''"
+         matTooltipPosition="right">
+        <mat-icon>people</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Rólunk</span>
+      </a>
+    </ng-container>
+
+    <!-- Authenticated User Navigation -->
+    <ng-container *ngIf="(isAuthenticated$ | async) && (currentUser$ | async) as user">
+      <!-- Regular User Menu Items -->
+      <a class="sidebar-item"
+         routerLink="/dashboard"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{exact: true}"
+         [matTooltip]="isCollapsed() && !isMobile ? 'Főoldal' : ''"
+         matTooltipPosition="right">
+        <mat-icon>home</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Főoldal</span>
+      </a>
+      <a class="sidebar-item"
+         routerLink="/planner"
+         routerLinkActive="active"
+         [matTooltip]="isCollapsed() && !isMobile ? 'Utazástervező' : ''"
+         matTooltipPosition="right">
+        <mat-icon>route</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Utazástervező</span>
+      </a>
+      <a class="sidebar-item"
+         routerLink="/tickets/my-tickets"
+         routerLinkActive="active"
+         [matTooltip]="isCollapsed() && !isMobile ? 'Jegyeim' : ''"
+         matTooltipPosition="right">
+        <mat-icon>confirmation_number</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Jegyeim</span>
+      </a>
+      <a class="sidebar-item"
+         routerLink="/favorites"
+         routerLinkActive="active"
+         [matTooltip]="isCollapsed() && !isMobile ? 'Kedvencek' : ''"
+         matTooltipPosition="right">
+        <mat-icon>favorite</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Kedvencek</span>
+      </a>
+      <a class="sidebar-item"
+         routerLink="/ratings/my-ratings"
+         routerLinkActive="active"
+         [matTooltip]="isCollapsed() && !isMobile ? 'Értékeléseim' : ''"
+         matTooltipPosition="right">
+        <mat-icon>star</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Értékeléseim</span>
+      </a>
+      <a class="sidebar-item"
+         routerLink="/reports/my-reports"
+         routerLinkActive="active"
+         [matTooltip]="isCollapsed() && !isMobile ? 'Jelentéseim' : ''"
+         matTooltipPosition="right">
+        <mat-icon>feedback</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Jelentéseim</span>
+      </a>
+      <a class="sidebar-item"
+         routerLink="/profile"
+         routerLinkActive="active"
+         [matTooltip]="isCollapsed() && !isMobile ? 'Profilom' : ''"
+         matTooltipPosition="right">
+        <mat-icon>account_circle</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Profilom</span>
+      </a>
+
+      <!-- Admin Section (Only visible to admins) -->
+      <ng-container *ngIf="user.role === 'admin'">
+        <mat-divider class="nav-divider"></mat-divider>
+        <div class="nav-section-title" *ngIf="!isCollapsed() || isMobile">Adminisztráció</div>
+        <div class="nav-section-dot" *ngIf="isCollapsed() && !isMobile"></div>
+
+        <a class="sidebar-item"
+           routerLink="/admin"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{exact: true}"
+           [matTooltip]="isCollapsed() && !isMobile ? 'Áttekintő' : ''"
+           matTooltipPosition="right">
+          <mat-icon>dashboard</mat-icon>
+          <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Áttekintő</span>
+        </a>
+        <a class="sidebar-item"
+           routerLink="/admin/ratings"
+           routerLinkActive="active"
+           [matTooltip]="isCollapsed() && !isMobile ? 'Értékelések moderálása' : ''"
+           matTooltipPosition="right">
+          <mat-icon>rate_review</mat-icon>
+          <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Értékelések moderálása</span>
+        </a>
+        <a class="sidebar-item"
+           routerLink="/admin/reports"
+           routerLinkActive="active"
+           [matTooltip]="isCollapsed() && !isMobile ? 'Jelentések moderálása' : ''"
+           matTooltipPosition="right">
+          <mat-icon>assignment</mat-icon>
+          <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Jelentések moderálása</span>
+        </a>
+        <a class="sidebar-item"
+           routerLink="/admin/routes"
+           routerLinkActive="active"
+           [matTooltip]="isCollapsed() && !isMobile ? 'Útvonalak kezelése' : ''"
+           matTooltipPosition="right">
+          <mat-icon>alt_route</mat-icon>
+          <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Útvonalak kezelése</span>
+        </a>
+        <a class="sidebar-item"
+           routerLink="/admin/users"
+           routerLinkActive="active"
+           [matTooltip]="isCollapsed() && !isMobile ? 'Felhasználók kezelése' : ''"
+           matTooltipPosition="right">
+          <mat-icon>group</mat-icon>
+          <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Felhasználók kezelése</span>
+        </a>
+      </ng-container>
+    </ng-container>
+  </nav>
+
+  <!-- Bottom Actions -->
+  <div class="sidebar-footer">
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- Not authenticated: Show login button -->
+    <ng-container *ngIf="!(isAuthenticated$ | async)">
+      <a class="sidebar-item sidebar-action"
+         routerLink="/login"
+         [matTooltip]="isCollapsed() && !isMobile ? 'Bejelentkezés' : ''"
+         matTooltipPosition="right">
+        <mat-icon>login</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Bejelentkezés</span>
+      </a>
+      <a class="sidebar-item sidebar-action register-btn"
+         routerLink="/register"
+         [matTooltip]="isCollapsed() && !isMobile ? 'Regisztráció' : ''"
+         matTooltipPosition="right">
+        <mat-icon>person_add</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Regisztráció</span>
+      </a>
+    </ng-container>
+
+    <!-- Authenticated: Show report and logout -->
+    <ng-container *ngIf="isAuthenticated$ | async">
+      <a class="sidebar-item sidebar-action"
+         routerLink="/reports/submit"
+         [matTooltip]="isCollapsed() && !isMobile ? 'Hibabejelentés' : ''"
+         matTooltipPosition="right">
+        <mat-icon>report_problem</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Hibabejelentés</span>
+      </a>
+      <button class="sidebar-item sidebar-action logout-btn"
+              (click)="onLogout()"
+              [matTooltip]="isCollapsed() && !isMobile ? 'Kijelentkezés' : ''"
+              matTooltipPosition="right">
+        <mat-icon>logout</mat-icon>
+        <span class="nav-label" *ngIf="!isCollapsed() || isMobile">Kijelentkezés</span>
+      </button>
+    </ng-container>
+  </div>
+</aside>
+
+<!-- Mobile Overlay -->
+<div class="sidebar-overlay" *ngIf="isSidebarOpen && isMobile" (click)="toggleSidebar()"></div>
+
+<!-- Mobile Header (Hamburger Menu) -->
+<header class="mobile-header" *ngIf="isMobile">
+  <button mat-icon-button (click)="toggleSidebar()" class="hamburger-btn">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <a routerLink="/" class="mobile-logo">
+    <mat-icon>directions_bus</mat-icon>
+    <span>Közlekedési Jegykezelő</span>
+  </a>
+  <div class="mobile-spacer"></div>
+</header>

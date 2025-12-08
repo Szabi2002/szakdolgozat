@@ -1,0 +1,53 @@
+<div class="ticket-type-selector">
+  <h3 class="selector-title">
+    <mat-icon>local_activity</mat-icon>
+    Válasszon jegytípust
+  </h3>
+
+  <div class="ticket-types-grid">
+    <mat-card
+      *ngFor="let ticketType of ticketTypes"
+      class="ticket-type-card"
+      [class.selected]="selectedType?.id === ticketType.id"
+      (click)="onSelectionChange(ticketType)"
+    >
+      <div class="card-header" [style.background]="getTypeColor(ticketType.type)">
+        <mat-icon class="type-icon">{{ getTypeIcon(ticketType.type) }}</mat-icon>
+        <span class="type-badge">{{ getTypeBadge(ticketType.type) }}</span>
+      </div>
+
+      <mat-card-content>
+        <h4 class="ticket-name">{{ ticketType.name }}</h4>
+        <p class="ticket-description">{{ ticketType.description }}</p>
+
+        <div class="ticket-details">
+          <div class="detail-item">
+            <mat-icon>payments</mat-icon>
+            <div class="detail-content">
+              <span class="detail-label">Ár</span>
+              <span class="detail-value price">{{ formatPrice(ticketType.price) }}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <mat-icon>schedule</mat-icon>
+            <div class="detail-content">
+              <span class="detail-label">Érvényesség</span>
+              <span class="detail-value">{{ formatValidity(ticketType.validity_hours) }}</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <div class="selection-indicator" *ngIf="selectedType?.id === ticketType.id">
+        <mat-icon>check_circle</mat-icon>
+        <span>Kiválasztva</span>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="no-tickets" *ngIf="ticketTypes.length === 0">
+    <mat-icon>info</mat-icon>
+    <p>Jelenleg nincs elérhető jegytípus.</p>
+  </div>
+</div>

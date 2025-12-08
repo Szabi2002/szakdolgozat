@@ -1,0 +1,165 @@
+<div class="register-page">
+  <!-- Hero Section (Left side - Desktop only) -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <mat-icon class="hero-icon">directions_bus</mat-icon>
+      <h1>Csatlakozz hozzánk,<br />utazz okosabban</h1>
+      <p>Regisztrálj ingyenesen és élvezd a modern jegykezelés előnyeit</p>
+    </div>
+  </div>
+
+  <!-- Register Panel (Right side) -->
+  <div class="register-panel">
+    <div class="register-content">
+      <!-- Logo -->
+      <mat-icon class="logo">directions_bus</mat-icon>
+
+      <!-- Heading -->
+      <h2>Regisztráció</h2>
+      <p class="subtitle">Hozz létre egy új fiókot</p>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="error-message">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Registration Form -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+        <!-- Name Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Teljes név</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="name"
+            placeholder="Kovács János"
+            autocomplete="name"
+          />
+          <mat-icon matPrefix>person</mat-icon>
+          <mat-error *ngIf="nameControl?.invalid && nameControl?.touched">
+            {{ getErrorMessage('name') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Email Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email cím</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="pelda@email.com"
+            autocomplete="email"
+          />
+          <mat-icon matPrefix>email</mat-icon>
+          <mat-error *ngIf="emailControl?.invalid && emailControl?.touched">
+            {{ getErrorMessage('email') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Password Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Jelszó</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="Minimum 8 karakter"
+            autocomplete="off"
+          />
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="hidePassword ? 'Jelszó mutatása' : 'Jelszó elrejtése'"
+            [attr.aria-pressed]="!hidePassword"
+          >
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="passwordControl?.invalid && passwordControl?.touched">
+            {{ getErrorMessage('password') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Password Strength Indicator -->
+        <app-password-strength-indicator [password]="currentPassword" class="password-strength">
+        </app-password-strength-indicator>
+
+        <!-- Confirm Password Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Jelszó megerősítése</mat-label>
+          <input
+            matInput
+            [type]="hideConfirmPassword ? 'password' : 'text'"
+            formControlName="confirmPassword"
+            placeholder="Írd be újra a jelszót"
+            autocomplete="off"
+          />
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="toggleConfirmPasswordVisibility()"
+            [attr.aria-label]="hideConfirmPassword ? 'Jelszó mutatása' : 'Jelszó elrejtése'"
+            [attr.aria-pressed]="!hideConfirmPassword"
+          >
+            <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="confirmPasswordControl?.invalid && confirmPasswordControl?.touched">
+            {{ getErrorMessage('confirmPassword') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Register Button -->
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="full-width register-button"
+          [disabled]="isLoading || registerForm.invalid"
+        >
+          <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+          <span *ngIf="!isLoading">Regisztráció</span>
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>VAGY</span>
+      </div>
+
+      <!-- Google Register Button -->
+      <button
+        mat-stroked-button
+        class="google-register-button full-width"
+        (click)="onGoogleRegister()"
+        [disabled]="isLoading"
+      >
+        <img
+          src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+          alt="Google"
+          class="google-icon"
+        />
+        <span>Regisztráció Google-lal</span>
+      </button>
+
+      <!-- Login Link -->
+      <p class="login-link">
+        Már van fiókod?
+        <a routerLink="/login">Bejelentkezés</a>
+      </p>
+
+      <!-- Footer -->
+      <p class="footer-text">
+        Regisztrációval elfogadod az
+        <a href="/terms" target="_blank">Általános Szerződési Feltételeket</a>
+        és az
+        <a href="/privacy" target="_blank">Adatvédelmi Nyilatkozatot</a>
+      </p>
+    </div>
+  </div>
+</div>

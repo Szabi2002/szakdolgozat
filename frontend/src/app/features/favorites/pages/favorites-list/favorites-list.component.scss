@@ -1,0 +1,395 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// FAVORITES PAGE - DARK THEME WITH GLASSMORPHISM
+// ============================================================================
+
+.favorites-page {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  background: $persian-blue-950;
+  overflow-x: hidden;
+  @include fade-in(400ms);
+}
+
+// ============================================================================
+// COMPACT HEADER
+// ============================================================================
+
+.favorites-header {
+  width: 100%;
+  padding: $spacing-8 $spacing-4;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba($persian-blue-600, 0.3), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-500, 0.2), transparent 50%),
+    linear-gradient(180deg, $persian-blue-900 0%, $persian-blue-950 100%);
+  @include fade-in(400ms);
+
+  @include mobile {
+    padding: $spacing-6 $spacing-3;
+  }
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  @include flex-between;
+  align-items: center;
+  gap: $spacing-4;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.header-left {
+  @include flex-column;
+  gap: $spacing-3;
+}
+
+.header-badge {
+  @include flex-start;
+  gap: $spacing-2;
+  padding: $spacing-1 $spacing-3;
+  background: rgba($persian-blue-400, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: $radius-full;
+  border: 1px solid rgba($persian-blue-400, 0.3);
+  width: fit-content;
+  color: $persian-blue-300;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    color: $persian-blue-400;
+  }
+}
+
+.title-section {
+  @include flex-column;
+  gap: $spacing-1;
+}
+
+.page-title {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  color: $persian-blue-50;
+  margin: 0;
+  line-height: 1.2;
+
+  .highlight {
+    background: linear-gradient(135deg, $persian-blue-400, $persian-blue-300);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  @include mobile {
+    font-size: $font-size-2xl;
+  }
+}
+
+.page-subtitle {
+  font-size: $font-size-base;
+  color: $persian-blue-300;
+  margin: 0;
+
+  @include mobile {
+    font-size: $font-size-sm;
+  }
+}
+
+.header-right {
+  @include mobile {
+    width: 100%;
+  }
+
+  .new-search-btn {
+    @include flex-center;
+    gap: $spacing-2;
+    padding: $spacing-3 $spacing-6;
+    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    color: $white !important;
+    font-weight: $font-weight-bold;
+    border-radius: $radius-lg;
+    transition: all $transition-base $ease-out;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba($persian-blue-500, 0.4);
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    @include mobile {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+// ============================================================================
+// CONTENT SECTION
+// ============================================================================
+
+.content-section {
+  padding: $spacing-8 $spacing-4;
+
+  @include mobile {
+    padding: $spacing-6 $spacing-3;
+  }
+}
+
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  @include flex-column;
+  gap: $spacing-6;
+}
+
+// ============================================================================
+// STATS CARD
+// ============================================================================
+
+.stats-card {
+  position: relative;
+  @include flex-center;
+  gap: $spacing-6;
+  padding: $spacing-5 $spacing-6;
+  border-radius: 20px;
+  @include slide-up(400ms);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // Glassmorphism
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+  // Glow line at top (hidden by default)
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $persian-blue-500, $persian-blue-400);
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: all 0.3s ease;
+    z-index: 10;
+    border-radius: 20px 20px 0 0;
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    border-color: rgba($persian-blue-400, 0.3);
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba($persian-blue-500, 0.1);
+
+    &::before {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+  }
+
+  @include mobile {
+    flex-direction: column;
+    gap: $spacing-4;
+    padding: $spacing-4;
+  }
+}
+
+.stat-item {
+  @include flex-center;
+  gap: $spacing-3;
+
+  mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: $persian-blue-400;
+  }
+
+  .stat-content {
+    @include flex-column;
+    gap: $spacing-1;
+
+    .stat-value {
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+      color: $persian-blue-50;
+    }
+
+    .stat-label {
+      font-size: $font-size-xs;
+      color: $persian-blue-400;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: $font-weight-semibold;
+    }
+  }
+}
+
+.stat-divider {
+  width: 1px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+
+  @include mobile {
+    width: 100%;
+    height: 1px;
+  }
+}
+
+// ============================================================================
+// LOADING & ERROR & EMPTY STATES
+// ============================================================================
+
+.loading-card {
+  @include flex-column-center;
+  gap: $spacing-4;
+  padding: $spacing-12;
+  border-radius: 20px;
+
+  // Glassmorphism
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+  p {
+    margin: 0;
+    font-size: $font-size-base;
+    color: $persian-blue-300;
+  }
+
+  ::ng-deep .mat-mdc-progress-spinner circle {
+    stroke: $persian-blue-400;
+  }
+}
+
+.error-card,
+.empty-card {
+  @include flex-column-center;
+  gap: $spacing-4;
+  padding: $spacing-12 $spacing-8;
+  border-radius: 20px;
+  text-align: center;
+
+  // Glassmorphism
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+  .error-icon-wrapper,
+  .empty-icon-wrapper {
+    @include flex-center;
+    width: 80px;
+    height: 80px;
+    background: rgba($persian-blue-500, 0.15);
+    border-radius: $radius-full;
+    border: 2px solid rgba($persian-blue-400, 0.3);
+
+    mat-icon {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+      color: $persian-blue-400;
+    }
+  }
+
+  .error-icon-wrapper {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(248, 113, 113, 0.3);
+
+    mat-icon {
+      color: #f87171;
+    }
+  }
+
+  h3 {
+    margin: 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $persian-blue-50;
+  }
+
+  p {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $persian-blue-300;
+    line-height: 1.6;
+    max-width: 400px;
+  }
+
+  .retry-button,
+  .search-btn {
+    @include flex-center;
+    gap: $spacing-2;
+    padding: $spacing-3 $spacing-6;
+    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    color: $white !important;
+    font-weight: $font-weight-semibold;
+    border-radius: $radius-lg;
+    transition: all $transition-base $ease-out;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba($persian-blue-500, 0.4);
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+// ============================================================================
+// FAVORITES GRID
+// ============================================================================
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: $spacing-6;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: $spacing-4;
+  }
+
+  app-favorite-card {
+    @include slide-up(400ms);
+
+    @for $i from 1 through 20 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 50}ms;
+      }
+    }
+  }
+}

@@ -1,0 +1,105 @@
+<div class="favorites-page">
+  <!-- Compact Header -->
+  <section class="favorites-header">
+    <div class="header-container">
+      <div class="header-left">
+        <div class="header-badge">
+          <mat-icon>favorite</mat-icon>
+          <span>Kedvencek</span>
+        </div>
+
+        <div class="title-section">
+          <h1 class="page-title">
+            Kedvenc <span class="highlight">útvonalaid</span>
+          </h1>
+          <p class="page-subtitle">Gyorsan elérhető utazásaid kezelése</p>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <button mat-raised-button class="new-search-btn" (click)="onCreateNewFavorite()">
+          <mat-icon>add</mat-icon>
+          Új keresés
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="content-section">
+    <div class="content-container">
+      <!-- Stats Card -->
+      @if (!loading && !error && favorites.length > 0) {
+        <div class="stats-card">
+          <div class="stat-item">
+            <mat-icon>favorite</mat-icon>
+            <div class="stat-content">
+              <span class="stat-value">{{ favorites.length }}</span>
+              <span class="stat-label">Mentett útvonal</span>
+            </div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <mat-icon>add_circle</mat-icon>
+            <div class="stat-content">
+              <span class="stat-value">{{ 20 - favorites.length }}</span>
+              <span class="stat-label">Szabad hely</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Loading State -->
+      @if (loading) {
+        <div class="loading-card">
+          <mat-spinner diameter="60"></mat-spinner>
+          <p>Kedvencek betöltése...</p>
+        </div>
+      }
+
+      <!-- Error State -->
+      @if (error && !loading) {
+        <div class="error-card">
+          <div class="error-icon-wrapper">
+            <mat-icon>error_outline</mat-icon>
+          </div>
+          <h3>Nem sikerült betölteni a kedvenceket</h3>
+          <p>{{ error }}</p>
+          <button mat-raised-button class="retry-button" (click)="retryLoad()">
+            <mat-icon>refresh</mat-icon>
+            Újrapróbálás
+          </button>
+        </div>
+      }
+
+      <!-- Empty State -->
+      @if (!loading && !error && favorites.length === 0) {
+        <div class="empty-card">
+          <div class="empty-icon-wrapper">
+            <mat-icon>favorite_border</mat-icon>
+          </div>
+          <h3>Nincsenek kedvenc útvonalak</h3>
+          <p>Mentsd el gyakran használt útvonalaidat a gyorsabb elérés érdekében.</p>
+          <button mat-raised-button class="search-btn" (click)="onCreateNewFavorite()">
+            <mat-icon>search</mat-icon>
+            Útvonal keresése
+          </button>
+        </div>
+      }
+
+      <!-- Favorites Grid -->
+      @if (!loading && !error && favorites.length > 0) {
+        <div class="favorites-grid">
+          @for (favorite of favorites; track trackByFavoriteId($index, favorite)) {
+            <app-favorite-card
+              [favorite]="favorite"
+              (select)="onSelectFavorite(favorite)"
+              (edit)="onEditFavorite(favorite)"
+              (delete)="onDeleteFavorite(favorite)"
+            ></app-favorite-card>
+          }
+        </div>
+      }
+    </div>
+  </section>
+</div>

@@ -1,0 +1,208 @@
+# ================================
+# Netlify Configuration
+# Közlekedési Jegykezelő Frontend
+# ================================
+
+# Build Settings
+[build]
+  # Base directory for build
+  base = "frontend"
+
+  # Build command
+  command = "npm run build:prod"
+
+  # Publish directory (Angular output)
+  publish = "dist/kozlekedesi-jegykezelo-frontend/browser"
+
+  # Environment variables (set in Netlify Dashboard UI for security)
+  # SUPABASE_URL - Supabase project URL
+  # SUPABASE_ANON_KEY - Supabase anonymous key (safe for frontend)
+
+# ================================
+# Build Environment
+# ================================
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_VERSION = "10"
+  NODE_ENV = "production"
+
+# ================================
+# Redirects and Rewrites
+# ================================
+
+# SPA Fallback - Redirect all routes to index.html for Angular routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+  conditions = {Role = [""], Country = [""]}
+
+# API Proxy - Optional: Proxy API requests to backend
+# Uncomment if you want to proxy backend API through Netlify
+# [[redirects]]
+#   from = "/api/*"
+#   to = "https://your-backend-url.railway.app/api/:splat"
+#   status = 200
+#   force = true
+#   headers = {X-From = "Netlify"}
+
+# ================================
+# Headers
+# ================================
+
+# Security Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security Headers
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+    # Content Security Policy
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval';
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https: blob:;
+      connect-src 'self' https://*.supabase.co;
+      frame-ancestors 'none';
+      base-uri 'self';
+      form-action 'self';
+    """
+
+    # Permissions Policy (Feature Policy)
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+    # CORS (if needed for API calls)
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+
+# Cache static assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache fonts
+[[headers]]
+  for = "/*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache images
+[[headers]]
+  for = "/*.{jpg,jpeg,png,gif,svg,webp}"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Don't cache HTML
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Don't cache service worker
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+# ================================
+# Functions (if using Netlify Functions)
+# ================================
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# ================================
+# Plugins
+# ================================
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+  [plugins.inputs]
+    # Run Lighthouse on every deploy
+    performance = 0.9
+    accessibility = 0.9
+    best-practices = 0.9
+    seo = 0.9
+
+# ================================
+# Context-Specific Settings
+# ================================
+
+# Production Context
+[context.production]
+  command = "npm run build:prod"
+  [context.production.environment]
+    NODE_ENV = "production"
+
+# Deploy Preview (Pull Requests)
+[context.deploy-preview]
+  command = "npm run build"
+  [context.deploy-preview.environment]
+    NODE_ENV = "staging"
+
+# Branch Deploy (develop branch)
+[context.develop]
+  command = "npm run build"
+  [context.develop.environment]
+    NODE_ENV = "development"
+
+# ================================
+# Form Detection (disable if not using Netlify Forms)
+# ================================
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
+
+# ================================
+# Dev Server (for local development with Netlify CLI)
+# ================================
+[dev]
+  command = "npm run start"
+  port = 4200
+  targetPort = 4200
+  autoLaunch = false
+  framework = "#custom"
+  publish = "dist"
+
+# ================================
+# Split Testing (A/B Testing)
+# ================================
+# Uncomment to enable split testing
+# [[redirects]]
+#   from = "/"
+#   to = "/version-a"
+#   status = 200
+#   conditions = {Cookie = ["split-test=version-a"]}
+#
+# [[redirects]]
+#   from = "/"
+#   to = "/version-b"
+#   status = 200
+#   conditions = {Cookie = ["split-test=version-b"]}
+
+# ================================
+# Post Processing
+# ================================
+# Disable Netlify's default post-processing if it conflicts with Angular
+# [build.processing]
+#   skip_processing = true

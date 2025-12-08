@@ -1,0 +1,493 @@
+@import '../../../../../styles/variables';
+@import '../../../../../styles/colors';
+@import '../../../../../styles/typography';
+@import '../../../../../styles/mixins';
+@import '../../../../../styles/persian-blue';
+@import '../../../../../styles/glassmorphism';
+@import '../../../../../styles/animations';
+
+// ===========================
+// HERO SECTION - DARK THEME
+// ===========================
+
+.hero-section {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-16 $spacing-4;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  // Dark radial gradient background
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba($persian-blue-700, 0.3), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-600, 0.2), transparent 50%),
+    $persian-blue-950;
+
+  @include tablet {
+    min-height: auto;
+    padding: $spacing-12 $spacing-4;
+  }
+
+  @include mobile {
+    min-height: auto;
+    padding: $spacing-10 $spacing-3;
+    padding-top: 80px; // Account for mobile header
+  }
+}
+
+// ===========================
+// FLOATING ORBS BACKGROUND
+// ===========================
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  .background-shape {
+    position: absolute;
+    border-radius: 50%;
+
+    &.shape-1 {
+      width: 500px;
+      height: 500px;
+      top: -150px;
+      right: -100px;
+      background: radial-gradient(circle, rgba($persian-blue-500, 0.15) 0%, transparent 70%);
+      animation: float-slow 12s ease-in-out infinite;
+    }
+
+    &.shape-2 {
+      width: 400px;
+      height: 400px;
+      bottom: -100px;
+      left: -100px;
+      background: radial-gradient(circle, rgba($persian-blue-600, 0.12) 0%, transparent 70%);
+      animation: float-slow 15s ease-in-out infinite reverse;
+    }
+
+    &.shape-3 {
+      width: 250px;
+      height: 250px;
+      top: 40%;
+      left: 25%;
+      background: radial-gradient(circle, rgba($persian-blue-400, 0.1) 0%, transparent 70%);
+      animation: float-medium 10s ease-in-out infinite;
+    }
+  }
+}
+
+// ===========================
+// HERO CONTAINER
+// ===========================
+
+.hero-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-12;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 $spacing-4;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+    gap: $spacing-8;
+    text-align: center;
+  }
+
+  @include mobile {
+    gap: $spacing-6;
+    padding: 0 $spacing-2;
+  }
+}
+
+// ===========================
+// HERO CONTENT
+// ===========================
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-6;
+  animation: fadeInUp 0.8s ease-out forwards;
+
+  @include tablet {
+    align-items: center;
+  }
+}
+
+// ===========================
+// GLASS BADGE
+// ===========================
+
+.hero-badge {
+  @include glass-badge-accent;
+  animation: fadeIn 0.6s ease-out 0.2s backwards;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: $persian-blue-400;
+  }
+
+  @include mobile {
+    padding: $spacing-1 $spacing-3;
+    font-size: $font-size-xs;
+  }
+}
+
+// ===========================
+// HERO HEADING
+// ===========================
+
+.hero-heading {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: $persian-blue-50;
+  margin: 0;
+  letter-spacing: -0.02em;
+
+  .highlight {
+    background: linear-gradient(135deg, $persian-blue-400 0%, $persian-blue-300 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    display: inline-block;
+  }
+
+  @include tablet {
+    font-size: 2.75rem;
+  }
+
+  @include mobile {
+    font-size: 2rem;
+    br {
+      display: none;
+    }
+  }
+}
+
+// ===========================
+// HERO SUBHEADING
+// ===========================
+
+.hero-subheading {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: $persian-blue-200;
+  max-width: 520px;
+  margin: 0;
+
+  @include tablet {
+    max-width: 600px;
+  }
+
+  @include mobile {
+    font-size: 1rem;
+  }
+}
+
+// ===========================
+// CTA BUTTONS
+// ===========================
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-4;
+  margin-top: $spacing-2;
+
+  @include tablet {
+    justify-content: center;
+  }
+
+  @include mobile {
+    flex-direction: column;
+    gap: $spacing-3;
+    width: 100%;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-2;
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 14px;
+    transition: all 0.3s ease;
+    min-width: 180px;
+    cursor: pointer;
+
+    mat-icon {
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+    }
+
+    @include mobile {
+      width: 100%;
+      min-width: auto;
+    }
+  }
+
+  // Primary CTA with glow
+  .cta-primary {
+    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 4px 20px rgba($persian-blue-500, 0.4);
+    position: relative;
+    overflow: hidden;
+
+    // Shine effect
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba($persian-blue-500, 0.5);
+
+      &::before {
+        left: 100%;
+      }
+    }
+
+    &:active {
+      transform: translateY(-1px);
+    }
+  }
+
+  // Secondary CTA - glass style
+  .cta-secondary {
+    @include glass-button;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: $persian-blue-200 !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12) !important;
+      border-color: rgba($persian-blue-400, 0.4) !important;
+      color: $persian-blue-50 !important;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// ===========================
+// QUICK FEATURES LIST
+// ===========================
+
+.hero-features {
+  display: flex;
+  align-items: center;
+  gap: $spacing-6;
+  margin-top: $spacing-4;
+
+  @include tablet {
+    justify-content: center;
+  }
+
+  @include mobile {
+    flex-direction: column;
+    gap: $spacing-3;
+    align-items: flex-start;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    color: $persian-blue-300;
+    font-size: 0.9375rem;
+    font-weight: 500;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: $persian-blue-400;
+    }
+  }
+}
+
+// ===========================
+// HERO VISUAL CARD
+// ===========================
+
+.hero-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInUp 0.9s ease-out 0.2s backwards;
+
+  @include tablet {
+    margin-top: $spacing-6;
+  }
+}
+
+.visual-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-6;
+  padding: $spacing-10;
+
+  // Strong glassmorphism
+  @include glass-card-strong;
+  border-color: rgba($persian-blue-400, 0.15);
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba($persian-blue-500, 0.1);
+
+  transition: all 0.4s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow:
+      0 35px 70px rgba(0, 0, 0, 0.5),
+      0 0 60px rgba($persian-blue-500, 0.15);
+    border-color: rgba($persian-blue-400, 0.25);
+  }
+
+  @include mobile {
+    padding: $spacing-6;
+  }
+}
+
+// Glow effect behind card
+.card-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba($persian-blue-500, 0.15) 0%, transparent 60%);
+  animation: pulse-glow-subtle 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+// Main hero icon
+.hero-icon {
+  font-size: 120px;
+  width: 120px;
+  height: 120px;
+  color: $persian-blue-400;
+  animation: float-fast 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba($persian-blue-400, 0.4));
+
+  @include mobile {
+    font-size: 90px;
+    width: 90px;
+    height: 90px;
+  }
+}
+
+// ===========================
+// VISUAL STATS
+// ===========================
+
+.visual-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-8;
+  width: 100%;
+  padding-top: $spacing-6;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  @include mobile {
+    gap: $spacing-4;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-1;
+
+    .stat-number {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: $persian-blue-50;
+      line-height: 1;
+
+      @include mobile {
+        font-size: 1.5rem;
+      }
+    }
+
+    .stat-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: $persian-blue-400;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+
+      @include mobile {
+        font-size: 0.625rem;
+      }
+    }
+  }
+}
+
+// ===========================
+// VISUAL TAGS
+// ===========================
+
+.visual-tags {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-2;
+  flex-wrap: wrap;
+
+  .tag-chip {
+    @include glass-badge;
+    padding: $spacing-1 $spacing-4 !important;
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    border-radius: 100px;
+    height: auto;
+    min-height: 32px;
+
+    &:nth-child(1) {
+      animation: fadeIn 0.6s ease-out 0.4s backwards;
+    }
+
+    &:nth-child(2) {
+      animation: fadeIn 0.6s ease-out 0.5s backwards;
+    }
+
+    &:nth-child(3) {
+      animation: fadeIn 0.6s ease-out 0.6s backwards;
+    }
+  }
+}

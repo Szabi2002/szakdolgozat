@@ -6,7 +6,7 @@ export class AuthResponseDto {
     description: 'JWT access token from Supabase',
     example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
   })
-  accessToken: string;
+  token: string; // FIXED: Renamed from accessToken to match frontend interface
 
   @ApiProperty({
     description: 'JWT refresh token from Supabase',

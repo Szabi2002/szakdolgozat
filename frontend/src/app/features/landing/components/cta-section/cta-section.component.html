@@ -1,0 +1,61 @@
+<section class="cta-section">
+  <!-- Background Decoration -->
+  <div class="cta-background">
+    <div class="background-circle circle-1"></div>
+    <div class="background-circle circle-2"></div>
+    <div class="background-circle circle-3"></div>
+  </div>
+
+  <div class="cta-container">
+    <!-- Icon Badge -->
+    <div class="cta-icon-wrapper">
+      <div class="icon-pulse"></div>
+      <mat-icon class="cta-icon">rocket_launch</mat-icon>
+    </div>
+
+    <!-- Content -->
+    <h2 class="cta-heading">
+      Készen állsz az <span class="highlight">indulásra</span>?
+    </h2>
+    <p class="cta-subheading">
+      Regisztrálj most, és kezdd el utazásod egyszerűen és gyorsan.<br>
+      Csatlakozz több ezer elégedett utashoz!
+    </p>
+
+    <!-- Action Buttons -->
+    <div class="cta-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        class="cta-primary"
+        (click)="navigateToLogin()"
+        aria-label="Regisztráció megkezdése">
+        <mat-icon>login</mat-icon>
+        Kezdd elmost
+      </button>
+      <button
+        mat-stroked-button
+        class="cta-secondary"
+        aria-label="További információk">
+        <mat-icon>info</mat-icon>
+        Tudj meg többet
+      </button>
+    </div>
+
+    <!-- Features List -->
+    <div class="cta-features">
+      <div class="feature-badge">
+        <mat-icon>check_circle</mat-icon>
+        <span>Ingyenes regisztráció</span>
+      </div>
+      <div class="feature-badge">
+        <mat-icon>check_circle</mat-icon>
+        <span>Azonnali hozzáférés</span>
+      </div>
+      <div class="feature-badge">
+        <mat-icon>check_circle</mat-icon>
+        <span>24/7 támogatás</span>
+      </div>
+    </div>
+  </div>
+</section>

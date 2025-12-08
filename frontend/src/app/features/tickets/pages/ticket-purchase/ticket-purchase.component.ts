@@ -71,8 +71,8 @@ export class TicketPurchaseComponent implements OnInit, OnDestroy {
           this.ticketTypes = types;
           this.isLoading = false;
         },
-        error: (err) => {
-          this.error = 'Failed to load ticket types. Please try again.';
+        error: () => {
+          this.error = 'Nem sikerült betölteni a jegytípusokat. Próbáld újra.';
           this.isLoading = false;
         }
       });
@@ -84,7 +84,7 @@ export class TicketPurchaseComponent implements OnInit, OnDestroy {
 
   onProceedToPayment(): void {
     if (!this.selectedTicketType) {
-      this.snackBar.open('Please select a ticket type', 'Close', {
+      this.snackBar.open('Kérlek válassz jegytípust', 'Bezár', {
         duration: 3000,
         panelClass: ['error-snackbar']
       });
@@ -178,8 +178,8 @@ export class TicketPurchaseComponent implements OnInit, OnDestroy {
 
           // Show success snackbar with email confirmation
           this.snackBar.open(
-            `Ticket purchased successfully! Email sent to ${userEmail}`,
-            'Close',
+            `Jegy sikeresen megvásárolva! E-mail elküldve: ${userEmail}`,
+            'Bezár',
             {
               duration: 8000,
               panelClass: ['success-snackbar']
@@ -194,9 +194,9 @@ export class TicketPurchaseComponent implements OnInit, OnDestroy {
             });
         },
         error: (err) => {
-          const errorMessage = err.error?.message || 'Failed to purchase ticket. Please try again.';
+          const errorMessage = err.error?.message || 'Nem sikerült megvásárolni a jegyet. Próbáld újra.';
 
-          this.snackBar.open(errorMessage, 'Close', {
+          this.snackBar.open(errorMessage, 'Bezár', {
             duration: 7000,
             panelClass: ['error-snackbar']
           });
@@ -223,11 +223,21 @@ export class TicketPurchaseComponent implements OnInit, OnDestroy {
     return `${price.toFixed(0)} Ft`;
   }
 
+  formatDate(date: string): string {
+    return new Date(date).toLocaleString('hu-HU', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
   get hasPreselectedRoute(): boolean {
     return !!this.preselectedRoute;
   }
 
   get userEmail(): string {
-    return this.authService.currentUser?.email || 'your email';
+    return this.authService.currentUser?.email || 'az e-mail címedre';
   }
 }

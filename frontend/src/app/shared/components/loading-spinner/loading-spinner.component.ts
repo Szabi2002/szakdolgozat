@@ -6,26 +6,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-loading-spinner',
   standalone: true,
   imports: [MaterialModule, CommonModule],
-  template: `
-    <div class="spinner-container" [style.height.px]="height">
-      <mat-spinner [diameter]="diameter"></mat-spinner>
-      <p *ngIf="message">{{ message }}</p>
-    </div>
-  `,
-  styles: [`
-    .spinner-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-    }
-
-    p {
-      color: #666;
-      font-size: 0.9rem;
-    }
-  `],
+  templateUrl: './loading-spinner.component.html',
+  styleUrls: ['./loading-spinner.component.scss']
 })
 export class LoadingSpinnerComponent {
   @Input() diameter = 50;

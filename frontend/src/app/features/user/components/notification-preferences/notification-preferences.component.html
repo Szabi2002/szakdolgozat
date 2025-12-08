@@ -1,0 +1,147 @@
+<div class="notification-preferences-section">
+  <!-- Preferences Card -->
+  <div class="preferences-card">
+    <div class="card-header">
+      <div class="header-icon">
+        <mat-icon>notifications_active</mat-icon>
+      </div>
+      <div class="header-text">
+        <h3>Értesítési Beállítások</h3>
+        <p>Szabályozd, milyen értesítéseket szeretnél kapni</p>
+      </div>
+      @if (saving) {
+        <div class="saving-indicator">
+          <mat-spinner diameter="20"></mat-spinner>
+        </div>
+      }
+    </div>
+
+    <div class="card-content">
+      <!-- Email Preferences Section -->
+      <div class="preferences-section">
+        <div class="section-header">
+          <mat-icon>email</mat-icon>
+          <h4>Email Értesítések</h4>
+        </div>
+
+        <div class="preference-items">
+          <!-- Ticket Purchase Confirmation -->
+          <div class="preference-item">
+            <div class="item-content">
+              <div class="item-icon">
+                <mat-icon>confirmation_number</mat-icon>
+              </div>
+              <div class="item-text">
+                <h5>Jegyvásárlás Megerősítés</h5>
+                <p>Kapj email visszaigazolást minden jegyvásárlás után</p>
+              </div>
+            </div>
+            <mat-slide-toggle
+              [checked]="preferences.email_ticket_purchase"
+              (change)="onToggleChange('email_ticket_purchase', $event.checked)"
+              [disabled]="saving"
+              color="primary"
+              aria-label="Jegyvásárlás email értesítés"
+            ></mat-slide-toggle>
+          </div>
+
+          <!-- Route Disruption Alerts -->
+          <div class="preference-item">
+            <div class="item-content">
+              <div class="item-icon">
+                <mat-icon>warning</mat-icon>
+              </div>
+              <div class="item-text">
+                <h5>Útvonal Megszakítási Értesítések</h5>
+                <p>Fontos értesítések a járatok késéseiről és változásairól</p>
+              </div>
+            </div>
+            <mat-slide-toggle
+              [checked]="preferences.email_route_disruptions"
+              (change)="onToggleChange('email_route_disruptions', $event.checked)"
+              [disabled]="saving"
+              color="primary"
+              aria-label="Útvonal megszakítás email értesítés"
+            ></mat-slide-toggle>
+          </div>
+
+          <!-- Promotional Offers -->
+          <div class="preference-item">
+            <div class="item-content">
+              <div class="item-icon">
+                <mat-icon>local_offer</mat-icon>
+              </div>
+              <div class="item-text">
+                <h5>Promóciós Ajánlatok</h5>
+                <p>Különleges kedvezmények és akciók a utazásaidhoz</p>
+              </div>
+            </div>
+            <mat-slide-toggle
+              [checked]="preferences.email_promotional"
+              (change)="onToggleChange('email_promotional', $event.checked)"
+              [disabled]="saving"
+              color="primary"
+              aria-label="Promóciós email értesítés"
+            ></mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider class="section-divider"></mat-divider>
+
+      <!-- Push Notifications Section -->
+      <div class="preferences-section">
+        <div class="section-header">
+          <mat-icon>notifications</mat-icon>
+          <h4>Push Értesítések</h4>
+        </div>
+
+        <div class="preference-items">
+          <!-- Push Notifications -->
+          <div class="preference-item">
+            <div class="item-content">
+              <div class="item-icon">
+                <mat-icon>phone_iphone</mat-icon>
+              </div>
+              <div class="item-text">
+                <h5>Push Értesítések Engedélyezése</h5>
+                <p>Kapj valós idejű értesítéseket közvetlenül az eszközödön</p>
+              </div>
+            </div>
+            <mat-slide-toggle
+              [checked]="preferences.push_enabled"
+              (change)="onToggleChange('push_enabled', $event.checked)"
+              [disabled]="saving"
+              color="primary"
+              aria-label="Push értesítések engedélyezése"
+            ></mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+
+      <!-- GDPR Notice -->
+      <div class="gdpr-notice">
+        <div class="notice-header">
+          <mat-icon>privacy_tip</mat-icon>
+          <h4>Az Adatvédelmed Fontos</h4>
+        </div>
+        <p>
+          Az értesítési beállításaid segítenek nekünk abban, hogy releváns információkat
+          küldjünk neked. Bármikor megváltoztathatod ezeket a beállításokat, és soha nem
+          adjuk ki az adataidat harmadik feleknek. További információkért olvasd el az
+          <a href="/privacy-policy" target="_blank" rel="noopener">Adatvédelmi Szabályzatunkat</a>.
+        </p>
+        <div class="gdpr-badges">
+          <mat-chip class="gdpr-chip">
+            <mat-icon>verified_user</mat-icon>
+            GDPR Megfelelő
+          </mat-chip>
+          <mat-chip class="gdpr-chip">
+            <mat-icon>security</mat-icon>
+            Biztonságos
+          </mat-chip>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

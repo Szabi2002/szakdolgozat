@@ -1,0 +1,166 @@
+<div class="account-statistics-section">
+  <!-- Statistics Header -->
+  <div class="statistics-header">
+    <div class="header-icon">
+      <mat-icon>analytics</mat-icon>
+    </div>
+    <div class="header-text">
+      <h3>Fiók Statisztikák</h3>
+      <p>Az aktivitásod összesített áttekintése</p>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading-container" role="status">
+      <div class="stat-cards-grid">
+        @for (item of [1, 2, 3, 4]; track item) {
+          <div class="stat-card skeleton">
+            <div class="skeleton-content">
+              <div class="skeleton-icon"></div>
+              <div class="skeleton-value"></div>
+              <div class="skeleton-title"></div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (!loading && error) {
+    <div class="error-container" role="alert">
+      <div class="error-icon">
+        <mat-icon>error_outline</mat-icon>
+      </div>
+      <p class="error-message">{{ error }}</p>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="retryLoad()"
+        class="retry-button"
+        aria-label="Újrapróbálkozás"
+      >
+        <mat-icon>refresh</mat-icon>
+        <span>Újrapróbálkozás</span>
+      </button>
+    </div>
+  }
+
+  <!-- Statistics Content -->
+  @if (!loading && !error && statistics) {
+    <div class="statistics-content">
+      <!-- Stat Cards Grid -->
+      <div class="stat-cards-grid">
+        @for (card of statCards; track card.title) {
+          <div
+            class="stat-card"
+            [class.clickable]="!!card.route"
+            (click)="onCardClick(card.route)"
+            [attr.tabindex]="card.route ? '0' : undefined"
+            role="button"
+            [attr.aria-label]="card.title + ': ' + card.value"
+          >
+            <div class="card-content">
+              <div class="stat-icon" [style.background]="card.color">
+                <mat-icon>{{ card.icon }}</mat-icon>
+              </div>
+              <div class="stat-value">{{ card.value }}</div>
+              <div class="stat-title">{{ card.title }}</div>
+            </div>
+            @if (card.route) {
+              <mat-icon class="arrow-icon">arrow_forward</mat-icon>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="recent-activity-card">
+        <div class="activity-header">
+          <mat-icon>history</mat-icon>
+          <h4>Legutóbbi Aktivitás</h4>
+        </div>
+
+        <div class="activity-items">
+          @if (statistics.last_purchase_date) {
+            <div class="activity-item">
+              <div class="activity-icon">
+                <mat-icon>receipt_long</mat-icon>
+              </div>
+              <div class="activity-content">
+                <span class="activity-label">Utolsó Vásárlás</span>
+                <span class="activity-value">{{ formatDate(statistics.last_purchase_date) }}</span>
+              </div>
+            </div>
+          }
+
+          @if (statistics.last_favorite_added) {
+            <div class="activity-item">
+              <div class="activity-icon">
+                <mat-icon>favorite_border</mat-icon>
+              </div>
+              <div class="activity-content">
+                <span class="activity-label">Utolsó Kedvenc Hozzáadva</span>
+                <span class="activity-value">{{ formatDate(statistics.last_favorite_added) }}</span>
+              </div>
+            </div>
+          }
+
+          @if (!statistics.last_purchase_date && !statistics.last_favorite_added) {
+            <div class="activity-item empty">
+              <div class="activity-icon">
+                <mat-icon>info</mat-icon>
+              </div>
+              <div class="activity-content">
+                <span class="activity-label">Nincs Legutóbbi Aktivitás</span>
+                <span class="activity-value">Kezdj egy jegy vásárlásával vagy kedvenc útvonal mentésével</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions-card">
+        <div class="actions-header">
+          <mat-icon>flash_on</mat-icon>
+          <h4>Gyors Műveletek</h4>
+        </div>
+
+        <div class="actions-grid">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="router.navigate(['/planner'])"
+            class="action-button"
+            aria-label="Utazás tervezése"
+          >
+            <mat-icon>search</mat-icon>
+            <span>Utazás Tervezése</span>
+          </button>
+
+          <button
+            mat-raised-button
+            (click)="router.navigate(['/tickets/my-tickets'])"
+            class="action-button secondary"
+            aria-label="Jegyeim megtekintése"
+          >
+            <mat-icon>confirmation_number</mat-icon>
+            <span>Jegyeim</span>
+          </button>
+
+          <button
+            mat-raised-button
+            (click)="router.navigate(['/favorites'])"
+            class="action-button secondary"
+            aria-label="Kedvenceim megtekintése"
+          >
+            <mat-icon>favorite</mat-icon>
+            <span>Kedvenceim</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

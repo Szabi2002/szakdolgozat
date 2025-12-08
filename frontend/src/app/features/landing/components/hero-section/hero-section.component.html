@@ -1,0 +1,93 @@
+<section class="hero-section" [@fadeIn]>
+  <!-- Background Decoration -->
+  <div class="hero-background">
+    <div class="background-shape shape-1"></div>
+    <div class="background-shape shape-2"></div>
+    <div class="background-shape shape-3"></div>
+  </div>
+
+  <div class="hero-container">
+    <!-- Hero Content -->
+    <div class="hero-content">
+      <div class="hero-badge">
+        <mat-icon>verified</mat-icon>
+        <span>Megbízható és gyors</span>
+      </div>
+
+      <h1 class="hero-heading">
+        Utazz egyszerűen,<br>
+        <span class="highlight">vásárolj jegyet</span><br>
+        percek alatt
+      </h1>
+
+      <p class="hero-subheading">
+        Tervezd meg utazásod, vásárolj jegyet Google fiókkal, és navigálj könnyedén a térképen. Minden egy helyen.
+      </p>
+
+      <div class="hero-actions">
+        <button
+          mat-raised-button
+          color="primary"
+          class="cta-primary"
+          (click)="navigateToLogin()"
+          aria-label="Regisztráció megkezdése">
+          <mat-icon>login</mat-icon>
+          Kezdd el most
+        </button>
+        <button
+          mat-stroked-button
+          class="cta-secondary"
+          (click)="scrollToFeatures()"
+          aria-label="További funkciók megtekintése">
+          <mat-icon>expand_more</mat-icon>
+          Tudj meg többet
+        </button>
+      </div>
+
+      <!-- Features Quick List -->
+      <div class="hero-features">
+        <div class="feature-item">
+          <mat-icon>flash_on</mat-icon>
+          <span>Azonnali jegyvásárlás</span>
+        </div>
+        <div class="feature-item">
+          <mat-icon>map</mat-icon>
+          <span>Útvonaltervezés</span>
+        </div>
+        <div class="feature-item">
+          <mat-icon>qr_code</mat-icon>
+          <span>Digitális jegy QR kóddal</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Visual -->
+    <div class="hero-visual">
+      <div class="visual-card">
+        <div class="card-glow"></div>
+        <mat-icon class="hero-icon">directions_bus</mat-icon>
+
+        <div class="visual-stats">
+          <div class="stat-item">
+            <span class="stat-number">100+</span>
+            <span class="stat-label">Járat</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">24/7</span>
+            <span class="stat-label">Elérhetőség</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">5★</span>
+            <span class="stat-label">Értékelés</span>
+          </div>
+        </div>
+
+        <div class="visual-tags">
+          <mat-chip class="tag-chip">Gyors</mat-chip>
+          <mat-chip class="tag-chip">Egyszerű</mat-chip>
+          <mat-chip class="tag-chip">Megbízható</mat-chip>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

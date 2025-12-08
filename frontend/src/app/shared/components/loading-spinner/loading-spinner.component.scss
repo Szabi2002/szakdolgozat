@@ -1,0 +1,30 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/colors';
+@import '../../../../styles/typography';
+@import '../../../../styles/mixins';
+
+.spinner-container {
+  @include flex-column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-4;
+  padding: $spacing-4;
+  animation: fade-in 300ms $ease-out forwards;
+}
+
+.spinner-wrapper {
+  ::ng-deep .mat-mdc-progress-spinner {
+    circle {
+      stroke: $brand-primary;
+    }
+  }
+}
+
+.spinner-message {
+  margin: 0;
+  font-size: $font-size-sm;
+  color: $neutral-600;
+  font-weight: $font-weight-medium;
+  text-align: center;
+  animation: fade-in 400ms $ease-out 200ms backwards;
+}

@@ -1,0 +1,352 @@
+// ===========================
+// TYPOGRAPHY
+// Közlekedési Jegykezelő Alkalmazás
+// ===========================
+
+// ===========================
+// FONT FAMILIES
+// ===========================
+
+$font-primary: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+$font-monospace: 'Roboto Mono', 'Courier New', monospace;
+
+// ===========================
+// FONT SIZES (Mobile-First)
+// ===========================
+
+$font-size-xs:   0.75rem;   // 12px - Caption, helper text
+$font-size-sm:   0.875rem;  // 14px - Small body, secondary text
+$font-size-base: 1rem;      // 16px - Body text
+$font-size-md:   1.125rem;  // 18px - Large body, lead text
+$font-size-lg:   1.25rem;   // 20px - H5
+$font-size-xl:   1.5rem;    // 24px - H4
+$font-size-2xl:  1.875rem;  // 30px - H3
+$font-size-3xl:  2.25rem;   // 36px - H2
+$font-size-4xl:  3rem;      // 48px - H1
+
+// ===========================
+// FONT WEIGHTS
+// ===========================
+
+$font-weight-light:     300;  // Nem használt alapértelmezetten
+$font-weight-regular:   400;  // Body text
+$font-weight-medium:    500;  // Emphasis, buttons
+$font-weight-semibold:  600;  // Semi-bold headings
+$font-weight-bold:      700;  // Headings
+$font-weight-extrabold: 800;  // Extra bold headings
+
+// ===========================
+// LINE HEIGHTS
+// ===========================
+
+$line-height-tight:   1.2;   // Headings
+$line-height-normal:  1.5;   // Body text (default)
+$line-height-relaxed: 1.75;  // Large paragraphs, lead text
+
+// ===========================
+// TYPOGRAPHY MIXINS
+// ===========================
+
+// H1 - Landing page hero
+@mixin heading-1 {
+  font-family: $font-primary;
+  font-size: $font-size-3xl;  // 36px mobile
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  color: $neutral-900;
+  margin: 0 0 1rem 0;
+
+  @media (min-width: 768px) {
+    font-size: $font-size-4xl; // 48px desktop
+  }
+}
+
+// H2 - Section headings
+@mixin heading-2 {
+  font-family: $font-primary;
+  font-size: $font-size-2xl;  // 30px mobile
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  color: $neutral-900;
+  margin: 0 0 0.875rem 0;
+
+  @media (min-width: 768px) {
+    font-size: $font-size-3xl; // 36px desktop
+  }
+}
+
+// H3 - Card titles, subsection headers
+@mixin heading-3 {
+  font-family: $font-primary;
+  font-size: $font-size-xl;   // 24px mobile
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  color: $neutral-800;
+  margin: 0 0 0.75rem 0;
+
+  @media (min-width: 768px) {
+    font-size: $font-size-2xl; // 30px desktop
+  }
+}
+
+// H4 - Component headers
+@mixin heading-4 {
+  font-family: $font-primary;
+  font-size: $font-size-lg;   // 20px mobile
+  font-weight: $font-weight-medium;
+  line-height: $line-height-tight;
+  color: $neutral-800;
+  margin: 0 0 0.5rem 0;
+
+  @media (min-width: 768px) {
+    font-size: $font-size-xl; // 24px desktop
+  }
+}
+
+// H5 - Small component headers
+@mixin heading-5 {
+  font-family: $font-primary;
+  font-size: $font-size-base; // 16px mobile
+  font-weight: $font-weight-medium;
+  line-height: $line-height-normal;
+  color: $neutral-800;
+  margin: 0 0 0.5rem 0;
+
+  @media (min-width: 768px) {
+    font-size: $font-size-lg; // 20px desktop
+  }
+}
+
+// Body text
+@mixin body-text {
+  font-family: $font-primary;
+  font-size: $font-size-base; // 16px
+  font-weight: $font-weight-regular;
+  line-height: $line-height-normal;
+  color: $neutral-700;
+  margin: 0;
+}
+
+// Lead text (nagyobb body)
+@mixin lead-text {
+  font-family: $font-primary;
+  font-size: $font-size-md; // 18px
+  font-weight: $font-weight-regular;
+  line-height: $line-height-relaxed;
+  color: $neutral-700;
+  margin: 0;
+}
+
+// Small text
+@mixin small-text {
+  font-family: $font-primary;
+  font-size: $font-size-sm; // 14px
+  font-weight: $font-weight-regular;
+  line-height: $line-height-normal;
+  color: $neutral-600;
+  margin: 0;
+}
+
+// Caption text
+@mixin caption-text {
+  font-family: $font-primary;
+  font-size: $font-size-xs; // 12px
+  font-weight: $font-weight-regular;
+  line-height: $line-height-normal;
+  color: $neutral-500;
+  margin: 0;
+}
+
+// Button text
+@mixin button-text {
+  font-family: $font-primary;
+  font-size: $font-size-base; // 16px
+  font-weight: $font-weight-medium;
+  line-height: 1;
+  letter-spacing: 0.5px;
+  text-transform: none; // Material default is uppercase, de mi lowercase-t használunk
+  margin: 0;
+}
+
+// Link text
+@mixin link-text {
+  font-family: $font-primary;
+  font-size: inherit;
+  font-weight: $font-weight-regular;
+  line-height: inherit;
+  color: $color-link-default;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 200ms ease-out;
+
+  &:hover {
+    color: $color-link-hover;
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: $color-link-visited;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-500;
+    outline-offset: 2px;
+  }
+}
+
+// ===========================
+// UTILITY CLASSES
+// ===========================
+
+// Headings
+.h1 {
+  @include heading-1;
+}
+
+.h2 {
+  @include heading-2;
+}
+
+.h3 {
+  @include heading-3;
+}
+
+.h4 {
+  @include heading-4;
+}
+
+.h5 {
+  @include heading-5;
+}
+
+// Body
+.body {
+  @include body-text;
+}
+
+.lead {
+  @include lead-text;
+}
+
+// Small & Caption
+.small {
+  @include small-text;
+}
+
+.caption {
+  @include caption-text;
+}
+
+// Text alignment
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+// Font weights
+.font-light {
+  font-weight: $font-weight-light;
+}
+
+.font-regular {
+  font-weight: $font-weight-regular;
+}
+
+.font-medium {
+  font-weight: $font-weight-medium;
+}
+
+.font-bold {
+  font-weight: $font-weight-bold;
+}
+
+// Text colors
+.text-primary {
+  color: $color-text-primary;
+}
+
+.text-secondary {
+  color: $color-text-secondary;
+}
+
+.text-heading {
+  color: $color-text-heading;
+}
+
+.text-disabled {
+  color: $color-text-disabled;
+}
+
+.text-inverse {
+  color: $color-text-inverse;
+}
+
+// Semantic text colors
+.text-success {
+  color: $color-success;
+}
+
+.text-error {
+  color: $color-error;
+}
+
+.text-warning {
+  color: $color-warning;
+}
+
+.text-info {
+  color: $color-info;
+}
+
+// Link
+.link {
+  @include link-text;
+}
+
+// Monospace
+.monospace {
+  font-family: $font-monospace;
+}
+
+// Text truncation
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Multi-line truncation (2 lines)
+.text-truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Multi-line truncation (3 lines)
+.text-truncate-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// No wrap
+.text-nowrap {
+  white-space: nowrap;
+}
+
+// Break word
+.text-break {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}

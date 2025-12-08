@@ -1,0 +1,442 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// REPORTS LIST - DARK THEME WITH GLASSMORPHISM (Persian Blue, NO red)
+// ============================================================================
+
+.reports-list-container {
+  width: 100%;
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+// ============================================================================
+// FILTERS BAR - GLASSMORPHISM
+// ============================================================================
+
+.filters-bar {
+  @include flex-between;
+  align-items: center;
+  gap: $spacing-4;
+  margin-bottom: $spacing-6;
+  padding: $spacing-5;
+  border-radius: 16px;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.4s ease backwards;
+
+  // Glassmorphism
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+
+  .filter-controls {
+    @include flex-start;
+    gap: $spacing-3;
+    flex-wrap: wrap;
+    flex: 1;
+
+    .filter-field {
+      min-width: 180px;
+      flex: 1;
+      max-width: 250px;
+
+      ::ng-deep {
+        .mat-mdc-text-field-wrapper {
+          background: rgba(255, 255, 255, 0.04);
+          border-radius: 10px;
+        }
+
+        .mdc-text-field--outlined {
+          .mdc-notched-outline__leading,
+          .mdc-notched-outline__notch,
+          .mdc-notched-outline__trailing {
+            border-color: rgba(255, 255, 255, 0.15) !important;
+          }
+
+          &:hover {
+            .mdc-notched-outline__leading,
+            .mdc-notched-outline__notch,
+            .mdc-notched-outline__trailing {
+              border-color: rgba($persian-blue-400, 0.4) !important;
+            }
+          }
+
+          &.mdc-text-field--focused {
+            .mdc-notched-outline__leading,
+            .mdc-notched-outline__notch,
+            .mdc-notched-outline__trailing {
+              border-color: $persian-blue-400 !important;
+            }
+          }
+        }
+
+        .mat-mdc-form-field-focus-overlay {
+          background-color: rgba($persian-blue-500, 0.08);
+        }
+
+        .mdc-floating-label {
+          color: $persian-blue-300 !important;
+        }
+
+        .mat-mdc-select-value {
+          color: $persian-blue-100 !important;
+        }
+
+        mat-label {
+          @include flex-start;
+          gap: $spacing-1;
+          align-items: center;
+          font-weight: $font-weight-semibold;
+
+          .field-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+            color: $persian-blue-400;
+          }
+        }
+      }
+
+      @include mobile {
+        min-width: 140px;
+        max-width: 100%;
+      }
+    }
+  }
+
+  .refresh-btn {
+    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba($persian-blue-500, 0.3);
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 8px 20px rgba($persian-blue-500, 0.4);
+      transform: rotate(90deg) scale(1.05);
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  @include tablet {
+    flex-direction: column;
+    align-items: stretch;
+
+    .filter-controls {
+      width: 100%;
+    }
+
+    .refresh-btn {
+      align-self: flex-end;
+    }
+  }
+
+  @include mobile {
+    padding: $spacing-4;
+    gap: $spacing-3;
+
+    .filter-controls {
+      flex-direction: column;
+      gap: $spacing-2;
+
+      .filter-field {
+        width: 100%;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// SELECT OPTIONS - DARK THEME
+// ============================================================================
+
+::ng-deep {
+  .mat-mdc-select-panel {
+    background: $persian-blue-900 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: $radius-lg;
+
+    .mat-mdc-option {
+      color: $persian-blue-200;
+
+      &:hover {
+        background: rgba($persian-blue-500, 0.15);
+      }
+
+      &.mat-mdc-option-active,
+      &.mdc-list-item--selected {
+        background: rgba($persian-blue-500, 0.2);
+        color: $persian-blue-100;
+      }
+    }
+  }
+
+  .option-content {
+    @include flex-start;
+    gap: $spacing-2;
+    align-items: center;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      color: $persian-blue-400;
+    }
+  }
+}
+
+// ============================================================================
+// LOADING STATE
+// ============================================================================
+
+.loading-state {
+  @include flex-column-center;
+  justify-content: center;
+  padding: $spacing-12 $spacing-6;
+  text-align: center;
+  animation: fadeInUp 0.4s ease 200ms backwards;
+
+  mat-spinner {
+    margin-bottom: $spacing-4;
+
+    ::ng-deep circle {
+      stroke: $persian-blue-400;
+    }
+  }
+
+  p {
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    color: $persian-blue-300;
+    margin: 0;
+  }
+
+  @include mobile {
+    padding: $spacing-10 $spacing-4;
+  }
+}
+
+// ============================================================================
+// REPORTS LIST
+// ============================================================================
+
+.reports-list {
+  @include flex-column;
+  gap: $spacing-4;
+
+  app-report-card {
+    display: block;
+    animation: fadeInUp 0.4s ease backwards;
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{200 + $i * 50}ms;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// EMPTY STATE
+// ============================================================================
+
+.empty-state {
+  @include flex-column-center;
+  justify-content: center;
+  padding: $spacing-12 $spacing-6;
+  text-align: center;
+  animation: fadeInUp 0.4s ease 200ms backwards;
+
+  mat-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    margin-bottom: $spacing-4;
+    color: $persian-blue-600;
+    animation: pulse 2s ease-out infinite;
+  }
+
+  .empty-title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $persian-blue-100;
+    margin: 0 0 $spacing-2 0;
+  }
+
+  .empty-subtitle {
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    color: $persian-blue-400;
+    margin: 0;
+    max-width: 500px;
+  }
+
+  @include mobile {
+    padding: $spacing-10 $spacing-4;
+
+    mat-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+    }
+
+    .empty-title {
+      font-size: $font-size-lg;
+    }
+
+    .empty-subtitle {
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+// ============================================================================
+// PAGINATOR - DARK THEME
+// ============================================================================
+
+.reports-paginator {
+  margin-top: $spacing-6;
+  padding-top: $spacing-5;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: $radius-lg;
+  animation: fadeInUp 0.4s ease 300ms backwards;
+
+  // Glassmorphism
+  background: rgba(255, 255, 255, 0.02);
+
+  ::ng-deep {
+    .mat-mdc-paginator {
+      background: transparent;
+      color: $persian-blue-200;
+    }
+
+    .mat-mdc-paginator-container {
+      padding: $spacing-2 $spacing-3;
+      min-height: 56px;
+    }
+
+    .mat-mdc-paginator-page-size-label,
+    .mat-mdc-paginator-range-label {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      color: $persian-blue-300;
+    }
+
+    .mat-mdc-paginator-page-size-select {
+      margin: 0 $spacing-2;
+
+      .mat-mdc-text-field-wrapper {
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .mat-mdc-select-value {
+        color: $persian-blue-200;
+      }
+    }
+
+    .mat-mdc-icon-button {
+      transition: all 0.3s ease;
+      color: $persian-blue-400;
+
+      &:hover:not([disabled]) {
+        background: rgba($persian-blue-400, 0.15);
+        transform: scale(1.1);
+      }
+
+      &[disabled] {
+        opacity: 0.3;
+        color: $persian-blue-600;
+      }
+
+      mat-icon {
+        color: inherit;
+      }
+    }
+  }
+
+  @include mobile {
+    padding-top: $spacing-4;
+    margin-top: $spacing-5;
+
+    ::ng-deep {
+      .mat-mdc-paginator-container {
+        flex-wrap: wrap;
+        gap: $spacing-2;
+        justify-content: center;
+      }
+
+      .mat-mdc-paginator-range-actions {
+        margin-top: $spacing-2;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// PULSE ANIMATION
+// ============================================================================
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+// ============================================================================
+// STATUS COLORS - PERSIAN BLUE THEMED
+// ============================================================================
+
+.status-pending {
+  background: rgba($persian-blue-400, 0.2);
+  color: $persian-blue-300;
+  border: 1px solid rgba($persian-blue-400, 0.3);
+}
+
+.status-in-review {
+  background: rgba($persian-blue-500, 0.2);
+  color: $persian-blue-200;
+  border: 1px solid rgba($persian-blue-500, 0.3);
+}
+
+.status-resolved {
+  background: rgba(#4ade80, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(#4ade80, 0.3);
+}
+
+.status-dismissed {
+  background: rgba($persian-blue-600, 0.3);
+  color: $persian-blue-400;
+  border: 1px solid rgba($persian-blue-600, 0.3);
+}
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

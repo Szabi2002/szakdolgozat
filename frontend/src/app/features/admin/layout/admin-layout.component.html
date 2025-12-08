@@ -1,0 +1,175 @@
+<div class="admin-layout">
+  <!-- Mobile Overlay Backdrop -->
+  <div
+    class="mobile-backdrop"
+    *ngIf="isMobileView && isMobileMenuOpen"
+    [@fadeInOut]="isMobileMenuOpen ? 'visible' : 'hidden'"
+    (click)="closeMobileMenu()"
+  ></div>
+
+  <!-- Sidebar -->
+  <aside
+    class="sidebar"
+    [class.sidebar--open]="isMobileView ? isMobileMenuOpen : isSidenavOpen"
+    [class.sidebar--collapsed]="!isMobileView && !isSidenavOpen"
+    [class.sidebar--mobile]="isMobileView"
+    [@slideInOut]="isMobileView ? (isMobileMenuOpen ? 'open' : 'closed') : 'open'"
+  >
+    <!-- Decorative Orbs -->
+    <div class="sidebar__orb sidebar__orb--top"></div>
+    <div class="sidebar__orb sidebar__orb--bottom"></div>
+
+    <!-- Brand Header -->
+    <div class="sidebar__header">
+      <div class="sidebar__logo">
+        <div class="sidebar__logo-icon">
+          <mat-icon>directions_bus</mat-icon>
+        </div>
+        <div class="sidebar__logo-text" *ngIf="isSidenavOpen || isMobileView">
+          <span class="sidebar__logo-title">Admin</span>
+          <span class="sidebar__logo-subtitle">Panel</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="sidebar__nav">
+      <ul class="sidebar__menu">
+        <li
+          *ngFor="let item of menuItems; let i = index"
+          class="sidebar__menu-item"
+          [style.animation-delay]="(i * 50) + 'ms'"
+        >
+          <a
+            class="sidebar__nav-link"
+            [routerLink]="item.route"
+            routerLinkActive="sidebar__nav-link--active"
+            (click)="onNavItemClick()"
+            [matTooltip]="!isSidenavOpen && !isMobileView ? item.label : ''"
+            matTooltipPosition="right"
+          >
+            <span class="sidebar__nav-icon">
+              <mat-icon>{{ item.icon }}</mat-icon>
+            </span>
+            <span class="sidebar__nav-text" *ngIf="isSidenavOpen || isMobileView">
+              {{ item.label }}
+            </span>
+            <span class="sidebar__nav-indicator"></span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- User Section -->
+    <div class="sidebar__footer" *ngIf="currentUser">
+      <div class="sidebar__user" *ngIf="isSidenavOpen || isMobileView">
+        <div class="sidebar__user-avatar">
+          <span>{{ getUserInitials() }}</span>
+        </div>
+        <div class="sidebar__user-info">
+          <span class="sidebar__user-name">{{ currentUser.name }}</span>
+          <span class="sidebar__user-role">Administrator</span>
+        </div>
+        <button
+          class="sidebar__logout-btn"
+          mat-icon-button
+          (click)="logout()"
+          matTooltip="Kijelentkezes"
+          matTooltipPosition="right"
+        >
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+      <button
+        *ngIf="!isSidenavOpen && !isMobileView"
+        class="sidebar__logout-btn sidebar__logout-btn--collapsed"
+        mat-icon-button
+        (click)="logout()"
+        matTooltip="Kijelentkezes"
+        matTooltipPosition="right"
+      >
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div
+    class="main-content"
+    [class.main-content--expanded]="!isSidenavOpen && !isMobileView"
+  >
+    <!-- Top Header Bar -->
+    <header class="topbar">
+      <div class="topbar__left">
+        <button
+          class="topbar__menu-btn"
+          mat-icon-button
+          (click)="toggleSidenav()"
+          [matTooltip]="isSidenavOpen ? 'Bezaras' : 'Megnyitas'"
+        >
+          <mat-icon>{{ isMobileView ? 'menu' : (isSidenavOpen ? 'menu_open' : 'menu') }}</mat-icon>
+        </button>
+        <div class="topbar__breadcrumb">
+          <span class="topbar__title">Admin Dashboard</span>
+        </div>
+      </div>
+
+      <div class="topbar__right">
+        <!-- Notification Button -->
+        <button
+          class="topbar__action-btn"
+          mat-icon-button
+          matTooltip="Ertesitesek"
+        >
+          <mat-icon>notifications_none</mat-icon>
+          <span class="topbar__badge">3</span>
+        </button>
+
+        <!-- Settings Button -->
+        <button
+          class="topbar__action-btn"
+          mat-icon-button
+          matTooltip="Beallitasok"
+        >
+          <mat-icon>settings</mat-icon>
+        </button>
+
+        <!-- User Menu (Desktop) -->
+        <div class="topbar__user" *ngIf="currentUser && !isMobileView">
+          <button
+            class="topbar__user-btn"
+            [matMenuTriggerFor]="userMenu"
+          >
+            <div class="topbar__user-avatar">
+              <span>{{ getUserInitials() }}</span>
+            </div>
+            <span class="topbar__user-name">{{ currentUser.name }}</span>
+            <mat-icon class="topbar__user-chevron">expand_more</mat-icon>
+          </button>
+          <mat-menu #userMenu="matMenu" class="topbar__dropdown">
+            <button mat-menu-item routerLink="/profile">
+              <mat-icon>person</mat-icon>
+              <span>Profil</span>
+            </button>
+            <button mat-menu-item routerLink="/dashboard">
+              <mat-icon>home</mat-icon>
+              <span>Fooldal</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              <span>Kijelentkezes</span>
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="content">
+      <div class="content__wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
+</div>

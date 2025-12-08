@@ -1,0 +1,76 @@
+<section class="testimonials-section" id="testimonials-section">
+  <div class="testimonials-container">
+    <!-- Section Header -->
+    <div class="testimonials-header">
+      <div class="header-badge">
+        <mat-icon>format_quote</mat-icon>
+        <span>Visszajelzések</span>
+      </div>
+      <h2 class="testimonials-heading">
+        Mit mondanak az <span class="highlight">utasaink</span>?
+      </h2>
+      <p class="testimonials-subheading">
+        Fedezd fel, miért szeretik felhasználóink az alkalmazást
+      </p>
+    </div>
+
+    <!-- Testimonials Grid -->
+    <div class="testimonials-grid">
+      @for (testimonial of testimonials; track testimonial.name; let i = $index) {
+        <div class="testimonial-card" [style.animation-delay.ms]="i * 150">
+          <!-- Quote Icon -->
+          <div class="quote-icon">
+            <mat-icon>format_quote</mat-icon>
+          </div>
+
+          <!-- Rating Stars -->
+          <div class="testimonial-rating">
+            @for (star of getStars(testimonial.rating); track $index) {
+              <mat-icon class="star filled">star</mat-icon>
+            }
+            @for (star of getEmptyStars(testimonial.rating); track $index) {
+              <mat-icon class="star empty">star_border</mat-icon>
+            }
+          </div>
+
+          <!-- Comment -->
+          <p class="testimonial-comment">{{ testimonial.comment }}</p>
+
+          <!-- User Info -->
+          <div class="testimonial-user">
+            <div class="user-avatar">
+              @if (testimonial.avatar) {
+                <img [src]="testimonial.avatar" [alt]="testimonial.name" />
+              } @else {
+                <span class="avatar-initials">{{ getInitials(testimonial.name) }}</span>
+              }
+            </div>
+            <div class="user-details">
+              <span class="user-name">{{ testimonial.name }}</span>
+              <span class="user-role">{{ testimonial.role }}</span>
+            </div>
+          </div>
+
+          <!-- Glow effect -->
+          <div class="card-glow"></div>
+        </div>
+      }
+    </div>
+
+    <!-- Trust Indicators -->
+    <div class="trust-indicators">
+      <div class="trust-item">
+        <mat-icon>verified</mat-icon>
+        <span>100+ aktív felhasználó</span>
+      </div>
+      <div class="trust-item">
+        <mat-icon>thumb_up</mat-icon>
+        <span>4.8/5 átlagos értékelés</span>
+      </div>
+      <div class="trust-item">
+        <mat-icon>security</mat-icon>
+        <span>Biztonságos fizetés</span>
+      </div>
+    </div>
+  </div>
+</section>

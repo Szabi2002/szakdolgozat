@@ -1,0 +1,176 @@
+<div class="report-form-container">
+  <mat-stepper linear #stepper>
+    <!-- Step 1: Report Type -->
+    <mat-step [stepControl]="typeForm">
+      <form [formGroup]="typeForm">
+        <ng-template matStepLabel>Select Issue Type</ng-template>
+
+        <div class="step-content">
+          <h2>What type of issue are you reporting?</h2>
+          <p class="step-description">Choose the category that best describes your report</p>
+
+          <app-report-type-selector
+            [selected]="typeForm.value.report_type"
+            (selectionChange)="onTypeSelected($event)"
+          ></app-report-type-selector>
+
+          <div class="step-actions">
+            <button mat-raised-button color="primary" matStepperNext [disabled]="typeForm.invalid">
+              Next
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Step 2: Details -->
+    <mat-step [stepControl]="detailsForm">
+      <form [formGroup]="detailsForm">
+        <ng-template matStepLabel>Provide Details</ng-template>
+
+        <div class="step-content">
+          <h2>Tell us more about the issue</h2>
+          <p class="step-description">Provide as much detail as possible to help us resolve the issue</p>
+
+          <!-- Title -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Report Title</mat-label>
+            <input
+              matInput
+              formControlName="title"
+              placeholder="Brief summary of the issue"
+              maxlength="200"
+              required
+            />
+            <mat-hint align="end">{{ titleCharCount }}/200 characters</mat-hint>
+            <mat-error *ngIf="detailsForm.get('title')?.hasError('required')">
+              Title is required
+            </mat-error>
+            <mat-error *ngIf="detailsForm.get('title')?.hasError('minlength')">
+              Title must be at least 10 characters
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Description -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea
+              matInput
+              formControlName="description"
+              placeholder="Detailed description of the issue"
+              rows="5"
+              required
+            ></textarea>
+            <mat-hint align="end">{{ descriptionCharCount }} characters (minimum 20)</mat-hint>
+            <mat-error *ngIf="detailsForm.get('description')?.hasError('required')">
+              Description is required
+            </mat-error>
+            <mat-error *ngIf="detailsForm.get('description')?.hasError('minlength')">
+              Description must be at least 20 characters
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Route (optional) -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Route (Optional)</mat-label>
+            <input
+              matInput
+              formControlName="route_search"
+              placeholder="Search for a route"
+              [matAutocomplete]="routeAuto"
+            />
+            <mat-icon matPrefix>directions_bus</mat-icon>
+            <mat-autocomplete #routeAuto="matAutocomplete" [displayWith]="displayRoute" (optionSelected)="onRouteSelected($event.option.value)">
+              <mat-option *ngFor="let route of routes$ | async" [value]="route">
+                {{ route.route_number }} - {{ route.name }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-hint>Select the route related to this issue</mat-hint>
+          </mat-form-field>
+
+          <!-- Stop (optional) -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Stop (Optional)</mat-label>
+            <input
+              matInput
+              formControlName="stop_search"
+              placeholder="Search for a stop"
+              [matAutocomplete]="stopAuto"
+            />
+            <mat-icon matPrefix>place</mat-icon>
+            <mat-autocomplete #stopAuto="matAutocomplete" [displayWith]="displayStop" (optionSelected)="onStopSelected($event.option.value)">
+              <mat-option *ngFor="let stop of stops$ | async" [value]="stop">
+                {{ stop.name }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-hint>Select the stop related to this issue</mat-hint>
+          </mat-form-field>
+
+          <!-- Location (optional) -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Location Details (Optional)</mat-label>
+            <input
+              matInput
+              formControlName="location"
+              placeholder="e.g., Between Main St and 2nd Ave"
+            />
+            <mat-icon matPrefix>location_on</mat-icon>
+            <mat-hint>Provide additional location information</mat-hint>
+          </mat-form-field>
+
+          <div class="step-actions">
+            <button mat-button matStepperPrevious>
+              <mat-icon>arrow_back</mat-icon>
+              Back
+            </button>
+            <button mat-raised-button color="primary" matStepperNext [disabled]="detailsForm.invalid">
+              Next
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Step 3: Photos (optional) -->
+    <mat-step>
+      <ng-template matStepLabel>Add Photos (Optional)</ng-template>
+
+      <div class="step-content">
+        <h2>Add photos to support your report</h2>
+        <p class="step-description">Photos help us understand and resolve the issue faster (maximum 5 photos)</p>
+
+        <app-photo-upload
+          [maxPhotos]="5"
+          [maxSizeBytes]="5242880"
+          [acceptedTypes]="['image/jpeg', 'image/png', 'image/webp']"
+          (photosChange)="onPhotosChange($event)"
+          (photosError)="onPhotoError($event)"
+        ></app-photo-upload>
+
+        <div class="step-actions">
+          <button mat-button matStepperPrevious>
+            <mat-icon>arrow_back</mat-icon>
+            Back
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="onSubmit()"
+            [disabled]="isSubmitting"
+          >
+            <mat-spinner *ngIf="isSubmitting" diameter="20" class="inline-spinner"></mat-spinner>
+            <span *ngIf="!isSubmitting">
+              <mat-icon>send</mat-icon>
+              Submit Report
+            </span>
+          </button>
+          <button mat-button (click)="onCancel()" [disabled]="isSubmitting">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</div>

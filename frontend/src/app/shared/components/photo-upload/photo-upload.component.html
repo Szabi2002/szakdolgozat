@@ -1,0 +1,76 @@
+<div class="photo-upload-container">
+  <!-- Drag & Drop Zone -->
+  @if (canAddMore()) {
+    <div
+      class="drop-zone"
+      [class.dragging]="isDragging"
+      [class.disabled]="!canAddMore()"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+    >
+      <mat-icon class="upload-icon">cloud_upload</mat-icon>
+      <p class="drop-zone-text">Húzd ide a fotókat</p>
+      <p class="drop-zone-subtext">vagy</p>
+      <button mat-raised-button color="primary" (click)="triggerFileInput()">
+        <mat-icon>add_photo_alternate</mat-icon>
+        Fotók Kiválasztása
+      </button>
+      <p class="drop-zone-hint">
+        Maximum {{ maxPhotos }} fotó, egyenként {{ getFileSize(maxSizeBytes) }}-ig
+      </p>
+    </div>
+  }
+
+  <!-- Hidden File Input -->
+  <input
+    type="file"
+    id="photo-file-input"
+    [accept]="acceptedTypes.join(',')"
+    [multiple]="maxPhotos > 1"
+    (change)="onFileSelected($event)"
+    style="display: none"
+  />
+
+  <!-- Photo Previews -->
+  @if (photos.length > 0) {
+    <div class="photo-previews">
+      @for (photo of photos; track photo.file.name; let i = $index) {
+        <div class="photo-preview">
+          <div class="preview-image-container">
+            <img [src]="photo.preview" [alt]="photo.file.name" class="preview-image" />
+            <button
+              mat-icon-button
+              class="remove-button"
+              (click)="removePhoto(i)"
+              [matTooltip]="'Fotó törlése'"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+          <div class="photo-info">
+            <span class="photo-name" [matTooltip]="photo.file.name">{{ photo.file.name }}</span>
+            <span class="photo-size">{{ getFileSize(photo.file.size) }}</span>
+          </div>
+          @if (photo.uploading) {
+            <mat-progress-bar
+              mode="indeterminate"
+              class="upload-progress"
+            ></mat-progress-bar>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Photos Counter -->
+  @if (photos.length > 0) {
+    <div class="photos-counter">
+      <span>{{ photos.length }} / {{ maxPhotos }} fotó</span>
+      <button mat-button color="warn" (click)="clearAll()">
+        <mat-icon>delete</mat-icon>
+        Összes Törlése
+      </button>
+    </div>
+  }
+</div>

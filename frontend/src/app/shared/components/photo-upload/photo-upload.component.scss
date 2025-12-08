@@ -1,0 +1,271 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/colors';
+@import '../../../../styles/typography';
+@import '../../../../styles/mixins';
+
+.photo-upload-container {
+  width: 100%;
+}
+
+.drop-zone {
+  border: 2px dashed $neutral-300;
+  border-radius: $radius-xl;
+  padding: $spacing-8;
+  text-align: center;
+  background: linear-gradient(135deg, $neutral-50 0%, lighten($neutral-50, 2%) 100%);
+  transition: all $transition-base $ease-out;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1.5" fill="%23#{str-slice(inspect($neutral-300), 2)}" opacity="0.2"/></svg>');
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  &.dragging {
+    border-color: $brand-primary;
+    background: linear-gradient(135deg, rgba($brand-primary, 0.05) 0%, rgba($brand-primary, 0.1) 100%);
+    transform: scale(1.02);
+    box-shadow: $shadow-lg, 0 0 0 4px rgba($brand-primary, 0.1);
+
+    .upload-icon {
+      transform: scale(1.1);
+      color: $brand-primary;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .upload-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: $brand-primary;
+    margin: 0 auto $spacing-4;
+    transition: all $transition-base $ease-out;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .drop-zone-text {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    margin: $spacing-2 0;
+    color: $neutral-800;
+  }
+
+  .drop-zone-subtext {
+    font-size: $font-size-sm;
+    color: $neutral-600;
+    margin: $spacing-2 0;
+    font-weight: $font-weight-medium;
+  }
+
+  button {
+    margin: $spacing-4 0;
+    box-shadow: $shadow-md;
+    font-weight: $font-weight-semibold;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: $shadow-lg;
+    }
+  }
+
+  .drop-zone-hint {
+    font-size: $font-size-xs;
+    color: $neutral-500;
+    margin-top: $spacing-2;
+    font-weight: $font-weight-medium;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.photo-previews {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: $spacing-4;
+  margin-top: $spacing-6;
+
+  @include mobile {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.photo-preview {
+  @include flex-column;
+  gap: $spacing-2;
+  animation: fade-in 300ms $ease-out backwards;
+
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 50}ms;
+    }
+  }
+
+  .preview-image-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: $radius-lg;
+    overflow: hidden;
+    background: $neutral-100;
+    border: 2px solid $neutral-200;
+    box-shadow: $shadow-sm;
+    transition: all $transition-base $ease-out;
+
+    &:hover {
+      border-color: $brand-primary;
+      box-shadow: $shadow-lg;
+      transform: scale(1.02);
+
+      .remove-button {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .preview-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .remove-button {
+      position: absolute;
+      top: $spacing-1;
+      right: $spacing-1;
+      background: linear-gradient(135deg, rgba($danger-600, 0.95) 0%, rgba($danger-700, 0.95) 100%);
+      color: $white;
+      width: 32px;
+      height: 32px;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all $transition-base $ease-out;
+      box-shadow: $shadow-md;
+
+      &:hover {
+        background: linear-gradient(135deg, $danger-700 0%, $danger-800 100%);
+        transform: scale(1.1);
+      }
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  .photo-info {
+    @include flex-column;
+    gap: $spacing-1;
+    padding: 0 $spacing-1;
+
+    .photo-name {
+      font-size: $font-size-xs;
+      color: $neutral-700;
+      font-weight: $font-weight-medium;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .photo-size {
+      font-size: 11px;
+      color: $neutral-500;
+    }
+  }
+
+  .upload-progress {
+    height: 3px;
+    border-radius: $radius-sm;
+
+    ::ng-deep .mat-mdc-progress-bar-fill::after {
+      background: linear-gradient(135deg, $brand-primary 0%, darken($brand-primary, 10%) 100%);
+    }
+  }
+}
+
+.photos-counter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: $spacing-4;
+  padding: $spacing-3 $spacing-4;
+  background: linear-gradient(135deg, $neutral-50 0%, lighten($neutral-50, 2%) 100%);
+  border-radius: $radius-lg;
+  border: 1px solid $neutral-200;
+  box-shadow: $shadow-sm;
+
+  span {
+    font-size: $font-size-sm;
+    color: $neutral-700;
+    font-weight: $font-weight-semibold;
+  }
+
+  button {
+    font-weight: $font-weight-medium;
+    transition: all $transition-base $ease-out;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      margin-right: $spacing-1;
+    }
+  }
+}
+
+// Responsive adjustments
+@include mobile {
+  .drop-zone {
+    padding: $spacing-6;
+
+    .upload-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+    }
+
+    .drop-zone-text {
+      font-size: $font-size-base;
+    }
+
+    button {
+      width: 100%;
+      max-width: 280px;
+    }
+  }
+
+  .photos-counter {
+    flex-direction: column;
+    gap: $spacing-2;
+    align-items: flex-start;
+
+    button {
+      align-self: flex-end;
+    }
+  }
+}

@@ -1,0 +1,254 @@
+<div class="user-management-container">
+  <!-- Background Orbs -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-icon-wrapper">
+        <mat-icon class="header-icon">people</mat-icon>
+      </div>
+      <div class="header-text">
+        <h1>Felhasznalok Kezelese</h1>
+        <p>Felhasznaloi szerepkorok es fiok adminisztracio</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="user-count-badge">
+        <mat-icon>groups</mat-icon>
+        <span>{{ users.length }} felhasznalo</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filter Section -->
+  <div class="controls-section">
+    <!-- Search Bar -->
+    <div class="search-container">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Kereses nev vagy email alapjan..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+      />
+      <button *ngIf="searchQuery" class="clear-search" (click)="searchQuery = ''; onSearchChange()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button
+        class="filter-tab"
+        [class.active]="selectedFilter === 'all'"
+        (click)="onFilterChange('all')"
+      >
+        <mat-icon>people</mat-icon>
+        <span>Mind</span>
+        <span class="count">{{ getFilterCount('all') }}</span>
+      </button>
+      <button
+        class="filter-tab"
+        [class.active]="selectedFilter === 'admin'"
+        (click)="onFilterChange('admin')"
+      >
+        <mat-icon>shield</mat-icon>
+        <span>Adminok</span>
+        <span class="count">{{ getFilterCount('admin') }}</span>
+      </button>
+      <button
+        class="filter-tab"
+        [class.active]="selectedFilter === 'user'"
+        (click)="onFilterChange('user')"
+      >
+        <mat-icon>person</mat-icon>
+        <span>Felhasznalok</span>
+        <span class="count">{{ getFilterCount('user') }}</span>
+      </button>
+      <button
+        class="filter-tab"
+        [class.active]="selectedFilter === 'provider'"
+        (click)="onFilterChange('provider')"
+      >
+        <mat-icon>business</mat-icon>
+        <span>Szolgaltatok</span>
+        <span class="count">{{ getFilterCount('provider') }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="loading-spinner">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+    <p>Felhasznalok betoltese...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && errorMessage" class="error-state">
+    <div class="error-icon-wrapper">
+      <mat-icon>error_outline</mat-icon>
+    </div>
+    <h3>Hiba tortent</h3>
+    <p>{{ errorMessage }}</p>
+    <button class="glass-button-primary" (click)="loadUsers()">
+      <mat-icon>refresh</mat-icon>
+      Ujraprobalas
+    </button>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && !errorMessage && filteredUsers.length === 0" class="empty-state">
+    <div class="empty-icon-wrapper">
+      <mat-icon>{{ searchQuery ? 'search_off' : 'people_outline' }}</mat-icon>
+    </div>
+    <h3>{{ searchQuery ? 'Nincs talalat' : 'Nincsenek felhasznalok' }}</h3>
+    <p>{{ searchQuery ? 'Probald meg mas keresesi kifejezest' : 'A rendszerben meg nincsenek regisztralt felhasznalok.' }}</p>
+  </div>
+
+  <!-- Users Table -->
+  <div *ngIf="!isLoading && !errorMessage && filteredUsers.length > 0" class="users-table-wrapper">
+    <div class="users-table-container">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th class="th-user">Felhasznalo</th>
+            <th class="th-role">Szerepkor</th>
+            <th class="th-status">Statusz</th>
+            <th class="th-date">Regisztracio</th>
+            <th class="th-actions">Muveletek</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of paginatedUsers; let i = index" class="user-row">
+            <!-- User Info -->
+            <td class="td-user">
+              <div class="user-info">
+                <div class="user-avatar" [class]="user.role">
+                  <span class="initials">{{ getUserInitials(user) }}</span>
+                  <div class="status-dot" [class]="getStatusClass(user)"></div>
+                </div>
+                <div class="user-details">
+                  <span class="user-name">{{ user.name || 'Nincs nev' }}</span>
+                  <span class="user-email">{{ user.email }}</span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Role Badge -->
+            <td class="td-role">
+              <span class="role-badge" [class]="user.role">
+                <mat-icon>{{ getRoleIcon(user.role) }}</mat-icon>
+                {{ getRoleLabel(user.role) }}
+              </span>
+            </td>
+
+            <!-- Status -->
+            <td class="td-status">
+              <span class="status-badge" [class]="getStatusClass(user)">
+                <span class="status-indicator"></span>
+                {{ getStatusClass(user) === 'active' ? 'Aktiv' : 'Inaktiv' }}
+              </span>
+            </td>
+
+            <!-- Registration Date -->
+            <td class="td-date">
+              <div class="date-info">
+                <mat-icon>calendar_today</mat-icon>
+                <span>{{ user.created_at ? formatDate(user.created_at) : '-' }}</span>
+              </div>
+            </td>
+
+            <!-- Actions -->
+            <td class="td-actions">
+              <button
+                class="action-btn"
+                [matMenuTriggerFor]="userMenu"
+                matTooltip="Muveletek"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #userMenu="matMenu" class="glass-menu">
+                <button mat-menu-item disabled>
+                  <mat-icon>visibility</mat-icon>
+                  <span>Reszletek</span>
+                </button>
+                <mat-divider></mat-divider>
+                <button
+                  mat-menu-item
+                  (click)="updateUserRole(user.id, 'user')"
+                  [disabled]="user.role === 'user'"
+                >
+                  <mat-icon>person</mat-icon>
+                  <span>Felhasznalo</span>
+                </button>
+                <button
+                  mat-menu-item
+                  (click)="updateUserRole(user.id, 'admin')"
+                  [disabled]="user.role === 'admin'"
+                >
+                  <mat-icon>shield</mat-icon>
+                  <span>Admin</span>
+                </button>
+                <button
+                  mat-menu-item
+                  (click)="updateUserRole(user.id, 'provider')"
+                  [disabled]="user.role === 'provider'"
+                >
+                  <mat-icon>business</mat-icon>
+                  <span>Szolgaltato</span>
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item class="delete-action" (click)="confirmDeleteUser(user)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Torles</span>
+                </button>
+              </mat-menu>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="totalPages > 1" class="pagination">
+      <button
+        class="page-btn"
+        [disabled]="currentPage === 1"
+        (click)="goToPage(currentPage - 1)"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <div class="page-numbers">
+        <button
+          *ngFor="let page of [].constructor(totalPages); let i = index"
+          class="page-number"
+          [class.active]="currentPage === i + 1"
+          (click)="goToPage(i + 1)"
+        >
+          {{ i + 1 }}
+        </button>
+      </div>
+
+      <button
+        class="page-btn"
+        [disabled]="currentPage === totalPages"
+        (click)="goToPage(currentPage + 1)"
+      >
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+
+      <span class="page-info">
+        {{ (currentPage - 1) * pageSize + 1 }}-{{ getDisplayEnd() }} / {{ filteredUsers.length }}
+      </span>
+    </div>
+  </div>
+</div>

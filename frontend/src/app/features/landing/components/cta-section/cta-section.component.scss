@@ -1,0 +1,373 @@
+@import '../../../../../styles/variables';
+@import '../../../../../styles/colors';
+@import '../../../../../styles/typography';
+@import '../../../../../styles/mixins';
+@import '../../../../../styles/persian-blue';
+@import '../../../../../styles/glassmorphism';
+@import '../../../../../styles/animations';
+
+// ===========================
+// CTA SECTION - DARK THEME
+// ===========================
+
+.cta-section {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  padding: $spacing-16 $spacing-4;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  // Dark gradient with accent color
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba($persian-blue-500, 0.25), transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba($persian-blue-600, 0.15), transparent 50%),
+    linear-gradient(180deg, darken($persian-blue-950, 2%) 0%, $persian-blue-950 50%, darken($persian-blue-950, 3%) 100%);
+
+  @include tablet {
+    padding: $spacing-12 $spacing-4;
+  }
+
+  @include mobile {
+    padding: $spacing-10 $spacing-3;
+  }
+}
+
+// ===========================
+// BACKGROUND DECORATION
+// ===========================
+
+.cta-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  .background-circle {
+    position: absolute;
+    border-radius: 50%;
+
+    &.circle-1 {
+      width: 400px;
+      height: 400px;
+      top: -150px;
+      right: -100px;
+      background: radial-gradient(circle, rgba($persian-blue-500, 0.12) 0%, transparent 70%);
+      animation: float-slow 20s ease-in-out infinite;
+    }
+
+    &.circle-2 {
+      width: 300px;
+      height: 300px;
+      bottom: -100px;
+      left: -80px;
+      background: radial-gradient(circle, rgba($persian-blue-600, 0.1) 0%, transparent 70%);
+      animation: float-slow 18s ease-in-out infinite reverse;
+    }
+
+    &.circle-3 {
+      width: 200px;
+      height: 200px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba($persian-blue-400, 0.08) 0%, transparent 70%);
+      animation: pulse-glow-subtle 8s ease-in-out infinite;
+    }
+  }
+}
+
+// ===========================
+// CTA CONTAINER
+// ===========================
+
+.cta-container {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 $spacing-4;
+  box-sizing: border-box;
+  @include flex-column-center;
+  gap: $spacing-6;
+  text-align: center;
+
+  @include mobile {
+    padding: 0 $spacing-2;
+    gap: $spacing-5;
+  }
+}
+
+// ===========================
+// ICON WRAPPER - GLASSMORPHISM
+// ===========================
+
+.cta-icon-wrapper {
+  position: relative;
+  @include flex-center;
+  width: 100px;
+  height: 100px;
+  border-radius: 28px;
+  animation: fadeInUp 0.8s ease-out forwards;
+
+  // Glass effect
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba($persian-blue-400, 0.25);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  @include mobile {
+    width: 80px;
+    height: 80px;
+    border-radius: 22px;
+  }
+}
+
+.icon-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba($persian-blue-400, 0.4) 0%, transparent 70%);
+  border-radius: 28px;
+  animation: pulse-glow 2.5s ease-out infinite;
+
+  @include mobile {
+    border-radius: 22px;
+  }
+}
+
+.cta-icon {
+  position: relative;
+  z-index: 1;
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: $persian-blue-300;
+  filter: drop-shadow(0 0 10px rgba($persian-blue-400, 0.4));
+  animation: float-fast 3s ease-in-out infinite;
+
+  @include mobile {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+// ===========================
+// HEADINGS
+// ===========================
+
+.cta-heading {
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: $persian-blue-50;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  animation: fadeInUp 0.8s ease-out 0.1s backwards;
+
+  .highlight {
+    background: linear-gradient(135deg, $persian-blue-400 0%, $persian-blue-300 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    display: inline-block;
+  }
+
+  @include tablet {
+    font-size: 2.25rem;
+  }
+
+  @include mobile {
+    font-size: 1.75rem;
+  }
+}
+
+.cta-subheading {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: $persian-blue-200;
+  margin: 0;
+  max-width: 550px;
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+
+  br {
+    @include mobile {
+      display: none;
+    }
+  }
+
+  @include mobile {
+    font-size: 1rem;
+  }
+}
+
+// ===========================
+// ACTION BUTTONS
+// ===========================
+
+.cta-actions {
+  @include flex-center;
+  gap: $spacing-4;
+  margin-top: $spacing-2;
+  animation: fadeInUp 0.8s ease-out 0.3s backwards;
+
+  @include mobile {
+    flex-direction: column;
+    gap: $spacing-3;
+    width: 100%;
+  }
+
+  button {
+    @include flex-center;
+    gap: $spacing-2;
+    padding: 16px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 14px;
+    transition: all 0.3s ease;
+    min-width: 200px;
+    position: relative;
+    overflow: hidden;
+
+    mat-icon {
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+    }
+
+    @include mobile {
+      width: 100%;
+      min-width: auto;
+      padding: 14px 24px;
+      font-size: 0.9375rem;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  // Primary CTA - Glowing button
+  .cta-primary {
+    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 4px 20px rgba($persian-blue-500, 0.4);
+
+    // Shine effect
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba($persian-blue-500, 0.5);
+
+      &::before {
+        left: 100%;
+      }
+    }
+
+    &:active {
+      transform: translateY(-1px);
+    }
+  }
+
+  // Secondary CTA - Glass style
+  .cta-secondary {
+    @include glass-button;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: $persian-blue-200 !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12) !important;
+      border-color: rgba($persian-blue-400, 0.4) !important;
+      color: $persian-blue-50 !important;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// ===========================
+// FEATURE BADGES
+// ===========================
+
+.cta-features {
+  @include flex-center;
+  gap: $spacing-5;
+  margin-top: $spacing-4;
+  flex-wrap: wrap;
+  animation: fadeIn 0.8s ease-out 0.5s backwards;
+
+  @include mobile {
+    flex-direction: column;
+    gap: $spacing-3;
+  }
+
+  .feature-badge {
+    @include flex-center;
+    gap: $spacing-2;
+    padding: $spacing-2 $spacing-4;
+    border-radius: 100px;
+    transition: all 0.3s ease;
+
+    // Glass effect
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    color: $persian-blue-200;
+    font-size: 0.875rem;
+    font-weight: 500;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: $persian-blue-400;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba($persian-blue-400, 0.3);
+      transform: translateY(-2px);
+    }
+
+    @include mobile {
+      width: 100%;
+      max-width: 280px;
+      justify-content: center;
+      padding: $spacing-2 $spacing-3;
+      font-size: 0.8125rem;
+
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+}

@@ -78,7 +78,7 @@ describe('AuthService', () => {
       const result = await service.signInWithGoogle(dto);
 
       expect(result).toEqual({
-        accessToken: dto.accessToken,
+        token: dto.accessToken,
         user: {
           id: mockDbUser.id,
           email: mockDbUser.email,

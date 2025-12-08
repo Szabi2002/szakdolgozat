@@ -1,0 +1,76 @@
+<div class="verify-email-page">
+  <!-- Hero Section (Left side - Desktop only) -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <mat-icon class="hero-icon">mark_email_read</mat-icon>
+      <h1>Email cím<br />megerősítése</h1>
+      <p>Köszönjük, hogy megerősíted az email címedet. Ez segít a fiókod biztonságában.</p>
+    </div>
+  </div>
+
+  <!-- Verify Email Panel (Right side) -->
+  <div class="verify-email-panel">
+    <div class="verify-email-content">
+      <!-- Logo -->
+      <mat-icon class="logo">directions_bus</mat-icon>
+
+      <!-- Loading State -->
+      <div *ngIf="state === VerificationState.LOADING" class="state-container loading-state">
+        <mat-spinner diameter="64" class="loading-spinner"></mat-spinner>
+        <h2>Email cím megerősítése...</h2>
+        <p class="subtitle">Kérjük, várj, amíg megerősítjük az email címedet.</p>
+      </div>
+
+      <!-- Success State -->
+      <div *ngIf="state === VerificationState.SUCCESS" class="state-container success-state">
+        <mat-icon class="success-icon">check_circle</mat-icon>
+        <h2>Email sikeresen megerősítve!</h2>
+        <p class="success-text">
+          Az email címed megerősítésre került. Most már bejelentkezhetsz a fiókodba.
+        </p>
+        <p class="redirect-message">
+          <mat-icon>schedule</mat-icon>
+          <span>Átirányítás a bejelentkezéshez 3 másodperc múlva...</span>
+        </p>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="navigateToLogin()"
+          class="full-width action-button"
+        >
+          <mat-icon>login</mat-icon>
+          <span>Bejelentkezés most</span>
+        </button>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="state === VerificationState.ERROR" class="state-container error-state">
+        <mat-icon class="error-icon">error</mat-icon>
+        <h2>Megerősítés sikertelen</h2>
+        <div class="error-message">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+        <p class="error-text">
+          A megerősítési link lehet, hogy lejárt vagy érvénytelen.
+          Kérj új megerősítési emailt a bejelentkezési oldalon.
+        </p>
+        <button
+          mat-raised-button
+          color="primary"
+          routerLink="/login"
+          class="full-width action-button"
+        >
+          <mat-icon>arrow_back</mat-icon>
+          <span>Vissza a bejelentkezéshez</span>
+        </button>
+      </div>
+
+      <!-- Footer -->
+      <p class="footer-text">
+        Problémád van az email megerősítéssel?
+        <a href="mailto:info&#64;kozlekedes.hu">Lépj kapcsolatba velünk</a>
+      </p>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@ import { Injectable, Logger, InternalServerErrorException } from '@nestjs/common
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import { Transporter } from 'nodemailer';
-import { Ticket } from '@modules/tickets/tickets.service';
+import { Ticket } from '@modules/tickets/entities/ticket.entity';
 import { User } from '@modules/users/entities/user.entity';
 
 /**
@@ -71,16 +71,18 @@ export class EmailService {
   }
 
   /**
-   * Sends a ticket confirmation email with QR code
+   * Sends a ticket confirmation email with QR code and optional PDF attachment
    * @param ticket - Ticket details
    * @param user - User details
    * @param qrCodeBuffer - QR code as Buffer (PNG image)
+   * @param pdfBuffer - Optional PDF ticket as Buffer
    * @returns Promise with success status and message
    */
   async sendTicketEmail(
     ticket: Ticket,
     user: User,
     qrCodeBuffer: Buffer,
+    pdfBuffer?: Buffer,
   ): Promise<{ success: boolean; message: string }> {
     try {
       // If not configured, simulate email sending
@@ -88,6 +90,9 @@ export class EmailService {
         this.logger.log(`[SIMULATION] Email would be sent to: ${user.email}`);
         this.logger.log(`[SIMULATION] Ticket ID: ${ticket.id}`);
         this.logger.log(`[SIMULATION] QR Code size: ${qrCodeBuffer.length} bytes`);
+        if (pdfBuffer) {
+          this.logger.log(`[SIMULATION] PDF size: ${pdfBuffer.length} bytes`);
+        }
         return {
           success: true,
           message: 'Email sent successfully (simulation mode - configure SMTP to send real emails)',
@@ -148,21 +153,33 @@ A QR kód csatolva van az emailhez. Kérjük, mutassa fel a QR kódot ellenőrz�
 ${appName} csapata
       `.trim();
 
-      // Send email with attachment
+      // Prepare attachments
+      const attachments: any[] = [
+        {
+          filename: `ticket-qr-${ticket.id}.png`,
+          content: qrCodeBuffer,
+          contentType: 'image/png',
+          cid: 'qrcode', // Content ID for embedding in HTML
+        },
+      ];
+
+      // Add PDF attachment if provided
+      if (pdfBuffer) {
+        attachments.push({
+          filename: `ticket-${ticket.id}.pdf`,
+          content: pdfBuffer,
+          contentType: 'application/pdf',
+        });
+      }
+
+      // Send email with attachments
       const info = await this.transporter.sendMail({
         from: `"${appName}" <${from}>`,
         to: user.email,
         subject: `Jegyének megerősítése - ${appName}`,
         text: textContent,
         html: htmlContent,
-        attachments: [
-          {
-            filename: `ticket-${ticket.id}.png`,
-            content: qrCodeBuffer,
-            contentType: 'image/png',
-            cid: 'qrcode', // Content ID for embedding in HTML
-          },
-        ],
+        attachments,
       });
 
       this.logger.log(`Email sent successfully to ${user.email}. Message ID: ${info.messageId}`);
@@ -358,5 +375,228 @@ ${appName} csapata
    */
   isEmailConfigured(): boolean {
     return this.isConfigured;
+  }
+
+  /**
+   * Sends a verification email with a verification link
+   * @param email - User's email address
+   * @param name - User's name
+   * @param verificationLink - Full verification link URL
+   * @returns Promise with success status and message
+   */
+  async sendVerificationEmail(
+    email: string,
+    name: string,
+    verificationLink: string,
+  ): Promise<{ success: boolean; message: string }> {
+    try {
+      const appName = 'Közlekedési Jegykezelő';
+
+      // If not configured, log verification link to console
+      if (!this.isConfigured || !this.transporter) {
+        this.logger.log('='.repeat(80));
+        this.logger.log('[EMAIL SIMULATION MODE - SMTP NOT CONFIGURED]');
+        this.logger.log('='.repeat(80));
+        this.logger.log(`Email would be sent to: ${email}`);
+        this.logger.log(`User name: ${name}`);
+        this.logger.log(`\nVERIFICATION LINK (click or copy-paste):`);
+        this.logger.log(`\n${verificationLink}\n`);
+        this.logger.log('='.repeat(80));
+        this.logger.log('To send real emails, configure SMTP settings in .env:');
+        this.logger.log('  SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM');
+        this.logger.log('='.repeat(80));
+        return {
+          success: true,
+          message: 'Verification email logged to console (simulation mode - configure SMTP to send real emails)',
+        };
+      }
+
+      const from = this.configService.get<string>('SMTP_FROM');
+
+      // Create HTML email template
+      const htmlContent = this.createVerificationEmailTemplate({
+        userName: name,
+        verificationLink,
+        appName,
+      });
+
+      // Create plain text version
+      const textContent = `
+Tisztelt ${name}!
+
+Köszönjük, hogy regisztrált a ${appName} alkalmazásban!
+
+Az email cím megerősítéséhez kérjük, kattintson az alábbi linkre:
+
+${verificationLink}
+
+A link 24 óráig érvényes.
+
+Ha Ön nem regisztrált az alkalmazásban, kérjük, hagyja figyelmen kívül ezt az emailt.
+
+Üdvözlettel,
+${appName} csapata
+      `.trim();
+
+      // Send email
+      const info = await this.transporter.sendMail({
+        from: `"${appName}" <${from}>`,
+        to: email,
+        subject: `Email cím megerősítése - ${appName}`,
+        text: textContent,
+        html: htmlContent,
+      });
+
+      this.logger.log(`Verification email sent successfully to ${email}. Message ID: ${info.messageId}`);
+
+      return {
+        success: true,
+        message: 'Verification email sent successfully',
+      };
+    } catch (error) {
+      this.logger.error(`Failed to send verification email to ${email}:`, error);
+      // Non-critical error - log and return success to not block registration
+      this.logger.log(`Verification link: ${verificationLink}`);
+      return {
+        success: false,
+        message: 'Failed to send verification email, but link was logged',
+      };
+    }
+  }
+
+  /**
+   * Creates an HTML email template for email verification
+   * @param data - Template data
+   * @returns HTML string
+   */
+  private createVerificationEmailTemplate(data: {
+    userName: string;
+    verificationLink: string;
+    appName: string;
+  }): string {
+    return `
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email megerősítés</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .header {
+            background-color: #1976d2;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 30px;
+        }
+        .content h2 {
+            color: #1976d2;
+            margin-top: 0;
+        }
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .button {
+            display: inline-block;
+            background-color: #1976d2;
+            color: white !important;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .button:hover {
+            background-color: #1565c0;
+        }
+        .info-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .footer {
+            background-color: #f9f9f9;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #eee;
+        }
+        .link-text {
+            word-break: break-all;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>${data.appName}</h1>
+        </div>
+
+        <div class="content">
+            <h2>Üdvözöljük, ${data.userName}!</h2>
+
+            <p>Köszönjük, hogy regisztrált a <strong>${data.appName}</strong> alkalmazásban!</p>
+
+            <p>Az email cím megerősítéséhez kérjük, kattintson az alábbi gombra:</p>
+
+            <div class="button-container">
+                <a href="${data.verificationLink}" class="button">Email cím megerősítése</a>
+            </div>
+
+            <div class="info-box">
+                <strong>Fontos információk:</strong>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li>A megerősítő link 24 óráig érvényes</li>
+                    <li>Ha Ön nem regisztrált az alkalmazásban, kérjük, hagyja figyelmen kívül ezt az emailt</li>
+                    <li>Biztonsági okokból ne ossza meg ezt a linket senkivel</li>
+                </ul>
+            </div>
+
+            <p style="margin-top: 30px; font-size: 14px; color: #666;">
+                Ha a fenti gomb nem működik, másolja be az alábbi linket a böngészőjébe:
+            </p>
+            <div class="link-text">${data.verificationLink}</div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 ${data.appName}. Minden jog fenntartva.</p>
+            <p>Ez egy automatikusan generált email. Kérjük, ne válaszoljon rá.</p>
+        </div>
+    </div>
+</body>
+</html>
+    `.trim();
   }
 }

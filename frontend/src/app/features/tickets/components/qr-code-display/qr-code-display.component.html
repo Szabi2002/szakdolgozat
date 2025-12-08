@@ -1,0 +1,105 @@
+<div class="qr-code-display">
+  <!-- QR Code Container -->
+  <div class="qr-code-container">
+    <!-- Validity Banner -->
+    <div class="validity-banner" [class.valid]="isTicketValid" [class.invalid]="!isTicketValid">
+      <mat-icon>{{ isTicketValid ? 'verified' : 'error' }}</mat-icon>
+      <span>{{ isTicketValid ? 'Érvényes jegy' : 'Érvénytelen jegy' }}</span>
+    </div>
+
+    <!-- QR Code Wrapper -->
+    @if (!isLoading && !error && qrCodeUrl) {
+      <div class="qr-code-wrapper">
+        <img [src]="qrCodeUrl" alt="Jegy QR kód" class="qr-code-image" />
+
+        <!-- Invalid Overlay -->
+        @if (!isTicketValid) {
+          <div class="qr-code-overlay">
+            <mat-icon>block</mat-icon>
+            <span>Nem érvényes</span>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Loading State -->
+    @if (isLoading) {
+      <div class="loading-state">
+        <mat-spinner diameter="60"></mat-spinner>
+        <p>QR kód betöltése...</p>
+      </div>
+    }
+
+    <!-- Error State -->
+    @if (error && !isLoading) {
+      <div class="error-state">
+        <mat-icon>error_outline</mat-icon>
+        <p>{{ error }}</p>
+        <button mat-raised-button color="primary" (click)="loadQRCode()">
+          <mat-icon>refresh</mat-icon>
+          Újrapróbálás
+        </button>
+      </div>
+    }
+
+    <!-- Instructions -->
+    @if (!isLoading && !error) {
+      <div class="qr-code-info">
+        <mat-icon>info</mat-icon>
+        <p>Mutasd meg ezt a QR kódot az ellenőrnek felszólításkor</p>
+      </div>
+    }
+  </div>
+
+  <!-- Download Actions -->
+  @if (!isLoading && !error && qrCodeUrl) {
+    <div class="qr-code-actions">
+      <button mat-raised-button (click)="downloadQRCode()" class="download-button">
+        <mat-icon>download</mat-icon>
+        QR kód letöltése
+      </button>
+    </div>
+  }
+
+  <!-- Ticket Summary -->
+  <div class="ticket-summary">
+    <div class="summary-header">
+      <mat-icon>receipt</mat-icon>
+      <h4>Jegy információk</h4>
+    </div>
+    <div class="summary-items">
+      <div class="summary-item">
+        <div class="item-left">
+          <mat-icon>fingerprint</mat-icon>
+          <span class="label">Jegy azonosító</span>
+        </div>
+        <span class="value code">{{ ticket.id.substring(0, 12) }}...</span>
+      </div>
+      <div class="summary-item">
+        <div class="item-left">
+          <mat-icon>label</mat-icon>
+          <span class="label">Típus</span>
+        </div>
+        <span class="value">{{ ticket.ticket_type?.name || 'Ismeretlen' }}</span>
+      </div>
+      <div class="summary-item">
+        <div class="item-left">
+          <mat-icon>info</mat-icon>
+          <span class="label">Státusz</span>
+        </div>
+        <mat-chip [style.background]="ticketsService.getTicketStatusColor(ticket.status)" [style.color]="'white'">
+          {{ getStatusLabel() }}
+        </mat-chip>
+      </div>
+      @if (ticket.valid_until) {
+        <div class="summary-item">
+          <div class="item-left">
+            <mat-icon>event</mat-icon>
+            <span class="label">Érvényes eddig</span>
+          </div>
+          <span class="value">{{ formatDate(ticket.valid_until) }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</div>

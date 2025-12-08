@@ -1,0 +1,116 @@
+<div class="routes-management-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">directions_bus</mat-icon>
+      <div class="header-text">
+        <h1>Jaratok Kezelese</h1>
+        <p>Buszjaratok adminisztracioja es megallok hozzarendelese</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button mat-raised-button class="add-route-button" (click)="onAdd()">
+        <mat-icon>add</mat-icon>
+        Uj Jarat Hozzaadasa
+      </button>
+    </div>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-section">
+    <mat-form-field class="search-field" appearance="outline">
+      <mat-label>Jaratok keresese</mat-label>
+      <input matInput
+             (keyup)="onSearch($event)"
+             placeholder="Jarat szam vagy nev">
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+    <div class="search-stats">
+      <div class="stat-chip">
+        <mat-icon>directions_bus</mat-icon>
+        <span>{{ dataSource.data.length }} jarat</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <mat-spinner diameter="60"></mat-spinner>
+    <p>Jaratok betoltese...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && dataSource.data.length === 0" class="empty-state">
+    <mat-icon>bus_alert</mat-icon>
+    <h3>Nincsenek jaratok</h3>
+    <p>Meg nem adtal hozza jaratokat a rendszerhez.</p>
+    <button mat-raised-button color="primary" (click)="onAdd()">
+      <mat-icon>add</mat-icon>
+      Elso Jarat Hozzaadasa
+    </button>
+  </div>
+
+  <!-- Routes List -->
+  <div *ngIf="!isLoading && dataSource.data.length > 0" class="routes-list">
+    <div *ngFor="let route of dataSource.data; let i = index" class="route-card">
+      <!-- Card Header -->
+      <div class="card-header">
+        <div class="header-left">
+          <div class="route-badge">
+            <mat-icon>directions_bus</mat-icon>
+            <span class="route-number">{{ route.route_number }}</span>
+          </div>
+          <div class="route-info">
+            <h3 class="route-name">{{ route.name }}</h3>
+            <div class="route-meta">
+              <span class="meta-item">
+                <mat-icon>place</mat-icon>
+                {{ route.stops_count || 0 }} megallo
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="status-chip active">
+            <mat-icon>check_circle</mat-icon>
+            Aktiv
+          </div>
+        </div>
+      </div>
+
+      <!-- Route Details -->
+      <div class="route-details" *ngIf="route.description">
+        <div class="detail-item">
+          <mat-icon>description</mat-icon>
+          <div class="detail-content">
+            <span class="detail-label">Leiras</span>
+            <span class="detail-value">{{ route.description }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Actions -->
+      <div class="card-actions">
+        <button mat-stroked-button class="action-button view" (click)="viewRoute(route)">
+          <mat-icon>visibility</mat-icon>
+          Reszletek
+        </button>
+        <button mat-stroked-button class="action-button edit" (click)="onEdit(route)">
+          <mat-icon>edit</mat-icon>
+          Szerkesztes
+        </button>
+        <button mat-stroked-button class="action-button delete" (click)="onDelete(route)">
+          <mat-icon>delete</mat-icon>
+          Torles
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <mat-paginator
+    *ngIf="!isLoading && dataSource.data.length > 0"
+    [pageSizeOptions]="[5, 10, 25]"
+    showFirstLastButtons>
+  </mat-paginator>
+</div>

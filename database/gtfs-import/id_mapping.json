@@ -1,0 +1,2266 @@
+{
+  "generated_at": "2025-12-07T20:39:53.103Z",
+  "routes": {
+    "3020": {
+      "route_number": "2",
+      "name": "Jászai Mari tér / Közvágóhíd H",
+      "type": "tram",
+      "stops": [
+        {
+          "name": "Jászai Mari tér",
+          "latitude": 47.512837,
+          "longitude": 19.047936,
+          "stop_order": 1,
+          "arrival_offset": "00:00:00"
+        },
+        {
+          "name": "Országház, látogatóközpont",
+          "latitude": 47.508879,
+          "longitude": 19.046582,
+          "stop_order": 2,
+          "arrival_offset": "00:01:00"
+        },
+        {
+          "name": "Kossuth Lajos tér M",
+          "latitude": 47.505749,
+          "longitude": 19.046834,
+          "stop_order": 3,
+          "arrival_offset": "00:03:00"
+        },
+        {
+          "name": "Széchenyi István tér",
+          "latitude": 47.500685,
+          "longitude": 19.046064,
+          "stop_order": 4,
+          "arrival_offset": "00:05:00"
+        },
+        {
+          "name": "Eötvös tér",
+          "latitude": 47.497969,
+          "longitude": 19.04702,
+          "stop_order": 5,
+          "arrival_offset": "00:06:00"
+        },
+        {
+          "name": "Vigadó tér",
+          "latitude": 47.495837,
+          "longitude": 19.048215,
+          "stop_order": 6,
+          "arrival_offset": "00:07:00"
+        },
+        {
+          "name": "Március 15. tér",
+          "latitude": 47.490719,
+          "longitude": 19.051652,
+          "stop_order": 7,
+          "arrival_offset": "00:09:00"
+        },
+        {
+          "name": "Fővám tér M",
+          "latitude": 47.486941,
+          "longitude": 19.056482,
+          "stop_order": 8,
+          "arrival_offset": "00:10:00"
+        },
+        {
+          "name": "Zsil utca",
+          "latitude": 47.483036,
+          "longitude": 19.062439,
+          "stop_order": 9,
+          "arrival_offset": "00:12:00"
+        },
+        {
+          "name": "Boráros tér H",
+          "latitude": 47.479726,
+          "longitude": 19.066299,
+          "stop_order": 10,
+          "arrival_offset": "00:13:00"
+        },
+        {
+          "name": "Haller utca / Soroksári út",
+          "latitude": 47.474022,
+          "longitude": 19.070622,
+          "stop_order": 11,
+          "arrival_offset": "00:15:00"
+        },
+        {
+          "name": "Müpa - Nemzeti Színház H",
+          "latitude": 47.470972,
+          "longitude": 19.073181,
+          "stop_order": 12,
+          "arrival_offset": "00:17:00"
+        },
+        {
+          "name": "Közvágóhíd H",
+          "latitude": 47.467527,
+          "longitude": 19.075886,
+          "stop_order": 13,
+          "arrival_offset": "00:19:00"
+        }
+      ]
+    },
+    "3040": {
+      "route_number": "4",
+      "name": "Széll Kálmán tér M / Újbuda-központ M",
+      "type": "tram",
+      "stops": [
+        {
+          "name": "Széll Kálmán tér M",
+          "latitude": 47.507258,
+          "longitude": 19.025182,
+          "stop_order": 1,
+          "arrival_offset": "00:00:00"
+        },
+        {
+          "name": "Széna tér",
+          "latitude": 47.508491,
+          "longitude": 19.027319,
+          "stop_order": 2,
+          "arrival_offset": "00:01:00"
+        },
+        {
+          "name": "Mechwart liget",
+          "latitude": 47.510965,
+          "longitude": 19.032111,
+          "stop_order": 3,
+          "arrival_offset": "00:02:00"
+        },
+        {
+          "name": "Margit híd, budai hídfő H",
+          "latitude": 47.514564,
+          "longitude": 19.038894,
+          "stop_order": 4,
+          "arrival_offset": "00:05:00"
+        },
+        {
+          "name": "Margitsziget / Margit híd",
+          "latitude": 47.514447,
+          "longitude": 19.044324,
+          "stop_order": 5,
+          "arrival_offset": "00:06:00"
+        },
+        {
+          "name": "Jászai Mari tér",
+          "latitude": 47.512864,
+          "longitude": 19.048785,
+          "stop_order": 6,
+          "arrival_offset": "00:08:00"
+        },
+        {
+          "name": "Nyugati pályaudvar M",
+          "latitude": 47.509922,
+          "longitude": 19.056658,
+          "stop_order": 7,
+          "arrival_offset": "00:10:00"
+        },
+        {
+          "name": "Oktogon M",
+          "latitude": 47.505586,
+          "longitude": 19.06287,
+          "stop_order": 8,
+          "arrival_offset": "00:12:00"
+        },
+        {
+          "name": "Király utca / Erzsébet körút",
+          "latitude": 47.502806,
+          "longitude": 19.066187,
+          "stop_order": 9,
+          "arrival_offset": "00:13:00"
+        },
+        {
+          "name": "Wesselényi utca / Erzsébet körút",
+          "latitude": 47.499856,
+          "longitude": 19.06916,
+          "stop_order": 10,
+          "arrival_offset": "00:14:00"
+        },
+        {
+          "name": "Blaha Lujza tér M",
+          "latitude": 47.496248,
+          "longitude": 19.070671,
+          "stop_order": 11,
+          "arrival_offset": "00:16:00"
+        },
+        {
+          "name": "Rákóczi tér M",
+          "latitude": 47.49239,
+          "longitude": 19.071001,
+          "stop_order": 12,
+          "arrival_offset": "00:17:00"
+        },
+        {
+          "name": "Harminckettesek tere",
+          "latitude": 47.489592,
+          "longitude": 19.070589,
+          "stop_order": 13,
+          "arrival_offset": "00:19:00"
+        },
+        {
+          "name": "Corvin-negyed M",
+          "latitude": 47.48621,
+          "longitude": 19.070057,
+          "stop_order": 14,
+          "arrival_offset": "00:20:00"
+        },
+        {
+          "name": "Mester utca / Ferenc körút",
+          "latitude": 47.482199,
+          "longitude": 19.068463,
+          "stop_order": 15,
+          "arrival_offset": "00:22:00"
+        },
+        {
+          "name": "Boráros tér H",
+          "latitude": 47.480149,
+          "longitude": 19.066074,
+          "stop_order": 16,
+          "arrival_offset": "00:23:00"
+        },
+        {
+          "name": "Petőfi híd, budai hídfő",
+          "latitude": 47.476695,
+          "longitude": 19.058975,
+          "stop_order": 17,
+          "arrival_offset": "00:25:00"
+        },
+        {
+          "name": "Budafoki út / Szerémi sor",
+          "latitude": 47.473691,
+          "longitude": 19.052818,
+          "stop_order": 18,
+          "arrival_offset": "00:27:00"
+        },
+        {
+          "name": "Újbuda-központ M",
+          "latitude": 47.474042,
+          "longitude": 19.046862,
+          "stop_order": 19,
+          "arrival_offset": "00:29:00"
+        }
+      ]
+    },
+    "3060": {
+      "route_number": "6",
+      "name": "Széll Kálmán tér M / Móricz Zsigmond körtér M",
+      "type": "tram",
+      "stops": [
+        {
+          "name": "Széll Kálmán tér M",
+          "latitude": 47.507258,
+          "longitude": 19.025182,
+          "stop_order": 1,
+          "arrival_offset": "00:00:00"
+        },
+        {
+          "name": "Széna tér",
+          "latitude": 47.508491,
+          "longitude": 19.027319,
+          "stop_order": 2,
+          "arrival_offset": "00:01:00"
+        },
+        {
+          "name": "Mechwart liget",
+          "latitude": 47.510965,
+          "longitude": 19.032111,
+          "stop_order": 3,
+          "arrival_offset": "00:02:00"
+        },
+        {
+          "name": "Margit híd, budai hídfő H",
+          "latitude": 47.514564,
+          "longitude": 19.038894,
+          "stop_order": 4,
+          "arrival_offset": "00:05:00"
+        },
+        {
+          "name": "Margitsziget / Margit híd",
+          "latitude": 47.514447,
+          "longitude": 19.044324,
+          "stop_order": 5,
+          "arrival_offset": "00:06:00"
+        },
+        {
+          "name": "Jászai Mari tér",
+          "latitude": 47.512864,
+          "longitude": 19.048785,
+          "stop_order": 6,
+          "arrival_offset": "00:08:00"
+        },
+        {
+          "name": "Nyugati pályaudvar M",
+          "latitude": 47.509922,
+          "longitude": 19.056658,
+          "stop_order": 7,
+          "arrival_offset": "00:10:00"
+        },
+        {
+          "name": "Oktogon M",
+          "latitude": 47.505586,
+          "longitude": 19.06287,
+          "stop_order": 8,
+          "arrival_offset": "00:12:00"
+        },
+        {
+          "name": "Király utca / Erzsébet körút",
+          "latitude": 47.502806,
+          "longitude": 19.066187,
+          "stop_order": 9,
+          "arrival_offset": "00:13:00"
+        },
+        {
+          "name": "Wesselényi utca / Erzsébet körút",
+          "latitude": 47.499856,
+          "longitude": 19.06916,
+          "stop_order": 10,
+          "arrival_offset": "00:14:00"
+        },
+        {
+          "name": "Blaha Lujza tér M",
+          "latitude": 47.496248,
+          "longitude": 19.070671,
+          "stop_order": 11,
+          "arrival_offset": "00:16:00"
+        },
+        {
+          "name": "Rákóczi tér M",
+          "latitude": 47.49239,
+          "longitude": 19.071001,
+          "stop_order": 12,
+          "arrival_offset": "00:17:00"
+        },
+        {
+          "name": "Harminckettesek tere",
+          "latitude": 47.489592,
+          "longitude": 19.070589,
+          "stop_order": 13,
+          "arrival_offset": "00:19:00"
+        },
+        {
+          "name": "Corvin-negyed M",
+          "latitude": 47.48621,
+          "longitude": 19.070057,
+          "stop_order": 14,
+          "arrival_offset": "00:20:00"
+        },
+        {
+          "name": "Mester utca / Ferenc körút",
+          "latitude": 47.482199,
+          "longitude": 19.068463,
+          "stop_order": 15,
+          "arrival_offset": "00:22:00"
+        },
+        {
+          "name": "Boráros tér H",
+          "latitude": 47.480149,
+          "longitude": 19.066074,
+          "stop_order": 16,
+          "arrival_offset": "00:23:00"
+        },
+        {
+          "name": "Petőfi híd, budai hídfő",
+          "latitude": 47.476695,
+          "longitude": 19.058975,
+          "stop_order": 17,
+          "arrival_offset": "00:25:00"
+        },
+        {
+          "name": "Budafoki út / Karinthy Frigyes út",
+          "latitude": 47.476048,
+          "longitude": 19.053455,
+          "stop_order": 18,
+          "arrival_offset": "00:27:00"
+        },
+        {
+          "name": "Móricz Zsigmond körtér M",
+          "latitude": 47.477496,
+          "longitude": 19.048347,
+          "stop_order": 19,
+          "arrival_offset": "00:29:00"
+        }
+      ]
+    },
+    "5100": {
+      "route_number": "M1",
+      "name": "Vörösmarty tér / Mexikói út M",
+      "type": "metro",
+      "stops": [
+        {
+          "name": "Vörösmarty tér",
+          "latitude": 47.496737,
+          "longitude": 19.050593,
+          "stop_order": 1,
+          "arrival_offset": "00:00:00"
+        },
+        {
+          "name": "Deák Ferenc tér",
+          "latitude": 47.497728,
+          "longitude": 19.054142,
+          "stop_order": 2,
+          "arrival_offset": "00:01:10"
+        },
+        {
+          "name": "Bajcsy-Zsilinszky út",
+          "latitude": 47.499937,
+          "longitude": 19.055655,
+          "stop_order": 3,
+          "arrival_offset": "00:02:30"
+        },
+        {
+          "name": "Opera",
+          "latitude": 47.502305,
+          "longitude": 19.059161,
+          "stop_order": 4,
+          "arrival_offset": "00:03:35"
+        },
+        {
+          "name": "Oktogon",
+          "latitude": 47.505023,
+          "longitude": 19.063233,
+          "stop_order": 5,
+          "arrival_offset": "00:04:45"
+        },
+        {
+          "name": "Vörösmarty utca",
+          "latitude": 47.507238,
+          "longitude": 19.066529,
+          "stop_order": 6,
+          "arrival_offset": "00:05:52"
+        },
+        {
+          "name": "Kodály körönd",
+          "latitude": 47.509261,
+          "longitude": 19.069544,
+          "stop_order": 7,
+          "arrival_offset": "00:06:50"
+        },
+        {
+          "name": "Bajza utca",
+          "latitude": 47.511342,
+          "longitude": 19.072662,
+          "stop_order": 8,
+          "arrival_offset": "00:07:50"
+        },
+        {
+          "name": "Hősök tere",
+          "latitude": 47.51411,
+          "longitude": 19.076883,
+          "stop_order": 9,
+          "arrival_offset": "00:09:00"
+        },
+        {
+          "name": "Széchenyi fürdő",
+          "latitude": 47.517407,
+          "longitude": 19.081481,
+          "stop_order": 10,
+          "arrival_offset": "00:10:40"
+        },
+        {
+          "name": "Mexikói út",
+          "latitude": 47.519513,
+          "longitude": 19.091037,
+          "stop_order": 11,
+          "arrival_offset": "00:12:15"
+        }
+      ]
+    },
+    "5200": {
+      "route_number": "M2",
+      "name": "Déli pályaudvar M / Örs vezér tere M+H",
+      "type": "metro",
+      "stops": [
+        {
+          "name": "Déli pályaudvar",
+          "latitude": 47.50045,
+          "longitude": 19.024604,
+          "stop_order": 1,
+          "arrival_offset": "00:00:00"
+        },
+        {
+          "name": "Széll Kálmán tér",
+          "latitude": 47.507533,
+          "longitude": 19.026097,
+          "stop_order": 2,
+          "arrival_offset": "00:01:37"
+        },
+        {
+          "name": "Batthyány tér",
+          "latitude": 47.506826,
+          "longitude": 19.038103,
+          "stop_order": 3,
+          "arrival_offset": "00:03:22"
+        },
+        {
+          "name": "Kossuth Lajos tér",
+          "latitude": 47.505511,
+          "longitude": 19.045769,
+          "stop_order": 4,
+          "arrival_offset": "00:04:45"
+        },
+        {
+          "name": "Deák Ferenc tér",
+          "latitude": 47.497593,
+          "longitude": 19.053857,
+          "stop_order": 5,
+          "arrival_offset": "00:06:45"
+        },
+        {
+          "name": "Astoria",
+          "latitude": 47.494825,
+          "longitude": 19.062457,
+          "stop_order": 6,
+          "arrival_offset": "00:08:20"
+        },
+        {
+          "name": "Blaha Lujza tér",
+          "latitude": 47.497006,
+          "longitude": 19.070274,
+          "stop_order": 7,
+          "arrival_offset": "00:09:45"
+        },
+        {
+          "name": "Keleti pályaudvar",
+          "latitude": 47.499683,
+          "longitude": 19.082881,
+          "stop_order": 8,
+          "arrival_offset": "00:11:30"
+        },
+        {
+          "name": "Puskás Ferenc Stadion",
+          "latitude": 47.500174,
+          "longitude": 19.106381,
+          "stop_order": 9,
+          "arrival_offset": "00:14:07"
+        },
+        {
+          "name": "Pillangó utca",
+          "latitude": 47.501204,
+          "longitude": 19.120417,
+          "stop_order": 10,
+          "arrival_offset": "00:16:00"
+        },
+        {
+          "name": "Örs vezér tere",
+          "latitude": 47.502922,
+          "longitude": 19.135963,
+          "stop_order": 11,
+          "arrival_offset": "00:18:00"
+        }
+      ]
+    },
+    "5300": {
+      "route_number": "M3",
+      "name": "Újpest-központ / Kőbánya-Kispest",
+      "type": "metro",
+      "stops": [
+        {
+          "name": "Újpest-központ",
+          "latitude": 47.560437,
+          "longitude": 19.08976,
+          "stop_order": 1,
+          "arrival_offset": "00:00:00"
+        },
+        {
+          "name": "Újpest-városkapu",
+          "latitude": 47.559146,
+          "longitude": 19.079567,
+          "stop_order": 2,
+          "arrival_offset": "00:01:40"
+        },
+        {
+          "name": "Gyöngyösi utca",
+          "latitude": 47.548374,
+          "longitude": 19.073019,
+          "stop_order": 3,
+          "arrival_offset": "00:03:42"
+        },
+        {
+          "name": "Forgách utca",
+          "latitude": 47.538163,
+          "longitude": 19.069055,
+          "stop_order": 4,
+          "arrival_offset": "00:05:40"
+        },
+        {
+          "name": "Göncz Árpád városközpont",
+          "latitude": 47.532171,
+          "longitude": 19.066471,
+          "stop_order": 5,
+          "arrival_offset": "00:07:10"
+        },
+        {
+          "name": "Dózsa György út",
+          "latitude": 47.524358,
+          "longitude": 19.063088,
+          "stop_order": 6,
+          "arrival_offset": "00:08:50"
+        },
+        {
+          "name": "Lehel tér",
+          "latitude": 47.517595,
+          "longitude": 19.060285,
+          "stop_order": 7,
+          "arrival_offset": "00:10:30"
+        },
+        {
+          "name": "Nyugati pályaudvar",
+          "latitude": 47.510828,
+          "longitude": 19.055952,
+          "stop_order": 8,
+          "arrival_offset": "00:12:15"
+        },
+        {
+          "name": "Arany János utca",
+          "latitude": 47.50367,
+          "longitude": 19.054513,
+          "stop_order": 9,
+          "arrival_offset": "00:13:55"
+        },
+        {
+          "name": "Deák Ferenc tér",
+          "latitude": 47.497591,
+          "longitude": 19.054525,
+          "stop_order": 10,
+          "arrival_offset": "00:15:30"
+        },
+        {
+          "name": "Ferenciek tere",
+          "latitude": 47.49182,
+          "longitude": 19.056789,
+          "stop_order": 11,
+          "arrival_offset": "00:17:00"
+        },
+        {
+          "name": "Kálvin tér",
+          "latitude": 47.48949,
+          "longitude": 19.06192,
+          "stop_order": 12,
+          "arrival_offset": "00:18:20"
+        },
+        {
+          "name": "Corvin-negyed",
+          "latitude": 47.484862,
+          "longitude": 19.072242,
+          "stop_order": 13,
+          "arrival_offset": "00:20:05"
+        },
+        {
+          "name": "Semmelweis Klinikák",
+          "latitude": 47.482872,
+          "longitude": 19.078425,
+          "stop_order": 14,
+          "arrival_offset": "00:21:25"
+        },
+        {
+          "name": "Nagyvárad tér",
+          "latitude": 47.478365,
+          "longitude": 19.091071,
+          "stop_order": 15,
+          "arrival_offset": "00:23:25"
+        },
+        {
+          "name": "Népliget",
+          "latitude": 47.474913,
+          "longitude": 19.100672,
+          "stop_order": 16,
+          "arrival_offset": "00:25:15"
+        },
+        {
+          "name": "Ecseri út",
+          "latitude": 47.470529,
+          "longitude": 19.111646,
+          "stop_order": 17,
+          "arrival_offset": "00:26:57"
+        },
+        {
+          "name": "Pöttyös utca",
+          "latitude": 47.467939,
+          "longitude": 19.118838,
+          "stop_order": 18,
+          "arrival_offset": "00:28:20"
+        },
+        {
+          "name": "Határ út",
+          "latitude": 47.465749,
+          "longitude": 19.126228,
+          "stop_order": 19,
+          "arrival_offset": "00:29:45"
+        },
+        {
+          "name": "Kőbánya-Kispest",
+          "latitude": 47.463443,
+          "longitude": 19.148764,
+          "stop_order": 20,
+          "arrival_offset": "00:32:10"
+        }
+      ]
+    },
+    "5400": {
+      "route_number": "M4",
+      "name": "Keleti pályaudvar / Kelenföld vasútállomás",
+      "type": "metro",
+      "stops": [
+        {
+          "name": "Keleti pályaudvar",
+          "latitude": 47.500116,
+          "longitude": 19.080722,
+          "stop_order": 1,
+          "arrival_offset": "00:00:00"
+        },
+        {
+          "name": "II. János Pál pápa tér",
+          "latitude": 47.495593,
+          "longitude": 19.077229,
+          "stop_order": 2,
+          "arrival_offset": "00:01:20"
+        },
+        {
+          "name": "Rákóczi tér",
+          "latitude": 47.492725,
+          "longitude": 19.071361,
+          "stop_order": 3,
+          "arrival_offset": "00:02:43"
+        },
+        {
+          "name": "Kálvin tér",
+          "latitude": 47.488903,
+          "longitude": 19.061022,
+          "stop_order": 4,
+          "arrival_offset": "00:04:28"
+        },
+        {
+          "name": "Fővám tér",
+          "latitude": 47.485792,
+          "longitude": 19.057571,
+          "stop_order": 5,
+          "arrival_offset": "00:05:46"
+        },
+        {
+          "name": "Szent Gellért tér - Műegyetem",
+          "latitude": 47.482635,
+          "longitude": 19.054014,
+          "stop_order": 6,
+          "arrival_offset": "00:06:56"
+        },
+        {
+          "name": "Móricz Zsigmond körtér",
+          "latitude": 47.476629,
+          "longitude": 19.047227,
+          "stop_order": 7,
+          "arrival_offset": "00:08:36"
+        },
+        {
+          "name": "Újbuda-központ",
+          "latitude": 47.47286,
+          "longitude": 19.045954,
+          "stop_order": 8,
+          "arrival_offset": "00:09:46"
+        },
+        {
+          "name": "Bikás park",
+          "latitude": 47.464881,
+          "longitude": 19.032345,
+          "stop_order": 9,
+          "arrival_offset": "00:11:51"
+        },
+        {
+          "name": "Kelenföld vasútállomás",
+          "latitude": 47.464515,
+          "longitude": 19.019618,
+          "stop_order": 10,
+          "arrival_offset": "00:13:10"
+        }
+      ]
+    },
+    "0070": {
+      "route_number": "7",
+      "name": "Albertfalva vasútállomás / Újpalota, Nyírpalota út",
+      "type": "bus",
+      "stops": [
+        {
+          "name": "Albertfalva vasútállomás",
+          "latitude": 47.441603,
+          "longitude": 19.034191,
+          "stop_order": 1,
+          "arrival_offset": "00:00:00"
+        },
+        {
+          "name": "Fonyód utca / Sáfrány utca",
+          "latitude": 47.443905,
+          "longitude": 19.033885,
+          "stop_order": 2,
+          "arrival_offset": "00:00:00"
+        },
+        {
+          "name": "Herend utca",
+          "latitude": 47.446672,
+          "longitude": 19.033591,
+          "stop_order": 3,
+          "arrival_offset": "00:01:00"
+        },
+        {
+          "name": "Nyírbátor utca",
+          "latitude": 47.449545,
+          "longitude": 19.033366,
+          "stop_order": 4,
+          "arrival_offset": "00:02:00"
+        },
+        {
+          "name": "Csurgói út",
+          "latitude": 47.453979,
+          "longitude": 19.033445,
+          "stop_order": 5,
+          "arrival_offset": "00:03:00"
+        },
+        {
+          "name": "Andor utca / Tétényi út",
+          "latitude": 47.457127,
+          "longitude": 19.033537,
+          "stop_order": 6,
+          "arrival_offset": "00:04:00"
+        },
+        {
+          "name": "Bornemissza tér",
+          "latitude": 47.458435,
+          "longitude": 19.033573,
+          "stop_order": 7,
+          "arrival_offset": "00:05:00"
+        },
+        {
+          "name": "Puskás Tivadar utca",
+          "latitude": 47.460437,
+          "longitude": 19.033642,
+          "stop_order": 8,
+          "arrival_offset": "00:05:00"
+        },
+        {
+          "name": "Bikás park M",
+          "latitude": 47.464277,
+          "longitude": 19.033826,
+          "stop_order": 9,
+          "arrival_offset": "00:07:00"
+        },
+        {
+          "name": "Tétényi út 30.",
+          "latitude": 47.466355,
+          "longitude": 19.034157,
+          "stop_order": 10,
+          "arrival_offset": "00:08:00"
+        },
+        {
+          "name": "Szent Imre Kórház",
+          "latitude": 47.469445,
+          "longitude": 19.033716,
+          "stop_order": 11,
+          "arrival_offset": "00:09:00"
+        },
+        {
+          "name": "Karolina út (Sárbogárdi út)",
+          "latitude": 47.472818,
+          "longitude": 19.034351,
+          "stop_order": 12,
+          "arrival_offset": "00:09:00"
+        },
+        {
+          "name": "Karolina út",
+          "latitude": 47.473371,
+          "longitude": 19.035389,
+          "stop_order": 13,
+          "arrival_offset": "00:10:00"
+        },
+        {
+          "name": "Kosztolányi Dezső tér",
+          "latitude": 47.475179,
+          "longitude": 19.040191,
+          "stop_order": 14,
+          "arrival_offset": "00:11:00"
+        },
+        {
+          "name": "Móricz Zsigmond körtér M",
+          "latitude": 47.477491,
+          "longitude": 19.046864,
+          "stop_order": 15,
+          "arrival_offset": "00:13:00"
+        },
+        {
+          "name": "Gárdonyi tér",
+          "latitude": 47.480522,
+          "longitude": 19.051932,
+          "stop_order": 16,
+          "arrival_offset": "00:15:00"
+        },
+        {
+          "name": "Szent Gellért tér - Műegyetem M",
+          "latitude": 47.482482,
+          "longitude": 19.05294,
+          "stop_order": 17,
+          "arrival_offset": "00:16:00"
+        },
+        {
+          "name": "Rudas Gyógyfürdő",
+          "latitude": 47.489273,
+          "longitude": 19.046916,
+          "stop_order": 18,
+          "arrival_offset": "00:18:00"
+        },
+        {
+          "name": "Március 15. tér",
+          "latitude": 47.491564,
+          "longitude": 19.051333,
+          "stop_order": 19,
+          "arrival_offset": "00:19:00"
+        },
+        {
+          "name": "Ferenciek tere M",
+          "latitude": 47.492925,
+          "longitude": 19.055343,
+          "stop_order": 20,
+          "arrival_offset": "00:20:00"
+        },
+        {
+          "name": "Astoria M",
+          "latitude": 47.494478,
+          "longitude": 19.061168,
+          "stop_order": 21,
+          "arrival_offset": "00:23:00"
+        },
+        {
+          "name": "Uránia",
+          "latitude": 47.495586,
+          "longitude": 19.065257,
+          "stop_order": 22,
+          "arrival_offset": "00:24:00"
+        },
+        {
+          "name": "Blaha Lujza tér M",
+          "latitude": 47.496689,
+          "longitude": 19.06953,
+          "stop_order": 23,
+          "arrival_offset": "00:26:00"
+        },
+        {
+          "name": "Huszár utca",
+          "latitude": 47.499136,
+          "longitude": 19.078384,
+          "stop_order": 24,
+          "arrival_offset": "00:27:00"
+        },
+        {
+          "name": "Keleti pályaudvar M",
+          "latitude": 47.500466,
+          "longitude": 19.081955,
+          "stop_order": 25,
+          "arrival_offset": "00:28:00"
+        },
+        {
+          "name": "Reiner Frigyes park",
+          "latitude": 47.503468,
+          "longitude": 19.088169,
+          "stop_order": 26,
+          "arrival_offset": "00:30:00"
+        },
+        {
+          "name": "Cházár András utca",
+          "latitude": 47.505814,
+          "longitude": 19.091582,
+          "stop_order": 27,
+          "arrival_offset": "00:31:00"
+        },
+        {
+          "name": "Stefánia út / Thököly út",
+          "latitude": 47.5087,
+          "longitude": 19.095394,
+          "stop_order": 28,
+          "arrival_offset": "00:32:00"
+        },
+        {
+          "name": "Zugló vasútállomás",
+          "latitude": 47.511145,
+          "longitude": 19.098662,
+          "stop_order": 29,
+          "arrival_offset": "00:34:00"
+        },
+        {
+          "name": "Amerikai út",
+          "latitude": 47.513581,
+          "longitude": 19.102501,
+          "stop_order": 30,
+          "arrival_offset": "00:35:00"
+        },
+        {
+          "name": "Tisza István tér",
+          "latitude": 47.516951,
+          "longitude": 19.108478,
+          "stop_order": 31,
+          "arrival_offset": "00:36:00"
+        },
+        {
+          "name": "Bosnyák tér",
+          "latitude": 47.519892,
+          "longitude": 19.112835,
+          "stop_order": 32,
+          "arrival_offset": "00:38:00"
+        },
+        {
+          "name": "Bosnyák tér (bevásárlóközpont)",
+          "latitude": 47.521956,
+          "longitude": 19.115484,
+          "stop_order": 33,
+          "arrival_offset": "00:39:00"
+        },
+        {
+          "name": "Rákospatak utca / Csömöri út",
+          "latitude": 47.524554,
+          "longitude": 19.118781,
+          "stop_order": 34,
+          "arrival_offset": "00:40:00"
+        },
+        {
+          "name": "Miskolci utca / Csömöri út",
+          "latitude": 47.527214,
+          "longitude": 19.122035,
+          "stop_order": 35,
+          "arrival_offset": "00:41:00"
+        },
+        {
+          "name": "Cinkotai út",
+          "latitude": 47.528472,
+          "longitude": 19.123842,
+          "stop_order": 36,
+          "arrival_offset": "00:42:00"
+        },
+        {
+          "name": "Molnár Viktor utca",
+          "latitude": 47.533531,
+          "longitude": 19.13049,
+          "stop_order": 37,
+          "arrival_offset": "00:44:00"
+        },
+        {
+          "name": "Apolló utca",
+          "latitude": 47.537242,
+          "longitude": 19.13525,
+          "stop_order": 38,
+          "arrival_offset": "00:45:00"
+        },
+        {
+          "name": "Madách utca",
+          "latitude": 47.539093,
+          "longitude": 19.137697,
+          "stop_order": 39,
+          "arrival_offset": "00:46:00"
+        },
+        {
+          "name": "Fő tér",
+          "latitude": 47.541511,
+          "longitude": 19.140106,
+          "stop_order": 40,
+          "arrival_offset": "00:47:00"
+        },
+        {
+          "name": "Vásárcsarnok",
+          "latitude": 47.545962,
+          "longitude": 19.140592,
+          "stop_order": 41,
+          "arrival_offset": "00:48:00"
+        },
+        {
+          "name": "Újpalota, Nyírpalota út",
+          "latitude": 47.547329,
+          "longitude": 19.141457,
+          "stop_order": 42,
+          "arrival_offset": "00:50:00"
+        }
+      ]
+    },
+    "0090": {
+      "route_number": "9",
+      "name": "Óbuda, Bogdáni út / Kőbánya alsó vasútállomás",
+      "type": "bus",
+      "stops": [
+        {
+          "name": "Óbuda, Bogdáni út",
+          "latitude": 47.550127,
+          "longitude": 19.041973,
+          "stop_order": 1,
+          "arrival_offset": "00:00:00"
+        },
+        {
+          "name": "Bogdáni út",
+          "latitude": 47.548409,
+          "longitude": 19.043102,
+          "stop_order": 2,
+          "arrival_offset": "00:01:00"
+        },
+        {
+          "name": "Raktár utca",
+          "latitude": 47.544713,
+          "longitude": 19.042212,
+          "stop_order": 3,
+          "arrival_offset": "00:02:00"
+        },
+        {
+          "name": "Flórián tér",
+          "latitude": 47.541987,
+          "longitude": 19.04119,
+          "stop_order": 4,
+          "arrival_offset": "00:03:00"
+        },
+        {
+          "name": "Kiscelli utca",
+          "latitude": 47.538517,
+          "longitude": 19.040218,
+          "stop_order": 5,
+          "arrival_offset": "00:05:00"
+        },
+        {
+          "name": "Tímár utca",
+          "latitude": 47.534333,
+          "longitude": 19.03973,
+          "stop_order": 6,
+          "arrival_offset": "00:07:00"
+        },
+        {
+          "name": "Galagonya utca",
+          "latitude": 47.530133,
+          "longitude": 19.039386,
+          "stop_order": 7,
+          "arrival_offset": "00:09:00"
+        },
+        {
+          "name": "Kolosy tér",
+          "latitude": 47.526913,
+          "longitude": 19.038204,
+          "stop_order": 8,
+          "arrival_offset": "00:11:00"
+        },
+        {
+          "name": "Zsigmond tér",
+          "latitude": 47.524053,
+          "longitude": 19.037421,
+          "stop_order": 9,
+          "arrival_offset": "00:12:00"
+        },
+        {
+          "name": "Császár-Komjádi uszoda",
+          "latitude": 47.51961,
+          "longitude": 19.038046,
+          "stop_order": 10,
+          "arrival_offset": "00:14:00"
+        },
+        {
+          "name": "Margit híd, budai hídfő H",
+          "latitude": 47.515365,
+          "longitude": 19.039282,
+          "stop_order": 11,
+          "arrival_offset": "00:16:00"
+        },
+        {
+          "name": "Jászai Mari tér",
+          "latitude": 47.512504,
+          "longitude": 19.049555,
+          "stop_order": 12,
+          "arrival_offset": "00:19:00"
+        },
+        {
+          "name": "Nyugati pályaudvar M",
+          "latitude": 47.509906,
+          "longitude": 19.05504,
+          "stop_order": 13,
+          "arrival_offset": "00:22:00"
+        },
+        {
+          "name": "Báthory utca / Bajcsy-Zsilinszky út",
+          "latitude": 47.506101,
+          "longitude": 19.054854,
+          "stop_order": 14,
+          "arrival_offset": "00:25:00"
+        },
+        {
+          "name": "Arany János utca M",
+          "latitude": 47.502881,
+          "longitude": 19.054734,
+          "stop_order": 15,
+          "arrival_offset": "00:27:00"
+        },
+        {
+          "name": "Szent István Bazilika",
+          "latitude": 47.500141,
+          "longitude": 19.054665,
+          "stop_order": 16,
+          "arrival_offset": "00:28:00"
+        },
+        {
+          "name": "Deák Ferenc tér M",
+          "latitude": 47.497089,
+          "longitude": 19.05541,
+          "stop_order": 17,
+          "arrival_offset": "00:30:00"
+        },
+        {
+          "name": "Astoria M",
+          "latitude": 47.494561,
+          "longitude": 19.059696,
+          "stop_order": 18,
+          "arrival_offset": "00:32:00"
+        },
+        {
+          "name": "Kálvin tér M",
+          "latitude": 47.489083,
+          "longitude": 19.062694,
+          "stop_order": 19,
+          "arrival_offset": "00:34:00"
+        },
+        {
+          "name": "Szentkirályi utca",
+          "latitude": 47.488975,
+          "longitude": 19.065852,
+          "stop_order": 20,
+          "arrival_offset": "00:36:00"
+        },
+        {
+          "name": "Harminckettesek tere",
+          "latitude": 47.489388,
+          "longitude": 19.071638,
+          "stop_order": 21,
+          "arrival_offset": "00:38:00"
+        },
+        {
+          "name": "Horváth Mihály tér",
+          "latitude": 47.489377,
+          "longitude": 19.077397,
+          "stop_order": 22,
+          "arrival_offset": "00:41:00"
+        },
+        {
+          "name": "Muzsikus cigányok parkja",
+          "latitude": 47.488963,
+          "longitude": 19.081125,
+          "stop_order": 23,
+          "arrival_offset": "00:42:00"
+        },
+        {
+          "name": "Kálvária tér",
+          "latitude": 47.488791,
+          "longitude": 19.085371,
+          "stop_order": 24,
+          "arrival_offset": "00:44:00"
+        },
+        {
+          "name": "Orczy tér",
+          "latitude": 47.48913,
+          "longitude": 19.092218,
+          "stop_order": 25,
+          "arrival_offset": "00:46:00"
+        },
+        {
+          "name": "Kőbányai út 31.",
+          "latitude": 47.487452,
+          "longitude": 19.103721,
+          "stop_order": 26,
+          "arrival_offset": "00:48:00"
+        },
+        {
+          "name": "Kőbányai út / Könyves Kálmán körút",
+          "latitude": 47.486155,
+          "longitude": 19.108284,
+          "stop_order": 27,
+          "arrival_offset": "00:50:00"
+        },
+        {
+          "name": "Eiffel Műhelyház",
+          "latitude": 47.484704,
+          "longitude": 19.114015,
+          "stop_order": 28,
+          "arrival_offset": "00:51:00"
+        },
+        {
+          "name": "Egészségház",
+          "latitude": 47.483676,
+          "longitude": 19.117463,
+          "stop_order": 29,
+          "arrival_offset": "00:52:00"
+        },
+        {
+          "name": "Kőbánya alsó vasútállomás (Mázsa tér)",
+          "latitude": 47.482564,
+          "longitude": 19.126059,
+          "stop_order": 30,
+          "arrival_offset": "00:55:00"
+        },
+        {
+          "name": "Liget tér",
+          "latitude": 47.483074,
+          "longitude": 19.131221,
+          "stop_order": 31,
+          "arrival_offset": "00:56:00"
+        },
+        {
+          "name": "Szent László tér",
+          "latitude": 47.485907,
+          "longitude": 19.130668,
+          "stop_order": 32,
+          "arrival_offset": "00:58:00"
+        },
+        {
+          "name": "Kőbánya alsó vasútállomás",
+          "latitude": 47.484011,
+          "longitude": 19.127574,
+          "stop_order": 33,
+          "arrival_offset": "00:59:00"
+        }
+      ]
+    },
+    "0160": {
+      "route_number": "16",
+      "name": "Deák Ferenc tér M / Széll Kálmán tér M",
+      "type": "bus",
+      "stops": [
+        {
+          "name": "Deák Ferenc tér M",
+          "latitude": 47.497701,
+          "longitude": 19.053353,
+          "stop_order": 1,
+          "arrival_offset": "00:00:00"
+        },
+        {
+          "name": "Hild tér",
+          "latitude": 47.498978,
+          "longitude": 19.050884,
+          "stop_order": 2,
+          "arrival_offset": "00:01:00"
+        },
+        {
+          "name": "Széchenyi István tér",
+          "latitude": 47.500543,
+          "longitude": 19.04669,
+          "stop_order": 3,
+          "arrival_offset": "00:02:00"
+        },
+        {
+          "name": "Clark Ádám tér",
+          "latitude": 47.498312,
+          "longitude": 19.039816,
+          "stop_order": 4,
+          "arrival_offset": "00:04:00"
+        },
+        {
+          "name": "Donáti utca",
+          "latitude": 47.501307,
+          "longitude": 19.036072,
+          "stop_order": 5,
+          "arrival_offset": "00:06:00"
+        },
+        {
+          "name": "Halászbástya (Schulek Frigyes lépcső)",
+          "latitude": 47.50224,
+          "longitude": 19.035339,
+          "stop_order": 6,
+          "arrival_offset": "00:07:00"
+        },
+        {
+          "name": "Dísz tér",
+          "latitude": 47.499398,
+          "longitude": 19.03599,
+          "stop_order": 7,
+          "arrival_offset": "00:08:00"
+        },
+        {
+          "name": "Szentháromság tér",
+          "latitude": 47.501306,
+          "longitude": 19.033896,
+          "stop_order": 8,
+          "arrival_offset": "00:09:00"
+        },
+        {
+          "name": "Bécsi kapu tér",
+          "latitude": 47.504553,
+          "longitude": 19.030683,
+          "stop_order": 9,
+          "arrival_offset": "00:10:00"
+        },
+        {
+          "name": "Mátray utca",
+          "latitude": 47.505965,
+          "longitude": 19.028598,
+          "stop_order": 10,
+          "arrival_offset": "00:11:00"
+        },
+        {
+          "name": "Széll Kálmán tér M",
+          "latitude": 47.506881,
+          "longitude": 19.023541,
+          "stop_order": 11,
+          "arrival_offset": "00:12:00"
+        }
+      ]
+    }
+  },
+  "stops": {
+    "102592": {
+      "name": "Karolina út (Sárbogárdi út)",
+      "latitude": 47.472818,
+      "longitude": 19.034351
+    },
+    "166506": {
+      "name": "Bosnyák tér (bevásárlóközpont)",
+      "latitude": 47.521956,
+      "longitude": 19.115484
+    },
+    "008037": {
+      "name": "Kőbányai út 31.",
+      "latitude": 47.487452,
+      "longitude": 19.103721
+    },
+    "008238": {
+      "name": "Széchenyi István tér",
+      "latitude": 47.500543,
+      "longitude": 19.04669
+    },
+    "008381": {
+      "name": "Kőbánya alsó vasútállomás",
+      "latitude": 47.484011,
+      "longitude": 19.127574
+    },
+    "008455": {
+      "name": "Jászai Mari tér",
+      "latitude": 47.512837,
+      "longitude": 19.047936
+    },
+    "009220": {
+      "name": "Móricz Zsigmond körtér M",
+      "latitude": 47.477496,
+      "longitude": 19.048347
+    },
+    "009537": {
+      "name": "Március 15. tér",
+      "latitude": 47.491564,
+      "longitude": 19.051333
+    },
+    "009730": {
+      "name": "Széll Kálmán tér M",
+      "latitude": 47.506881,
+      "longitude": 19.023541
+    },
+    "011325": {
+      "name": "Halászbástya (Schulek Frigyes lépcső)",
+      "latitude": 47.50224,
+      "longitude": 19.035339
+    },
+    "048505": {
+      "name": "Szent István Bazilika",
+      "latitude": 47.500141,
+      "longitude": 19.054665
+    },
+    "056215": {
+      "name": "Kelenföld vasútállomás",
+      "latitude": 47.464515,
+      "longitude": 19.019618
+    },
+    "056217": {
+      "name": "Bikás park",
+      "latitude": 47.464881,
+      "longitude": 19.032345
+    },
+    "056219": {
+      "name": "Újbuda-központ",
+      "latitude": 47.47286,
+      "longitude": 19.045954
+    },
+    "056221": {
+      "name": "Móricz Zsigmond körtér",
+      "latitude": 47.476629,
+      "longitude": 19.047227
+    },
+    "056223": {
+      "name": "Szent Gellért tér - Műegyetem",
+      "latitude": 47.482635,
+      "longitude": 19.054014
+    },
+    "056225": {
+      "name": "Fővám tér",
+      "latitude": 47.485792,
+      "longitude": 19.057571
+    },
+    "056227": {
+      "name": "Kálvin tér",
+      "latitude": 47.488903,
+      "longitude": 19.061022
+    },
+    "056229": {
+      "name": "Rákóczi tér",
+      "latitude": 47.492725,
+      "longitude": 19.071361
+    },
+    "056231": {
+      "name": "II. János Pál pápa tér",
+      "latitude": 47.495593,
+      "longitude": 19.077229
+    },
+    "056233": {
+      "name": "Keleti pályaudvar",
+      "latitude": 47.500116,
+      "longitude": 19.080722
+    },
+    "071659": {
+      "name": "Nyugati pályaudvar M",
+      "latitude": 47.509906,
+      "longitude": 19.05504
+    },
+    "090915": {
+      "name": "Andor utca / Tétényi út",
+      "latitude": 47.457127,
+      "longitude": 19.033537
+    },
+    "F00030": {
+      "name": "Mátray utca",
+      "latitude": 47.505965,
+      "longitude": 19.028598
+    },
+    "F00045": {
+      "name": "Donáti utca",
+      "latitude": 47.501307,
+      "longitude": 19.036072
+    },
+    "F00047": {
+      "name": "Clark Ádám tér",
+      "latitude": 47.498312,
+      "longitude": 19.039816
+    },
+    "F00063": {
+      "name": "Batthyány tér",
+      "latitude": 47.506826,
+      "longitude": 19.038103
+    },
+    "F00069": {
+      "name": "Bécsi kapu tér",
+      "latitude": 47.504553,
+      "longitude": 19.030683
+    },
+    "F00072": {
+      "name": "Szentháromság tér",
+      "latitude": 47.501306,
+      "longitude": 19.033896
+    },
+    "F00073": {
+      "name": "Dísz tér",
+      "latitude": 47.499398,
+      "longitude": 19.03599
+    },
+    "F00094": {
+      "name": "Déli pályaudvar",
+      "latitude": 47.50045,
+      "longitude": 19.024604
+    },
+    "F00111": {
+      "name": "Rudas Gyógyfürdő",
+      "latitude": 47.489273,
+      "longitude": 19.046916
+    },
+    "F00138": {
+      "name": "Kolosy tér",
+      "latitude": 47.526913,
+      "longitude": 19.038204
+    },
+    "F00142": {
+      "name": "Margitsziget / Margit híd",
+      "latitude": 47.514447,
+      "longitude": 19.044324
+    },
+    "F00189": {
+      "name": "Margit híd, budai hídfő H",
+      "latitude": 47.514564,
+      "longitude": 19.038894
+    },
+    "F00199": {
+      "name": "Mechwart liget",
+      "latitude": 47.510965,
+      "longitude": 19.032111
+    },
+    "F00235": {
+      "name": "Margit híd, budai hídfő H",
+      "latitude": 47.515365,
+      "longitude": 19.039282
+    },
+    "F00246": {
+      "name": "Zsigmond tér",
+      "latitude": 47.524053,
+      "longitude": 19.037421
+    },
+    "F00248": {
+      "name": "Császár-Komjádi uszoda",
+      "latitude": 47.51961,
+      "longitude": 19.038046
+    },
+    "F00308": {
+      "name": "Széna tér",
+      "latitude": 47.508491,
+      "longitude": 19.027319
+    },
+    "F00575": {
+      "name": "Óbuda, Bogdáni út",
+      "latitude": 47.550127,
+      "longitude": 19.041973
+    },
+    "F00577": {
+      "name": "Bogdáni út",
+      "latitude": 47.548409,
+      "longitude": 19.043102
+    },
+    "F00583": {
+      "name": "Raktár utca",
+      "latitude": 47.544713,
+      "longitude": 19.042212
+    },
+    "F00602": {
+      "name": "Galagonya utca",
+      "latitude": 47.530133,
+      "longitude": 19.039386
+    },
+    "F00605": {
+      "name": "Tímár utca",
+      "latitude": 47.534333,
+      "longitude": 19.03973
+    },
+    "F00607": {
+      "name": "Kiscelli utca",
+      "latitude": 47.538517,
+      "longitude": 19.040218
+    },
+    "F00612": {
+      "name": "Flórián tér",
+      "latitude": 47.541987,
+      "longitude": 19.04119
+    },
+    "F00898": {
+      "name": "Újpest-városkapu",
+      "latitude": 47.559146,
+      "longitude": 19.079567
+    },
+    "F00913": {
+      "name": "Újpest-központ",
+      "latitude": 47.560437,
+      "longitude": 19.08976
+    },
+    "F00919": {
+      "name": "Fővám tér M",
+      "latitude": 47.486941,
+      "longitude": 19.056482
+    },
+    "F00926": {
+      "name": "Jászai Mari tér",
+      "latitude": 47.512864,
+      "longitude": 19.048785
+    },
+    "F00930": {
+      "name": "Jászai Mari tér",
+      "latitude": 47.512504,
+      "longitude": 19.049555
+    },
+    "F00935": {
+      "name": "Nyugati pályaudvar M",
+      "latitude": 47.509922,
+      "longitude": 19.056658
+    },
+    "F00937": {
+      "name": "Nyugati pályaudvar",
+      "latitude": 47.510828,
+      "longitude": 19.055952
+    },
+    "F00941": {
+      "name": "Báthory utca / Bajcsy-Zsilinszky út",
+      "latitude": 47.506101,
+      "longitude": 19.054854
+    },
+    "F00943": {
+      "name": "Arany János utca M",
+      "latitude": 47.502881,
+      "longitude": 19.054734
+    },
+    "F00946": {
+      "name": "Deák Ferenc tér M",
+      "latitude": 47.497089,
+      "longitude": 19.05541
+    },
+    "F00951": {
+      "name": "Ferenciek tere M",
+      "latitude": 47.492925,
+      "longitude": 19.055343
+    },
+    "F00953": {
+      "name": "Ferenciek tere",
+      "latitude": 47.49182,
+      "longitude": 19.056789
+    },
+    "F00955": {
+      "name": "Deák Ferenc tér",
+      "latitude": 47.497591,
+      "longitude": 19.054525
+    },
+    "F00957": {
+      "name": "Arany János utca",
+      "latitude": 47.50367,
+      "longitude": 19.054513
+    },
+    "F00959": {
+      "name": "Kossuth Lajos tér",
+      "latitude": 47.505511,
+      "longitude": 19.045769
+    },
+    "F00961": {
+      "name": "Deák Ferenc tér",
+      "latitude": 47.497593,
+      "longitude": 19.053857
+    },
+    "F00963": {
+      "name": "Deák Ferenc tér",
+      "latitude": 47.497728,
+      "longitude": 19.054142
+    },
+    "F00965": {
+      "name": "Vörösmarty tér",
+      "latitude": 47.496737,
+      "longitude": 19.050593
+    },
+    "F00967": {
+      "name": "Vigadó tér",
+      "latitude": 47.495837,
+      "longitude": 19.048215
+    },
+    "F00969": {
+      "name": "Országház, látogatóközpont",
+      "latitude": 47.508879,
+      "longitude": 19.046582
+    },
+    "F00971": {
+      "name": "Kossuth Lajos tér M",
+      "latitude": 47.505749,
+      "longitude": 19.046834
+    },
+    "F00973": {
+      "name": "Széchenyi István tér",
+      "latitude": 47.500685,
+      "longitude": 19.046064
+    },
+    "F00976": {
+      "name": "Eötvös tér",
+      "latitude": 47.497969,
+      "longitude": 19.04702
+    },
+    "F00981": {
+      "name": "Hild tér",
+      "latitude": 47.498978,
+      "longitude": 19.050884
+    },
+    "F00985": {
+      "name": "Deák Ferenc tér M",
+      "latitude": 47.497701,
+      "longitude": 19.053353
+    },
+    "F00997": {
+      "name": "Bajcsy-Zsilinszky út",
+      "latitude": 47.499937,
+      "longitude": 19.055655
+    },
+    "F01000": {
+      "name": "Március 15. tér",
+      "latitude": 47.490719,
+      "longitude": 19.051652
+    },
+    "F01007": {
+      "name": "Kálvin tér M",
+      "latitude": 47.489083,
+      "longitude": 19.062694
+    },
+    "F01012": {
+      "name": "Astoria M",
+      "latitude": 47.494561,
+      "longitude": 19.059696
+    },
+    "F01016": {
+      "name": "Astoria M",
+      "latitude": 47.494478,
+      "longitude": 19.061168
+    },
+    "F01019": {
+      "name": "Astoria",
+      "latitude": 47.494825,
+      "longitude": 19.062457
+    },
+    "F01037": {
+      "name": "Király utca / Erzsébet körút",
+      "latitude": 47.502806,
+      "longitude": 19.066187
+    },
+    "F01080": {
+      "name": "Opera",
+      "latitude": 47.502305,
+      "longitude": 19.059161
+    },
+    "F01081": {
+      "name": "Oktogon M",
+      "latitude": 47.505586,
+      "longitude": 19.06287
+    },
+    "F01086": {
+      "name": "Oktogon",
+      "latitude": 47.505023,
+      "longitude": 19.063233
+    },
+    "F01093": {
+      "name": "Vörösmarty utca",
+      "latitude": 47.507238,
+      "longitude": 19.066529
+    },
+    "F01096": {
+      "name": "Kodály körönd",
+      "latitude": 47.509261,
+      "longitude": 19.069544
+    },
+    "F01101": {
+      "name": "Bajza utca",
+      "latitude": 47.511342,
+      "longitude": 19.072662
+    },
+    "F01103": {
+      "name": "Hősök tere",
+      "latitude": 47.51411,
+      "longitude": 19.076883
+    },
+    "F01112": {
+      "name": "Wesselényi utca / Erzsébet körút",
+      "latitude": 47.499856,
+      "longitude": 19.06916
+    },
+    "F01146": {
+      "name": "Reiner Frigyes park",
+      "latitude": 47.503468,
+      "longitude": 19.088169
+    },
+    "F01159": {
+      "name": "Keleti pályaudvar M",
+      "latitude": 47.500466,
+      "longitude": 19.081955
+    },
+    "F01162": {
+      "name": "Huszár utca",
+      "latitude": 47.499136,
+      "longitude": 19.078384
+    },
+    "F01164": {
+      "name": "Blaha Lujza tér M",
+      "latitude": 47.496689,
+      "longitude": 19.06953
+    },
+    "F01169": {
+      "name": "Blaha Lujza tér M",
+      "latitude": 47.496248,
+      "longitude": 19.070671
+    },
+    "F01170": {
+      "name": "Uránia",
+      "latitude": 47.495586,
+      "longitude": 19.065257
+    },
+    "F01174": {
+      "name": "Szentkirályi utca",
+      "latitude": 47.488975,
+      "longitude": 19.065852
+    },
+    "F01177": {
+      "name": "Muzsikus cigányok parkja",
+      "latitude": 47.488963,
+      "longitude": 19.081125
+    },
+    "F01189": {
+      "name": "Corvin-negyed",
+      "latitude": 47.484862,
+      "longitude": 19.072242
+    },
+    "F01194": {
+      "name": "Corvin-negyed M",
+      "latitude": 47.48621,
+      "longitude": 19.070057
+    },
+    "F01197": {
+      "name": "Harminckettesek tere",
+      "latitude": 47.489592,
+      "longitude": 19.070589
+    },
+    "F01201": {
+      "name": "Rákóczi tér M",
+      "latitude": 47.49239,
+      "longitude": 19.071001
+    },
+    "F01205": {
+      "name": "Harminckettesek tere",
+      "latitude": 47.489388,
+      "longitude": 19.071638
+    },
+    "F01208": {
+      "name": "Horváth Mihály tér",
+      "latitude": 47.489377,
+      "longitude": 19.077397
+    },
+    "F01218": {
+      "name": "Orczy tér",
+      "latitude": 47.48913,
+      "longitude": 19.092218
+    },
+    "F01224": {
+      "name": "Kálvária tér",
+      "latitude": 47.488791,
+      "longitude": 19.085371
+    },
+    "F01233": {
+      "name": "Semmelweis Klinikák",
+      "latitude": 47.482872,
+      "longitude": 19.078425
+    },
+    "F01253": {
+      "name": "Nagyvárad tér",
+      "latitude": 47.478365,
+      "longitude": 19.091071
+    },
+    "F01270": {
+      "name": "Kőbányai út / Könyves Kálmán körút",
+      "latitude": 47.486155,
+      "longitude": 19.108284
+    },
+    "F01283": {
+      "name": "Népliget",
+      "latitude": 47.474913,
+      "longitude": 19.100672
+    },
+    "F01290": {
+      "name": "Kálvin tér",
+      "latitude": 47.48949,
+      "longitude": 19.06192
+    },
+    "F01292": {
+      "name": "Blaha Lujza tér",
+      "latitude": 47.497006,
+      "longitude": 19.070274
+    },
+    "F01325": {
+      "name": "Puskás Ferenc Stadion",
+      "latitude": 47.500174,
+      "longitude": 19.106381
+    },
+    "F01336": {
+      "name": "Keleti pályaudvar",
+      "latitude": 47.499683,
+      "longitude": 19.082881
+    },
+    "F01346": {
+      "name": "Zsil utca",
+      "latitude": 47.483036,
+      "longitude": 19.062439
+    },
+    "F01373": {
+      "name": "Boráros tér H",
+      "latitude": 47.480149,
+      "longitude": 19.066074
+    },
+    "F01378": {
+      "name": "Mester utca / Ferenc körút",
+      "latitude": 47.482199,
+      "longitude": 19.068463
+    },
+    "F01384": {
+      "name": "Haller utca / Soroksári út",
+      "latitude": 47.474022,
+      "longitude": 19.070622
+    },
+    "F01396": {
+      "name": "Müpa - Nemzeti Színház H",
+      "latitude": 47.470972,
+      "longitude": 19.073181
+    },
+    "F01401": {
+      "name": "Közvágóhíd H",
+      "latitude": 47.467527,
+      "longitude": 19.075886
+    },
+    "F01494": {
+      "name": "Ecseri út",
+      "latitude": 47.470529,
+      "longitude": 19.111646
+    },
+    "F01519": {
+      "name": "Boráros tér H",
+      "latitude": 47.479726,
+      "longitude": 19.066299
+    },
+    "F01542": {
+      "name": "Határ út",
+      "latitude": 47.465749,
+      "longitude": 19.126228
+    },
+    "F01544": {
+      "name": "Kőbánya-Kispest",
+      "latitude": 47.463443,
+      "longitude": 19.148764
+    },
+    "F01564": {
+      "name": "Egészségház",
+      "latitude": 47.483676,
+      "longitude": 19.117463
+    },
+    "F01572": {
+      "name": "Kőbánya alsó vasútállomás (Mázsa tér)",
+      "latitude": 47.482564,
+      "longitude": 19.126059
+    },
+    "F01642": {
+      "name": "Liget tér",
+      "latitude": 47.483074,
+      "longitude": 19.131221
+    },
+    "F01652": {
+      "name": "Szent László tér",
+      "latitude": 47.485907,
+      "longitude": 19.130668
+    },
+    "F01734": {
+      "name": "Eiffel Műhelyház",
+      "latitude": 47.484704,
+      "longitude": 19.114015
+    },
+    "F01743": {
+      "name": "Pillangó utca",
+      "latitude": 47.501204,
+      "longitude": 19.120417
+    },
+    "F01749": {
+      "name": "Örs vezér tere",
+      "latitude": 47.502922,
+      "longitude": 19.135963
+    },
+    "F01879": {
+      "name": "Pöttyös utca",
+      "latitude": 47.467939,
+      "longitude": 19.118838
+    },
+    "F01958": {
+      "name": "Bikás park M",
+      "latitude": 47.464277,
+      "longitude": 19.033826
+    },
+    "F01960": {
+      "name": "Bornemissza tér",
+      "latitude": 47.458435,
+      "longitude": 19.033573
+    },
+    "F01965": {
+      "name": "Csurgói út",
+      "latitude": 47.453979,
+      "longitude": 19.033445
+    },
+    "F01967": {
+      "name": "Nyírbátor utca",
+      "latitude": 47.449545,
+      "longitude": 19.033366
+    },
+    "F01969": {
+      "name": "Fonyód utca / Sáfrány utca",
+      "latitude": 47.443905,
+      "longitude": 19.033885
+    },
+    "F01970": {
+      "name": "Albertfalva vasútállomás",
+      "latitude": 47.441603,
+      "longitude": 19.034191
+    },
+    "F01989": {
+      "name": "Budafoki út / Szerémi sor",
+      "latitude": 47.473691,
+      "longitude": 19.052818
+    },
+    "F01998": {
+      "name": "Újbuda-központ M",
+      "latitude": 47.474042,
+      "longitude": 19.046862
+    },
+    "F02032": {
+      "name": "Tétényi út 30.",
+      "latitude": 47.466355,
+      "longitude": 19.034157
+    },
+    "F02034": {
+      "name": "Szent Imre Kórház",
+      "latitude": 47.469445,
+      "longitude": 19.033716
+    },
+    "F02048": {
+      "name": "Karolina út",
+      "latitude": 47.473371,
+      "longitude": 19.035389
+    },
+    "F02144": {
+      "name": "Szent Gellért tér - Műegyetem M",
+      "latitude": 47.482482,
+      "longitude": 19.05294
+    },
+    "F02149": {
+      "name": "Gárdonyi tér",
+      "latitude": 47.480522,
+      "longitude": 19.051932
+    },
+    "F02154": {
+      "name": "Budafoki út / Karinthy Frigyes út",
+      "latitude": 47.476048,
+      "longitude": 19.053455
+    },
+    "F02184": {
+      "name": "Kosztolányi Dezső tér",
+      "latitude": 47.475179,
+      "longitude": 19.040191
+    },
+    "F02203": {
+      "name": "Móricz Zsigmond körtér M",
+      "latitude": 47.477491,
+      "longitude": 19.046864
+    },
+    "F02212": {
+      "name": "Herend utca",
+      "latitude": 47.446672,
+      "longitude": 19.033591
+    },
+    "F02214": {
+      "name": "Puskás Tivadar utca",
+      "latitude": 47.460437,
+      "longitude": 19.033642
+    },
+    "F02224": {
+      "name": "Petőfi híd, budai hídfő",
+      "latitude": 47.476695,
+      "longitude": 19.058975
+    },
+    "F02477": {
+      "name": "Széll Kálmán tér M",
+      "latitude": 47.507258,
+      "longitude": 19.025182
+    },
+    "F02481": {
+      "name": "Széll Kálmán tér",
+      "latitude": 47.507533,
+      "longitude": 19.026097
+    },
+    "F02614": {
+      "name": "Lehel tér",
+      "latitude": 47.517595,
+      "longitude": 19.060285
+    },
+    "F02638": {
+      "name": "Göncz Árpád városközpont",
+      "latitude": 47.532171,
+      "longitude": 19.066471
+    },
+    "F02681": {
+      "name": "Dózsa György út",
+      "latitude": 47.524358,
+      "longitude": 19.063088
+    },
+    "F02683": {
+      "name": "Forgách utca",
+      "latitude": 47.538163,
+      "longitude": 19.069055
+    },
+    "F02685": {
+      "name": "Gyöngyösi utca",
+      "latitude": 47.548374,
+      "longitude": 19.073019
+    },
+    "F02697": {
+      "name": "Széchenyi fürdő",
+      "latitude": 47.517407,
+      "longitude": 19.081481
+    },
+    "F02716": {
+      "name": "Cházár András utca",
+      "latitude": 47.505814,
+      "longitude": 19.091582
+    },
+    "F02723": {
+      "name": "Stefánia út / Thököly út",
+      "latitude": 47.5087,
+      "longitude": 19.095394
+    },
+    "F02725": {
+      "name": "Zugló vasútállomás",
+      "latitude": 47.511145,
+      "longitude": 19.098662
+    },
+    "F02824": {
+      "name": "Tisza István tér",
+      "latitude": 47.516951,
+      "longitude": 19.108478
+    },
+    "F02835": {
+      "name": "Bosnyák tér",
+      "latitude": 47.519892,
+      "longitude": 19.112835
+    },
+    "F02845": {
+      "name": "Rákospatak utca / Csömöri út",
+      "latitude": 47.524554,
+      "longitude": 19.118781
+    },
+    "F02846": {
+      "name": "Miskolci utca / Csömöri út",
+      "latitude": 47.527214,
+      "longitude": 19.122035
+    },
+    "F02848": {
+      "name": "Cinkotai út",
+      "latitude": 47.528472,
+      "longitude": 19.123842
+    },
+    "F02888": {
+      "name": "Mexikói út",
+      "latitude": 47.519513,
+      "longitude": 19.091037
+    },
+    "F02961": {
+      "name": "Amerikai út",
+      "latitude": 47.513581,
+      "longitude": 19.102501
+    },
+    "F03136": {
+      "name": "Apolló utca",
+      "latitude": 47.537242,
+      "longitude": 19.13525
+    },
+    "F03139": {
+      "name": "Madách utca",
+      "latitude": 47.539093,
+      "longitude": 19.137697
+    },
+    "F03152": {
+      "name": "Fő tér",
+      "latitude": 47.541511,
+      "longitude": 19.140106
+    },
+    "F03157": {
+      "name": "Vásárcsarnok",
+      "latitude": 47.545962,
+      "longitude": 19.140592
+    },
+    "F03165": {
+      "name": "Újpalota, Nyírpalota út",
+      "latitude": 47.547329,
+      "longitude": 19.141457
+    },
+    "F03195": {
+      "name": "Molnár Viktor utca",
+      "latitude": 47.533531,
+      "longitude": 19.13049
+    }
+  },
+  "route_stops": {},
+  "statistics": {
+    "routes_count": 10,
+    "stops_count": 172,
+    "route_stops_count": 189
+  }
+}

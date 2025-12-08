@@ -1,0 +1,726 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// REPORT DETAILS MODAL - DARK THEME WITH GLASSMORPHISM (Persian Blue, NO red)
+// ============================================================================
+
+.report-details-modal {
+  @include flex-column;
+  min-width: 600px;
+  max-width: 800px;
+  background: $persian-blue-950;
+  border-radius: 20px;
+  overflow: hidden;
+
+  @include mobile {
+    min-width: 320px;
+  }
+}
+
+// ============================================================================
+// MODAL HEADER
+// ============================================================================
+
+.modal-header {
+  @include flex-between;
+  align-items: flex-start;
+  padding: $spacing-6 $spacing-6 $spacing-4 $spacing-6;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+
+  // Dark gradient background
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba($persian-blue-600, 0.3), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-500, 0.2), transparent 50%),
+    rgba(255, 255, 255, 0.02);
+
+  .header-content {
+    @include flex-start;
+    gap: $spacing-4;
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .icon-wrapper {
+    @include flex-center;
+    width: 56px;
+    height: 56px;
+    border-radius: $radius-full;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600);
+    box-shadow: 0 4px 16px rgba($persian-blue-500, 0.3);
+
+    .header-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: white;
+    }
+  }
+
+  .title-section {
+    @include flex-column;
+    gap: $spacing-1;
+    flex: 1;
+    min-width: 0;
+
+    h2 {
+      margin: 0;
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+      color: $persian-blue-50;
+      word-break: break-word;
+    }
+
+    .reference-number {
+      font-size: $font-size-xs;
+      color: $persian-blue-400;
+      font-family: $font-family-mono;
+      background: rgba(255, 255, 255, 0.06);
+      padding: $spacing-1 $spacing-2;
+      border-radius: $radius-sm;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      align-self: flex-start;
+    }
+  }
+
+  .close-button {
+    color: $persian-blue-300;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+
+    &:hover {
+      background: rgba($persian-blue-400, 0.15);
+      color: $persian-blue-100;
+    }
+
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+// ============================================================================
+// DIALOG CONTENT
+// ============================================================================
+
+.dialog-content {
+  padding: $spacing-6 !important;
+  overflow-y: auto;
+  max-height: 70vh;
+  background: $persian-blue-950;
+
+  @include mobile {
+    padding: $spacing-4 !important;
+  }
+}
+
+// ============================================================================
+// BADGES SECTION
+// ============================================================================
+
+.badges-section {
+  @include flex-start;
+  flex-wrap: wrap;
+  gap: $spacing-2;
+  margin-bottom: $spacing-6;
+  padding: $spacing-4;
+  border-radius: $radius-md;
+
+  // Glassmorphism
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  mat-chip {
+    @include flex-center;
+    gap: $spacing-1;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+    height: 32px;
+    min-height: 32px;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .type-chip {
+    background: rgba($persian-blue-500, 0.2) !important;
+    color: $persian-blue-200 !important;
+    border: 1px solid rgba($persian-blue-400, 0.3);
+
+    mat-icon {
+      color: $persian-blue-400 !important;
+    }
+  }
+
+  .status-chip {
+    &.pending {
+      background: rgba($persian-blue-400, 0.2) !important;
+      color: $persian-blue-300 !important;
+      border: 1px solid rgba($persian-blue-400, 0.3);
+    }
+
+    &.in-review {
+      background: rgba($persian-blue-500, 0.2) !important;
+      color: $persian-blue-200 !important;
+      border: 1px solid rgba($persian-blue-500, 0.3);
+    }
+
+    &.resolved {
+      background: rgba(#4ade80, 0.2) !important;
+      color: #4ade80 !important;
+      border: 1px solid rgba(#4ade80, 0.3);
+    }
+
+    &.dismissed {
+      background: rgba($persian-blue-600, 0.3) !important;
+      color: $persian-blue-400 !important;
+      border: 1px solid rgba($persian-blue-600, 0.3);
+    }
+  }
+
+  .priority-chip {
+    &.low {
+      background: rgba($persian-blue-700, 0.3) !important;
+      color: $persian-blue-300 !important;
+    }
+
+    &.medium {
+      background: rgba($persian-blue-500, 0.2) !important;
+      color: $persian-blue-200 !important;
+    }
+
+    &.high {
+      background: rgba($persian-blue-400, 0.25) !important;
+      color: $persian-blue-100 !important;
+    }
+
+    &.critical {
+      background: rgba(#f87171, 0.2) !important;
+      color: #f87171 !important;
+      animation: pulse 2s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+// ============================================================================
+// INFO SECTION
+// ============================================================================
+
+.info-section {
+  margin-bottom: $spacing-6;
+  padding: $spacing-5;
+  border-radius: 16px;
+  animation: fadeInUp 0.4s ease backwards;
+
+  // Glassmorphism
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  &.admin-section {
+    border-left: 4px solid $persian-blue-400;
+    background: rgba($persian-blue-500, 0.08);
+  }
+
+  &.photos-section {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .section-header {
+    @include flex-start;
+    gap: $spacing-2;
+    margin-bottom: $spacing-4;
+    padding-bottom: $spacing-3;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      color: $persian-blue-400;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+      color: $persian-blue-100;
+    }
+  }
+}
+
+.description-text {
+  margin: 0;
+  line-height: 1.7;
+  color: $persian-blue-200;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: $font-size-base;
+}
+
+// ============================================================================
+// INFO GRID
+// ============================================================================
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-3;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.info-item {
+  @include flex-start;
+  gap: $spacing-3;
+  padding: $spacing-3;
+  border-radius: $radius-md;
+  transition: all 0.3s ease;
+
+  // Glassmorphism
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  &:hover {
+    border-color: rgba($persian-blue-400, 0.3);
+    background: rgba($persian-blue-500, 0.1);
+    transform: translateY(-2px);
+  }
+
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .item-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    color: $persian-blue-400;
+    flex-shrink: 0;
+  }
+
+  .item-content {
+    @include flex-column;
+    gap: $spacing-1;
+    flex: 1;
+
+    .label {
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      color: $persian-blue-400;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .value {
+      font-size: $font-size-base;
+      color: $persian-blue-100;
+      font-weight: $font-weight-medium;
+    }
+  }
+}
+
+// ============================================================================
+// PHOTOS GALLERY
+// ============================================================================
+
+.photos-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: $spacing-4;
+
+  @include mobile {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: $spacing-3;
+  }
+}
+
+.photo-thumbnail {
+  position: relative;
+  aspect-ratio: 1;
+  cursor: pointer;
+  border-radius: $radius-md;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    border-color: $persian-blue-400;
+
+    .photo-overlay {
+      opacity: 1;
+    }
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    @include flex-center;
+    background: rgba($persian-blue-950, 0.8);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      color: $persian-blue-300;
+    }
+  }
+}
+
+// ============================================================================
+// ADMIN NOTES
+// ============================================================================
+
+.admin-notes {
+  p {
+    margin: 0 0 $spacing-3 0;
+    line-height: 1.7;
+    color: $persian-blue-200;
+    font-size: $font-size-base;
+  }
+}
+
+.admin-info {
+  @include flex-start;
+  gap: $spacing-2;
+  font-size: $font-size-sm;
+  color: $persian-blue-300;
+  padding: $spacing-3;
+  background: rgba(#4ade80, 0.1);
+  border-radius: $radius-md;
+  border: 1px solid rgba(#4ade80, 0.2);
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: #4ade80;
+  }
+}
+
+// ============================================================================
+// TIMESTAMPS SECTION
+// ============================================================================
+
+.timestamps-section {
+  .timestamp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: $spacing-4;
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .timestamp-item {
+    @include flex-start;
+    gap: $spacing-3;
+    padding: $spacing-3;
+    border-radius: $radius-md;
+    transition: all 0.3s ease;
+
+    // Glassmorphism
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    &:hover {
+      border-color: rgba($persian-blue-400, 0.3);
+      background: rgba($persian-blue-500, 0.1);
+      transform: translateY(-2px);
+    }
+
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      color: $persian-blue-400;
+      flex-shrink: 0;
+    }
+
+    .timestamp-content {
+      @include flex-column;
+      gap: $spacing-1;
+      flex: 1;
+
+      .label {
+        font-size: $font-size-xs;
+        font-weight: $font-weight-semibold;
+        color: $persian-blue-400;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .value {
+        font-size: $font-size-sm;
+        color: $persian-blue-100;
+        font-weight: $font-weight-medium;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// DIALOG ACTIONS
+// ============================================================================
+
+.dialog-actions {
+  @include flex-between;
+  gap: $spacing-3;
+  padding: $spacing-4 $spacing-6 $spacing-6 $spacing-6 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+
+  @include mobile {
+    flex-direction: column-reverse;
+    padding: $spacing-4 !important;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .cancel-button {
+    @include flex-center;
+    gap: $spacing-2;
+    color: $persian-blue-300 !important;
+    border-color: rgba($persian-blue-400, 0.3) !important;
+    background: transparent !important;
+    transition: all 0.3s ease;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover:not(:disabled) {
+      background: rgba($persian-blue-400, 0.1) !important;
+      border-color: rgba($persian-blue-400, 0.5) !important;
+    }
+  }
+
+  .action-buttons {
+    @include flex-end;
+    gap: $spacing-3;
+
+    @include mobile {
+      width: 100%;
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+
+  .edit-button {
+    @include flex-center;
+    gap: $spacing-2;
+    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    color: white !important;
+    box-shadow: 0 4px 16px rgba($persian-blue-500, 0.3);
+    transition: all 0.3s ease;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover:not(:disabled) {
+      box-shadow: 0 8px 24px rgba($persian-blue-500, 0.4);
+      transform: translateY(-2px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgba($persian-blue-500, 0.3);
+    }
+  }
+
+  .delete-button {
+    @include flex-center;
+    gap: $spacing-2;
+    background: rgba(#f87171, 0.15) !important;
+    color: #f87171 !important;
+    border: 1px solid rgba(#f87171, 0.3) !important;
+    transition: all 0.3s ease;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover:not(:disabled) {
+      background: rgba(#f87171, 0.25) !important;
+      border-color: rgba(#f87171, 0.5) !important;
+      transform: translateY(-2px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+}
+
+// ============================================================================
+// LIGHTBOX
+// ============================================================================
+
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($persian-blue-950, 0.95);
+  @include flex-center;
+  z-index: 9999;
+  cursor: pointer;
+  animation: fadeIn 0.3s ease;
+
+  img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    cursor: default;
+    border-radius: $radius-lg;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 0.4s ease;
+  }
+}
+
+.close-lightbox {
+  position: absolute;
+  top: $spacing-4;
+  right: $spacing-4;
+  color: $persian-blue-200 !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  z-index: 10000;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: scale(1.1);
+  }
+
+  mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $persian-blue-200 !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  z-index: 10000;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  &.prev {
+    left: $spacing-4;
+  }
+
+  &.next {
+    right: $spacing-4;
+  }
+
+  mat-icon {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.photo-counter {
+  position: absolute;
+  bottom: $spacing-4;
+  left: 50%;
+  transform: translateX(-50%);
+  color: $persian-blue-100;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  padding: $spacing-2 $spacing-4;
+  border-radius: $radius-full;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  z-index: 10000;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

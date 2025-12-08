@@ -1,0 +1,155 @@
+<div class="qr-code-modal">
+  <!-- Header -->
+  <div class="modal-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">qr_code_2</mat-icon>
+      <h2 mat-dialog-title>Jegy QR Kód</h2>
+    </div>
+    <button mat-icon-button (click)="onClose()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Content -->
+  <mat-dialog-content class="dialog-content">
+    <!-- Validity Banner -->
+    <div class="validity-banner" [class.valid]="isTicketValid" [class.invalid]="!isTicketValid">
+      <mat-icon>{{ isTicketValid ? 'verified' : 'error' }}</mat-icon>
+      <span>{{ isTicketValid ? 'Érvényes jegy' : 'Érvénytelen jegy' }}</span>
+    </div>
+
+    <!-- QR Code Display -->
+    <div class="qr-code-wrapper">
+      <div class="qr-code-container" *ngIf="!isLoading && !error && qrCodeUrl">
+        <img [src]="qrCodeUrl" alt="Jegy QR kód" class="qr-code-image" />
+
+        <!-- Invalid overlay -->
+        <div class="invalid-overlay" *ngIf="!isTicketValid">
+          <mat-icon>block</mat-icon>
+          <span>Nem érvényes</span>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div class="loading-state" *ngIf="isLoading">
+        <mat-spinner diameter="80"></mat-spinner>
+        <p>QR kód betöltése...</p>
+      </div>
+
+      <!-- Error State -->
+      <div class="error-state" *ngIf="error && !isLoading">
+        <mat-icon>error_outline</mat-icon>
+        <h3>Nem sikerült betölteni a QR kódot</h3>
+        <p>{{ error }}</p>
+        <button mat-raised-button color="primary" (click)="loadQRCode()">
+          <mat-icon>refresh</mat-icon>
+          Újrapróbálás
+        </button>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="instructions" *ngIf="!isLoading && !error && isTicketValid">
+      <mat-icon>info</mat-icon>
+      <p>Mutasd meg ezt a QR kódot az ellenőrnek felszólításkor</p>
+    </div>
+
+    <!-- Ticket Information -->
+    <div class="ticket-info-section">
+      <div class="section-header">
+        <mat-icon>receipt</mat-icon>
+        <h3>Jegy részletei</h3>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <mat-icon class="item-icon">label</mat-icon>
+          <div class="item-content">
+            <span class="label">Jegy típusa</span>
+            <span class="value">{{ ticket.ticket_type?.name || 'Ismeretlen' }}</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <mat-icon class="item-icon">info</mat-icon>
+          <div class="item-content">
+            <span class="label">Státusz</span>
+            <mat-chip [style.background]="statusColor" [style.color]="'white'">
+              {{ ticket.status === 'active' ? 'AKTÍV' : ticket.status === 'used' ? 'HASZNÁLT' : 'LEJÁRT' }}
+            </mat-chip>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <mat-icon class="item-icon">payments</mat-icon>
+          <div class="item-content">
+            <span class="label">Ár</span>
+            <span class="value price">{{ formatPrice(ticket.price) }}</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <mat-icon class="item-icon">schedule</mat-icon>
+          <div class="item-content">
+            <span class="label">Érvényes kezdete</span>
+            <span class="value">{{ formatDate(ticket.valid_from) }}</span>
+          </div>
+        </div>
+
+        <div class="info-item" *ngIf="ticket.valid_until">
+          <mat-icon class="item-icon">event</mat-icon>
+          <div class="item-content">
+            <span class="label">Érvényes vége</span>
+            <span class="value">{{ formatDate(ticket.valid_until) }}</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <mat-icon class="item-icon">fingerprint</mat-icon>
+          <div class="item-content">
+            <span class="label">Jegy azonosító</span>
+            <span class="value code">{{ ticket.id.substring(0, 8) }}...</span>
+          </div>
+        </div>
+
+        <div class="info-item" *ngIf="ticket.route">
+          <mat-icon class="item-icon">route</mat-icon>
+          <div class="item-content">
+            <span class="label">Járat</span>
+            <span class="value">{{ ticket.route.route_number }} - {{ ticket.route.route_name }}</span>
+          </div>
+        </div>
+
+        <div class="info-item full-width" *ngIf="ticket.from_stop && ticket.to_stop">
+          <mat-icon class="item-icon">pin_drop</mat-icon>
+          <div class="item-content">
+            <span class="label">Útvonal</span>
+            <span class="value route">
+              <span class="stop from">{{ ticket.from_stop.name }}</span>
+              <mat-icon class="arrow">arrow_forward</mat-icon>
+              <span class="stop to">{{ ticket.to_stop.name }}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <!-- Actions -->
+  <mat-dialog-actions class="dialog-actions">
+    <button mat-stroked-button (click)="onClose()" class="cancel-button">
+      <mat-icon>close</mat-icon>
+      Bezárás
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="downloadQRCode()"
+      [disabled]="!qrCodeUrl || isLoading || !!error"
+      class="download-button"
+    >
+      <mat-icon>download</mat-icon>
+      QR kód letöltése
+    </button>
+  </mat-dialog-actions>
+</div>

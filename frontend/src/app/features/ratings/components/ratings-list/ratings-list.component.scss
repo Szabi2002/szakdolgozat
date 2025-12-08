@@ -1,0 +1,531 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// RATINGS LIST - DARK THEME WITH GLASSMORPHISM
+// ============================================================================
+
+.ratings-list-container {
+  width: 100%;
+  @include fade-in(400ms);
+}
+
+// ============================================================================
+// CONTROLS BAR - GLASSMORPHISM
+// ============================================================================
+
+.list-controls {
+  @include flex-between;
+  align-items: center;
+  gap: $spacing-4;
+  margin-bottom: $spacing-6;
+  padding: $spacing-5;
+  border-radius: $radius-xl;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.4s ease 100ms backwards;
+
+  // Glassmorphism effect
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+
+  .controls-left {
+    @include flex-start;
+    gap: $spacing-3;
+    flex-wrap: wrap;
+    flex: 1;
+
+    .filter-field,
+    .sort-field {
+      min-width: 180px;
+      flex: 1;
+
+      ::ng-deep {
+        .mat-mdc-text-field-wrapper {
+          background: rgba(255, 255, 255, 0.04);
+          border-radius: $radius-lg;
+        }
+
+        .mat-mdc-form-field-focus-overlay {
+          background-color: rgba(#facc15, 0.1);
+        }
+
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: rgba(255, 255, 255, 0.15) !important;
+        }
+
+        .mdc-text-field--focused .mdc-notched-outline {
+          .mdc-notched-outline__leading,
+          .mdc-notched-outline__notch,
+          .mdc-notched-outline__trailing {
+            border-color: #facc15 !important;
+          }
+        }
+
+        mat-label {
+          color: $persian-blue-200;
+        }
+
+        .mat-mdc-select-value {
+          color: $persian-blue-50;
+        }
+
+        .mat-mdc-select-arrow {
+          color: $persian-blue-300;
+        }
+
+        .field-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+          margin-right: $spacing-1;
+          vertical-align: middle;
+          color: #facc15;
+        }
+
+        mat-label {
+          @include flex-start;
+          gap: $spacing-1;
+          align-items: center;
+        }
+      }
+
+      @include mobile {
+        min-width: 140px;
+      }
+    }
+  }
+
+  .controls-right {
+    @include flex-end;
+    gap: $spacing-3;
+    align-items: center;
+
+    .results-count {
+      @include flex-center;
+      gap: $spacing-2;
+      padding: $spacing-2 $spacing-3;
+      border-radius: $radius-full;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      white-space: nowrap;
+
+      // Glassmorphism badge
+      background: rgba($persian-blue-400, 0.1);
+      border: 1px solid rgba($persian-blue-400, 0.2);
+      color: $persian-blue-300;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .refresh-button {
+      background: linear-gradient(135deg, #facc15 0%, #eab308 100%) !important;
+      color: $persian-blue-950 !important;
+      box-shadow: 0 4px 12px rgba(#facc15, 0.2);
+      transition: all 0.3s ease;
+
+      &:hover {
+        box-shadow: 0 6px 16px rgba(#facc15, 0.3);
+        transform: rotate(90deg) scale(1.05);
+      }
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  @include tablet {
+    flex-direction: column;
+    align-items: stretch;
+
+    .controls-left,
+    .controls-right {
+      width: 100%;
+    }
+
+    .controls-right {
+      justify-content: space-between;
+    }
+  }
+
+  @include mobile {
+    padding: $spacing-4;
+    gap: $spacing-3;
+
+    .controls-left {
+      flex-direction: column;
+      gap: $spacing-2;
+
+      .filter-field,
+      .sort-field {
+        width: 100%;
+        min-width: unset;
+      }
+    }
+
+    .controls-right {
+      .results-count {
+        font-size: $font-size-xs;
+        padding: $spacing-1 $spacing-2;
+
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+}
+
+// ============================================================================
+// SELECT OPTIONS - DARK THEME
+// ============================================================================
+
+::ng-deep {
+  .mat-mdc-select-panel {
+    background: $persian-blue-900 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: $radius-lg !important;
+  }
+
+  .mat-mdc-option {
+    color: $persian-blue-100 !important;
+
+    &:hover:not(.mat-mdc-option-disabled) {
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    &.mat-mdc-option-active {
+      background: rgba($persian-blue-500, 0.2) !important;
+    }
+
+    &.mdc-list-item--selected {
+      background: rgba(#facc15, 0.1) !important;
+
+      .mdc-list-item__primary-text {
+        color: #facc15 !important;
+      }
+    }
+  }
+
+  .option-content {
+    @include flex-start;
+    gap: $spacing-2;
+    align-items: center;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      color: #facc15;
+    }
+  }
+}
+
+// ============================================================================
+// LOADING STATE
+// ============================================================================
+
+.loading-state {
+  @include flex-column-center;
+  justify-content: center;
+  padding: $spacing-12 $spacing-6;
+  text-align: center;
+  animation: fadeIn 0.4s ease 200ms backwards;
+
+  ::ng-deep .mat-mdc-progress-spinner circle {
+    stroke: #facc15;
+  }
+
+  p {
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    color: $persian-blue-200;
+    margin: $spacing-4 0 0 0;
+  }
+
+  @include mobile {
+    padding: $spacing-10 $spacing-4;
+  }
+}
+
+// ============================================================================
+// ERROR STATE
+// ============================================================================
+
+.error-state {
+  @include flex-column-center;
+  justify-content: center;
+  padding: $spacing-12 $spacing-6;
+  text-align: center;
+  border-radius: $radius-xl;
+  animation: fadeIn 0.4s ease 200ms backwards;
+
+  // Glassmorphism with error accent
+  background: rgba(#f87171, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(#f87171, 0.15);
+
+  mat-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    margin-bottom: $spacing-4;
+    color: #f87171;
+    animation: shake 0.5s ease;
+  }
+
+  p {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-medium;
+    color: $persian-blue-200;
+    margin: 0 0 $spacing-4 0;
+  }
+
+  .retry-button {
+    @include flex-center;
+    gap: $spacing-2;
+    padding: $spacing-3 $spacing-5;
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%) !important;
+    color: white !important;
+    border-radius: $radius-lg;
+    font-weight: $font-weight-semibold;
+    box-shadow: 0 4px 16px rgba(#f87171, 0.3);
+    transition: all 0.3s ease;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      margin-bottom: 0;
+      animation: none;
+    }
+
+    &:hover {
+      box-shadow: 0 8px 24px rgba(#f87171, 0.4);
+      transform: translateY(-2px);
+    }
+  }
+
+  @include mobile {
+    padding: $spacing-10 $spacing-4;
+
+    mat-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+    }
+
+    p {
+      font-size: $font-size-base;
+    }
+  }
+}
+
+// ============================================================================
+// EMPTY STATE
+// ============================================================================
+
+.empty-state {
+  @include flex-column-center;
+  justify-content: center;
+  padding: $spacing-12 $spacing-6;
+  text-align: center;
+  border-radius: $radius-xl;
+  animation: fadeIn 0.4s ease 200ms backwards;
+
+  // Glassmorphism
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  mat-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    margin-bottom: $spacing-4;
+    color: $persian-blue-600;
+    animation: pulse 2s ease infinite;
+  }
+
+  .empty-title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $persian-blue-100;
+    margin: 0 0 $spacing-2 0;
+  }
+
+  .empty-subtitle {
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    color: $persian-blue-300;
+    margin: 0;
+  }
+
+  @include mobile {
+    padding: $spacing-10 $spacing-4;
+
+    mat-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+    }
+
+    .empty-title {
+      font-size: $font-size-lg;
+    }
+
+    .empty-subtitle {
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+// ============================================================================
+// RATINGS LIST
+// ============================================================================
+
+.ratings-list {
+  @include flex-column;
+  gap: $spacing-4;
+
+  app-rating-card {
+    display: block;
+    animation: fadeInUp 0.4s ease backwards;
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{200 + $i * 50}ms;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// PAGINATION - DARK THEME
+// ============================================================================
+
+.ratings-paginator {
+  margin-top: $spacing-6;
+  padding: $spacing-4;
+  border-radius: $radius-lg;
+  animation: fadeInUp 0.4s ease 300ms backwards;
+
+  // Glassmorphism
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  ::ng-deep {
+    .mat-mdc-paginator-container {
+      padding: $spacing-2 $spacing-3;
+      min-height: 56px;
+      background: transparent;
+    }
+
+    .mat-mdc-paginator-page-size-label,
+    .mat-mdc-paginator-range-label {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      color: $persian-blue-200;
+    }
+
+    .mat-mdc-paginator-page-size-select {
+      margin: 0 $spacing-2;
+
+      .mat-mdc-select-value {
+        color: $persian-blue-100;
+      }
+
+      .mat-mdc-select-arrow {
+        color: $persian-blue-300;
+      }
+    }
+
+    .mat-mdc-icon-button {
+      transition: all 0.3s ease;
+      color: $persian-blue-300;
+
+      &:hover:not([disabled]) {
+        background: rgba(#facc15, 0.15);
+        transform: scale(1.1);
+
+        mat-icon {
+          color: #facc15;
+        }
+      }
+
+      &[disabled] {
+        opacity: 0.3;
+      }
+
+      mat-icon {
+        color: $persian-blue-400;
+      }
+    }
+  }
+
+  @include mobile {
+    padding: $spacing-3;
+    margin-top: $spacing-5;
+
+    ::ng-deep {
+      .mat-mdc-paginator-container {
+        flex-wrap: wrap;
+        gap: $spacing-2;
+        justify-content: center;
+      }
+
+      .mat-mdc-paginator-range-actions {
+        margin-top: $spacing-2;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}

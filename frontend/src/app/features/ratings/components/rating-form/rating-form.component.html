@@ -1,0 +1,174 @@
+<form [formGroup]="ratingForm" (ngSubmit)="onSubmit()" class="rating-form">
+  <!-- Form Header -->
+  <div class="form-header">
+    <mat-icon class="header-icon">{{ isEditMode ? 'edit' : 'star' }}</mat-icon>
+    <h2 class="form-title">{{ isEditMode ? 'Értékelés Szerkesztése' : 'Útvonal Értékelése' }}</h2>
+    <p class="form-subtitle">{{ isEditMode ? 'Módosítsd az értékelésedet' : 'Oszd meg tapasztalataidat az utazókkal' }}</p>
+  </div>
+
+  <!-- Overall Rating -->
+  <div class="form-section overall-section">
+    <label class="section-label">
+      <mat-icon>stars</mat-icon>
+      <span>Összesített Értékelés *</span>
+    </label>
+    <div class="rating-input">
+      <app-star-rating
+        [rating]="ratingForm.get('rating_overall')?.value"
+        [readonly]="false"
+        size="large"
+        (ratingChange)="ratingForm.patchValue({ rating_overall: $event })"
+      ></app-star-rating>
+      <span class="rating-value">{{ ratingForm.get('rating_overall')?.value || 0 }} / 5</span>
+    </div>
+    <div class="error-message" *ngIf="hasRatingError('rating_overall')">
+      {{ getRatingErrorMessage('rating_overall') }}
+    </div>
+  </div>
+
+  <!-- Category Ratings -->
+  <div class="form-section categories-section">
+    <label class="section-label">
+      <mat-icon>category</mat-icon>
+      <span>Kategóriánkénti Értékelés *</span>
+    </label>
+
+    <div class="categories-grid">
+      <div class="category-rating">
+        <div class="category-header">
+          <mat-icon>cleaning_services</mat-icon>
+          <span class="category-name">Tisztaság</span>
+        </div>
+        <app-star-rating
+          [rating]="ratingForm.get('rating_cleanliness')?.value"
+          [readonly]="false"
+          size="medium"
+          (ratingChange)="ratingForm.patchValue({ rating_cleanliness: $event })"
+        ></app-star-rating>
+        <span class="rating-value">{{ ratingForm.get('rating_cleanliness')?.value || 0 }}</span>
+        <div class="error-message" *ngIf="hasRatingError('rating_cleanliness')">
+          {{ getRatingErrorMessage('rating_cleanliness') }}
+        </div>
+      </div>
+
+      <div class="category-rating">
+        <div class="category-header">
+          <mat-icon>schedule</mat-icon>
+          <span class="category-name">Pontosság</span>
+        </div>
+        <app-star-rating
+          [rating]="ratingForm.get('rating_punctuality')?.value"
+          [readonly]="false"
+          size="medium"
+          (ratingChange)="ratingForm.patchValue({ rating_punctuality: $event })"
+        ></app-star-rating>
+        <span class="rating-value">{{ ratingForm.get('rating_punctuality')?.value || 0 }}</span>
+        <div class="error-message" *ngIf="hasRatingError('rating_punctuality')">
+          {{ getRatingErrorMessage('rating_punctuality') }}
+        </div>
+      </div>
+
+      <div class="category-rating">
+        <div class="category-header">
+          <mat-icon>person</mat-icon>
+          <span class="category-name">Sofőr</span>
+        </div>
+        <app-star-rating
+          [rating]="ratingForm.get('rating_driver')?.value"
+          [readonly]="false"
+          size="medium"
+          (ratingChange)="ratingForm.patchValue({ rating_driver: $event })"
+        ></app-star-rating>
+        <span class="rating-value">{{ ratingForm.get('rating_driver')?.value || 0 }}</span>
+        <div class="error-message" *ngIf="hasRatingError('rating_driver')">
+          {{ getRatingErrorMessage('rating_driver') }}
+        </div>
+      </div>
+
+      <div class="category-rating">
+        <div class="category-header">
+          <mat-icon>airline_seat_recline_normal</mat-icon>
+          <span class="category-name">Kényelem</span>
+        </div>
+        <app-star-rating
+          [rating]="ratingForm.get('rating_comfort')?.value"
+          [readonly]="false"
+          size="medium"
+          (ratingChange)="ratingForm.patchValue({ rating_comfort: $event })"
+        ></app-star-rating>
+        <span class="rating-value">{{ ratingForm.get('rating_comfort')?.value || 0 }}</span>
+        <div class="error-message" *ngIf="hasRatingError('rating_comfort')">
+          {{ getRatingErrorMessage('rating_comfort') }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comment -->
+  <div class="form-section comment-section">
+    <label class="section-label">
+      <mat-icon>comment</mat-icon>
+      <span>Vélemény (Opcionális)</span>
+    </label>
+    <mat-form-field class="full-width">
+      <mat-label>Oszd meg tapasztalataidat</mat-label>
+      <textarea
+        matInput
+        formControlName="comment"
+        placeholder="Írd le, mi volt a véleményed az utazásról..."
+        rows="4"
+        [maxLength]="maxCommentLength"
+      ></textarea>
+      <mat-hint align="end">
+        {{ getCommentCharCount() }} / {{ maxCommentLength }}
+      </mat-hint>
+      <mat-error *ngIf="ratingForm.get('comment')?.hasError('maxlength')">
+        A vélemény nem lehet hosszabb {{ maxCommentLength }} karakternél
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- Photo Upload -->
+  <div class="form-section photo-section">
+    <label class="section-label">
+      <mat-icon>add_photo_alternate</mat-icon>
+      <span>Fényképek Hozzáadása (Opcionális)</span>
+    </label>
+    <app-photo-upload
+      [maxPhotos]="5"
+      (photosChange)="onPhotosChange($event)"
+      (photosError)="onPhotosError($event)"
+    ></app-photo-upload>
+  </div>
+
+  <!-- Progress Bar -->
+  <mat-progress-bar
+    *ngIf="isSubmitting"
+    mode="indeterminate"
+    class="submit-progress"
+  ></mat-progress-bar>
+
+  <!-- Form Actions -->
+  <div class="form-actions">
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="onCancel()"
+      [disabled]="isSubmitting"
+      class="cancel-button"
+    >
+      <mat-icon>close</mat-icon>
+      Mégse
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="isSubmitting"
+      class="submit-button"
+    >
+      <mat-icon>{{ isSubmitting ? 'hourglass_empty' : (isEditMode ? 'save' : 'send') }}</mat-icon>
+      {{ isSubmitting ? 'Küldés...' : (isEditMode ? 'Frissítés' : 'Értékelés Beküldése') }}
+    </button>
+  </div>
+</form>

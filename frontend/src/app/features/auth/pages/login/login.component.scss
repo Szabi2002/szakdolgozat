@@ -1,0 +1,471 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ===========================
+// LOGIN PAGE - DARK THEME
+// ===========================
+
+.login-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background: $persian-blue-950;
+  @include fade-in(400ms);
+
+  @include desktop {
+    flex-direction: row;
+  }
+}
+
+// ===========================
+// HERO SECTION (Left side - Desktop)
+// ===========================
+
+.hero-section {
+  display: none;
+  flex: 1;
+  @include flex-column-center;
+  padding: $spacing-12;
+  color: $persian-blue-50;
+  position: relative;
+  overflow: hidden;
+
+  // Dark gradient background
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba($persian-blue-600, 0.3), transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba($persian-blue-500, 0.2), transparent 50%),
+    linear-gradient(135deg, $persian-blue-900 0%, $persian-blue-950 100%);
+
+  // Animated floating orbs
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  &::before {
+    width: 400px;
+    height: 400px;
+    top: -100px;
+    right: -100px;
+    background: radial-gradient(circle, rgba($persian-blue-500, 0.15) 0%, transparent 70%);
+    animation: float-slow 20s ease-in-out infinite;
+  }
+
+  &::after {
+    width: 300px;
+    height: 300px;
+    bottom: -50px;
+    left: -50px;
+    background: radial-gradient(circle, rgba($persian-blue-600, 0.12) 0%, transparent 70%);
+    animation: float-slow 18s ease-in-out infinite reverse;
+  }
+
+  @include desktop {
+    display: flex;
+    flex: 0 0 50%;
+  }
+
+  .hero-content {
+    max-width: 520px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 0.8s ease-out forwards;
+
+    .hero-icon {
+      font-size: 96px;
+      width: 96px;
+      height: 96px;
+      margin-bottom: $spacing-8;
+      color: $persian-blue-400;
+      filter: drop-shadow(0 0 30px rgba($persian-blue-400, 0.5));
+      animation: float-fast 3s ease-in-out infinite;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: $persian-blue-50;
+      margin-bottom: $spacing-6;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      font-size: 1.125rem;
+      line-height: 1.7;
+      color: $persian-blue-200;
+    }
+  }
+}
+
+// ===========================
+// LOGIN PANEL (Right side)
+// ===========================
+
+.login-panel {
+  flex: 1;
+  @include flex-column-center;
+  padding: $spacing-6;
+  position: relative;
+  overflow: hidden;
+
+  // Dark gradient background
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba($persian-blue-700, 0.15), transparent 50%),
+    $persian-blue-950;
+
+  @include desktop {
+    flex: 0 0 50%;
+    padding: $spacing-16;
+  }
+}
+
+.login-content {
+  width: 100%;
+  max-width: 440px;
+  @include flex-column;
+  align-items: center;
+  animation: fadeInUp 0.6s ease-out forwards;
+
+  .logo {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: $persian-blue-400;
+    margin-bottom: $spacing-6;
+    filter: drop-shadow(0 0 20px rgba($persian-blue-400, 0.4));
+    animation: float-fast 3s ease-in-out infinite;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $persian-blue-50;
+    text-align: center;
+    margin-bottom: $spacing-2;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    color: $persian-blue-300;
+    text-align: center;
+    margin-bottom: $spacing-8;
+  }
+
+  // ===========================
+  // GLASS FORM CARD
+  // ===========================
+
+  .login-form {
+    width: 100%;
+    @include flex-column;
+    gap: $spacing-2;
+    padding: $spacing-8;
+    border-radius: 20px;
+
+    // Glassmorphism effect
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+    .full-width {
+      width: 100%;
+    }
+
+    // Material form field dark styling
+    mat-form-field {
+      margin-bottom: $spacing-2;
+
+      ::ng-deep {
+        .mat-mdc-text-field-wrapper {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 12px;
+        }
+
+        .mat-mdc-form-field-focus-overlay {
+          background-color: transparent;
+        }
+
+        .mdc-text-field--outlined {
+          .mdc-notched-outline__leading,
+          .mdc-notched-outline__notch,
+          .mdc-notched-outline__trailing {
+            border-color: rgba($persian-blue-400, 0.3) !important;
+          }
+        }
+
+        .mdc-text-field--focused {
+          .mdc-notched-outline__leading,
+          .mdc-notched-outline__notch,
+          .mdc-notched-outline__trailing {
+            border-color: $persian-blue-400 !important;
+            border-width: 2px !important;
+          }
+        }
+
+        .mat-mdc-input-element {
+          color: $persian-blue-50 !important;
+          caret-color: $persian-blue-400;
+        }
+
+        .mat-mdc-floating-label {
+          color: $persian-blue-300 !important;
+        }
+
+        .mdc-floating-label--float-above {
+          color: $persian-blue-400 !important;
+        }
+
+        .mat-mdc-form-field-icon-prefix,
+        .mat-mdc-form-field-icon-suffix {
+          color: $persian-blue-400;
+        }
+
+        .mat-mdc-form-field-hint {
+          color: $persian-blue-400;
+        }
+      }
+    }
+
+    .form-options {
+      @include flex-between;
+      margin-bottom: $spacing-6;
+      font-size: 0.875rem;
+
+      ::ng-deep {
+        .mat-mdc-checkbox {
+          .mdc-checkbox__background {
+            border-color: rgba($persian-blue-400, 0.5);
+          }
+
+          .mdc-label {
+            color: $persian-blue-200;
+          }
+        }
+      }
+
+      .forgot-password-link {
+        color: $persian-blue-400;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+
+        &:hover {
+          color: $persian-blue-300;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    // Primary login button
+    .login-button {
+      height: 52px;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: $spacing-4;
+      border-radius: 14px;
+      background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+      color: white !important;
+      box-shadow: 0 4px 20px rgba($persian-blue-500, 0.4);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+
+      // Shine effect
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+      }
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba($persian-blue-500, 0.5);
+
+        &::before {
+          left: 100%;
+        }
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      mat-spinner {
+        display: inline-block;
+        margin: 0 auto;
+
+        ::ng-deep circle {
+          stroke: white;
+        }
+      }
+    }
+  }
+
+  // ===========================
+  // GOOGLE LOGIN BUTTON
+  // ===========================
+
+  .google-login-button {
+    width: 100%;
+    height: 52px;
+    font-size: 1rem;
+    font-weight: 500;
+    @include flex-center;
+    gap: $spacing-3;
+    border-radius: 14px;
+    transition: all 0.3s ease;
+
+    // Glass style
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: $persian-blue-200 !important;
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.12) !important;
+      border-color: rgba($persian-blue-400, 0.4) !important;
+      color: $persian-blue-50 !important;
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .google-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    mat-spinner ::ng-deep circle {
+      stroke: $persian-blue-300;
+    }
+  }
+
+  // ===========================
+  // ERROR MESSAGE
+  // ===========================
+
+  .error-message {
+    width: 100%;
+    @include flex-start;
+    gap: $spacing-3;
+    padding: $spacing-4;
+    margin-bottom: $spacing-4;
+    border-radius: 12px;
+    font-size: 0.875rem;
+
+    // Glass error style
+    background: rgba($error-500, 0.15);
+    border: 1px solid rgba($error-500, 0.3);
+    color: lighten($error-500, 20%);
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      color: $error-500;
+    }
+  }
+
+  // ===========================
+  // DIVIDER
+  // ===========================
+
+  .divider {
+    width: 100%;
+    position: relative;
+    text-align: center;
+    margin: $spacing-8 0;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba($persian-blue-400, 0.2);
+    }
+
+    span {
+      position: relative;
+      background: $persian-blue-950;
+      padding: 0 $spacing-4;
+      color: $persian-blue-400;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+  }
+
+  // ===========================
+  // REGISTER LINK
+  // ===========================
+
+  .register-link {
+    font-size: 0.9375rem;
+    color: $persian-blue-300;
+    text-align: center;
+    margin: $spacing-8 0 $spacing-6 0;
+
+    a {
+      color: $persian-blue-400;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: $persian-blue-300;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  // ===========================
+  // FOOTER TEXT
+  // ===========================
+
+  .footer-text {
+    font-size: 0.75rem;
+    color: $persian-blue-400;
+    text-align: center;
+    line-height: 1.7;
+    max-width: 400px;
+
+    a {
+      color: $persian-blue-300;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        color: $persian-blue-200;
+        text-decoration: underline;
+      }
+    }
+  }
+}

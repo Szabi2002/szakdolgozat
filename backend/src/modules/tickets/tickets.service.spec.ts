@@ -3,6 +3,7 @@ import { TicketsService } from './tickets.service';
 import { SupabaseService } from '@common/supabase/supabase.service';
 import { QrCodeService } from '@common/services/qr-code.service';
 import { EmailService } from '@common/services/email.service';
+import { PdfService } from '@common/services/pdf.service';
 import { TransactionsService } from '@modules/transactions/transactions.service';
 import { TicketTypesService } from '@modules/ticket-types/ticket-types.service';
 import { UsersService } from '@modules/users/users.service';
@@ -13,6 +14,7 @@ describe('TicketsService', () => {
   let supabaseService: SupabaseService;
   let qrCodeService: QrCodeService;
   let emailService: EmailService;
+  let pdfService: PdfService;
   let transactionsService: TransactionsService;
   let ticketTypesService: TicketTypesService;
   let usersService: UsersService;
@@ -30,6 +32,8 @@ describe('TicketsService', () => {
 
   const mockSupabaseService = {
     getClient: jest.fn(() => mockSupabaseClient),
+    getUserClient: jest.fn(() => mockSupabaseClient),
+    getAdminClient: jest.fn(() => mockSupabaseClient),
   };
 
   const mockQrCodeService = {
@@ -41,6 +45,10 @@ describe('TicketsService', () => {
   const mockEmailService = {
     sendTicketEmail: jest.fn(),
     isEmailConfigured: jest.fn(),
+  };
+
+  const mockPdfService = {
+    generateTicketPDF: jest.fn(),
   };
 
   const mockTransactionsService = {
@@ -74,6 +82,10 @@ describe('TicketsService', () => {
           useValue: mockEmailService,
         },
         {
+          provide: PdfService,
+          useValue: mockPdfService,
+        },
+        {
           provide: TransactionsService,
           useValue: mockTransactionsService,
         },
@@ -92,6 +104,7 @@ describe('TicketsService', () => {
     supabaseService = module.get<SupabaseService>(SupabaseService);
     qrCodeService = module.get<QrCodeService>(QrCodeService);
     emailService = module.get<EmailService>(EmailService);
+    pdfService = module.get<PdfService>(PdfService);
     transactionsService = module.get<TransactionsService>(TransactionsService);
     ticketTypesService = module.get<TicketTypesService>(TicketTypesService);
     usersService = module.get<UsersService>(UsersService);
@@ -107,11 +120,11 @@ describe('TicketsService', () => {
     it('should purchase a ticket successfully', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
       const purchaseDto = {
-        ticketTypeId: '123e4567-e89b-12d3-a456-426614174001',
+        ticket_type_id: '123e4567-e89b-12d3-a456-426614174001',
       };
 
       const mockTicketType = {
-        id: purchaseDto.ticketTypeId,
+        id: purchaseDto.ticket_type_id,
         name: 'Single Ticket',
         type: 'single',
         price: 350.0,
@@ -129,7 +142,7 @@ describe('TicketsService', () => {
       const mockTicket = {
         id: '123e4567-e89b-12d3-a456-426614174003',
         user_id: userId,
-        ticket_type_id: purchaseDto.ticketTypeId,
+        ticket_type_id: purchaseDto.ticket_type_id,
         qr_code: 'data:image/png;base64,abc123',
         price: 350.0,
         status: 'active',
@@ -163,7 +176,7 @@ describe('TicketsService', () => {
       const result = await service.purchase(userId, purchaseDto);
 
       expect(result).toEqual(mockTicket);
-      expect(mockTicketTypesService.findOne).toHaveBeenCalledWith(purchaseDto.ticketTypeId);
+      expect(mockTicketTypesService.findOne).toHaveBeenCalledWith(purchaseDto.ticket_type_id);
       expect(mockTransactionsService.simulatePayment).toHaveBeenCalledWith(350.0);
       expect(mockTransactionsService.create).toHaveBeenCalled();
     });
@@ -171,11 +184,11 @@ describe('TicketsService', () => {
     it('should throw error if ticket type is inactive', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
       const purchaseDto = {
-        ticketTypeId: '123e4567-e89b-12d3-a456-426614174001',
+        ticket_type_id: '123e4567-e89b-12d3-a456-426614174001',
       };
 
       const mockTicketType = {
-        id: purchaseDto.ticketTypeId,
+        id: purchaseDto.ticket_type_id,
         is_active: false,
       };
 
@@ -277,13 +290,13 @@ describe('TicketsService', () => {
         .mockResolvedValueOnce({ data: null, error: null }); // Second call resolves
 
       // Mock from method to return appropriate chains
-      const mockClient = {
+      const mockUserClient = {
         from: jest.fn()
           .mockReturnValueOnce(mockSelectChain) // First call for findOne
           .mockReturnValueOnce(mockUpdateChain), // Second call for update
       };
 
-      mockSupabaseService.getClient.mockReturnValue(mockClient as any);
+      mockSupabaseService.getClient.mockReturnValue(mockUserClient as any);
 
       await service.cancel(ticketId, userId);
 
@@ -309,11 +322,11 @@ describe('TicketsService', () => {
         }),
       };
 
-      const mockClient = {
+      const mockUserClient = {
         from: jest.fn().mockReturnValue(mockSelectChain),
       };
 
-      mockSupabaseService.getClient.mockReturnValue(mockClient as any);
+      mockSupabaseService.getClient.mockReturnValue(mockUserClient as any);
 
       await expect(service.cancel(ticketId, userId)).rejects.toThrow(BadRequestException);
     });
@@ -349,9 +362,10 @@ describe('TicketsService', () => {
       };
 
       const mockQrBuffer = Buffer.from('mock-qr-code');
+      const mockPdfBuffer = Buffer.from('mock-pdf');
 
-      // Mock findOne (for ticket)
-      const mockSelectChain = {
+      // Mock findOne (for ticket) - called twice: once in sendEmail, once in getQRCodeBuffer
+      const mockSelectChain1 = {
         select: jest.fn().mockReturnThis(),
         eq: jest.fn().mockReturnThis(),
         single: jest.fn().mockResolvedValue({
@@ -360,11 +374,22 @@ describe('TicketsService', () => {
         }),
       };
 
-      const mockClient = {
-        from: jest.fn().mockReturnValue(mockSelectChain),
+      const mockSelectChain2 = {
+        select: jest.fn().mockReturnThis(),
+        eq: jest.fn().mockReturnThis(),
+        single: jest.fn().mockResolvedValue({
+          data: mockTicket,
+          error: null,
+        }),
       };
 
-      mockSupabaseService.getClient.mockReturnValue(mockClient as any);
+      const mockUserClient = {
+        from: jest.fn()
+          .mockReturnValueOnce(mockSelectChain1) // First call for sendEmail
+          .mockReturnValueOnce(mockSelectChain2), // Second call for getQRCodeBuffer
+      };
+
+      mockSupabaseService.getClient.mockReturnValue(mockUserClient as any);
       mockUsersService.findById.mockResolvedValue(mockUser);
       mockTicketTypesService.findOne.mockResolvedValue(mockTicketType);
       mockQrCodeService.createQRCodeData.mockReturnValue({
@@ -375,6 +400,7 @@ describe('TicketsService', () => {
         signature: 'abc123',
       });
       mockQrCodeService.generateQRCodeBuffer.mockResolvedValue(mockQrBuffer);
+      mockPdfService.generateTicketPDF.mockResolvedValue(mockPdfBuffer);
       mockEmailService.sendTicketEmail.mockResolvedValue({
         success: true,
         message: 'Email sent successfully',
@@ -415,11 +441,11 @@ describe('TicketsService', () => {
         }),
       };
 
-      const mockClient = {
+      const mockUserClient = {
         from: jest.fn().mockReturnValue(mockSelectChain),
       };
 
-      mockSupabaseService.getClient.mockReturnValue(mockClient as any);
+      mockSupabaseService.getClient.mockReturnValue(mockUserClient as any);
       mockUsersService.findById.mockResolvedValue(mockUser);
 
       await expect(service.sendEmail(ticketId, userId)).rejects.toThrow(BadRequestException);

@@ -1,0 +1,321 @@
+@import '../../../../../styles/variables';
+@import '../../../../../styles/colors';
+@import '../../../../../styles/typography';
+@import '../../../../../styles/mixins';
+
+.qr-code-display {
+  @include flex-column;
+  gap: $spacing-6;
+  padding: $spacing-4;
+
+  .qr-code-container {
+    @include flex-column;
+    align-items: center;
+    gap: $spacing-5;
+
+    .validity-banner {
+      width: 100%;
+      @include flex-center;
+      gap: $spacing-3;
+      padding: $spacing-4 $spacing-5;
+      border-radius: $radius-lg;
+      font-weight: $font-weight-bold;
+      font-size: $font-size-lg;
+      box-shadow: $shadow-md;
+      animation: slide-up 500ms $ease-out forwards;
+
+      mat-icon {
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+      }
+
+      &.valid {
+        background: linear-gradient(135deg, rgba($success-500, 0.1) 0%, rgba($success-600, 0.05) 100%);
+        color: $success-700;
+        border: 3px solid $success-500;
+
+        mat-icon {
+          color: $success-600;
+        }
+      }
+
+      &.invalid {
+        background: linear-gradient(135deg, rgba($error-500, 0.1) 0%, rgba($error-600, 0.05) 100%);
+        color: $error-700;
+        border: 3px solid $error-500;
+        @include shake(500ms);
+
+        mat-icon {
+          color: $error-600;
+        }
+      }
+    }
+
+    .qr-code-wrapper {
+      position: relative;
+      @include flex-center;
+      background: $white;
+      padding: $spacing-8;
+      border-radius: $radius-xl;
+      border: 4px solid $brand-primary;
+      box-shadow: 0 8px 32px rgba($brand-primary, 0.15);
+      transition: all $transition-base $ease-out;
+
+      &:hover {
+        box-shadow: 0 12px 48px rgba($brand-primary, 0.25);
+        border-color: $brand-secondary;
+      }
+
+      .qr-code-image {
+        max-width: 300px;
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: $radius-md;
+
+        @include mobile {
+          max-width: 250px;
+        }
+      }
+
+      .qr-code-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        @include flex-column-center;
+        justify-content: center;
+        background: rgba($error-600, 0.95);
+        gap: $spacing-2;
+        color: $white;
+        border-radius: $radius-xl;
+
+        mat-icon {
+          font-size: 80px;
+          width: 80px;
+          height: 80px;
+        }
+
+        span {
+          font-size: $font-size-2xl;
+          font-weight: $font-weight-bold;
+          text-transform: uppercase;
+        }
+      }
+    }
+
+    .loading-state,
+    .error-state {
+      @include flex-column-center;
+      justify-content: center;
+      gap: $spacing-4;
+      padding: $spacing-10;
+      text-align: center;
+
+      mat-icon {
+        font-size: 80px;
+        width: 80px;
+        height: 80px;
+        color: $neutral-400;
+      }
+
+      p {
+        font-size: $font-size-base;
+        color: $neutral-600;
+        margin: 0;
+        font-weight: $font-weight-medium;
+      }
+
+      button {
+        @include flex-center;
+        gap: $spacing-2;
+        margin-top: $spacing-2;
+
+        mat-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    .error-state {
+      mat-icon {
+        color: $error-500;
+      }
+    }
+
+    .qr-code-info {
+      @include flex-start;
+      gap: $spacing-3;
+      padding: $spacing-4 $spacing-5;
+      background: linear-gradient(135deg, rgba($brand-info, 0.08) 0%, rgba($brand-primary, 0.03) 100%);
+      border-radius: $radius-lg;
+      color: $brand-info;
+      text-align: center;
+      border-left: 5px solid $brand-info;
+      box-shadow: $shadow-sm;
+
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+      }
+
+      p {
+        margin: 0;
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
+        color: $brand-dark;
+        line-height: 1.5;
+      }
+    }
+  }
+
+  .qr-code-actions {
+    @include flex-center;
+    gap: $spacing-3;
+
+    .download-button {
+      @include flex-center;
+      gap: $spacing-2;
+      padding: $spacing-3 $spacing-6;
+      background: linear-gradient(135deg, $brand-primary 0%, $brand-secondary 100%) !important;
+      color: $white !important;
+      box-shadow: $shadow-md;
+      font-weight: $font-weight-bold;
+      transition: all $transition-base $ease-out;
+
+      mat-icon {
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+      }
+
+      &:hover {
+        box-shadow: $shadow-lg;
+        transform: translateY(-3px);
+      }
+
+      &:active {
+        transform: translateY(-1px);
+        box-shadow: $shadow-md;
+      }
+    }
+  }
+
+  .ticket-summary {
+    background: linear-gradient(135deg, rgba($neutral-50, 0.8) 0%, rgba($brand-info, 0.03) 100%);
+    padding: $spacing-6;
+    border-radius: $radius-xl;
+    border: 2px solid $neutral-200;
+    box-shadow: $shadow-sm;
+
+    .summary-header {
+      @include flex-start;
+      gap: $spacing-3;
+      margin-bottom: $spacing-5;
+      padding-bottom: $spacing-4;
+      border-bottom: 3px solid $neutral-200;
+
+      mat-icon {
+        @include flex-center;
+        width: 40px;
+        height: 40px;
+        border-radius: $radius-full;
+        background: linear-gradient(135deg, $brand-info 0%, $brand-primary 100%);
+        color: $white;
+        font-size: 24px;
+      }
+
+      h4 {
+        margin: 0;
+        font-size: $font-size-xl;
+        font-weight: $font-weight-bold;
+        color: $brand-dark;
+      }
+    }
+
+    .summary-items {
+      @include flex-column;
+      gap: $spacing-4;
+
+      .summary-item {
+        @include flex-between;
+        align-items: center;
+        padding: $spacing-3;
+        background: $white;
+        border-radius: $radius-lg;
+        border: 2px solid $neutral-200;
+        transition: all $transition-base $ease-out;
+        box-shadow: 0 2px 4px rgba($brand-dark, 0.05);
+        gap: $spacing-3;
+
+        &:hover {
+          border-color: $brand-info;
+          box-shadow: $shadow-md;
+          transform: translateY(-2px);
+        }
+
+        .item-left {
+          @include flex-start;
+          gap: $spacing-2;
+          align-items: center;
+
+          mat-icon {
+            font-size: 22px;
+            width: 22px;
+            height: 22px;
+            color: $brand-info;
+            flex-shrink: 0;
+          }
+
+          .label {
+            font-weight: $font-weight-semibold;
+            color: $neutral-600;
+            font-size: $font-size-sm;
+          }
+        }
+
+        .value {
+          font-weight: $font-weight-semibold;
+          color: $brand-dark;
+          font-size: $font-size-base;
+          text-align: right;
+
+          &.code {
+            font-family: $font-family-mono;
+            background: $neutral-100;
+            padding: $spacing-1 $spacing-2;
+            border-radius: $radius-sm;
+            font-size: $font-size-sm;
+            border: 1px solid $neutral-300;
+          }
+        }
+
+        mat-chip {
+          height: 28px;
+          font-size: $font-size-xs;
+          font-weight: $font-weight-bold;
+        }
+
+        @include mobile {
+          flex-direction: column;
+          align-items: flex-start;
+
+          .item-left {
+            width: 100%;
+          }
+
+          .value {
+            text-align: left;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

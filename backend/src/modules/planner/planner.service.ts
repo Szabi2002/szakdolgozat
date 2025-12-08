@@ -50,6 +50,8 @@ interface QueueItem {
     vehicleType?: 'bus' | 'tram' | 'metro' | 'train';
   }>;
   totalDuration: number;
+  transfers: number; // Track actual number of transfers (route/mode changes)
+  transitSegments: number; // NEW: Track number of transit segments (MUST be >= 1)
 }
 
 interface RouteSearchOptions {
@@ -61,7 +63,7 @@ interface RouteSearchOptions {
 @Injectable()
 export class PlannerService {
   private readonly logger = new Logger(PlannerService.name);
-  private readonly MAX_TRANSFERS = 5;
+  private readonly MAX_TRANSFERS = 3; // Maximum 3 transfers as per requirements
   private readonly TIMEOUT_MS = 5000;
   private readonly TRANSFER_PENALTY_MINUTES = 3;
   private readonly AVERAGE_TRANSIT_SPEED_KMH = 30;
@@ -278,6 +280,11 @@ export class PlannerService {
     return sortedRoutes;
   }
 
+  /**
+   * Build Route object with MANDATORY transit segment validation
+   *
+   * @throws Error if route has no transit segments (walking-only)
+   */
   private buildRoute(
     result: {
       path: string[];
@@ -295,6 +302,14 @@ export class PlannerService {
     stopData: Map<string, Stop>,
     routeId: string,
   ): Route {
+    // CRITICAL PRE-VALIDATION: Ensure at least 1 transit segment exists
+    const hasTransit = result.routes.some((r) => r.type === 'transit');
+    if (!hasTransit) {
+      throw new Error(
+        'Invalid route: Must have at least 1 transit segment. Walking-only routes are not allowed.',
+      );
+    }
+
     const steps: RouteStep[] = [];
     let totalWalkingDistance = 0;
     let totalTime = 0;
@@ -339,6 +354,13 @@ export class PlannerService {
       } else {
         step.distance = Math.ceil(segmentDistance);
         totalWalkingDistance += segmentDistance;
+
+        // VALIDATION: Ensure walking segments don't exceed MAX_WALKING_DISTANCE
+        if (segmentDistance > MAX_WALKING_DISTANCE_METERS) {
+          this.logger.warn(
+            `Walking segment exceeds max distance: ${Math.ceil(segmentDistance)}m > ${MAX_WALKING_DISTANCE_METERS}m`,
+          );
+        }
       }
 
       totalTime += segmentDuration;
@@ -347,6 +369,14 @@ export class PlannerService {
     }
 
     const transfers = Math.max(0, steps.length - 1);
+
+    // FINAL VALIDATION: Verify at least one transit step was created
+    const transitSteps = steps.filter((s) => s.type === 'transit');
+    if (transitSteps.length === 0) {
+      throw new Error(
+        'Invalid route construction: No transit steps created. This should never happen.',
+      );
+    }
 
     return {
       route_id: routeId,
@@ -541,6 +571,17 @@ export class PlannerService {
     };
   }
 
+  /**
+   * Build transit-focused graph with strict walking constraints
+   *
+   * CRITICAL RULES:
+   * 1. Transit edges: Only consecutive stops on same route
+   * 2. Walking edges: ONLY for transfers between different routes at nearby stops (<200m)
+   * 3. Walking edges are LIMITED to 800m max distance
+   * 4. NO walking edges from/to stops without transit connections
+   *
+   * This ensures EVERY route has at least 1 transit segment
+   */
   private async buildGraph(includeWalking: boolean = true): Promise<{
     adjacencyList: Map<string, GraphNode[]>;
     stopData: Map<string, Stop>;
@@ -572,6 +613,8 @@ export class PlannerService {
     const adjacencyList = new Map<string, GraphNode[]>();
     const stopData = new Map<string, Stop>();
     const routeStopsMap = new Map<string, (RouteStopData & { vehicleType: string })[]>();
+    // Track which routes serve each stop (for transfer detection)
+    const stopToRoutesMap = new Map<string, Set<string>>();
 
     (data || []).forEach((rs: any) => {
       const stopId = rs.stop_id;
@@ -588,6 +631,12 @@ export class PlannerService {
           description: rs.stops.description,
         });
       }
+
+      // Track routes at each stop
+      if (!stopToRoutesMap.has(stopId)) {
+        stopToRoutesMap.set(stopId, new Set());
+      }
+      stopToRoutesMap.get(stopId)!.add(routeId);
 
       if (!routeStopsMap.has(routeId)) {
         routeStopsMap.set(routeId, []);
@@ -612,8 +661,10 @@ export class PlannerService {
     });
 
     let transitEdges = 0;
-    let walkingEdges = 0;
+    let transferWalkingEdges = 0;
 
+    // PHASE 1: Build BIDIRECTIONAL TRANSIT edges (consecutive stops on same route)
+    // Routes operate in BOTH directions (e.g., bus 7 goes Albertfalva -> Újpalota AND Újpalota -> Albertfalva)
     routeStopsMap.forEach((stops, routeId) => {
       stops.sort((a, b) => a.stop_order - b.stop_order);
 
@@ -621,8 +672,12 @@ export class PlannerService {
         const currentStop = stops[i];
         const nextStop = stops[i + 1];
 
+        // Ensure adjacency list entries exist for BOTH stops
         if (!adjacencyList.has(currentStop.stop_id)) {
           adjacencyList.set(currentStop.stop_id, []);
+        }
+        if (!adjacencyList.has(nextStop.stop_id)) {
+          adjacencyList.set(nextStop.stop_id, []);
         }
 
         const currentStopData = stopData.get(currentStop.stop_id)!;
@@ -635,6 +690,7 @@ export class PlannerService {
         );
         const duration = Math.ceil((distance / 1000 / this.AVERAGE_TRANSIT_SPEED_KMH) * 60) + 1;
 
+        // FORWARD edge: currentStop -> nextStop
         adjacencyList.get(currentStop.stop_id)!.push({
           stopId: nextStop.stop_id,
           routeId: routeId,
@@ -645,22 +701,54 @@ export class PlannerService {
           vehicleType: currentStop.vehicleType as 'bus' | 'tram' | 'metro' | 'train',
         });
         transitEdges++;
+
+        // REVERSE edge: nextStop -> currentStop (bidirectional route)
+        adjacencyList.get(nextStop.stop_id)!.push({
+          stopId: currentStop.stop_id,
+          routeId: routeId,
+          routeNumber: nextStop.route_number,
+          routeName: nextStop.route_name,
+          type: 'transit',
+          duration: duration,
+          vehicleType: nextStop.vehicleType as 'bus' | 'tram' | 'metro' | 'train',
+        });
+        transitEdges++;
       }
     });
 
+    // PHASE 2: Build TRANSFER WALKING edges (ONLY between stops with transit connections)
+    // This ensures walking is ONLY used for transfers, not as primary transportation
     if (includeWalking) {
       const allStops = Array.from(stopData.values());
-      this.logger.log(`Building walking edges for ${allStops.length} stops...`);
+      const TRANSFER_RADIUS_METERS = 200; // Strict transfer radius
+
+      this.logger.log(`Building transfer walking edges for ${allStops.length} stops...`);
 
       for (const stop1 of allStops) {
+        // CRITICAL: Only create walking edges from stops that have transit routes
+        const stop1Routes = stopToRoutesMap.get(stop1.id);
+        if (!stop1Routes || stop1Routes.size === 0) {
+          continue; // Skip stops without transit connections
+        }
+
+        // Find nearby stops for potential transfers
         const nearbyStops = allStops.filter((stop2) => {
           if (stop1.id === stop2.id) return false;
+
+          // Quick bounding box filter
           const latDiff = Math.abs(stop1.latitude - stop2.latitude);
           const lngDiff = Math.abs(stop1.longitude - stop2.longitude);
-          return latDiff <= 0.015 && lngDiff <= 0.015;
+          return latDiff <= 0.003 && lngDiff <= 0.003; // ~200-300m
         });
 
         for (const stop2 of nearbyStops) {
+          // CRITICAL: Only create walking edges to stops that ALSO have transit routes
+          const stop2Routes = stopToRoutesMap.get(stop2.id);
+          if (!stop2Routes || stop2Routes.size === 0) {
+            continue; // Skip stops without transit connections
+          }
+
+          // Calculate actual distance
           const distance = haversineDistance(
             stop1.latitude,
             stop1.longitude,
@@ -668,7 +756,14 @@ export class PlannerService {
             stop2.longitude,
           );
 
-          if (distance <= MAX_WALKING_DISTANCE_METERS) {
+          // STRICT CONSTRAINTS for transfer walking
+          if (distance >= 50 && distance <= MAX_WALKING_DISTANCE_METERS) {
+            // Only create walking edge if stops serve DIFFERENT routes
+            // (no point walking to same stop on same route)
+            const hasCommonRoute = Array.from(stop1Routes).some(route => stop2Routes.has(route));
+
+            // Allow walking even with common routes (for multi-route transfer hubs)
+            // But prioritize different routes by adjusting penalties
             if (!adjacencyList.has(stop1.id)) {
               adjacencyList.set(stop1.id, []);
             }
@@ -679,15 +774,16 @@ export class PlannerService {
               distance: distance,
               duration: walkingTimeMinutes(distance),
             });
-            walkingEdges++;
+            transferWalkingEdges++;
           }
         }
       }
     }
 
     this.logger.log(
-      `Graph built: ${adjacencyList.size} stops, ${transitEdges + walkingEdges} total edges ` +
-        `(${transitEdges} transit${includeWalking ? ` + ${walkingEdges} walking` : ''})`,
+      `Graph built: ${adjacencyList.size} stops, ${transitEdges + transferWalkingEdges} total edges\n` +
+        `  - ${transitEdges} transit edges (consecutive stops on routes)\n` +
+        `  - ${transferWalkingEdges} transfer walking edges (between stops with transit)`,
     );
 
     return { adjacencyList, stopData };
@@ -695,6 +791,9 @@ export class PlannerService {
 
   /**
    * BFS with custom options (penalties and forbidden edges)
+   *
+   * CRITICAL VALIDATION: Rejects any route with 0 transit segments
+   * This prevents walking-only routes from being returned
    */
   private bfsWithOptions(
     fromStopId: string,
@@ -721,6 +820,8 @@ export class PlannerService {
         path: [fromStopId],
         routes: [],
         totalDuration: 0,
+        transfers: 0,
+        transitSegments: 0, // NEW: Initialize with 0 transit segments
       },
     ];
 
@@ -736,14 +837,28 @@ export class PlannerService {
       queue.sort((a, b) => a.totalDuration - b.totalDuration);
       const current = queue.shift()!;
 
+      // CRITICAL VALIDATION: Only accept routes with at least 1 transit segment
       if (current.stopId === toStopId) {
-        return {
-          path: current.path,
-          routes: current.routes,
-        };
+        if (current.transitSegments >= 1) {
+          this.logger.log(
+            `Found valid route: ${current.transitSegments} transit segments, ` +
+              `${current.transfers} transfers, ${current.totalDuration.toFixed(1)} min`,
+          );
+          return {
+            path: current.path,
+            routes: current.routes,
+          };
+        } else {
+          // Reject walking-only routes
+          this.logger.warn(
+            `Rejected walking-only route: 0 transit segments (${current.routes.length} walking steps)`,
+          );
+          continue; // Continue searching for valid routes
+        }
       }
 
-      if (current.routes.length > this.MAX_TRANSFERS) {
+      // Check transfers limit
+      if (current.transfers > this.MAX_TRANSFERS) {
         continue;
       }
 
@@ -769,6 +884,19 @@ export class PlannerService {
           edgeCost *= options.walkingPenalty;
         }
 
+        // Calculate if this is a transfer (route/mode change)
+        let isTransfer = false;
+        if (current.routes.length > 0) {
+          const lastRoute = current.routes[current.routes.length - 1];
+          // Transfer if switching to a different route
+          // OR switching between transit and walking
+          if (lastRoute.routeId && neighbor.routeId && lastRoute.routeId !== neighbor.routeId) {
+            isTransfer = true;
+          } else if (lastRoute.type !== neighbor.type) {
+            isTransfer = true;
+          }
+        }
+
         // Calculate transfer penalty
         const transferPenalty = this.calculateTransferPenaltyWithOptions(
           current.routes,
@@ -776,6 +904,11 @@ export class PlannerService {
           options.transferPenalty,
         );
         const newDuration = current.totalDuration + edgeCost + transferPenalty;
+        const newTransfers = current.transfers + (isTransfer ? 1 : 0);
+
+        // NEW: Track transit segments
+        const newTransitSegments =
+          current.transitSegments + (neighbor.type === 'transit' ? 1 : 0);
 
         if (
           !bestDuration.has(neighbor.stopId) ||
@@ -800,6 +933,8 @@ export class PlannerService {
               },
             ],
             totalDuration: newDuration,
+            transfers: newTransfers,
+            transitSegments: newTransitSegments, // NEW: Track transit count
           });
         }
       }

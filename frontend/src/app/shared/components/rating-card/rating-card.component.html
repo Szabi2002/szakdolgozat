@@ -1,0 +1,166 @@
+<mat-card class="rating-card" [class.compact]="compact">
+  <mat-card-header>
+    <div class="rating-header">
+      <div class="user-info">
+        <mat-icon class="user-avatar">account_circle</mat-icon>
+        <div class="user-details">
+          <h3 class="user-name">{{ getUserName() }}</h3>
+          <span class="rating-date">{{ getFormattedDate(rating.created_at) }}</span>
+        </div>
+      </div>
+      <div class="rating-overall">
+        <app-star-rating
+          [rating]="rating.rating_overall"
+          [readonly]="true"
+          [size]="compact ? 'small' : 'medium'"
+        ></app-star-rating>
+        <span class="rating-value">{{ rating.rating_overall.toFixed(1) }}</span>
+      </div>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content>
+    <!-- Route Information (if available) -->
+    @if (rating.route && !compact) {
+      <div class="route-info">
+        <mat-icon>directions_bus</mat-icon>
+        <span>{{ getRouteName() }}</span>
+        @if (hasRouteId()) {
+          <button
+            mat-icon-button
+            (click)="onViewRoute(); $event.stopPropagation()"
+            matTooltip="Útvonal részletei"
+            class="route-link-btn"
+          >
+            <mat-icon>launch</mat-icon>
+          </button>
+        }
+      </div>
+    }
+
+    <!-- Status Badge (only for owner) -->
+    @if (isOwner) {
+      <mat-chip
+        [color]="getStatusColor()"
+        class="status-chip"
+      >
+        {{ getStatusText() }}
+      </mat-chip>
+    }
+
+    <!-- Rejection Reason (if rejected) -->
+    @if (rating.status === 'rejected' && rating.rejection_reason) {
+      <div class="rejection-reason">
+        <mat-icon>info</mat-icon>
+        <span>{{ rating.rejection_reason }}</span>
+      </div>
+    }
+
+    <!-- Comment -->
+    @if (rating.comment) {
+      <div class="comment">
+        <p>{{ getDisplayedComment() }}</p>
+        @if (rating.comment.length > maxCommentLength) {
+          <button
+            mat-button
+            (click)="toggleComment()"
+            class="show-more-button"
+          >
+            {{ showFullComment ? 'Kevesebb' : 'Továbbiak' }}
+          </button>
+        }
+      </div>
+    }
+
+    <!-- Category Breakdown (Expandable) -->
+    @if (!compact) {
+      <mat-expansion-panel class="category-breakdown">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>star_outline</mat-icon>
+            Részletes Értékelés
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="category-ratings">
+          <div class="category-item">
+            <span class="category-label">Tisztaság</span>
+            <app-star-rating
+              [rating]="rating.rating_cleanliness"
+              [readonly]="true"
+              size="small"
+            ></app-star-rating>
+            <span class="category-value">{{ rating.rating_cleanliness.toFixed(1) }}</span>
+          </div>
+          <div class="category-item">
+            <span class="category-label">Pontosság</span>
+            <app-star-rating
+              [rating]="rating.rating_punctuality"
+              [readonly]="true"
+              size="small"
+            ></app-star-rating>
+            <span class="category-value">{{ rating.rating_punctuality.toFixed(1) }}</span>
+          </div>
+          <div class="category-item">
+            <span class="category-label">Sofőr</span>
+            <app-star-rating
+              [rating]="rating.rating_driver"
+              [readonly]="true"
+              size="small"
+            ></app-star-rating>
+            <span class="category-value">{{ rating.rating_driver.toFixed(1) }}</span>
+          </div>
+          <div class="category-item">
+            <span class="category-label">Kényelem</span>
+            <app-star-rating
+              [rating]="rating.rating_comfort"
+              [readonly]="true"
+              size="small"
+            ></app-star-rating>
+            <span class="category-value">{{ rating.rating_comfort.toFixed(1) }}</span>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    }
+
+    <!-- Photo Gallery -->
+    @if (rating.photos && rating.photos.length > 0) {
+      <div class="photo-gallery">
+        @for (photo of rating.photos; track photo.photo_url) {
+          <div
+            class="photo-thumbnail"
+            (click)="onPhotoClick(photo.photo_url)"
+            [matTooltip]="'Kattints a teljes mérethez'"
+          >
+            <img [src]="photo.photo_url" [alt]="'Értékelés fotója'" />
+          </div>
+        }
+      </div>
+    }
+  </mat-card-content>
+
+  <!-- Actions -->
+  @if (showActions && (canEdit() || canDelete())) {
+    <mat-card-actions>
+      @if (canEdit()) {
+        <button
+          mat-button
+          color="primary"
+          (click)="onEdit()"
+        >
+          <mat-icon>edit</mat-icon>
+          Szerkesztés
+        </button>
+      }
+      @if (canDelete()) {
+        <button
+          mat-button
+          color="warn"
+          (click)="onDelete()"
+        >
+          <mat-icon>delete</mat-icon>
+          Törlés
+        </button>
+      }
+    </mat-card-actions>
+  }
+</mat-card>

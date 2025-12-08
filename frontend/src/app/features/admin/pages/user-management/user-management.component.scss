@@ -1,0 +1,857 @@
+@import '../../../../../styles/variables';
+@import '../../../../../styles/colors';
+@import '../../../../../styles/typography';
+@import '../../../../../styles/mixins';
+@import '../../../../../styles/persian-blue';
+@import '../../../../../styles/glassmorphism';
+@import '../../../../../styles/animations';
+
+// ===========================
+// USER MANAGEMENT - DARK GLASSMORPHISM THEME
+// ===========================
+
+.user-management-container {
+  position: relative;
+  min-height: 100vh;
+  background: $gradient-dark-hero;
+  padding: $spacing-6;
+  overflow-x: hidden;
+  @include dark-scrollbar;
+
+  @include mobile {
+    padding: $spacing-4;
+  }
+}
+
+// ===========================
+// BACKGROUND ORBS
+// ===========================
+
+.bg-orbs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+
+    &.orb-1 {
+      width: 400px;
+      height: 400px;
+      background: $gradient-orb-blue;
+      top: -100px;
+      right: -100px;
+      @include float-animation(slow);
+    }
+
+    &.orb-2 {
+      width: 300px;
+      height: 300px;
+      background: $gradient-orb-purple;
+      bottom: 20%;
+      left: -50px;
+      @include float-animation(medium);
+      animation-delay: -2s;
+    }
+
+    &.orb-3 {
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba($persian-blue-400, 0.3) 0%, transparent 70%);
+      top: 50%;
+      right: 20%;
+      @include float-animation(fast);
+      animation-delay: -4s;
+    }
+  }
+}
+
+// ===========================
+// PAGE HEADER
+// ===========================
+
+.page-header {
+  position: relative;
+  z-index: 1;
+  @include glass-card-strong;
+  padding: $spacing-8;
+  margin-bottom: $spacing-6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-4;
+  @include slide-up(600ms, 30px, 0s);
+
+  @include mobile {
+    padding: $spacing-6;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: $spacing-5;
+
+    @include mobile {
+      gap: $spacing-4;
+    }
+  }
+
+  .header-icon-wrapper {
+    @include flex-center;
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
+    border-radius: 20px;
+    border: 1px solid rgba($persian-blue-400, 0.3);
+    @include pulse-glow-animation(subtle);
+
+    @include mobile {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+    }
+
+    .header-icon {
+      font-size: 36px;
+      width: 36px;
+      height: 36px;
+      color: $persian-blue-300;
+
+      @include mobile {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+    }
+  }
+
+  .header-text {
+    h1 {
+      margin: 0 0 $spacing-2 0;
+      font-size: $font-size-3xl;
+      font-weight: $font-weight-bold;
+      color: $dark-text-primary;
+      letter-spacing: -0.5px;
+
+      @include mobile {
+        font-size: $font-size-2xl;
+      }
+    }
+
+    p {
+      margin: 0;
+      font-size: $font-size-base;
+      color: $dark-text-secondary;
+    }
+  }
+
+  .header-actions {
+    @include mobile {
+      width: 100%;
+    }
+  }
+
+  .user-count-badge {
+    @include glass-badge-accent;
+    padding: $spacing-3 $spacing-5;
+    font-size: $font-size-base;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+// ===========================
+// CONTROLS SECTION (SEARCH + FILTERS)
+// ===========================
+
+.controls-section {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+  margin-bottom: $spacing-6;
+  @include slide-up(600ms, 30px, 100ms);
+}
+
+.search-container {
+  position: relative;
+  @include glass-card;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+
+  .search-icon {
+    position: absolute;
+    left: $spacing-4;
+    color: $dark-text-muted;
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+  }
+
+  .search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: $spacing-4 $spacing-4 $spacing-4 $spacing-12;
+    font-size: $font-size-base;
+    color: $dark-text-primary;
+    outline: none;
+
+    &::placeholder {
+      color: $dark-text-muted;
+    }
+  }
+
+  .clear-search {
+    @include flex-center;
+    width: 40px;
+    height: 40px;
+    margin-right: $spacing-2;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 10px;
+    color: $dark-text-secondary;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: $dark-text-primary;
+    }
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+.filter-tabs {
+  display: flex;
+  gap: $spacing-2;
+  flex-wrap: wrap;
+
+  @include mobile {
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: $spacing-2;
+    @include scrollbar-hidden;
+  }
+}
+
+.filter-tab {
+  @include flex-center;
+  gap: $spacing-2;
+  padding: $spacing-3 $spacing-5;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: $dark-text-secondary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .count {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: $dark-text-primary;
+  }
+
+  &.active {
+    background: rgba($persian-blue-500, 0.25);
+    border-color: rgba($persian-blue-400, 0.4);
+    color: $persian-blue-300;
+    box-shadow: 0 0 20px rgba($persian-blue-500, 0.2);
+
+    .count {
+      background: rgba($persian-blue-400, 0.3);
+      color: $persian-blue-200;
+    }
+  }
+}
+
+// ===========================
+// LOADING, ERROR, EMPTY STATES
+// ===========================
+
+.loading-state,
+.error-state,
+.empty-state {
+  position: relative;
+  z-index: 1;
+  @include glass-card-strong;
+  @include flex-column-center;
+  padding: $spacing-16;
+  text-align: center;
+  min-height: 400px;
+
+  @include mobile {
+    padding: $spacing-10;
+    min-height: 300px;
+  }
+}
+
+.loading-state {
+  .loading-spinner {
+    margin-bottom: $spacing-4;
+
+    ::ng-deep .mat-mdc-progress-spinner {
+      --mdc-circular-progress-active-indicator-color: #{$persian-blue-400};
+    }
+  }
+
+  p {
+    color: $dark-text-secondary;
+    font-size: $font-size-base;
+    margin: 0;
+  }
+}
+
+.error-state {
+  .error-icon-wrapper {
+    @include flex-center;
+    width: 80px;
+    height: 80px;
+    background: rgba(#F44336, 0.15);
+    border-radius: 20px;
+    margin-bottom: $spacing-4;
+
+    mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      color: #E57373;
+    }
+  }
+
+  h3 {
+    margin: 0 0 $spacing-2 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $dark-text-primary;
+  }
+
+  p {
+    margin: 0 0 $spacing-6 0;
+    font-size: $font-size-base;
+    color: #E57373;
+    max-width: 400px;
+  }
+
+  .glass-button-primary {
+    @include glass-button-primary;
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-2;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.empty-state {
+  .empty-icon-wrapper {
+    @include flex-center;
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    margin-bottom: $spacing-4;
+
+    mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      color: $dark-text-muted;
+    }
+  }
+
+  h3 {
+    margin: 0 0 $spacing-2 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $dark-text-primary;
+  }
+
+  p {
+    margin: 0;
+    font-size: $font-size-base;
+    color: $dark-text-secondary;
+  }
+}
+
+// ===========================
+// USERS TABLE
+// ===========================
+
+.users-table-wrapper {
+  position: relative;
+  z-index: 1;
+  @include slide-up(600ms, 30px, 200ms);
+}
+
+.users-table-container {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: $shadow-glass-card;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead {
+    tr {
+      background: rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    th {
+      padding: $spacing-4 $spacing-5;
+      text-align: left;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      color: $dark-text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+
+      &.th-actions {
+        text-align: center;
+        width: 80px;
+      }
+    }
+  }
+
+  tbody {
+    tr.user-row {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.2s ease;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+    }
+
+    td {
+      padding: $spacing-4 $spacing-5;
+      vertical-align: middle;
+    }
+  }
+}
+
+// User Info Cell
+.td-user {
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+  }
+
+  .user-avatar {
+    position: relative;
+    @include flex-center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
+    flex-shrink: 0;
+
+    &.admin {
+      background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
+      border: 2px solid rgba($persian-blue-400, 0.5);
+      color: $persian-blue-200;
+      box-shadow: 0 0 15px rgba($persian-blue-500, 0.2);
+    }
+
+    &.user {
+      background: linear-gradient(135deg, rgba(#4CAF50, 0.25), rgba(#2E7D32, 0.15));
+      border: 2px solid rgba(#81C784, 0.5);
+      color: #A5D6A7;
+    }
+
+    &.provider {
+      background: linear-gradient(135deg, rgba(#FF9800, 0.25), rgba(#F57C00, 0.15));
+      border: 2px solid rgba(#FFB74D, 0.5);
+      color: #FFCC80;
+    }
+
+    .status-dot {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 3px solid $persian-blue-950;
+
+      &.active {
+        background: #4CAF50;
+        box-shadow: 0 0 8px rgba(#4CAF50, 0.6);
+      }
+
+      &.inactive {
+        background: #9E9E9E;
+      }
+    }
+  }
+
+  .user-details {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-1;
+    min-width: 0;
+
+    .user-name {
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      color: $dark-text-primary;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-email {
+      font-size: $font-size-sm;
+      color: $dark-text-secondary;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+// Role Badge
+.td-role {
+  .role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+
+    &.admin {
+      background: rgba($persian-blue-500, 0.2);
+      color: $persian-blue-300;
+      border: 1px solid rgba($persian-blue-400, 0.3);
+    }
+
+    &.user {
+      background: rgba(#4CAF50, 0.2);
+      color: #81C784;
+      border: 1px solid rgba(#4CAF50, 0.3);
+    }
+
+    &.provider {
+      background: rgba(#FF9800, 0.2);
+      color: #FFB74D;
+      border: 1px solid rgba(#FF9800, 0.3);
+    }
+  }
+}
+
+// Status Badge
+.td-status {
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    &.active {
+      color: #81C784;
+
+      .status-indicator {
+        background: #4CAF50;
+        box-shadow: 0 0 8px rgba(#4CAF50, 0.6);
+      }
+    }
+
+    &.inactive {
+      color: $dark-text-muted;
+
+      .status-indicator {
+        background: #9E9E9E;
+      }
+    }
+  }
+}
+
+// Date Cell
+.td-date {
+  .date-info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    color: $dark-text-secondary;
+    font-size: $font-size-sm;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      color: $dark-text-muted;
+    }
+  }
+}
+
+// Actions Cell
+.td-actions {
+  text-align: center;
+
+  .action-btn {
+    @include flex-center;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: $dark-text-secondary;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: $dark-text-primary;
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+// ===========================
+// PAGINATION
+// ===========================
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-3;
+  margin-top: $spacing-6;
+  flex-wrap: wrap;
+
+  @include mobile {
+    gap: $spacing-2;
+  }
+}
+
+.page-btn {
+  @include flex-center;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: $dark-text-secondary;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: $dark-text-primary;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.page-numbers {
+  display: flex;
+  gap: $spacing-2;
+
+  @include mobile {
+    display: none;
+  }
+}
+
+.page-number {
+  @include flex-center;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 $spacing-3;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: $dark-text-secondary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: $dark-text-primary;
+  }
+
+  &.active {
+    background: rgba($persian-blue-500, 0.25);
+    border-color: rgba($persian-blue-400, 0.4);
+    color: $persian-blue-300;
+    box-shadow: 0 0 15px rgba($persian-blue-500, 0.2);
+  }
+}
+
+.page-info {
+  margin-left: $spacing-4;
+  font-size: $font-size-sm;
+  color: $dark-text-muted;
+
+  @include mobile {
+    margin-left: $spacing-2;
+    font-size: $font-size-xs;
+  }
+}
+
+// ===========================
+// RESPONSIVE TABLE
+// ===========================
+
+@include mobile {
+  .users-table-container {
+    overflow-x: auto;
+    @include dark-scrollbar;
+  }
+
+  .users-table {
+    min-width: 700px;
+  }
+}
+
+// ===========================
+// MATERIAL MENU OVERRIDES
+// ===========================
+
+::ng-deep .mat-mdc-menu-panel {
+  background: rgba($persian-blue-900, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+
+  .mat-mdc-menu-content {
+    padding: $spacing-2 !important;
+  }
+
+  .mat-mdc-menu-item {
+    border-radius: 8px !important;
+    color: $dark-text-secondary !important;
+    min-height: 40px !important;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+      color: $dark-text-primary !important;
+    }
+
+    &.delete-action {
+      color: #E57373 !important;
+
+      &:hover {
+        background: rgba(#F44336, 0.15) !important;
+      }
+    }
+
+    &:disabled {
+      opacity: 0.4 !important;
+    }
+
+    .mat-icon {
+      color: inherit !important;
+      margin-right: $spacing-3 !important;
+    }
+  }
+
+  .mat-mdc-menu-item-text {
+    color: inherit !important;
+  }
+
+  mat-divider {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    margin: $spacing-2 0 !important;
+  }
+}

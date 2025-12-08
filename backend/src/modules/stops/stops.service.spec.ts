@@ -8,6 +8,8 @@ describe('StopsService', () => {
   let service: StopsService;
   let supabaseService: SupabaseService;
 
+  const mockAdminId = 'admin-123';
+
   const mockSupabaseClient = {
     from: jest.fn(),
     rpc: jest.fn(),
@@ -67,7 +69,7 @@ describe('StopsService', () => {
         }),
       });
 
-      const result = await service.create(createDto);
+      const result = await service.create(mockAdminId, createDto);
 
       expect(result).toEqual({ ...mockStop, routes_count: 0 });
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('stops');
@@ -92,7 +94,7 @@ describe('StopsService', () => {
         }),
       });
 
-      await expect(service.create(createDto)).rejects.toThrow(BadRequestException);
+      await expect(service.create(mockAdminId, createDto)).rejects.toThrow(BadRequestException);
     });
   });
 
@@ -338,7 +340,7 @@ describe('StopsService', () => {
         }),
       });
 
-      const result = await service.update(stopId, updateDto);
+      const result = await service.update(mockAdminId, stopId, updateDto);
 
       expect(result.name).toBe('Updated Stop');
       expect(result.routes_count).toBe(2);
@@ -349,31 +351,57 @@ describe('StopsService', () => {
     it('should throw BadRequestException when stop is used in routes', async () => {
       const stopId = 'stop-123';
 
-      mockSupabaseClient.from.mockReturnValue({
+      // Mock fetching stop data
+      mockSupabaseClient.from.mockReturnValueOnce({
+        select: jest.fn().mockReturnValue({
+          eq: jest.fn().mockReturnValue({
+            single: jest.fn().mockResolvedValue({ data: { name: 'Test', type: 'bus_stop' }, error: null }),
+          }),
+        }),
+      });
+
+      // Mock checking route count
+      mockSupabaseClient.from.mockReturnValueOnce({
         select: jest.fn().mockReturnValue({
           eq: jest.fn().mockResolvedValue({ count: 2, error: null }),
         }),
       });
 
-      await expect(service.remove(stopId)).rejects.toThrow(BadRequestException);
+      await expect(service.remove(mockAdminId, stopId)).rejects.toThrow(BadRequestException);
     });
 
     it('should delete stop successfully when not used', async () => {
       const stopId = 'stop-123';
 
+      // Mock fetching stop data
+      mockSupabaseClient.from.mockReturnValueOnce({
+        select: jest.fn().mockReturnValue({
+          eq: jest.fn().mockReturnValue({
+            single: jest.fn().mockResolvedValue({ data: { name: 'Test', type: 'bus_stop' }, error: null }),
+          }),
+        }),
+      });
+
+      // Mock checking route count
       mockSupabaseClient.from.mockReturnValueOnce({
         select: jest.fn().mockReturnValue({
           eq: jest.fn().mockResolvedValue({ count: 0, error: null }),
         }),
       });
 
+      // Mock delete
       mockSupabaseClient.from.mockReturnValueOnce({
         delete: jest.fn().mockReturnValue({
           eq: jest.fn().mockResolvedValue({ error: null }),
         }),
       });
 
-      await expect(service.remove(stopId)).resolves.not.toThrow();
+      // Mock activity log insert
+      mockSupabaseClient.from.mockReturnValueOnce({
+        insert: jest.fn().mockResolvedValue({ data: null, error: null }),
+      });
+
+      await expect(service.remove(mockAdminId, stopId)).resolves.not.toThrow();
     });
   });
 });

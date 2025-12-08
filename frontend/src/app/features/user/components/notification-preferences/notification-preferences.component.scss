@@ -1,0 +1,373 @@
+@import '../../../../../styles/variables';
+@import '../../../../../styles/colors';
+@import '../../../../../styles/typography';
+@import '../../../../../styles/mixins';
+
+.notification-preferences-section {
+  @include flex-column;
+  gap: $spacing-6;
+}
+
+// Preferences Card
+.preferences-card {
+  background: $white;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-lg;
+  overflow: hidden;
+  transition: all $transition-base $ease-out;
+
+  &:hover {
+    box-shadow: $shadow-xl;
+  }
+
+  .card-header {
+    @include flex-start;
+    gap: $spacing-3;
+    align-items: center;
+    background: linear-gradient(135deg, rgba($brand-primary, 0.08) 0%, rgba($brand-primary, 0.04) 100%);
+    border-bottom: 2px solid rgba($brand-primary, 0.15);
+    padding: $spacing-5;
+    position: relative;
+
+    @include mobile {
+      padding: $spacing-4;
+    }
+
+    .header-icon {
+      @include flex-center;
+      width: 48px;
+      height: 48px;
+      border-radius: $radius-lg;
+      background: linear-gradient(135deg, $brand-primary 0%, darken($brand-primary, 10%) 100%);
+      box-shadow: $shadow-md;
+      flex-shrink: 0;
+
+      mat-icon {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+        color: $white;
+      }
+
+      @include mobile {
+        width: 40px;
+        height: 40px;
+
+        mat-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    .header-text {
+      flex: 1;
+
+      h3 {
+        margin: 0 0 $spacing-1 0;
+        font-size: $font-size-xl;
+        font-weight: $font-weight-bold;
+        color: $brand-dark;
+
+        @include mobile {
+          font-size: $font-size-lg;
+        }
+      }
+
+      p {
+        margin: 0;
+        font-size: $font-size-sm;
+        color: $neutral-600;
+        font-weight: $font-weight-medium;
+
+        @include mobile {
+          font-size: $font-size-xs;
+        }
+      }
+    }
+
+    .saving-indicator {
+      @include flex-center;
+      margin-left: auto;
+      padding: $spacing-2 $spacing-3;
+      border-radius: $radius-md;
+      background: rgba($brand-primary, 0.1);
+      animation: pulse 1.5s ease-in-out infinite;
+
+      @keyframes pulse {
+        0%, 100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.6;
+        }
+      }
+    }
+  }
+
+  .card-content {
+    padding: $spacing-6;
+
+    @include mobile {
+      padding: $spacing-4;
+    }
+  }
+}
+
+// Preferences Section
+.preferences-section {
+  @include flex-column;
+  gap: $spacing-4;
+
+  & + .preferences-section {
+    margin-top: $spacing-5;
+  }
+
+  .section-header {
+    @include flex-start;
+    gap: $spacing-2;
+    align-items: center;
+    padding-bottom: $spacing-3;
+    border-bottom: 2px solid $neutral-200;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: $brand-primary;
+    }
+
+    h4 {
+      margin: 0;
+      font-size: $font-size-base;
+      font-weight: $font-weight-bold;
+      color: $brand-dark;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .preference-items {
+    @include flex-column;
+    gap: $spacing-2;
+  }
+}
+
+// Section Divider
+.section-divider {
+  margin: $spacing-5 0;
+  border-color: rgba($brand-primary, 0.2);
+}
+
+// Preference Item
+.preference-item {
+  @include flex-start;
+  gap: $spacing-4;
+  padding: $spacing-4;
+  border-radius: $radius-lg;
+  background: $white;
+  border: 2px solid $neutral-200;
+  transition: all $transition-base $ease-out;
+
+  &:hover {
+    border-color: rgba($brand-primary, 0.3);
+    background: rgba($brand-primary, 0.02);
+    transform: translateY(-1px);
+    box-shadow: $shadow-sm;
+  }
+
+  .item-content {
+    @include flex-start;
+    gap: $spacing-3;
+    flex: 1;
+    align-items: flex-start;
+
+    @include mobile {
+      flex-direction: column;
+      gap: $spacing-2;
+    }
+  }
+
+  .item-icon {
+    @include flex-center;
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-md;
+    background: linear-gradient(135deg, rgba($brand-primary, 0.1) 0%, rgba($brand-primary, 0.05) 100%);
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: $brand-primary;
+    }
+
+    @include mobile {
+      width: 36px;
+      height: 36px;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .item-text {
+    @include flex-column;
+    gap: $spacing-1;
+    flex: 1;
+
+    h5 {
+      margin: 0;
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      color: $brand-dark;
+
+      @include mobile {
+        font-size: $font-size-sm;
+      }
+    }
+
+    p {
+      margin: 0;
+      font-size: $font-size-sm;
+      color: $neutral-600;
+      line-height: $line-height-relaxed;
+
+      @include mobile {
+        font-size: $font-size-xs;
+      }
+    }
+  }
+
+  // Slide Toggle Styling
+  ::ng-deep {
+    .mat-mdc-slide-toggle {
+      flex-shrink: 0;
+
+      .mdc-switch {
+        .mdc-switch__track {
+          &::after {
+            background: $neutral-300;
+          }
+        }
+
+        &.mdc-switch--selected {
+          .mdc-switch__track {
+            &::after {
+              background: $brand-primary;
+            }
+          }
+
+          .mdc-switch__handle {
+            &::after {
+              background: darken($brand-primary, 5%);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include mobile {
+    flex-direction: column;
+    align-items: stretch;
+
+    ::ng-deep .mat-mdc-slide-toggle {
+      align-self: flex-end;
+    }
+  }
+}
+
+// GDPR Notice
+.gdpr-notice {
+  @include flex-column;
+  gap: $spacing-3;
+  padding: $spacing-5;
+  margin-top: $spacing-5;
+  background: linear-gradient(135deg, rgba($success-500, 0.05) 0%, rgba($success-500, 0.02) 100%);
+  border: 2px solid rgba($success-500, 0.2);
+  border-left: 4px solid $success-500;
+  border-radius: $radius-lg;
+
+  .notice-header {
+    @include flex-start;
+    gap: $spacing-2;
+    align-items: center;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: $success-500;
+    }
+
+    h4 {
+      margin: 0;
+      font-size: $font-size-base;
+      font-weight: $font-weight-bold;
+      color: $brand-dark;
+    }
+  }
+
+  p {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $neutral-700;
+    line-height: $line-height-relaxed;
+
+    a {
+      color: $brand-primary;
+      font-weight: $font-weight-semibold;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: border-color $transition-base $ease-out;
+
+      &:hover {
+        border-bottom-color: $brand-primary;
+      }
+    }
+  }
+
+  .gdpr-badges {
+    @include flex-start;
+    gap: $spacing-2;
+    flex-wrap: wrap;
+    margin-top: $spacing-2;
+  }
+
+  .gdpr-chip {
+    @include flex-center;
+    gap: $spacing-1;
+    height: 32px;
+    padding: 0 $spacing-3;
+    background: rgba($success-500, 0.1) !important;
+    border: 2px solid rgba($success-500, 0.3);
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: darken($success-500, 10%);
+    border-radius: $radius-full;
+
+    ::ng-deep {
+      .mat-mdc-chip-action-label {
+        @include flex-center;
+        gap: $spacing-1;
+      }
+    }
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      color: $success-500;
+    }
+  }
+
+  @include mobile {
+    padding: $spacing-4;
+  }
+}

@@ -18,6 +18,13 @@ export class RouteStopInfo {
 
   @ApiProperty({ description: 'Longitude coordinate' })
   longitude: number;
+
+  @ApiProperty({
+    description: 'Time offset from first stop on route (e.g., "00:05:30" means 5.5 minutes from route start)',
+    required: false,
+    example: '00:05:30'
+  })
+  arrival_offset?: string;
 }
 
 export class RouteResponseDto {
@@ -38,6 +45,14 @@ export class RouteResponseDto {
 
   @ApiProperty({ description: 'Active status' })
   is_active: boolean;
+
+  @ApiProperty({
+    description: 'Route type (transportation mode)',
+    required: false,
+    enum: ['bus', 'tram', 'metro', 'trolley'],
+    example: 'metro'
+  })
+  route_type?: string;
 
   @ApiProperty({ description: 'Creation timestamp' })
   created_at: string;

@@ -1,0 +1,21 @@
+<div class="star-rating" [ngClass]="getSizeClass()" role="img" [attr.aria-label]="'Értékelés: ' + rating + ' / 5'">
+  @for (star of stars; track star) {
+    <button
+      class="star-button"
+      [class.readonly]="readonly"
+      [class.filled]="star <= (hoveredRating || rating)"
+      [disabled]="readonly"
+      [attr.tabindex]="readonly ? -1 : 0"
+      [matTooltip]="getTooltip(star)"
+      (click)="onStarClick(star)"
+      (mouseenter)="onStarHover(star)"
+      (mouseleave)="onStarLeave()"
+      (keydown)="onKeyDown($event, star)"
+      [attr.aria-label]="star + ' csillag megadása'"
+    >
+      <mat-icon [class.filled]="star <= (hoveredRating || rating)">
+        {{ getStarIcon(star) }}
+      </mat-icon>
+    </button>
+  }
+</div>

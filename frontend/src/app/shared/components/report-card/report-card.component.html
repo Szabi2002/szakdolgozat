@@ -1,0 +1,142 @@
+<mat-card class="report-card" [class.compact]="compact" (click)="onView()">
+  <mat-card-header>
+    <div class="report-header">
+      <div class="type-info">
+        <mat-icon class="type-avatar">{{ typeMetadata.icon }}</mat-icon>
+        <div class="type-details">
+          <h3 class="report-title">{{ report.title }}</h3>
+          <span class="report-date">{{ timeElapsed }}</span>
+        </div>
+      </div>
+      <div class="status-section">
+        <mat-chip
+          class="status-chip"
+          [class.pending]="report.status === 'pending'"
+          [class.in-review]="report.status === 'in_review'"
+          [class.resolved]="report.status === 'resolved'"
+          [class.dismissed]="report.status === 'dismissed'"
+        >
+          {{ getStatusLabel(report.status) }}
+        </mat-chip>
+        @if (shouldShowPriority) {
+          <mat-chip
+            class="priority-chip"
+            [class.low]="report.priority === 'low'"
+            [class.medium]="report.priority === 'medium'"
+            [class.high]="report.priority === 'high'"
+            [class.critical]="report.priority === 'critical'"
+          >
+            <mat-icon>{{ report.priority === 'critical' ? 'priority_high' : 'warning' }}</mat-icon>
+            {{ getPriorityLabel(report.priority) }}
+          </mat-chip>
+        }
+      </div>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content>
+    <!-- Route Information (if available) -->
+    @if (report.route && !compact) {
+      <div class="route-info">
+        <mat-icon>directions_bus</mat-icon>
+        <span>{{ report.route.route_number }}-es jaratot: {{ report.route.name }}</span>
+        @if (hasRouteId()) {
+          <button
+            mat-icon-button
+            (click)="onViewRoute(); $event.stopPropagation()"
+            matTooltip="Utvonal reszletei"
+            class="route-link-btn"
+          >
+            <mat-icon>launch</mat-icon>
+          </button>
+        }
+      </div>
+    }
+
+    <!-- Stop Information (if available) -->
+    @if (report.stop && !compact) {
+      <div class="location-info">
+        <mat-icon>place</mat-icon>
+        <span>{{ report.stop.name }}</span>
+      </div>
+    }
+
+    <!-- Location Information (if available) -->
+    @if (report.location && !compact) {
+      <div class="location-info">
+        <mat-icon>location_on</mat-icon>
+        <span>{{ report.location }}</span>
+      </div>
+    }
+
+    <!-- Description -->
+    @if (report.description) {
+      <div class="description">
+        <p>{{ descriptionPreview }}</p>
+        @if (isTruncated) {
+          <button
+            mat-button
+            (click)="onView(); $event.stopPropagation()"
+            class="show-more-button"
+          >
+            Tovabbiak
+          </button>
+        }
+      </div>
+    }
+
+    <!-- Photo Gallery -->
+    @if (report.photos && report.photos.length > 0 && !compact) {
+      <div class="photo-gallery">
+        @for (photo of report.photos; track photo.photo_url) {
+          <div
+            class="photo-thumbnail"
+            (click)="$event.stopPropagation()"
+            [matTooltip]="'Kattints a teljes merethez'"
+          >
+            <img [src]="photo.photo_url" [alt]="'Bejelentes fotoja'" />
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Footer Info -->
+    <div class="footer-info">
+      <div class="info-left">
+        <span class="time-ago">{{ referenceNumber }}</span>
+        @if (photoCount > 0) {
+          <span class="photo-count">
+            <mat-icon>photo_camera</mat-icon>
+            {{ photoCount }} foto
+          </span>
+        }
+      </div>
+    </div>
+  </mat-card-content>
+
+  <!-- Actions -->
+  @if (showActions && (canEdit || canDelete)) {
+    <mat-card-actions>
+      @if (canEdit) {
+        <button
+          mat-button
+          color="primary"
+          (click)="onEdit(); $event.stopPropagation()"
+        >
+          <mat-icon>edit</mat-icon>
+          Szerkesztes
+        </button>
+      }
+      @if (canDelete) {
+        <button
+          mat-button
+          color="warn"
+          (click)="onDelete(); $event.stopPropagation()"
+        >
+          <mat-icon>delete</mat-icon>
+          Torles
+        </button>
+      }
+    </mat-card-actions>
+  }
+</mat-card>

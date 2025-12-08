@@ -1,0 +1,711 @@
+// ===========================
+// ROUTES MANAGEMENT - DARK GLASSMORPHISM DESIGN
+// Persian Blue Dark Theme with Glass Effects
+// ===========================
+
+@import '../../../../styles/variables';
+@import '../../../../styles/colors';
+@import '../../../../styles/typography';
+@import '../../../../styles/mixins';
+@import '../../../../styles/persian-blue';
+@import '../../../../styles/glassmorphism';
+@import '../../../../styles/animations';
+
+// ===========================
+// MAIN CONTAINER
+// ===========================
+
+.routes-management-container {
+  min-height: 100vh;
+  background: $gradient-dark-hero;
+  padding: $spacing-6;
+  position: relative;
+  overflow: hidden;
+  @include fade-in(400ms);
+
+  // Floating orbs for visual depth
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    width: 400px;
+    height: 400px;
+    background: $gradient-orb-blue;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.4;
+    pointer-events: none;
+    @include float-animation(slow);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 15%;
+    right: 10%;
+    width: 350px;
+    height: 350px;
+    background: $gradient-orb-purple;
+    border-radius: 50%;
+    filter: blur(50px);
+    opacity: 0.3;
+    pointer-events: none;
+    @include float-animation(medium);
+  }
+
+  @include mobile {
+    padding: $spacing-4;
+  }
+}
+
+// ===========================
+// PAGE HEADER
+// ===========================
+
+.page-header {
+  position: relative;
+  z-index: 1;
+  margin-bottom: $spacing-6;
+  padding: $spacing-8;
+  @include glass-card-strong;
+  @include slide-up(500ms, 30px, 100ms);
+
+  // Subtle inner glow
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba($persian-blue-400, 0.3), transparent, rgba($persian-blue-500, 0.2));
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask-composite: xor;
+    pointer-events: none;
+  }
+
+  @include mobile {
+    padding: $spacing-6;
+  }
+
+  .header-content {
+    @include flex-start;
+    gap: $spacing-4;
+    align-items: center;
+    margin-bottom: $spacing-4;
+
+    @include mobile {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-3;
+    }
+
+    .header-icon {
+      font-size: 56px;
+      width: 56px;
+      height: 56px;
+      color: $persian-blue-400;
+      filter: drop-shadow(0 0 12px rgba($persian-blue-400, 0.5));
+      @include icon-glow-animation;
+
+      @include mobile {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+      }
+    }
+
+    .header-text {
+      @include flex-column;
+      gap: $spacing-1;
+
+      h1 {
+        margin: 0;
+        font-size: $font-size-3xl;
+        font-weight: $font-weight-bold;
+        color: $dark-text-primary;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        letter-spacing: -0.5px;
+
+        @include mobile {
+          font-size: $font-size-2xl;
+        }
+      }
+
+      p {
+        margin: 0;
+        font-size: $font-size-base;
+        color: $dark-text-secondary;
+      }
+    }
+  }
+
+  .header-actions {
+    .add-route-button {
+      @include glass-button-primary;
+      @include flex-center;
+      gap: $spacing-2;
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      @include shine-effect;
+
+      @include mobile {
+        width: 100%;
+      }
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}
+
+// ===========================
+// SEARCH SECTION
+// ===========================
+
+.search-section {
+  position: relative;
+  z-index: 1;
+  @include flex-between;
+  align-items: flex-start;
+  gap: $spacing-4;
+  margin-bottom: $spacing-6;
+  @include slide-up(500ms, 20px, 200ms);
+
+  @include mobile {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-field {
+    flex: 1;
+    max-width: 500px;
+
+    @include mobile {
+      max-width: 100%;
+    }
+
+    // Override Angular Material styles for glass effect
+    ::ng-deep .mat-mdc-form-field {
+      width: 100%;
+
+      .mdc-text-field--outlined {
+        @include glass-card-subtle;
+
+        .mdc-notched-outline {
+          .mdc-notched-outline__leading,
+          .mdc-notched-outline__notch,
+          .mdc-notched-outline__trailing {
+            border-color: rgba(255, 255, 255, 0.12) !important;
+          }
+        }
+
+        &:hover .mdc-notched-outline {
+          .mdc-notched-outline__leading,
+          .mdc-notched-outline__notch,
+          .mdc-notched-outline__trailing {
+            border-color: rgba($persian-blue-400, 0.3) !important;
+          }
+        }
+
+        &.mdc-text-field--focused .mdc-notched-outline {
+          .mdc-notched-outline__leading,
+          .mdc-notched-outline__notch,
+          .mdc-notched-outline__trailing {
+            border-color: rgba($persian-blue-400, 0.5) !important;
+            border-width: 2px !important;
+          }
+        }
+
+        .mdc-text-field__input {
+          color: $dark-text-primary !important;
+
+          &::placeholder {
+            color: $dark-text-muted !important;
+          }
+        }
+      }
+
+      .mat-mdc-form-field-icon-prefix {
+        color: $persian-blue-400 !important;
+      }
+
+      .mdc-floating-label {
+        color: $dark-text-secondary !important;
+      }
+    }
+  }
+
+  .search-stats {
+    @include mobile {
+      width: 100%;
+    }
+
+    .stat-chip {
+      @include glass-badge;
+
+      @include mobile {
+        width: 100%;
+        justify-content: center;
+      }
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        color: $persian-blue-400;
+      }
+    }
+  }
+}
+
+// ===========================
+// LOADING STATE
+// ===========================
+
+.loading-state {
+  position: relative;
+  z-index: 1;
+  @include flex-column-center;
+  justify-content: center;
+  padding: $spacing-12;
+  text-align: center;
+  min-height: 400px;
+
+  mat-spinner {
+    margin-bottom: $spacing-4;
+
+    ::ng-deep circle {
+      stroke: $persian-blue-400 !important;
+    }
+  }
+
+  p {
+    margin: $spacing-2 0;
+    font-size: $font-size-base;
+    color: $dark-text-secondary;
+  }
+
+  @include mobile {
+    padding: $spacing-8;
+  }
+}
+
+// ===========================
+// EMPTY STATE
+// ===========================
+
+.empty-state {
+  position: relative;
+  z-index: 1;
+  @include flex-column-center;
+  justify-content: center;
+  padding: $spacing-12;
+  text-align: center;
+  min-height: 400px;
+  @include glass-card;
+  @include slide-up(500ms, 20px, 300ms);
+
+  mat-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    color: $persian-blue-400;
+    margin-bottom: $spacing-4;
+    opacity: 0.7;
+    filter: drop-shadow(0 0 15px rgba($persian-blue-400, 0.4));
+  }
+
+  h3 {
+    margin: 0 0 $spacing-2 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $dark-text-primary;
+  }
+
+  p {
+    color: $dark-text-secondary;
+    margin-bottom: $spacing-4;
+  }
+
+  button {
+    @include glass-button-primary;
+    @include flex-center;
+    gap: $spacing-2;
+  }
+
+  @include mobile {
+    padding: $spacing-8;
+  }
+}
+
+// ===========================
+// ROUTES LIST
+// ===========================
+
+.routes-list {
+  position: relative;
+  z-index: 1;
+  @include flex-column;
+  gap: $spacing-5;
+  margin-bottom: $spacing-6;
+
+  @include mobile {
+    gap: $spacing-4;
+  }
+}
+
+// ===========================
+// ROUTE CARD
+// ===========================
+
+.route-card {
+  @include glass-card-strong;
+  padding: $spacing-6;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  @include staggered-cards(0.08s);
+
+  // Subtle gradient overlay on hover
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, rgba($persian-blue-500, 0.05));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), $glow-primary;
+    border-color: rgba($persian-blue-400, 0.3);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  @include mobile {
+    padding: $spacing-4;
+  }
+
+  // Card Header
+  .card-header {
+    @include flex-between;
+    align-items: center;
+    margin-bottom: $spacing-4;
+    padding-bottom: $spacing-4;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    @include mobile {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-3;
+    }
+
+    .header-left {
+      @include flex-start;
+      gap: $spacing-4;
+      align-items: center;
+      flex: 1;
+
+      .route-badge {
+        @include flex-center;
+        flex-direction: column;
+        gap: $spacing-1;
+        min-width: 80px;
+        padding: $spacing-3;
+        background: $gradient-btn-primary;
+        border-radius: $radius-lg;
+        box-shadow: $glow-primary;
+        flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
+        @include shine-effect;
+
+        @include mobile {
+          min-width: 70px;
+          padding: $spacing-2;
+        }
+
+        mat-icon {
+          font-size: 32px;
+          width: 32px;
+          height: 32px;
+          color: white;
+
+          @include mobile {
+            font-size: 28px;
+            width: 28px;
+            height: 28px;
+          }
+        }
+
+        .route-number {
+          font-size: $font-size-xl;
+          font-weight: $font-weight-bold;
+          color: white;
+          line-height: 1;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+          @include mobile {
+            font-size: $font-size-lg;
+          }
+        }
+      }
+
+      .route-info {
+        @include flex-column;
+        gap: $spacing-2;
+        flex: 1;
+
+        .route-name {
+          margin: 0;
+          font-size: $font-size-xl;
+          font-weight: $font-weight-bold;
+          color: $dark-text-primary;
+
+          @include mobile {
+            font-size: $font-size-lg;
+          }
+        }
+
+        .route-meta {
+          @include flex-start;
+          gap: $spacing-3;
+          flex-wrap: wrap;
+
+          .meta-item {
+            @include flex-center;
+            gap: $spacing-1;
+            font-size: $font-size-sm;
+            color: $dark-text-secondary;
+
+            mat-icon {
+              font-size: 18px;
+              width: 18px;
+              height: 18px;
+              color: $persian-blue-400;
+            }
+          }
+        }
+      }
+    }
+
+    .header-right {
+      @include mobile {
+        width: 100%;
+      }
+    }
+  }
+
+  // Status Chip
+  .status-chip {
+    @include glass-badge-accent;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    &.active {
+      background: rgba($success-500, 0.2);
+      border-color: rgba($success-400, 0.3);
+      color: $success-300;
+    }
+  }
+
+  // Route Details
+  .route-details {
+    margin-bottom: $spacing-4;
+    padding: $spacing-4;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: $radius-md;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    .detail-item {
+      @include flex-start;
+      gap: $spacing-3;
+
+      mat-icon {
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+        color: $persian-blue-400;
+        flex-shrink: 0;
+        margin-top: $spacing-1;
+      }
+
+      .detail-content {
+        @include flex-column;
+        gap: $spacing-1;
+        flex: 1;
+
+        .detail-label {
+          font-size: $font-size-xs;
+          font-weight: $font-weight-semibold;
+          color: $dark-text-muted;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+          font-size: $font-size-sm;
+          font-weight: $font-weight-medium;
+          color: $dark-text-primary;
+          line-height: 1.6;
+        }
+      }
+    }
+  }
+
+  // Card Actions
+  .card-actions {
+    @include flex-end;
+    gap: $spacing-3;
+    padding-top: $spacing-4;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    flex-wrap: wrap;
+
+    @include mobile {
+      @include flex-column;
+      gap: $spacing-2;
+
+      button {
+        width: 100%;
+      }
+    }
+
+    .action-button {
+      @include glass-button;
+      @include flex-center;
+      gap: $spacing-2;
+      padding: $spacing-3 $spacing-4;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      border-radius: $radius-md;
+      transition: all 0.3s ease;
+      min-width: 120px;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+
+      &.view {
+        background: rgba($persian-blue-500, 0.15);
+        color: $persian-blue-300;
+        border-color: rgba($persian-blue-400, 0.3);
+
+        &:hover {
+          background: rgba($persian-blue-500, 0.25);
+          border-color: rgba($persian-blue-400, 0.5);
+          box-shadow: 0 0 15px rgba($persian-blue-500, 0.3);
+        }
+      }
+
+      &.edit {
+        background: rgba($warning-500, 0.15);
+        color: $warning-300;
+        border-color: rgba($warning-400, 0.3);
+
+        &:hover {
+          background: rgba($warning-500, 0.25);
+          border-color: rgba($warning-400, 0.5);
+          box-shadow: 0 0 15px rgba($warning-500, 0.3);
+        }
+      }
+
+      &.delete {
+        background: rgba(255, 255, 255, 0.05);
+        color: $dark-text-secondary;
+        border-color: rgba(255, 255, 255, 0.1);
+
+        &:hover {
+          background: rgba($error-500, 0.2);
+          color: $error-300;
+          border-color: rgba($error-400, 0.4);
+          box-shadow: 0 0 15px rgba($error-500, 0.3);
+        }
+      }
+    }
+  }
+}
+
+// ===========================
+// PAGINATOR
+// ===========================
+
+mat-paginator {
+  position: relative;
+  z-index: 1;
+  @include glass-card;
+  margin-top: $spacing-6;
+  @include slide-up(500ms, 20px, 400ms);
+
+  ::ng-deep {
+    .mat-mdc-paginator-container {
+      background: transparent;
+      color: $dark-text-primary;
+    }
+
+    .mat-mdc-paginator-page-size-label,
+    .mat-mdc-paginator-range-label {
+      color: $dark-text-secondary;
+    }
+
+    .mat-mdc-select-value {
+      color: $dark-text-primary;
+    }
+
+    .mat-mdc-paginator-navigation-previous,
+    .mat-mdc-paginator-navigation-next,
+    .mat-mdc-paginator-navigation-first,
+    .mat-mdc-paginator-navigation-last {
+      color: $persian-blue-300;
+
+      &:hover:not(:disabled) {
+        background: rgba($persian-blue-500, 0.2);
+      }
+
+      &:disabled {
+        color: rgba($persian-blue-300, 0.3);
+      }
+    }
+
+    .mat-mdc-form-field {
+      .mdc-text-field--outlined {
+        background: rgba(255, 255, 255, 0.05);
+
+        .mdc-notched-outline {
+          .mdc-notched-outline__leading,
+          .mdc-notched-outline__notch,
+          .mdc-notched-outline__trailing {
+            border-color: rgba(255, 255, 255, 0.1) !important;
+          }
+        }
+      }
+    }
+  }
+
+  @include mobile {
+    margin-top: $spacing-4;
+  }
+}
+
+// ===========================
+// DARK SCROLLBAR
+// ===========================
+
+:host {
+  @include dark-scrollbar;
+}

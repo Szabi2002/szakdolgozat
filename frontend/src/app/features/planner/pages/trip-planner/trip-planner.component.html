@@ -1,0 +1,221 @@
+<div class="planner-page">
+  <!-- Compact Header -->
+  <section class="planner-header">
+    <div class="header-container">
+      <!-- Left Side: Badge + Title -->
+      <div class="header-left">
+        <div class="header-badge">
+          <mat-icon>route</mat-icon>
+          <span>Útvonaltervező</span>
+        </div>
+
+        <div class="title-section">
+          <h1 class="page-title">
+            Tervezd meg <span class="highlight">utazásod</span>
+          </h1>
+          <p class="page-subtitle">Keress útvonalat megállók között könnyedén</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search Section -->
+  <section class="search-section">
+    <div class="search-container">
+      <!-- Section Header -->
+      <div class="section-header">
+        <h2 class="section-heading">
+          Gyors <span class="highlight">keresés</span>
+        </h2>
+        <p class="section-subheading">
+          Add meg a kiindulási és célállomást
+        </p>
+      </div>
+
+      <!-- Search Card -->
+      <div class="search-card">
+        <div class="card-icon-wrapper">
+          <div class="icon-glow"></div>
+          <mat-icon class="card-icon">search</mat-icon>
+        </div>
+
+        <form [formGroup]="plannerForm" (ngSubmit)="onSearch()" class="planner-form">
+          <!-- Stops Row -->
+          <div class="stops-row">
+            <!-- From Stop -->
+            <mat-form-field appearance="outline" class="stop-field">
+              <mat-label>Honnan?</mat-label>
+              <input
+                type="text"
+                matInput
+                formControlName="fromStop"
+                [matAutocomplete]="autoFrom"
+                placeholder=""
+                required
+              />
+              <mat-icon matPrefix>my_location</mat-icon>
+              <mat-autocomplete #autoFrom="matAutocomplete" [displayWith]="displayStopFn" panelClass="planner-autocomplete-panel">
+                @for (stop of filteredFromStops$ | async; track stop.id) {
+                  <mat-option [value]="stop">
+                    <div class="autocomplete-option">
+                      <mat-icon [class]="'stop-icon ' + stop.type">{{ getStopIcon(stop.type) }}</mat-icon>
+                      <span class="stop-name">{{ stop.name }}</span>
+                    </div>
+                  </mat-option>
+                }
+                @if (fromStopsCount() === 0 && fromInputLength() >= 2) {
+                  <mat-option disabled>
+                    <div class="no-results">
+                      <mat-icon>search_off</mat-icon>
+                      <span>Nem található megálló</span>
+                    </div>
+                  </mat-option>
+                }
+                @if (fromInputLength() > 0 && fromInputLength() < 2) {
+                  <mat-option disabled>
+                    <div class="no-results">
+                      <mat-icon>info</mat-icon>
+                      <span>Írj be legalább 2 karaktert</span>
+                    </div>
+                  </mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <!-- Swap Button -->
+            <button type="button" mat-icon-button class="swap-button" (click)="swapStops()" aria-label="Megállók cseréje">
+              <mat-icon>swap_horiz</mat-icon>
+            </button>
+
+            <!-- To Stop -->
+            <mat-form-field appearance="outline" class="stop-field">
+              <mat-label>Hova?</mat-label>
+              <input
+                type="text"
+                matInput
+                formControlName="toStop"
+                [matAutocomplete]="autoTo"
+                placeholder=""
+                required
+              />
+              <mat-icon matPrefix>place</mat-icon>
+              <mat-autocomplete #autoTo="matAutocomplete" [displayWith]="displayStopFn" panelClass="planner-autocomplete-panel">
+                @for (stop of filteredToStops$ | async; track stop.id) {
+                  <mat-option [value]="stop">
+                    <div class="autocomplete-option">
+                      <mat-icon [class]="'stop-icon ' + stop.type">{{ getStopIcon(stop.type) }}</mat-icon>
+                      <span class="stop-name">{{ stop.name }}</span>
+                    </div>
+                  </mat-option>
+                }
+                @if (toStopsCount() === 0 && toInputLength() >= 2) {
+                  <mat-option disabled>
+                    <div class="no-results">
+                      <mat-icon>search_off</mat-icon>
+                      <span>Nem található megálló</span>
+                    </div>
+                  </mat-option>
+                }
+                @if (toInputLength() > 0 && toInputLength() < 2) {
+                  <mat-option disabled>
+                    <div class="no-results">
+                      <mat-icon>info</mat-icon>
+                      <span>Írj be legalább 2 karaktert</span>
+                    </div>
+                  </mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+
+          <!-- Date & Time Row -->
+          <div class="date-time-row">
+            <mat-form-field appearance="outline" class="date-field">
+              <mat-label>Dátum</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="date" />
+              <mat-icon matPrefix>event</mat-icon>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="time-field">
+              <mat-label>Időpont</mat-label>
+              <input matInput type="time" formControlName="time" />
+              <mat-icon matPrefix>schedule</mat-icon>
+            </mat-form-field>
+
+            <!-- Search Button -->
+            <button
+              type="submit"
+              [disabled]="plannerForm.invalid || isLoading()"
+              class="search-button"
+            >
+              @if (isLoading()) {
+                <mat-spinner diameter="20" class="inline-spinner"></mat-spinner>
+                <span>Keresés...</span>
+              } @else {
+                <mat-icon>search</mat-icon>
+                <span>Keresés</span>
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Section -->
+  @if (searchPerformed() && alternatives().length > 0) {
+    <section class="results-section">
+      <div class="results-container">
+        <!-- Routes List -->
+        <div class="routes-panel">
+          <div class="panel-header">
+            <mat-icon>alt_route</mat-icon>
+            <h3>Elérhető útvonalak</h3>
+            <span class="results-badge">{{ alternatives().length }}</span>
+          </div>
+          <div class="routes-list">
+            @for (route of alternatives(); track route.route_id) {
+              <app-route-card
+                [fromStop]="fromStop()"
+                [toStop]="toStop()"
+                [route]="route"
+                [selected]="route.route_id === selectedRoute()?.route_id"
+                (click)="selectAlternative(route)"
+              />
+            }
+          </div>
+        </div>
+
+        <!-- Map Panel -->
+        <div class="map-panel">
+          <div class="panel-header">
+            <mat-icon>map</mat-icon>
+            <h3>Térkép</h3>
+          </div>
+          <div class="map-wrapper">
+            <app-map></app-map>
+          </div>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- Empty State -->
+  @if (searchPerformed() && alternatives().length === 0) {
+    <section class="empty-section">
+      <div class="empty-card">
+        <div class="empty-icon-wrapper">
+          <mat-icon>search_off</mat-icon>
+        </div>
+        <h3>Nem található útvonal</h3>
+        <p>A megadott megállók között nem található elérhető útvonal. Próbálj más megállókat!</p>
+        <button mat-raised-button class="retry-button" (click)="plannerForm.reset()">
+          <mat-icon>refresh</mat-icon>
+          Új keresés
+        </button>
+      </div>
+    </section>
+  }
+</div>

@@ -1,0 +1,379 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// RATING FORM DIALOG - DARK THEME WITH GLASSMORPHISM
+// ============================================================================
+
+.rating-form-dialog {
+  @include flex-column;
+  min-width: 550px;
+  max-width: 900px;
+  @include fade-in(300ms);
+
+  // Dark background for the entire dialog
+  background: $persian-blue-950;
+
+  @include tablet {
+    min-width: 450px;
+  }
+
+  @include mobile {
+    min-width: 320px;
+    max-width: 100vw;
+  }
+}
+
+// ============================================================================
+// DIALOG HEADER - GRADIENT STYLE
+// ============================================================================
+
+.dialog-header {
+  position: relative;
+  overflow: hidden;
+
+  .header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    z-index: 0;
+
+    // Dark gradient with gold accent for ratings
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(#facc15, 0.3), transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba($persian-blue-600, 0.2), transparent 50%),
+      linear-gradient(135deg, $persian-blue-800 0%, $persian-blue-900 100%);
+
+    // Decorative wave
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 30px;
+      background: url('data:image/svg+xml,<svg width="100%" height="30" viewBox="0 0 1200 30" xmlns="http://www.w3.org/2000/svg"><path d="M0,15 Q300,0 600,15 T1200,15 L1200,30 L0,30 Z" fill="rgba(255,255,255,0.03)"/></svg>') no-repeat bottom;
+      background-size: 100% 30px;
+    }
+  }
+
+  .header-content {
+    position: relative;
+    @include flex-between;
+    align-items: center;
+    padding: $spacing-6;
+    gap: $spacing-4;
+    z-index: 1;
+    animation: fadeInUp 0.4s ease 100ms backwards;
+
+    .header-left {
+      @include flex-start;
+      gap: $spacing-3;
+      align-items: center;
+      flex: 1;
+
+      .dialog-icon {
+        @include flex-center;
+        width: 48px;
+        height: 48px;
+        border-radius: $radius-full;
+        background: rgba(#facc15, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(#facc15, 0.3);
+        box-shadow: 0 4px 16px rgba(#facc15, 0.2);
+
+        mat-icon {
+          font-size: 28px;
+          width: 28px;
+          height: 28px;
+          color: #facc15;
+        }
+      }
+
+      .header-text {
+        @include flex-column;
+        gap: $spacing-1;
+
+        h2 {
+          margin: 0;
+          font-size: $font-size-xl;
+          font-weight: $font-weight-bold;
+          color: $persian-blue-50;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+          line-height: 1.2;
+        }
+
+        .header-subtitle {
+          margin: 0;
+          font-size: $font-size-sm;
+          font-weight: $font-weight-medium;
+          color: $persian-blue-200;
+        }
+      }
+    }
+
+    .close-button {
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      color: $persian-blue-200 !important;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-color: rgba(255, 255, 255, 0.25) !important;
+        color: $persian-blue-50 !important;
+        transform: rotate(90deg) scale(1.05);
+      }
+
+      mat-icon {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    @include mobile {
+      padding: $spacing-5 $spacing-4;
+      gap: $spacing-3;
+
+      .header-left {
+        gap: $spacing-2;
+
+        .dialog-icon {
+          width: 40px;
+          height: 40px;
+
+          mat-icon {
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+          }
+        }
+
+        .header-text {
+          h2 {
+            font-size: $font-size-lg;
+          }
+
+          .header-subtitle {
+            font-size: $font-size-xs;
+          }
+        }
+      }
+
+      .close-button {
+        mat-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+}
+
+// ============================================================================
+// DIALOG CONTENT
+// ============================================================================
+
+.dialog-content {
+  padding: $spacing-6 !important;
+  overflow-y: auto;
+  max-height: 70vh;
+  animation: fadeInUp 0.4s ease 200ms backwards;
+
+  // Dark background
+  background: $persian-blue-950;
+
+  @include mobile {
+    padding: $spacing-4 !important;
+    max-height: calc(100vh - 200px);
+  }
+
+  // ==========================================================================
+  // ROUTE INFO BANNER - GLASSMORPHISM
+  // ==========================================================================
+
+  .route-info {
+    @include flex-start;
+    gap: $spacing-4;
+    align-items: center;
+    padding: $spacing-5;
+    margin-bottom: $spacing-6;
+    border-radius: $radius-xl;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.4s ease 300ms backwards;
+
+    // Glassmorphism with Persian Blue accent
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba($persian-blue-400, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      border-color: rgba($persian-blue-400, 0.4);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .route-icon-wrapper {
+      @include flex-center;
+      width: 56px;
+      height: 56px;
+      border-radius: $radius-full;
+      background: linear-gradient(135deg, $persian-blue-500 0%, $persian-blue-600 100%);
+      box-shadow: 0 4px 16px rgba($persian-blue-500, 0.3);
+      flex-shrink: 0;
+      animation: pulse 2s ease infinite;
+
+      .route-icon {
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+        color: white;
+      }
+    }
+
+    .route-details {
+      @include flex-column;
+      gap: $spacing-2;
+      flex: 1;
+
+      .route-label {
+        @include flex-start;
+        gap: $spacing-1;
+        align-items: center;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-bold;
+        color: $persian-blue-400;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .route-name {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-bold;
+        color: $persian-blue-50;
+        line-height: 1.3;
+      }
+    }
+
+    @include mobile {
+      padding: $spacing-4;
+      gap: $spacing-3;
+
+      .route-icon-wrapper {
+        width: 48px;
+        height: 48px;
+
+        .route-icon {
+          font-size: 28px;
+          width: 28px;
+          height: 28px;
+        }
+      }
+
+      .route-details {
+        gap: $spacing-1;
+
+        .route-label {
+          font-size: 10px;
+
+          mat-icon {
+            font-size: 14px;
+            width: 14px;
+            height: 14px;
+          }
+        }
+
+        .route-name {
+          font-size: $font-size-base;
+        }
+      }
+    }
+  }
+
+  // Rating Form Container
+  app-rating-form {
+    display: block;
+    animation: fadeIn 0.4s ease 400ms backwards;
+  }
+}
+
+// ============================================================================
+// PULSE ANIMATION
+// ============================================================================
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 16px rgba($persian-blue-500, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba($persian-blue-500, 0.4);
+  }
+}
+
+// ============================================================================
+// CUSTOM DARK SCROLLBAR
+// ============================================================================
+
+.dialog-content {
+  scrollbar-width: thin;
+  scrollbar-color: rgba($persian-blue-400, 0.3) transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba($persian-blue-400, 0.3);
+    border-radius: $radius-full;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba($persian-blue-400, 0.5);
+    }
+  }
+}
+
+// ============================================================================
+// DIALOG OVERLAY STYLING
+// ============================================================================
+
+::ng-deep {
+  .cdk-overlay-pane {
+    .mat-mdc-dialog-container {
+      border-radius: $radius-2xl !important;
+      overflow: hidden;
+      background: $persian-blue-950 !important;
+      box-shadow:
+        0 24px 64px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba($persian-blue-600, 0.1) !important;
+    }
+
+    .mat-mdc-dialog-surface {
+      background: $persian-blue-950 !important;
+    }
+  }
+}

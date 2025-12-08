@@ -49,6 +49,8 @@ export class StopDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   errorMessage = '';
   private destroy$ = new Subject<void>();
 
+  stopId?: string;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -60,19 +62,15 @@ export class StopDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
         if (params['id']) {
+          this.stopId = params['id'];
           this.loadStopDetails(params['id']);
         }
       });
   }
 
   ngAfterViewInit() {
-    // Ensure map renders correctly after view initialization
-    // Additional safeguard for tile alignment issues
-    setTimeout(() => {
-      if (this.mapComponent && this.mapComponent.map) {
-        this.mapComponent.map.invalidateSize();
-      }
-    }, 300);
+    // Mapbox GL JS automatically handles map rendering and resizing
+    // No need for manual invalidateSize() like in Leaflet
   }
 
   private loadStopDetails(stopId: string) {
@@ -108,7 +106,7 @@ export class StopDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Failed to load stop details', err);
+        // console.error('Failed to load stop details', err);
         this.hasError = true;
         this.errorMessage = err.status === 404
           ? 'A megálló nem található'
@@ -124,6 +122,17 @@ export class StopDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   goBack() {
     this.router.navigate(['/stops']);
+  }
+
+  /**
+   * Navigate to report submission page with stop pre-filled
+   */
+  reportIssue() {
+    if (this.stopId) {
+      this.router.navigate(['/reports/submit'], {
+        queryParams: { stopId: this.stopId }
+      });
+    }
   }
 
   ngOnDestroy() {

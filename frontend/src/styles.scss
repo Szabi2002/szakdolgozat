@@ -1,10 +1,87 @@
+// ===========================
+// Angular Material Theme (must be first)
+// ===========================
 @use '@angular/material' as mat;
 
 @include mat.core();
 
-// Közlekedési színek (kék, zöld)
-$primary-palette: mat.define-palette(mat.$blue-palette, 700);
-$accent-palette: mat.define-palette(mat.$green-palette, 600);
+// ===========================
+// Mapbox GL JS Styles
+// ===========================
+@import 'mapbox-gl/dist/mapbox-gl.css';
+
+// ===========================
+// DESIGN SYSTEM IMPORTS (új színpaletta)
+// ===========================
+@import 'styles/variables';
+@import 'styles/colors';
+@import 'styles/typography';
+@import 'styles/mixins';
+@import 'styles/neumorphism';
+
+// Dark theme & Glassmorphism imports
+@import 'styles/persian-blue';
+@import 'styles/dark-theme';
+@import 'styles/glassmorphism';
+@import 'styles/animations';
+
+// ===========================
+// ÚJ BRAND SZÍNEKKEL - Material Theme
+// ===========================
+
+// Custom palette a brand színekkel
+$custom-primary: (
+  50: lighten(#252E8A, 40%),
+  100: lighten(#252E8A, 35%),
+  200: lighten(#252E8A, 30%),
+  300: lighten(#252E8A, 20%),
+  400: lighten(#252E8A, 10%),
+  500: #252E8A,
+  600: darken(#252E8A, 5%),
+  700: darken(#252E8A, 10%),
+  800: darken(#252E8A, 15%),
+  900: #0E0E34,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  )
+);
+
+$custom-accent: (
+  50: lighten(#9A4D87, 40%),
+  100: lighten(#9A4D87, 35%),
+  200: lighten(#9A4D87, 30%),
+  300: lighten(#9A4D87, 20%),
+  400: lighten(#9A4D87, 10%),
+  500: #9A4D87,
+  600: darken(#9A4D87, 5%),
+  700: darken(#9A4D87, 10%),
+  800: darken(#9A4D87, 15%),
+  900: darken(#9A4D87, 20%),
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  )
+);
+
+$primary-palette: mat.define-palette($custom-primary, 500);
+$accent-palette: mat.define-palette($custom-accent, 500);
 $warn-palette: mat.define-palette(mat.$red-palette);
 
 $theme: mat.define-light-theme(
@@ -14,14 +91,18 @@ $theme: mat.define-light-theme(
       accent: $accent-palette,
       warn: $warn-palette,
     ),
-    typography: mat.define-typography-config(),
+    typography: mat.define-typography-config(
+      $font-family: 'Roboto, "Helvetica Neue", Arial, sans-serif',
+    ),
     density: 0,
   )
 );
 
 @include mat.all-component-themes($theme);
 
-// Global styles
+// ===========================
+// Global Styles
+// ===========================
 * {
   margin: 0;
   padding: 0;
@@ -31,10 +112,387 @@ $theme: mat.define-light-theme(
 html,
 body {
   height: 100%;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-family: $font-primary;
+  overflow-x: hidden; // Prevent horizontal scrollbar
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  background-color: #f5f5f5;
+  background: $neu-bg;  // Neumorphism soft gray background
+  color: $color-text-primary;
+  font-size: $font-size-base;
+  line-height: $line-height-normal;
+  width: 100%;
+  max-width: 100vw; // Ensure body never exceeds viewport width
+}
+
+// Main content areas should use neumorphism background
+.main-content,
+[class*="page-container"],
+[class*="content-area"] {
+  background: $neu-bg;
+}
+
+// ===========================
+// GLOBAL UTILITY CLASSES
+// ===========================
+
+// Container
+.container {
+  @include container;
+}
+
+.container-sm {
+  @include container($container-sm);
+}
+
+// Buttons
+.btn {
+  @include flex-start;
+  gap: $spacing-2;
+  padding: $spacing-3 $spacing-6;
+  border-radius: $radius-base;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-base;
+  transition: all $transition-base $ease-out;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  line-height: 1;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-primary {
+  background: $brand-primary;
+  color: $white;
+
+  &:hover:not(:disabled) {
+    background: $brand-primary-light;
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+}
+
+.btn-secondary {
+  background: transparent;
+  color: $brand-primary;
+  border: 2px solid $brand-primary;
+
+  &:hover:not(:disabled) {
+    background: lighten($brand-primary, 45%);
+  }
+}
+
+.btn-accent {
+  background: $brand-secondary;
+  color: $white;
+
+  &:hover:not(:disabled) {
+    background: $brand-secondary-light;
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+}
+
+// Cards
+.card {
+  @include card;
+}
+
+// Animations
+.fade-in {
+  @include fade-in;
+}
+
+.slide-up {
+  @include slide-up;
+}
+
+// Loading
+.loading-container {
+  @include flex-center;
+  min-height: 200px;
+
+  mat-spinner {
+    ::ng-deep circle {
+      stroke: $brand-primary;
+    }
+  }
+}
+
+// Empty states
+.empty-state {
+  @include flex-column-center;
+  padding: $spacing-12 $spacing-6;
+  text-align: center;
+
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: $neutral-400;
+    margin-bottom: $spacing-4;
+  }
+
+  h3 {
+    @include heading-3;
+    color: $neutral-600;
+    margin-bottom: $spacing-2;
+  }
+
+  p {
+    @include body-text;
+    color: $neutral-500;
+    margin-bottom: $spacing-4;
+  }
+}
+
+// ===========================
+// GLOBAL MATERIAL OVERRIDES
+// ===========================
+
+// Material Buttons - Unified styling
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-flat-button,
+.mat-mdc-stroked-button,
+.mat-mdc-outlined-button {
+  border-radius: $radius-base !important;
+  font-weight: $font-weight-medium;
+  transition: all $transition-base $ease-out !important;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+}
+
+// Primary raised buttons
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-flat-button.mat-primary {
+  background: $brand-primary !important;
+
+  &:hover:not(:disabled) {
+    background: $brand-primary-light !important;
+    box-shadow: $shadow-md !important;
+  }
+}
+
+// Accent buttons
+.mat-mdc-raised-button.mat-accent,
+.mat-mdc-flat-button.mat-accent {
+  background: $brand-secondary !important;
+
+  &:hover:not(:disabled) {
+    background: $brand-secondary-light !important;
+    box-shadow: $shadow-md !important;
+  }
+}
+
+// Material Cards - Unified styling
+.mat-mdc-card {
+  border-radius: $radius-md !important;
+  box-shadow: $shadow-base !important;
+  transition: all $transition-base $ease-out;
+
+  &:hover {
+    box-shadow: $shadow-md !important;
+  }
+}
+
+// Material Chips
+.mat-mdc-chip {
+  border-radius: $radius-base !important;
+  font-weight: $font-weight-medium;
+}
+
+// Material Form Fields
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    border-radius: $radius-base !important;
+  }
+
+  &.mat-focused {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $brand-primary !important;
+    }
+  }
+}
+
+// Material Tabs
+.mat-mdc-tab-group {
+  .mat-mdc-tab {
+    &.mdc-tab--active {
+      .mdc-tab__text-label {
+        color: $brand-primary !important;
+      }
+    }
+  }
+
+  .mat-mdc-tab-header {
+    border-bottom: 2px solid $neutral-200;
+  }
+
+  .mdc-tab-indicator__content--underline {
+    border-color: $brand-primary !important;
+  }
+}
+
+// Material Dialogs
+.mat-mdc-dialog-container {
+  border-radius: $radius-md !important;
+}
+
+// ===========================
+// GLASS DIALOG PANEL (Dark Theme)
+// ===========================
+.glass-dialog-panel {
+  .mat-mdc-dialog-container {
+    background: transparent !important;
+    border-radius: 24px !important;
+    overflow: visible;
+
+    .mdc-dialog__surface {
+      background: rgba($persian-blue-900, 0.85) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 24px !important;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5) !important;
+      overflow: hidden;
+    }
+  }
+
+  // Backdrop
+  & + .cdk-overlay-backdrop,
+  &.cdk-overlay-backdrop {
+    background: rgba($persian-blue-950, 0.75) !important;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+}
+
+.cdk-overlay-dark-backdrop.glass-backdrop {
+  background: rgba($persian-blue-950, 0.75) !important;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+// Material Snackbar
+.mat-mdc-snack-bar-container {
+  border-radius: $radius-base !important;
+}
+
+// ===========================
+// DARK THEME AUTOCOMPLETE PANEL (for planner page)
+// ===========================
+.cdk-overlay-pane .planner-autocomplete-panel,
+.planner-autocomplete-panel.mat-mdc-autocomplete-panel,
+.mat-mdc-autocomplete-panel.planner-autocomplete-panel {
+  background: $persian-blue-900 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: $radius-lg !important;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba($persian-blue-500, 0.1) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  .mat-mdc-option {
+    background: transparent !important;
+    color: $persian-blue-100 !important;
+    padding: $spacing-3 $spacing-4 !important;
+    min-height: 52px !important;
+    transition: all 0.2s ease;
+
+    &:hover:not(.mat-mdc-option-disabled) {
+      background: rgba($persian-blue-500, 0.2) !important;
+    }
+
+    &.mat-mdc-option-active {
+      background: rgba($persian-blue-500, 0.3) !important;
+    }
+
+    &.mdc-list-item--selected:not(.mat-mdc-option-multiple) {
+      background: rgba($persian-blue-500, 0.25) !important;
+      color: $persian-blue-50 !important;
+    }
+
+    &.mat-mdc-option-disabled {
+      color: $persian-blue-400 !important;
+      opacity: 0.8;
+    }
+
+    .mdc-list-item__primary-text {
+      color: inherit !important;
+    }
+  }
+
+  // Autocomplete option content styling
+  .autocomplete-option {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+    padding: $spacing-1 0;
+    width: 100%;
+
+    .stop-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+
+      &.metro {
+        color: $persian-blue-400;
+      }
+
+      &.tram {
+        color: #fbbf24;
+      }
+
+      &.bus {
+        color: #34d399;
+      }
+
+      &.general {
+        color: $persian-blue-400;
+      }
+    }
+
+    .stop-name {
+      font-size: $font-size-base;
+      font-weight: $font-weight-medium;
+      color: $persian-blue-50;
+      flex: 1;
+    }
+  }
+
+  // No Results Message styling
+  .no-results {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+    padding: $spacing-2;
+    color: $persian-blue-300;
+    font-size: $font-size-sm;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: $persian-blue-400;
+    }
+  }
 }

@@ -1,7 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, OnDestroy, AfterViewInit, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, OnDestroy, AfterViewInit, SimpleChanges, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import * as L from 'leaflet';
+import mapboxgl from 'mapbox-gl';
 import { environment } from '@environments/environment';
 import { Route, RouteStep } from '@core/services/planner.service';
 
@@ -10,7 +9,7 @@ export interface MapMarker {
   lng: number;
   title: string;
   type?: 'bus' | 'tram' | 'metro' | 'start' | 'end' | 'transfer';
-  data?: any;
+  data?: unknown;
 }
 
 export interface RoutePolyline {
@@ -24,27 +23,23 @@ export interface RoutePolyline {
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, LeafletModule],
+  imports: [CommonModule],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+  @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
+
   @Input() markers: MapMarker[] = [];
   @Input() routes: RoutePolyline[] = [];
   @Input() center?: { lat: number; lng: number };
   @Input() zoom?: number;
   @Input() clickable = false;
   @Output() markerClick = new EventEmitter<MapMarker>();
-  @Output() mapClick = new EventEmitter<L.LatLng>();
+  @Output() mapClick = new EventEmitter<mapboxgl.LngLat>();
 
-  options: L.MapOptions = {
-    layers: [],
-    zoom: 13,
-    center: L.latLng(47.4979, 19.0402)
-  };
-
-  layers: L.Layer[] = [];
-  map?: L.Map;
+  map?: mapboxgl.Map;
+  mapboxMarkers: mapboxgl.Marker[] = [];
 
   // UX Design System Colors (from Task 1.1)
   private readonly ROUTE_COLORS = {
@@ -54,15 +49,13 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
     walking: '#2196F3'   // Material Blue 500
   };
 
-  private polylineLayers: L.Polyline[] = [];
-  private routeMarkersLayer?: L.LayerGroup;
-  private resizeObserver?: ResizeObserver;
-  private intersectionObserver?: IntersectionObserver;
-
   ngOnInit() {
+    // Mapbox access token beállítása
+    (mapboxgl as any).accessToken = environment.map.accessToken;
+  }
+
+  ngAfterViewInit() {
     this.initializeMap();
-    this.updateMarkers();
-    this.updatePolylines();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -74,171 +67,188 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
     }
   }
 
-  ngAfterViewInit() {
-    // Ensure map tiles render correctly after view initialization
-    // This fixes the tile misalignment issue when map container becomes visible
-    setTimeout(() => {
-      if (this.map) {
-        this.map.invalidateSize();
-      }
-    }, 500); // Increased from 100ms to 500ms for better reliability
-  }
-
   ngOnDestroy() {
-    this.clearPolylines();
-    this.cleanupObservers();
+    this.clearMarkers();
+    this.map?.remove();
   }
 
-  initializeMap() {
-    this.options = {
-      layers: [
-        L.tileLayer(environment.map.tileLayer, {
-          attribution: environment.map.attribution,
-          maxZoom: environment.map.maxZoom
-        })
-      ],
+  private initializeMap() {
+    const centerCoords = this.center || environment.map.defaultCenter;
+
+    this.map = new mapboxgl.Map({
+      container: this.mapContainer.nativeElement,
+      style: environment.map.style,
+      center: [centerCoords.lng, centerCoords.lat], // Mapbox használ [lng, lat] sorrendet!
       zoom: this.zoom || environment.map.defaultZoom,
-      center: L.latLng(
-        this.center?.lat || environment.map.defaultCenter.lat,
-        this.center?.lng || environment.map.defaultCenter.lng
-      )
-    };
-  }
-
-  onMapReady(map: L.Map) {
-    this.map = map;
-
-    // Fix Leaflet marker icon issue
-    const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
-    const iconUrl = 'assets/leaflet/marker-icon.png';
-    const shadowUrl = 'assets/leaflet/marker-shadow.png';
-    const iconDefault = L.icon({
-      iconRetinaUrl,
-      iconUrl,
-      shadowUrl,
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      tooltipAnchor: [16, -28],
-      shadowSize: [41, 41]
+      maxZoom: environment.map.maxZoom
     });
-    L.Marker.prototype.options.icon = iconDefault;
 
-    // Fix tile alignment after map is ready
-    // This ensures tiles render correctly when container dimensions are finalized
-    setTimeout(() => {
-      map.invalidateSize();
-    }, 200);
+    // Navigation controls (zoom in/out buttons)
+    this.map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-    // Setup modern observers for reliable map rendering
-    this.setupResizeObserver(map);
-    this.setupIntersectionObserver(map);
-  }
+    // Map load event
+    this.map.on('load', () => {
+      this.updateMarkers();
+      this.updatePolylines();
+    });
 
-  onMapClick(event: L.LeafletMouseEvent) {
+    // Map click event
     if (this.clickable) {
-      this.mapClick.emit(event.latlng);
+      this.map.on('click', (e) => {
+        this.mapClick.emit(e.lngLat);
+      });
     }
   }
 
-  updateMarkers() {
-    this.layers = this.markers.map(marker => {
+  private updateMarkers() {
+    if (!this.map) return;
+
+    // Clear existing markers
+    this.clearMarkers();
+
+    // Add new markers
+    this.markers.forEach(marker => {
       // Skip route markers (start, end, transfer) - handled by drawRoute
       if (marker.type === 'start' || marker.type === 'end' || marker.type === 'transfer') {
-        return L.marker([0, 0]); // Dummy marker, will be filtered
+        return;
       }
 
-      const icon = this.getMarkerIcon(marker.type);
-      const leafletMarker = L.marker([marker.lat, marker.lng], { icon });
+      const el = this.createMarkerElement(marker);
 
-      leafletMarker.bindPopup(`<b>${marker.title}</b>`);
-      leafletMarker.on('click', () => this.markerClick.emit(marker));
+      const mbMarker = new mapboxgl.Marker(el)
+        .setLngLat([marker.lng, marker.lat])
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 })
+            .setHTML(`<b>${marker.title}</b>`)
+        )
+        .addTo(this.map!);
 
-      return leafletMarker;
-    }).filter((_, index) => {
-      const marker = this.markers[index];
-      return marker.type !== 'start' && marker.type !== 'end' && marker.type !== 'transfer';
+      // Click event
+      el.addEventListener('click', () => {
+        this.markerClick.emit(marker);
+      });
+
+      this.mapboxMarkers.push(mbMarker);
     });
 
     // Fit bounds if we have markers
-    if (this.map && this.markers.length > 0) {
+    if (this.markers.length > 0) {
       const validMarkers = this.markers.filter(m =>
         m.type !== 'start' && m.type !== 'end' && m.type !== 'transfer'
       );
       if (validMarkers.length > 0) {
-        const bounds = L.latLngBounds(validMarkers.map(m => [m.lat, m.lng]));
-        this.map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+        const bounds = new mapboxgl.LngLatBounds();
+        validMarkers.forEach(m => bounds.extend([m.lng, m.lat]));
+        this.map!.fitBounds(bounds, { padding: 50, maxZoom: 15 });
       }
     }
   }
 
-  private getMarkerIcon(type?: 'bus' | 'tram' | 'metro'): L.Icon {
-    const iconUrls = {
+  private createMarkerElement(marker: MapMarker): HTMLElement {
+    const el = document.createElement('div');
+    el.className = 'custom-marker';
+    el.style.width = '32px';
+    el.style.height = '32px';
+    el.style.backgroundSize = 'contain';
+    el.style.cursor = 'pointer';
+    el.style.backgroundRepeat = 'no-repeat';
+    el.style.backgroundPosition = 'center';
+
+    // Set icon based on type
+    const iconUrls: Record<string, string> = {
       bus: 'assets/icons/bus-marker.svg',
       tram: 'assets/icons/tram-marker.svg',
       metro: 'assets/icons/metro-marker.svg',
       default: 'assets/icons/bus-marker.svg'
     };
 
-    return L.icon({
-      iconUrl: iconUrls[type || 'default'],
-      iconSize: [32, 32],
-      iconAnchor: [16, 32],
-      popupAnchor: [0, -32]
-    });
+    const iconUrl = marker.type && iconUrls[marker.type] ? iconUrls[marker.type] : iconUrls['default'];
+    el.style.backgroundImage = `url(${iconUrl})`;
+
+    return el;
   }
 
-  updatePolylines() {
-    if (!this.map) {
-      return;
-    }
+  private clearMarkers() {
+    this.mapboxMarkers.forEach(m => m.remove());
+    this.mapboxMarkers = [];
+  }
 
-    // Clear existing polylines
+  private updatePolylines() {
+    if (!this.map || !this.map.isStyleLoaded()) return;
+
+    // Remove existing route layers
     this.clearPolylines();
 
-    // Create new polylines
-    this.polylineLayers = this.routes.map(route => {
-      const coordinates: L.LatLngExpression[] = route.stops.map(stop => [stop.lat, stop.lng]);
-      const color = route.color || this.getDefaultRouteColor(route.type);
+    // Add new routes
+    this.routes.forEach((route, index) => {
+      const sourceId = `route-${index}`;
+      const layerId = `route-layer-${index}`;
 
-      const polyline = L.polyline(coordinates, {
-        color: color,
-        weight: 4,
-        opacity: 0.8,
-        smoothFactor: 1
+      const coordinates = route.stops.map(stop => [stop.lng, stop.lat]);
+
+      // Add source
+      this.map!.addSource(sourceId, {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: coordinates
+          }
+        }
       });
 
-      polyline.on('click', (e: L.LeafletMouseEvent) => {
-        const popupContent = `
-          <div class="route-popup">
-            <b>${route.label || 'Route ' + route.id}</b>
-            ${route.type ? `<br><span class="route-type">Type: ${this.capitalizeFirst(route.type)}</span>` : ''}
-          </div>
-        `;
-
-        L.popup()
-          .setLatLng(e.latlng)
-          .setContent(popupContent)
-          .openOn(this.map!);
+      // Add layer
+      this.map!.addLayer({
+        id: layerId,
+        type: 'line',
+        source: sourceId,
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        paint: {
+          'line-color': route.color || this.getDefaultRouteColor(route.type),
+          'line-width': 4,
+          'line-opacity': 0.8
+        }
       });
 
-      polyline.addTo(this.map!);
-      return polyline;
+      // Add click event to route line
+      this.map!.on('click', layerId, (e) => {
+        new mapboxgl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(`<b>${route.label || 'Route ' + route.id}</b>`)
+          .addTo(this.map!);
+      });
     });
-
-    // Fit bounds if we have routes
-    if (this.routes.length > 0 && this.markers.length === 0) {
-      this.fitRouteBounds();
-    }
   }
 
   private clearPolylines() {
-    this.polylineLayers.forEach(polyline => {
-      if (this.map) {
-        this.map.removeLayer(polyline);
-      }
-    });
-    this.polylineLayers = [];
+    if (!this.map) return;
+
+    // Remove all route layers and sources
+    const style = this.map.getStyle();
+    if (style && style.layers) {
+      style.layers.forEach(layer => {
+        if (layer.id.startsWith('route-layer-') || layer.id.startsWith('step-layer-')) {
+          if (this.map!.getLayer(layer.id)) {
+            this.map!.removeLayer(layer.id);
+          }
+        }
+      });
+    }
+
+    if (style && style.sources) {
+      Object.keys(style.sources).forEach(sourceId => {
+        if (sourceId.startsWith('route-') || sourceId.startsWith('step-')) {
+          if (this.map!.getSource(sourceId)) {
+            this.map!.removeSource(sourceId);
+          }
+        }
+      });
+    }
   }
 
   private getDefaultRouteColor(type?: 'bus' | 'tram' | 'metro'): string {
@@ -248,39 +258,21 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
     return this.ROUTE_COLORS.bus;
   }
 
-  private capitalizeFirst(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
-  private fitRouteBounds() {
-    if (!this.map || this.polylineLayers.length === 0) {
-      return;
-    }
-
-    const allBounds: L.LatLngBounds[] = this.polylineLayers
-      .map(polyline => polyline.getBounds())
-      .filter(bounds => bounds.isValid());
-
-    if (allBounds.length > 0) {
-      const combinedBounds = allBounds.reduce((acc, bounds) => {
-        return acc.extend(bounds);
-      }, allBounds[0]);
-
-      this.map.fitBounds(combinedBounds, { padding: [50, 50], maxZoom: 15 });
-    }
-  }
-
   // Public methods for external control
   setCenter(lat: number, lng: number, zoom?: number) {
     if (this.map) {
-      this.map.setView([lat, lng], zoom || this.map.getZoom());
+      this.map.flyTo({
+        center: [lng, lat],
+        zoom: zoom || this.map.getZoom()
+      });
     }
   }
 
   fitBounds(markers: MapMarker[]) {
     if (this.map && markers.length > 0) {
-      const bounds = L.latLngBounds(markers.map(m => [m.lat, m.lng]));
-      this.map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+      const bounds = new mapboxgl.LngLatBounds();
+      markers.forEach(m => bounds.extend([m.lng, m.lat]));
+      this.map.fitBounds(bounds, { padding: 50, maxZoom: 15 });
     }
   }
 
@@ -296,19 +288,16 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
    */
   drawRoute(route: Route): void {
     if (!this.map) {
-      console.warn('Map not initialized yet');
+      // Map not initialized yet
       return;
     }
 
     // Clear previous route visualization
     this.clearRoute();
 
-    // Create layer group for route markers
-    this.routeMarkersLayer = L.layerGroup().addTo(this.map);
-
     // Draw each step
     route.steps.forEach((step, index) => {
-      this.drawRouteStep(step);
+      this.drawRouteStep(step, index);
 
       // Add marker for start point (first step only)
       if (index === 0) {
@@ -329,32 +318,68 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
     });
 
     // Zoom to fit entire route
-    this.fitRouteToView();
+    this.fitRouteToView(route);
   }
 
   /**
    * Draw a single route step (transit or walking segment)
+   * Uses all intermediate stops for accurate route visualization
    */
-  private drawRouteStep(step: RouteStep): void {
-    const coordinates: L.LatLngExpression[] = [
-      [step.start_stop.latitude, step.start_stop.longitude],
-      [step.end_stop.latitude, step.end_stop.longitude]
-    ];
+  private drawRouteStep(step: RouteStep, index: number): void {
+    const sourceId = `step-${index}`;
+    const layerId = `step-layer-${index}`;
 
-    const color = this.getStepColor(step);
-    const options: L.PolylineOptions = {
-      color: color,
-      weight: step.type === 'walking' ? 4 : 6,
-      opacity: 0.8,
-      dashArray: step.type === 'walking' ? '10, 10' : undefined
-    };
+    // USE ALL STOPS IN THE STEP for accurate route path visualization
+    // Backend returns all intermediate stops in step.stops[] array
+    let coordinates: number[][];
 
-    const polyline = L.polyline(coordinates, options);
+    if (step.stops && step.stops.length > 0) {
+      // Use all intermediate stops to follow actual route path (not straight line)
+      coordinates = step.stops.map(stop => [stop.longitude, stop.latitude]);
+    } else {
+      // Fallback to straight line if stops array is empty (shouldn't happen for transit)
+      // This is typically only used for walking segments
+      coordinates = [
+        [step.start_stop.longitude, step.start_stop.latitude],
+        [step.end_stop.longitude, step.end_stop.latitude]
+      ];
+    }
 
-    // Add popup with step details
-    polyline.bindPopup(this.createStepPopupContent(step));
-    polyline.addTo(this.map!);
-    this.polylineLayers.push(polyline);
+    this.map!.addSource(sourceId, {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: coordinates
+        }
+      }
+    });
+
+    this.map!.addLayer({
+      id: layerId,
+      type: 'line',
+      source: sourceId,
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': this.getStepColor(step),
+        'line-width': step.type === 'walking' ? 4 : 6,
+        'line-opacity': 0.8,
+        'line-dasharray': step.type === 'walking' ? [2, 2] : [1, 0]
+      }
+    });
+
+    // Add popup on click
+    this.map!.on('click', layerId, (e) => {
+      new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(this.createStepPopupContent(step))
+        .addTo(this.map!);
+    });
   }
 
   /**
@@ -403,22 +428,24 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
   /**
    * Add route marker (start, end, or transfer point)
    */
-  private addRouteMarker(stop: any, type: 'start' | 'end' | 'transfer'): void {
-    if (!this.routeMarkersLayer) return;
+  private addRouteMarker(stop: { name: string; longitude: number; latitude: number; description?: string | null }, type: 'start' | 'end' | 'transfer'): void {
+    const el = this.createRouteMarkerElement(type);
 
-    const icon = this.createRouteMarkerIcon(type);
-    const marker = L.marker([stop.latitude, stop.longitude], { icon });
+    const marker = new mapboxgl.Marker(el)
+      .setLngLat([stop.longitude, stop.latitude])
+      .setPopup(
+        new mapboxgl.Popup({ offset: 25 })
+          .setHTML(this.createMarkerPopupContent(stop, type))
+      )
+      .addTo(this.map!);
 
-    const popupContent = this.createMarkerPopupContent(stop, type);
-    marker.bindPopup(popupContent);
-
-    marker.addTo(this.routeMarkersLayer);
+    this.mapboxMarkers.push(marker);
   }
 
   /**
-   * Create custom icon for route markers
+   * Create custom element for route markers
    */
-  private createRouteMarkerIcon(type: 'start' | 'end' | 'transfer'): L.DivIcon {
+  private createRouteMarkerElement(type: 'start' | 'end' | 'transfer'): HTMLElement {
     const colors = {
       start: '#0D47A1',    // Dark Blue
       end: '#B71C1C',      // Dark Red
@@ -431,38 +458,28 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
       transfer: '⇄'
     };
 
-    const html = `
-      <div style="
-        background-color: ${colors[type]};
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: bold;
-        font-size: 16px;
-        border: 3px solid white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      ">
-        ${labels[type]}
-      </div>
-    `;
+    const el = document.createElement('div');
+    el.style.backgroundColor = colors[type];
+    el.style.width = '32px';
+    el.style.height = '32px';
+    el.style.borderRadius = '50%';
+    el.style.display = 'flex';
+    el.style.alignItems = 'center';
+    el.style.justifyContent = 'center';
+    el.style.color = 'white';
+    el.style.fontWeight = 'bold';
+    el.style.fontSize = '16px';
+    el.style.border = '3px solid white';
+    el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
+    el.textContent = labels[type];
 
-    return L.divIcon({
-      html: html,
-      className: 'custom-route-marker',
-      iconSize: [32, 32],
-      iconAnchor: [16, 16],
-      popupAnchor: [0, -16]
-    });
+    return el;
   }
 
   /**
    * Create HTML content for marker popup
    */
-  private createMarkerPopupContent(stop: any, type: 'start' | 'end' | 'transfer'): string {
+  private createMarkerPopupContent(stop: { name: string; description?: string | null }, type: 'start' | 'end' | 'transfer'): string {
     const titles = {
       start: '📍 Indulás',
       end: '🎯 Érkezés',
@@ -497,119 +514,25 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
     this.clearPolylines();
 
     // Clear route markers
-    if (this.routeMarkersLayer && this.map) {
-      this.map.removeLayer(this.routeMarkersLayer);
-      this.routeMarkersLayer = undefined;
-    }
+    this.clearMarkers();
   }
 
   /**
    * Fit map view to show entire route
    */
-  private fitRouteToView(): void {
-    if (!this.map || this.polylineLayers.length === 0) {
-      return;
-    }
+  private fitRouteToView(route: Route): void {
+    if (!this.map) return;
 
-    const allBounds = this.polylineLayers
-      .map(polyline => polyline.getBounds())
-      .filter(bounds => bounds.isValid());
-
-    if (allBounds.length > 0) {
-      const combinedBounds = allBounds.reduce((acc, bounds) => {
-        return acc.extend(bounds);
-      }, allBounds[0]);
-
-      this.map.fitBounds(combinedBounds, {
-        padding: [50, 50],
-        maxZoom: 16,
-        animate: true,
-        duration: 0.5
-      });
-    }
-  }
-
-  // ============================================================================
-  // Map Rendering Fixes (BUG-003 - Layout Fixes)
-  // ============================================================================
-
-  /**
-   * Setup ResizeObserver to handle container size changes
-   * This ensures map tiles re-render correctly when container dimensions change
-   *
-   * Fix for: Térkép csempék széttördelése
-   */
-  private setupResizeObserver(map: L.Map): void {
-    const container = map.getContainer();
-
-    this.resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        // Only invalidate if the container has actual dimensions
-        if (entry.contentRect.width > 0 && entry.contentRect.height > 0) {
-          // Use requestAnimationFrame for smooth rendering
-          requestAnimationFrame(() => {
-            // Check if map still exists before calling invalidateSize
-            if (this.map && map.getContainer()) {
-              try {
-                map.invalidateSize();
-              } catch (e) {
-                // Silently catch errors if map is being destroyed
-              }
-            }
-          });
-        }
-      }
+    const bounds = new mapboxgl.LngLatBounds();
+    route.steps.forEach(step => {
+      bounds.extend([step.start_stop.longitude, step.start_stop.latitude]);
+      bounds.extend([step.end_stop.longitude, step.end_stop.latitude]);
     });
 
-    this.resizeObserver.observe(container);
-  }
-
-  /**
-   * Setup IntersectionObserver to detect when map becomes visible
-   * This handles cases where map is initially hidden (display: none, visibility: hidden)
-   *
-   * Fix for: Térkép renderelés amikor DOM láthatóvá válik
-   */
-  private setupIntersectionObserver(map: L.Map): void {
-    const container = map.getContainer();
-
-    this.intersectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && entry.intersectionRatio > 0) {
-          // Container became visible, invalidate size with a small delay
-          // to ensure DOM is fully rendered
-          setTimeout(() => {
-            // Check if map still exists before calling invalidateSize
-            if (this.map && map.getContainer()) {
-              try {
-                map.invalidateSize();
-              } catch (e) {
-                // Silently catch errors if map is being destroyed
-              }
-            }
-          }, 100);
-        }
-      });
-    }, {
-      threshold: [0, 0.1, 0.5, 1.0] // Multiple thresholds for better detection
+    this.map.fitBounds(bounds, {
+      padding: 50,
+      maxZoom: 16,
+      duration: 500
     });
-
-    this.intersectionObserver.observe(container);
-  }
-
-  /**
-   * Cleanup observers on component destroy
-   * Prevents memory leaks
-   */
-  private cleanupObservers(): void {
-    if (this.resizeObserver) {
-      this.resizeObserver.disconnect();
-      this.resizeObserver = undefined;
-    }
-
-    if (this.intersectionObserver) {
-      this.intersectionObserver.disconnect();
-      this.intersectionObserver = undefined;
-    }
   }
 }

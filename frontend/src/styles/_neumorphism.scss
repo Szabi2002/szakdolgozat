@@ -1,0 +1,363 @@
+// ===========================
+// Neumorphism Design System
+// ===========================
+
+// Base colors
+$neu-bg: #E8E8EE;
+$neu-bg-dark: #D1D1D9;
+$neu-light: #FFFFFF;
+$neu-dark: rgba(174, 174, 192, 0.4);
+$neu-dark-strong: rgba(174, 174, 192, 0.6);
+
+// Brand colors (from existing)
+$brand-primary: #252E8A;
+$brand-secondary: #9A4D87;
+$brand-info: #5A7FC8;
+
+// Raised element (protruding)
+@mixin neu-raised($intensity: 1) {
+  background: $neu-bg;
+  border-radius: 20px;
+  box-shadow:
+    #{8px * $intensity} #{8px * $intensity} #{16px * $intensity} $neu-dark,
+    #{-8px * $intensity} #{-8px * $intensity} #{16px * $intensity} $neu-light;
+}
+
+// Inset element (recessed)
+@mixin neu-inset {
+  background: $neu-bg;
+  border-radius: 12px;
+  box-shadow:
+    inset 4px 4px 8px $neu-dark,
+    inset -4px -4px 8px $neu-light;
+}
+
+// Card with border + shadow (outlined)
+@mixin neu-card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+}
+
+// Card without hover effect
+@mixin neu-card-static {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+// Button styles
+@mixin neu-button-primary {
+  background: $brand-primary;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 500;
+  box-shadow:
+    4px 4px 8px rgba($brand-primary, 0.3),
+    -2px -2px 6px rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      6px 6px 12px rgba($brand-primary, 0.4),
+      -3px -3px 8px rgba(255, 255, 255, 0.9);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow:
+      inset 2px 2px 4px rgba(0, 0, 0, 0.2),
+      inset -2px -2px 4px rgba(255, 255, 255, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+@mixin neu-button-secondary {
+  background: $neu-bg;
+  color: $brand-primary;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 10px 22px;
+  font-weight: 500;
+  @include neu-raised(0.5);
+  cursor: pointer;
+
+  &:hover {
+    border-color: $brand-primary;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    @include neu-inset;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@mixin neu-button-accent {
+  background: $brand-secondary;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 500;
+  box-shadow:
+    4px 4px 8px rgba($brand-secondary, 0.3),
+    -2px -2px 6px rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      6px 6px 12px rgba($brand-secondary, 0.4),
+      -3px -3px 8px rgba(255, 255, 255, 0.9);
+  }
+}
+
+// Icon button (circular)
+@mixin neu-icon-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include neu-raised(0.5);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    @include neu-raised(0.3);
+  }
+
+  &:active {
+    @include neu-inset;
+  }
+}
+
+// Input field
+@mixin neu-input {
+  @include neu-inset;
+  border: none;
+  padding: 14px 18px;
+  font-size: 14px;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+    box-shadow:
+      inset 2px 2px 4px $neu-dark,
+      inset -2px -2px 4px $neu-light,
+      0 0 0 3px rgba($brand-primary, 0.2);
+  }
+
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+// Badge styles
+@mixin neu-badge($color) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: linear-gradient(135deg, $color, darken($color, 10%));
+  color: white;
+  box-shadow: 0 2px 8px rgba($color, 0.4);
+}
+
+// Status badge colors
+$status-active: #10B981;
+$status-expired: #6B7280;
+$status-used: #8B5CF6;
+$status-pending: #F59E0B;
+$status-resolved: #3B82F6;
+$status-error: #EF4444;
+
+// Page header
+@mixin neu-page-header {
+  @include neu-raised;
+  padding: 32px;
+  margin-bottom: 24px;
+
+  h1, h2 {
+    color: $brand-primary;
+    margin: 0 0 8px 0;
+    font-weight: 700;
+  }
+
+  p {
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0;
+  }
+}
+
+// Filter/Tab bar
+@mixin neu-filter-bar {
+  @include neu-inset;
+  padding: 8px;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+@mixin neu-tab {
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 14px;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.6);
+  border: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: $brand-primary;
+  }
+
+  &.active {
+    @include neu-raised(0.5);
+    color: $brand-primary;
+  }
+}
+
+// Section title
+@mixin neu-section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: $brand-primary;
+  margin-bottom: 16px;
+  padding-left: 16px;
+  border-left: 4px solid $brand-primary;
+}
+
+// Form group
+@mixin neu-form-group {
+  @include neu-card-static;
+  padding: 24px;
+  margin-bottom: 24px;
+
+  h3 {
+    @include neu-section-title;
+    margin-top: 0;
+  }
+}
+
+// Stat card
+@mixin neu-stat-card {
+  @include neu-raised(0.7);
+  padding: 24px;
+  text-align: center;
+
+  .stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: $brand-primary;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+// Dialog/Modal
+@mixin neu-dialog {
+  background: $neu-bg;
+  border-radius: 24px;
+  box-shadow:
+    12px 12px 24px $neu-dark-strong,
+    -12px -12px 24px $neu-light;
+  padding: 32px;
+}
+
+// Toggle switch container
+@mixin neu-toggle-container {
+  @include neu-inset;
+  padding: 4px;
+  border-radius: 30px;
+  display: inline-flex;
+}
+
+// List item
+@mixin neu-list-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: rgba($brand-primary, 0.04);
+  }
+}
+
+// Progress bar
+@mixin neu-progress-bar {
+  @include neu-inset;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, $brand-primary, $brand-info);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+}
+
+// Avatar
+@mixin neu-avatar($size: 48px) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  @include neu-raised(0.5);
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// Divider
+@mixin neu-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, $neu-dark, transparent);
+  margin: 24px 0;
+  border: none;
+}

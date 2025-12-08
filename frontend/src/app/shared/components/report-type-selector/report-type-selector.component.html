@@ -1,0 +1,31 @@
+<div class="report-type-selector">
+  <div class="report-types-grid">
+    @for (type of reportTypes; track type.type) {
+      <mat-card
+        class="report-type-card"
+        [class.selected]="isSelected(type.type)"
+        [matTooltip]="type.description"
+        matTooltipPosition="above"
+        (click)="selectType(type.type)"
+        [attr.aria-label]="type.label + ' típus kiválasztása'"
+        [attr.aria-pressed]="isSelected(type.type)"
+        role="button"
+        tabindex="0"
+        (keydown.enter)="selectType(type.type)"
+        (keydown.space)="selectType(type.type); $event.preventDefault()"
+      >
+        <mat-card-content>
+          <div class="icon-wrapper" [style.background-color]="type.color + '20'">
+            <mat-icon [style.color]="type.color">{{ type.icon }}</mat-icon>
+          </div>
+          <h3 class="type-label">{{ type.label }}</h3>
+          @if (isSelected(type.type)) {
+            <div class="selected-indicator">
+              <mat-icon>check_circle</mat-icon>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</div>

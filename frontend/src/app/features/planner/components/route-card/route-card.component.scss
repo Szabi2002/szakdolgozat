@@ -1,140 +1,279 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// ROUTE CARD - DARK THEME WITH GLASSMORPHISM
+// ============================================================================
+
 .route-card {
   position: relative;
-  margin-bottom: 16px;
+  margin-bottom: $spacing-4;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border: 2px solid #E0E0E0;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // Glassmorphism effect
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+  // Glow line at top (hidden by default)
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $persian-blue-500, $persian-blue-400);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
   &:hover {
-    border-color: #2196F3;
-    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+    transform: translateY(-10px);
+    border-color: rgba($persian-blue-400, 0.3);
+    box-shadow:
+      0 20px 50px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba($persian-blue-500, 0.15);
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   &.selected {
-    border-color: #2196F3;
-    border-width: 3px;
-    background: linear-gradient(to right, #E3F2FD 0%, #FFFFFF 100%);
-    box-shadow: 0 6px 16px rgba(33, 150, 243, 0.3);
+    border-color: rgba($persian-blue-400, 0.5);
+    border-width: 2px;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba($persian-blue-500, 0.2);
+
+    &::before {
+      opacity: 1;
+    }
+
+    .selection-indicator {
+      opacity: 1;
+    }
   }
 
   &:active {
-    transform: scale(0.98);
+    transform: translateY(-8px) scale(0.99);
   }
 }
+
+// ============================================================================
+// BADGE
+// ============================================================================
 
 .badge {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 12px;
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 600;
+  top: $spacing-3;
+  right: $spacing-3;
+  @include flex-center;
+  gap: $spacing-1;
+  padding: $spacing-1 $spacing-3;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  .badge-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
 
   &.recommended {
-    background: #4CAF50;
-    color: white;
+    background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+    color: $white;
   }
 
   &.direct {
-    background: #FF9800;
-    color: white;
+    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+    color: $white;
   }
 
   &.low-walking {
-    background: #9C27B0;
-    color: white;
+    background: linear-gradient(135deg, $persian-blue-400 0%, $persian-blue-600 100%);
+    color: $white;
   }
 }
 
+// ============================================================================
+// SELECTION INDICATOR
+// ============================================================================
+
 .selection-indicator {
   position: absolute;
-  top: 16px;
-  left: 16px;
-  color: #2196F3;
+  top: $spacing-3;
+  left: $spacing-3;
+  color: $persian-blue-400;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
 
   mat-icon {
     font-size: 32px;
     width: 32px;
     height: 32px;
+    filter: drop-shadow(0 0 8px rgba($persian-blue-400, 0.5));
   }
 }
 
+// ============================================================================
+// CARD SUMMARY
+// ============================================================================
+
 .card-summary {
-  padding-top: 48px !important; // Increased from 16px to make room for badge at top-right
+  padding: $spacing-5 $spacing-5 $spacing-4 $spacing-5 !important;
 }
 
+// ============================================================================
+// METRICS
+// ============================================================================
+
 .metrics {
-  display: flex;
+  @include flex-between;
   align-items: center;
-  justify-content: space-around;
-  margin-bottom: 16px;
+  margin-bottom: $spacing-4;
+  padding: $spacing-4;
+  border-radius: $radius-lg;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: $spacing-3;
+
+  // Glass background
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  @include mobile {
+    justify-content: center;
+  }
 }
 
 .metric {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  @include flex-center;
+  gap: $spacing-2;
 
   &.main-metric {
+    flex-direction: column;
+    gap: $spacing-1;
+
+    .metric-icon {
+      @include flex-center;
+      width: 48px;
+      height: 48px;
+      border-radius: $radius-full;
+      background: linear-gradient(135deg, $persian-blue-500 0%, $persian-blue-600 100%);
+      box-shadow: 0 4px 16px rgba($persian-blue-500, 0.4);
+
+      mat-icon {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+        color: $white;
+      }
+    }
+
     .metric-value {
-      display: flex;
-      align-items: baseline;
-      gap: 4px;
+      @include flex-center;
+      gap: $spacing-1;
 
       .value-large {
-        font-size: 32px;
-        font-weight: 700;
-        color: #212121;
+        font-size: $font-size-4xl;
+        font-weight: $font-weight-bold;
+        color: $persian-blue-50;
+        line-height: 1;
       }
 
       .unit {
-        font-size: 14px;
-        color: #757575;
+        font-size: $font-size-sm;
+        color: $persian-blue-300;
+        font-weight: $font-weight-medium;
       }
     }
   }
 
-  .value {
-    font-weight: 600;
-    font-size: 18px;
-  }
-
-  .label {
-    font-size: 14px;
-    color: #757575;
-  }
-
   mat-icon {
-    color: #757575;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: $persian-blue-400;
+  }
+
+  .metric-content {
+    @include flex-column;
+    gap: 2px;
+
+    .value {
+      font-weight: $font-weight-bold;
+      font-size: $font-size-lg;
+      color: $persian-blue-50;
+    }
+
+    .label {
+      font-size: $font-size-xs;
+      color: $persian-blue-300;
+    }
   }
 }
 
 .metric-divider {
-  width: 1px;
-  height: 32px;
-  background: #E0E0E0;
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%);
+
+  @include mobile {
+    display: none;
+  }
 }
 
+// ============================================================================
+// STEPS PREVIEW
+// ============================================================================
+
 .steps-preview {
-  display: flex;
+  @include flex-start;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: $spacing-2;
+  margin-bottom: $spacing-4;
+  padding: $spacing-3;
+  border-radius: $radius-lg;
   overflow-x: auto;
-  padding: 8px 0;
+
+  // Glass background
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba($persian-blue-400, 0.3);
+    border-radius: $radius-full;
+  }
 
   .step-icon {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    min-width: 60px;
+    @include flex-column;
+    @include flex-center;
+    gap: $spacing-1;
+    min-width: 64px;
 
     mat-icon {
       font-size: 28px;
@@ -143,117 +282,261 @@
     }
 
     &.transit mat-icon {
-      color: #4CAF50;
+      color: #34d399;
     }
 
     &.walking mat-icon {
-      color: #2196F3;
+      color: $persian-blue-400;
     }
 
     .route-number {
-      font-size: 12px;
-      font-weight: 600;
-      background: #F5F5F5;
-      padding: 2px 8px;
-      border-radius: 8px;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-bold;
+      color: $persian-blue-50;
+      background: rgba(255, 255, 255, 0.1);
+      padding: $spacing-1 $spacing-2;
+      border-radius: $radius-md;
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
   }
 
   .arrow {
-    color: #BDBDBD;
-    font-size: 20px;
+    color: $persian-blue-400;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
   }
 }
 
+// ============================================================================
+// EXPAND BUTTON
+// ============================================================================
+
 .expand-btn {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
+  @include flex-center;
+  gap: $spacing-1;
+  padding: $spacing-2;
+  color: $persian-blue-400;
+  font-weight: $font-weight-semibold;
+  transition: all 0.3s ease;
+  border-radius: $radius-md;
+
+  &:hover {
+    background: rgba($persian-blue-400, 0.1);
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
 }
 
+// ============================================================================
+// CARD DETAILS (EXPANDED)
+// ============================================================================
+
 .card-details {
-  padding-top: 16px !important;
+  padding: $spacing-4 $spacing-5 $spacing-5 $spacing-5 !important;
+
+  // Glass background with gradient
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+
+  mat-divider {
+    margin-bottom: $spacing-4;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .detailed-steps {
-  margin-top: 16px;
+  @include flex-column;
+  gap: $spacing-4;
 }
 
 .step-detail {
-  margin-bottom: 16px;
+  @include flex-column;
+  gap: $spacing-2;
 
   .step-header {
-    display: flex;
+    @include flex-start;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
+    gap: $spacing-3;
 
     mat-icon {
       font-size: 32px;
       width: 32px;
       height: 32px;
+      flex-shrink: 0;
 
       &.transit {
-        color: #4CAF50;
+        color: #34d399;
       }
 
       &.walking {
-        color: #2196F3;
+        color: $persian-blue-400;
       }
     }
 
     .step-info {
+      @include flex-column;
+      gap: $spacing-1;
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
 
       strong {
-        font-size: 16px;
+        font-size: $font-size-base;
+        font-weight: $font-weight-bold;
+        color: $persian-blue-50;
       }
 
       .duration {
-        font-size: 14px;
-        color: #757575;
+        font-size: $font-size-sm;
+        color: $persian-blue-300;
       }
     }
   }
 
   .step-route {
+    @include flex-column;
+    gap: $spacing-2;
     margin-left: 44px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    padding-left: $spacing-3;
+    border-left: 2px dashed rgba($persian-blue-400, 0.3);
 
     .stop {
-      display: flex;
+      @include flex-start;
       align-items: center;
-      gap: 8px;
+      gap: $spacing-2;
 
       .stop-icon {
         font-size: 16px;
         width: 16px;
         height: 16px;
-        color: #757575;
+        color: $persian-blue-400;
+      }
+
+      span {
+        font-size: $font-size-sm;
+        color: $persian-blue-200;
       }
     }
   }
 }
 
 .transfer-indicator {
-  display: flex;
+  @include flex-start;
   align-items: center;
-  gap: 8px;
-  margin: 12px 0 12px 44px;
-  color: #F57C00;
-  font-size: 14px;
-  font-weight: 600;
+  gap: $spacing-2;
+  margin-left: 44px;
+  padding: $spacing-2 $spacing-3;
+  border-radius: $radius-md;
+  color: #fbbf24;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+
+  // Glass background with warm tint
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-left: 3px solid #fbbf24;
 
   mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// ============================================================================
+// CARD ACTIONS
+// ============================================================================
+
+.card-actions {
+  @include flex-start;
+  gap: $spacing-3;
+  margin-top: $spacing-5;
+  padding-top: $spacing-4;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap;
+
+  @include mobile {
+    flex-direction: column;
+  }
+
+  button {
+    @include flex-center;
+    gap: $spacing-2;
+    flex: 1;
+    min-height: 44px;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    transition: all 0.3s ease;
+    border-radius: $radius-md;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    span {
+      @include mobile {
+        font-size: $font-size-sm;
+      }
+    }
+
+    @include mobile {
+      width: 100%;
+      flex: none;
+    }
+  }
+
+  .view-route-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: $persian-blue-200;
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba($persian-blue-400, 0.3);
+      color: $persian-blue-50;
+    }
+  }
+
+  .save-favorite-btn {
+    background: rgba($persian-blue-400, 0.1);
+    border: 1px solid rgba($persian-blue-400, 0.3);
+    color: $persian-blue-400;
+
+    &:hover:not(:disabled) {
+      background: rgba($persian-blue-400, 0.2);
+      border-color: rgba($persian-blue-400, 0.5);
+      color: $persian-blue-300;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.1);
+      color: $persian-blue-400;
+    }
+  }
+
+  .buy-ticket-btn {
+    background: linear-gradient(135deg, $persian-blue-500 0%, $persian-blue-600 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 16px rgba($persian-blue-500, 0.3);
+    border: none;
+
+    &:hover:not(:disabled) {
+      box-shadow: 0 8px 24px rgba($persian-blue-500, 0.4);
+      transform: translateY(-2px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba($persian-blue-500, 0.3);
+    }
   }
 }

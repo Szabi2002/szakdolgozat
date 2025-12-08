@@ -1,0 +1,103 @@
+<div class="reports-list-container">
+  <!-- Szűrők Sáv -->
+  <div class="filters-bar">
+    <div class="filter-controls">
+      <!-- Státusz Szűrő -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>
+          <mat-icon class="field-icon">label</mat-icon>
+          Státusz
+        </mat-label>
+        <mat-select [(ngModel)]="selectedStatus" (selectionChange)="onStatusChange()">
+          <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+            <div class="option-content">
+              <mat-icon *ngIf="option.value">circle</mat-icon>
+              {{ option.label }}
+            </div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Típus Szűrő -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>
+          <mat-icon class="field-icon">category</mat-icon>
+          Típus
+        </mat-label>
+        <mat-select [(ngModel)]="selectedType" (selectionChange)="onTypeChange()">
+          <mat-option *ngFor="let option of typeOptions" [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Prioritás Szűrő -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>
+          <mat-icon class="field-icon">priority_high</mat-icon>
+          Prioritás
+        </mat-label>
+        <mat-select [(ngModel)]="selectedPriority" (selectionChange)="onPriorityChange()">
+          <mat-option *ngFor="let option of priorityOptions" [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Rendezés -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>
+          <mat-icon class="field-icon">sort</mat-icon>
+          Rendezés
+        </mat-label>
+        <mat-select [(ngModel)]="selectedSort" (selectionChange)="onSortChange()">
+          <mat-option *ngFor="let option of sortOptions" [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <button mat-mini-fab (click)="refresh()" matTooltip="Frissítés" class="refresh-btn">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+
+  <!-- Betöltés Állapot -->
+  <div *ngIf="isLoading" class="loading-state">
+    <mat-spinner diameter="60"></mat-spinner>
+    <p>Bejelentések betöltése...</p>
+  </div>
+
+  <!-- Bejelentések Listája -->
+  <div *ngIf="!isLoading && reports.length > 0" class="reports-list">
+    <app-report-card
+      *ngFor="let report of reports; trackBy: trackByReportId"
+      [report]="report"
+      [showActions]="showActions"
+      (view)="onViewReport($event)"
+      (edit)="onEditReport($event)"
+      (delete)="onDeleteReport($event)"
+    ></app-report-card>
+  </div>
+
+  <!-- Üres Állapot -->
+  <div *ngIf="!isLoading && reports.length === 0" class="empty-state">
+    <mat-icon>report</mat-icon>
+    <p class="empty-title">Nincs bejelentés</p>
+    <p class="empty-subtitle">Nem található bejelentés a kiválasztott szűrőkkel.</p>
+  </div>
+
+  <!-- Lapozás -->
+  <mat-paginator
+    *ngIf="!isLoading && total > 0"
+    [length]="total"
+    [pageSize]="limit"
+    [pageIndex]="page - 1"
+    [pageSizeOptions]="[5, 10, 20, 50]"
+    (page)="onPageChange($event)"
+    showFirstLastButtons
+    class="reports-paginator"
+    aria-label="Bejelentések lapozása"
+  ></mat-paginator>
+</div>

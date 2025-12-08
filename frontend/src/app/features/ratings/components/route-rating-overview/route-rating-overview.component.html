@@ -1,0 +1,90 @@
+<mat-card class="rating-overview-card">
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading ratings...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error && !isLoading">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadStats()">
+      Try Again
+    </button>
+  </div>
+
+  <!-- No Ratings State -->
+  <div class="no-ratings-state" *ngIf="!isLoading && !error && !hasStats()">
+    <mat-icon>rate_review</mat-icon>
+    <h3>No ratings yet</h3>
+    <p>Be the first to rate this route and help other passengers!</p>
+    <button mat-raised-button color="primary" (click)="onRateRoute()">
+      <mat-icon>star</mat-icon>
+      Rate This Route
+    </button>
+  </div>
+
+  <!-- Statistics Display -->
+  <div class="stats-content" *ngIf="!isLoading && !error && hasStats()">
+    <!-- Overall Rating -->
+    <div class="overall-rating">
+      <div class="rating-value">
+        <span class="rating-number">{{ stats!.avg_overall.toFixed(1) }}</span>
+        <mat-icon class="star-icon">star</mat-icon>
+      </div>
+      <app-star-rating
+        [rating]="stats!.avg_overall"
+        [readonly]="true"
+        size="large"
+      ></app-star-rating>
+      <p class="total-ratings">Based on {{ stats!.total_ratings }} rating{{ stats!.total_ratings !== 1 ? 's' : '' }}</p>
+    </div>
+
+    <!-- Star Distribution -->
+    <div class="star-distribution">
+      <h4>Rating Distribution</h4>
+      <div class="distribution-bars">
+        <div class="distribution-item" *ngFor="let item of starDistribution">
+          <span class="stars-label">{{ item.stars }}</span>
+          <mat-icon class="star-icon-small">star</mat-icon>
+          <div class="bar-container">
+            <div
+              class="bar-fill"
+              [style.width.%]="item.percentage"
+            ></div>
+          </div>
+          <span class="count-label">({{ item.count }})</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Breakdown -->
+    <div class="category-breakdown">
+      <h4>Category Ratings</h4>
+      <div class="category-items">
+        <div class="category-item" *ngFor="let category of categoryRatings">
+          <div class="category-header">
+            <mat-icon class="category-icon">{{ category.icon }}</mat-icon>
+            <span class="category-label">{{ category.label }}</span>
+            <span class="category-value">{{ category.value.toFixed(1) }}</span>
+          </div>
+          <div class="category-bar-container">
+            <div
+              class="category-bar-fill"
+              [style.width.%]="getCategoryPercentage(category.value)"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rate Button -->
+    <div class="rate-button-container">
+      <button mat-raised-button color="primary" (click)="onRateRoute()">
+        <mat-icon>add_circle</mat-icon>
+        Rate This Route
+      </button>
+    </div>
+  </div>
+</mat-card>

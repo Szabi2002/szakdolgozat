@@ -1,0 +1,61 @@
+<section class="profile-section">
+  <!-- Background Decoration -->
+  <div class="profile-background">
+    <div class="background-shape shape-1"></div>
+    <div class="background-shape shape-2"></div>
+  </div>
+
+  <div class="profile-container">
+    @if (loading) {
+      <div class="loading-state">
+        <mat-spinner diameter="48"></mat-spinner>
+        <p>Betoltes...</p>
+      </div>
+    } @else {
+      <!-- Profile Card -->
+      <div class="profile-card">
+        <div class="card-glow"></div>
+
+        <!-- Avatar -->
+        <div class="avatar-wrapper">
+          @if (currentUser?.profile_picture_url) {
+            <img
+              [src]="currentUser!.profile_picture_url"
+              [alt]="currentUser!.name"
+              class="avatar-image"
+            />
+          } @else {
+            <mat-icon class="avatar-icon">person</mat-icon>
+          }
+        </div>
+
+        <!-- User Info -->
+        <h1 class="user-name">{{ currentUser?.name || 'Felhasznalo' }}</h1>
+        <p class="user-email">{{ currentUser?.email }}</p>
+
+        <!-- Stats -->
+        <div class="profile-stats">
+          <div class="stat-item">
+            <mat-icon>badge</mat-icon>
+            <span class="stat-label">{{ getRoleLabel(currentUser?.role) }}</span>
+          </div>
+          @if (currentUser?.created_at) {
+            <div class="stat-item">
+              <mat-icon>calendar_today</mat-icon>
+              <span class="stat-label">{{ currentUser!.created_at | date:'yyyy. MMM d.' }}</span>
+            </div>
+          }
+        </div>
+
+        <!-- Logout Button -->
+        <button
+          mat-raised-button
+          class="logout-btn"
+          (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Kijelentkezes
+        </button>
+      </div>
+    }
+  </div>
+</section>

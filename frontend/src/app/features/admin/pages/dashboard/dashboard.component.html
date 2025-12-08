@@ -1,0 +1,283 @@
+<div class="admin-dashboard">
+  <div class="dashboard-content-wrapper">
+    <!-- Page Header -->
+    <header class="dashboard-header">
+      <div class="header-content">
+        <div class="header-left">
+          <div class="header-icon-wrapper">
+            <div class="icon-glow"></div>
+            <mat-icon>admin_panel_settings</mat-icon>
+          </div>
+          <div class="header-text">
+            <h1>Admin <span class="highlight">Iranyitopult</span></h1>
+            <p>Rendszerstatisztikak es gyors muveletek</p>
+            <div class="last-refresh" *ngIf="lastRefreshed && !isLoading">
+              <mat-icon>schedule</mat-icon>
+              <span>Frissitve: {{ getLastRefreshedTime() }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="date-badge">
+            <mat-icon>calendar_today</mat-icon>
+            <span>{{ today | date:'yyyy. MMMM d., EEEE':'':'hu' }}</span>
+          </div>
+          <button
+            mat-icon-button
+            class="refresh-button"
+            matTooltip="Statisztikak frissitese"
+            [disabled]="isLoading"
+            (click)="loadStats()">
+            <mat-icon [class.spinning]="isLoading">refresh</mat-icon>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner-wrapper">
+        <div class="spinner-glow"></div>
+        <mat-spinner diameter="60"></mat-spinner>
+      </div>
+      <p>Statisztikak betoltese...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="!isLoading && errorMessage" class="error-state">
+      <div class="error-icon-wrapper">
+        <div class="error-glow"></div>
+        <mat-icon>error_outline</mat-icon>
+      </div>
+      <h3>Hiba tortent</h3>
+      <p>{{ errorMessage }}</p>
+      <button mat-raised-button class="retry-button" (click)="loadStats()">
+        <mat-icon>refresh</mat-icon>
+        Ujraprobalas
+      </button>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div *ngIf="stats && !isLoading" class="dashboard-main-content">
+      <!-- Stats Cards Section -->
+      <section class="stats-section">
+        <div class="stat-cards-grid">
+          <!-- Total Users Card -->
+          <div class="stat-card users-card">
+            <div class="stat-card-inner">
+              <div class="stat-icon-wrapper">
+                <div class="icon-glow"></div>
+                <mat-icon>people</mat-icon>
+              </div>
+              <div class="stat-details">
+                <h3 class="stat-value">{{ stats.totalUsers | number }}</h3>
+                <p class="stat-label">Osszes Felhasznalo</p>
+                <div class="stat-trend success" *ngIf="stats.newUsersThisMonth > 0">
+                  <mat-icon>trending_up</mat-icon>
+                  <span>+{{ stats.newUsersThisMonth }} ebben a honapban</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pending Ratings Card -->
+          <div class="stat-card ratings-card">
+            <div class="stat-card-inner">
+              <div class="stat-icon-wrapper">
+                <div class="icon-glow"></div>
+                <mat-icon>star</mat-icon>
+              </div>
+              <div class="stat-details">
+                <h3 class="stat-value">{{ stats.pendingRatings | number }}</h3>
+                <p class="stat-label">Fuggoben levo Ertekelesek</p>
+                <div class="stat-trend warning" *ngIf="stats.pendingRatings > 0">
+                  <mat-icon>schedule</mat-icon>
+                  <span>Moderalasra var</span>
+                </div>
+                <div class="stat-trend info" *ngIf="stats.pendingRatings === 0">
+                  <mat-icon>check_circle</mat-icon>
+                  <span>Minden feldolgozva</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pending Reports Card -->
+          <div class="stat-card reports-card">
+            <div class="stat-card-inner">
+              <div class="stat-icon-wrapper">
+                <div class="icon-glow"></div>
+                <mat-icon>report</mat-icon>
+              </div>
+              <div class="stat-details">
+                <h3 class="stat-value">{{ stats.pendingReports | number }}</h3>
+                <p class="stat-label">Fuggoben levo Jelentesek</p>
+                <div class="stat-trend error" *ngIf="stats.pendingReports > 0">
+                  <mat-icon>priority_high</mat-icon>
+                  <span>Azonnali figyelem szukseges</span>
+                </div>
+                <div class="stat-trend info" *ngIf="stats.pendingReports === 0">
+                  <mat-icon>check_circle</mat-icon>
+                  <span>Nincsenek uj jelentesek</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Tickets Card -->
+          <div class="stat-card tickets-card">
+            <div class="stat-card-inner">
+              <div class="stat-icon-wrapper">
+                <div class="icon-glow"></div>
+                <mat-icon>confirmation_number</mat-icon>
+              </div>
+              <div class="stat-details">
+                <h3 class="stat-value">{{ stats.activeTickets | number }}</h3>
+                <p class="stat-label">Aktiv Jegyek</p>
+                <div class="stat-trend info">
+                  <mat-icon>local_activity</mat-icon>
+                  <span>Rendszerben aktiv</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Charts Section -->
+      <section class="charts-section">
+        <!-- Ratings Status Distribution -->
+        <div class="distribution-card">
+          <div class="card-header">
+            <div class="card-header-left">
+              <div class="header-icon">
+                <mat-icon>star</mat-icon>
+              </div>
+              <h3>Ertekelesek Statusza</h3>
+            </div>
+          </div>
+          <div class="stats-distribution">
+            <div class="stat-row approved">
+              <div class="stat-info">
+                <mat-icon>check_circle</mat-icon>
+                <span class="stat-label">Jovahagyva</span>
+              </div>
+              <span class="stat-count">{{ stats.ratingsStatusDistribution.approved | number }}</span>
+            </div>
+            <div class="stat-row pending">
+              <div class="stat-info">
+                <mat-icon>schedule</mat-icon>
+                <span class="stat-label">Fuggoben</span>
+              </div>
+              <span class="stat-count">{{ stats.ratingsStatusDistribution.pending | number }}</span>
+            </div>
+            <div class="stat-row rejected">
+              <div class="stat-info">
+                <mat-icon>cancel</mat-icon>
+                <span class="stat-label">Elutasitva</span>
+              </div>
+              <span class="stat-count">{{ stats.ratingsStatusDistribution.rejected | number }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monthly Registrations Chart -->
+        <div class="chart-card">
+          <div class="card-header">
+            <div class="card-header-left">
+              <div class="header-icon">
+                <mat-icon>show_chart</mat-icon>
+              </div>
+              <h3>Havi Regisztraciok</h3>
+            </div>
+          </div>
+          <div class="chart-container" *ngIf="stats?.monthlyRegistrations && stats.monthlyRegistrations.length > 0">
+            <canvas #monthlyChart></canvas>
+          </div>
+          <div class="chart-placeholder" *ngIf="!stats?.monthlyRegistrations || stats.monthlyRegistrations.length === 0">
+            <mat-icon>insert_chart_outlined</mat-icon>
+            <p class="placeholder-text">Nincs megjelenithetoadat</p>
+            <p class="placeholder-hint">A havi regisztracios adatok megjelennek, amint elerhetoek</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Actions Section -->
+      <section class="quick-actions-section">
+        <div class="section-header">
+          <div class="section-icon-wrapper">
+            <mat-icon>flash_on</mat-icon>
+          </div>
+          <h2>Gyors Muveletek</h2>
+        </div>
+        <div class="actions-grid">
+          <!-- Ratings Action -->
+          <a routerLink="/admin/ratings" class="action-card ratings-action">
+            <div class="action-badge" *ngIf="stats.pendingRatings > 0">
+              {{ stats.pendingRatings }}
+            </div>
+            <div class="action-icon-wrapper">
+              <div class="icon-glow"></div>
+              <mat-icon>star</mat-icon>
+            </div>
+            <div class="action-text">
+              <h3>Ertekelesek moderalasa</h3>
+              <p>Ertekelesek attekintese</p>
+            </div>
+            <div class="action-arrow">
+              <mat-icon>arrow_forward</mat-icon>
+            </div>
+          </a>
+
+          <!-- Reports Action -->
+          <a routerLink="/admin/reports" class="action-card reports-action">
+            <div class="action-badge" *ngIf="stats.pendingReports > 0">
+              {{ stats.pendingReports }}
+            </div>
+            <div class="action-icon-wrapper">
+              <div class="icon-glow"></div>
+              <mat-icon>report</mat-icon>
+            </div>
+            <div class="action-text">
+              <h3>Jelentesek moderalasa</h3>
+              <p>Hibajelentesek kezelese</p>
+            </div>
+            <div class="action-arrow">
+              <mat-icon>arrow_forward</mat-icon>
+            </div>
+          </a>
+
+          <!-- Users Action -->
+          <a routerLink="/admin/users" class="action-card users-action">
+            <div class="action-icon-wrapper">
+              <div class="icon-glow"></div>
+              <mat-icon>people</mat-icon>
+            </div>
+            <div class="action-text">
+              <h3>Felhasznalok kezelese</h3>
+              <p>Felhasznaloi fiokok</p>
+            </div>
+            <div class="action-arrow">
+              <mat-icon>arrow_forward</mat-icon>
+            </div>
+          </a>
+
+          <!-- Routes Action -->
+          <a routerLink="/admin/routes" class="action-card routes-action">
+            <div class="action-icon-wrapper">
+              <div class="icon-glow"></div>
+              <mat-icon>directions_bus</mat-icon>
+            </div>
+            <div class="action-text">
+              <h3>Utvonalak kezelese</h3>
+              <p>Jaratok es megallok</p>
+            </div>
+            <div class="action-arrow">
+              <mat-icon>arrow_forward</mat-icon>
+            </div>
+          </a>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

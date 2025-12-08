@@ -1,0 +1,84 @@
+<div class="route-form-dialog">
+  <!-- Dialog Header -->
+  <div class="dialog-header">
+    <mat-icon class="dialog-icon">{{ mode === 'create' ? 'add_circle' : 'edit' }}</mat-icon>
+    <h2 mat-dialog-title>
+      {{ mode === 'create' ? 'Uj Jarat Letrehozasa' : 'Jarat Szerkesztese' }}
+    </h2>
+  </div>
+
+  <!-- Dialog Content -->
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" class="route-form">
+      <!-- Route Number Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Jarat szama</mat-label>
+        <mat-icon matPrefix>tag</mat-icon>
+        <input
+          matInput
+          formControlName="route_number"
+          placeholder="pl. 1, 2A, 105"
+          autocomplete="off"
+        />
+        <mat-error *ngIf="form.get('route_number')?.hasError('required')">
+          A jarat szama kotelezo
+        </mat-error>
+        <mat-error *ngIf="form.get('route_number')?.hasError('pattern')">
+          Csak szamok es betuk engedelyezettek
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Route Name Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Jarat neve</mat-label>
+        <mat-icon matPrefix>route</mat-icon>
+        <input
+          matInput
+          formControlName="name"
+          placeholder="pl. Varoskozpont - Vasutallomas"
+          autocomplete="off"
+        />
+        <mat-error *ngIf="form.get('name')?.hasError('required')">
+          A jarat neve kotelezo
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Accessibility Checkbox -->
+      <div class="checkbox-wrapper">
+        <mat-checkbox formControlName="is_accessible" color="primary">
+          <div class="checkbox-content">
+            <mat-icon>accessible</mat-icon>
+            <span>Akadalymentesitett jarat</span>
+          </div>
+        </mat-checkbox>
+        <p class="checkbox-hint">
+          Jelold be, ha a jarat alacsonypadlos es akadalymentesen megkozelitheto
+        </p>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <!-- Dialog Actions -->
+  <mat-dialog-actions class="dialog-actions">
+    <button
+      mat-stroked-button
+      (click)="onCancel()"
+      [disabled]="isLoading"
+      class="cancel-button"
+    >
+      <mat-icon>close</mat-icon>
+      Megsem
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onSubmit()"
+      [disabled]="form.invalid || isLoading"
+      class="submit-button"
+    >
+      <mat-spinner *ngIf="isLoading" diameter="20" class="button-spinner"></mat-spinner>
+      <mat-icon *ngIf="!isLoading">{{ mode === 'create' ? 'add' : 'save' }}</mat-icon>
+      <span>{{ mode === 'create' ? 'Letrehozas' : 'Mentes' }}</span>
+    </button>
+  </mat-dialog-actions>
+</div>

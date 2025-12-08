@@ -1,0 +1,368 @@
+@import '../../../../../styles/variables';
+@import '../../../../../styles/colors';
+@import '../../../../../styles/typography';
+@import '../../../../../styles/mixins';
+@import '../../../../../styles/persian-blue';
+@import '../../../../../styles/glassmorphism';
+@import '../../../../../styles/animations';
+
+// ===========================
+// PROFILE SECTION - DARK THEME (Landing Page Style)
+// ===========================
+
+.profile-section {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-8 $spacing-4;
+  overflow: hidden;
+
+  // Dark radial gradient background (same as hero)
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba($persian-blue-700, 0.3), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-600, 0.2), transparent 50%),
+    $persian-blue-950;
+
+  @include mobile {
+    padding: $spacing-6 $spacing-3;
+  }
+}
+
+// ===========================
+// FLOATING BACKGROUND SHAPES
+// ===========================
+
+.profile-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  .background-shape {
+    position: absolute;
+    border-radius: 50%;
+
+    &.shape-1 {
+      width: 400px;
+      height: 400px;
+      top: -100px;
+      right: -100px;
+      background: radial-gradient(circle, rgba($persian-blue-500, 0.15) 0%, transparent 70%);
+      animation: float-slow 12s ease-in-out infinite;
+    }
+
+    &.shape-2 {
+      width: 300px;
+      height: 300px;
+      bottom: -80px;
+      left: -80px;
+      background: radial-gradient(circle, rgba($persian-blue-600, 0.12) 0%, transparent 70%);
+      animation: float-slow 15s ease-in-out infinite reverse;
+    }
+  }
+}
+
+// ===========================
+// PROFILE CONTAINER
+// ===========================
+
+.profile-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  justify-content: center;
+}
+
+// ===========================
+// LOADING STATE
+// ===========================
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-4;
+  padding: $spacing-12;
+
+  p {
+    margin: 0;
+    color: $persian-blue-300;
+    font-size: $font-size-base;
+  }
+
+  ::ng-deep .mat-mdc-progress-spinner circle {
+    stroke: $persian-blue-400;
+  }
+}
+
+// ===========================
+// PROFILE CARD (Hero Visual Card Style)
+// ===========================
+
+.profile-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-5;
+  padding: $spacing-10;
+  width: 100%;
+  animation: fadeInUp 0.8s ease-out forwards;
+
+  // Strong glassmorphism
+  @include glass-card-strong;
+  border-color: rgba($persian-blue-400, 0.15);
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba($persian-blue-500, 0.1);
+
+  transition: all 0.4s ease;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow:
+      0 35px 70px rgba(0, 0, 0, 0.5),
+      0 0 60px rgba($persian-blue-500, 0.15);
+    border-color: rgba($persian-blue-400, 0.25);
+  }
+
+  @include mobile {
+    padding: $spacing-8 $spacing-6;
+  }
+}
+
+// Glow effect behind card
+.card-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba($persian-blue-500, 0.12) 0%, transparent 60%);
+  animation: pulse-glow-subtle 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+// ===========================
+// AVATAR
+// ===========================
+
+.avatar-wrapper {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba($persian-blue-500, 0.15);
+  border: 3px solid rgba($persian-blue-400, 0.4);
+  box-shadow: 0 8px 24px rgba($persian-blue-500, 0.3);
+  overflow: hidden;
+  animation: float-fast 3s ease-in-out infinite;
+
+  @include mobile {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-icon {
+  font-size: 56px !important;
+  width: 56px !important;
+  height: 56px !important;
+  color: $persian-blue-400;
+
+  @include mobile {
+    font-size: 44px !important;
+    width: 44px !important;
+    height: 44px !important;
+  }
+}
+
+// ===========================
+// USER INFO
+// ===========================
+
+.user-name {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $persian-blue-50;
+  text-align: center;
+  line-height: 1.3;
+
+  @include mobile {
+    font-size: 1.5rem;
+  }
+}
+
+.user-email {
+  margin: 0;
+  font-size: $font-size-base;
+  color: $persian-blue-300;
+  text-align: center;
+
+  @include mobile {
+    font-size: $font-size-sm;
+  }
+}
+
+// ===========================
+// PROFILE STATS
+// ===========================
+
+.profile-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-6;
+  width: 100%;
+  padding: $spacing-4 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  @include mobile {
+    flex-direction: column;
+    gap: $spacing-3;
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: $persian-blue-400;
+    }
+
+    .stat-label {
+      font-size: $font-size-sm;
+      font-weight: 500;
+      color: $persian-blue-200;
+    }
+  }
+}
+
+// ===========================
+// LOGOUT BUTTON (CTA Primary Style)
+// ===========================
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-2;
+  padding: 14px 32px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  border-radius: 14px !important;
+  min-width: 180px;
+  margin-top: $spacing-2;
+
+  background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 20px rgba($persian-blue-500, 0.4);
+
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease !important;
+
+  mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+  }
+
+  // Shine effect
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba($persian-blue-500, 0.5);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+
+  @include mobile {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+// ===========================
+// ANIMATIONS
+// ===========================
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+@keyframes float-fast {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse-glow-subtle {
+  0%, 100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}

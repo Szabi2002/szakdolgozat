@@ -1,0 +1,51 @@
+<div class="favorite-routes">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && errorMessage" class="error-state">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && !errorMessage && favoriteRoutes.length === 0" class="empty-state">
+    <mat-icon>star_outline</mat-icon>
+    <p>Még nincs kedvenc útvonalad.</p>
+    <button mat-stroked-button color="primary" (click)="viewAllRoutes()">
+      Útvonalak böngészése
+    </button>
+  </div>
+
+  <!-- Routes List -->
+  <div *ngIf="!isLoading && !errorMessage && favoriteRoutes.length > 0" class="routes-list">
+    <div *ngFor="let route of favoriteRoutes" class="route-item" (click)="viewRoute(route.id)">
+      <div class="route-icon">
+        <mat-icon>star</mat-icon>
+      </div>
+
+      <div class="route-info">
+        <div class="route-name">{{ getRouteName(route) }}</div>
+        <div class="route-details">
+          <span class="route-description">{{ getRouteDescription(route) }}</span>
+        </div>
+      </div>
+
+      <button
+        mat-icon-button
+        class="favorite-button"
+        (click)="removeFromFavorites($event, route.id)"
+        matTooltip="Eltávolítás a kedvencekből"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+
+    <button mat-button color="primary" class="view-all-button" (click)="viewAllRoutes()">
+      Összes kedvenc
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </div>
+</div>

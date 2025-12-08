@@ -1,0 +1,58 @@
+<form [formGroup]="tripForm" (ngSubmit)="searchRoutes()" class="trip-planner-form">
+  <div class="location-fields">
+    <!-- From Location -->
+    <mat-form-field appearance="outline" class="location-field">
+      <mat-label>Honnan</mat-label>
+      <mat-icon matPrefix>location_on</mat-icon>
+      <input matInput formControlName="from" placeholder="Pl. Deák Ferenc tér" />
+    </mat-form-field>
+
+    <!-- Swap Button -->
+    <button
+      type="button"
+      mat-icon-button
+      class="swap-button"
+      (click)="swapLocations()"
+      matTooltip="Helyek cseréje"
+    >
+      <mat-icon>swap_vert</mat-icon>
+    </button>
+
+    <!-- To Location -->
+    <mat-form-field appearance="outline" class="location-field">
+      <mat-label>Hova</mat-label>
+      <mat-icon matPrefix>location_on</mat-icon>
+      <input matInput formControlName="to" placeholder="Pl. Keleti pályaudvar" />
+    </mat-form-field>
+  </div>
+
+  <div class="datetime-fields">
+    <!-- Date -->
+    <mat-form-field appearance="outline" class="date-field">
+      <mat-label>Dátum</mat-label>
+      <mat-icon matPrefix>calendar_today</mat-icon>
+      <input matInput [matDatepicker]="picker" formControlName="date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Time -->
+    <mat-form-field appearance="outline" class="time-field">
+      <mat-label>Időpont</mat-label>
+      <mat-icon matPrefix>access_time</mat-icon>
+      <input matInput type="time" formControlName="time" />
+    </mat-form-field>
+  </div>
+
+  <!-- Search Button -->
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    class="search-button"
+    [disabled]="tripForm.invalid"
+  >
+    <mat-icon>search</mat-icon>
+    Útvonalak keresése
+  </button>
+</form>

@@ -35,6 +35,7 @@ export class RoutesService {
         name: dto.name,
         provider_id: userId,
         is_accessible: dto.is_accessible ?? false,
+        route_type: dto.route_type,
       })
       .select()
       .single();
@@ -48,6 +49,19 @@ export class RoutesService {
       }
       throw new InternalServerErrorException('Failed to create route: ' + error.message);
     }
+
+    // Log admin activity
+    await supabase.from('admin_activity_log').insert({
+      admin_id: userId,
+      action: 'create_route',
+      details: {
+        target_type: 'route',
+        target_id: data.id,
+        route_number: data.route_number,
+        name: data.name,
+        is_accessible: data.is_accessible,
+      },
+    });
 
     return {
       ...data,
@@ -99,6 +113,7 @@ export class RoutesService {
       provider_id: route.provider_id,
       is_accessible: route.is_accessible,
       is_active: route.is_active,
+      route_type: route.route_type,
       created_at: route.created_at,
       updated_at: route.updated_at,
       stops_count: route.route_stops?.[0]?.count || 0,
@@ -131,6 +146,7 @@ export class RoutesService {
         *,
         route_stops (
           stop_order,
+          arrival_offset,
           stops (
             id,
             name,
@@ -157,6 +173,7 @@ export class RoutesService {
         latitude: rs.stops.latitude,
         longitude: rs.stops.longitude,
         stop_order: rs.stop_order,
+        arrival_offset: rs.arrival_offset,
       }))
       .sort((a: any, b: any) => a.stop_order - b.stop_order);
 
@@ -167,6 +184,7 @@ export class RoutesService {
       provider_id: data.provider_id,
       is_accessible: data.is_accessible,
       is_active: data.is_active,
+      route_type: data.route_type,
       created_at: data.created_at,
       updated_at: data.updated_at,
       stops_count: stops.length,
@@ -194,6 +212,7 @@ export class RoutesService {
         ...(dto.name && { name: dto.name }),
         ...(dto.is_accessible !== undefined && { is_accessible: dto.is_accessible }),
         ...(dto.is_active !== undefined && { is_active: dto.is_active }),
+        ...(dto.route_type && { route_type: dto.route_type }),
         updated_at: new Date().toISOString(),
       })
       .eq('id', id)
@@ -210,6 +229,20 @@ export class RoutesService {
     if (!data) {
       throw new NotFoundException(`Route with ID '${id}' not found`);
     }
+
+    // Log admin activity
+    await supabase.from('admin_activity_log').insert({
+      admin_id: userId,
+      action: 'update_route',
+      details: {
+        target_type: 'route',
+        target_id: id,
+        route_number: data.route_number,
+        name: data.name,
+        is_accessible: data.is_accessible,
+        is_active: data.is_active,
+      },
+    });
 
     // Fetch stops count
     const { count } = await supabase
@@ -248,6 +281,18 @@ export class RoutesService {
     if (error || !data) {
       throw new NotFoundException(`Route with ID '${id}' not found`);
     }
+
+    // Log admin activity
+    await supabase.from('admin_activity_log').insert({
+      admin_id: userId,
+      action: 'delete_route',
+      details: {
+        target_type: 'route',
+        target_id: id,
+        route_number: data.route_number,
+        name: data.name,
+      },
+    });
 
     return {
       ...data,
@@ -348,6 +393,7 @@ export class RoutesService {
           stop_id: s.stop_id,
           stop_order: s.order,
           arrival_time: s.arrival_time || null,
+          arrival_offset: s.arrival_offset || null,
         })),
       );
 
@@ -374,6 +420,7 @@ export class RoutesService {
         id,
         stop_order,
         arrival_time,
+        arrival_offset,
         stops!inner (
           id,
           name,
@@ -396,6 +443,7 @@ export class RoutesService {
       id: rs.id,
       order: rs.stop_order,
       arrival_time: rs.arrival_time,
+      arrival_offset: rs.arrival_offset,
       stop: {
         id: rs.stops.id,
         name: rs.stops.name,
@@ -425,6 +473,7 @@ export class RoutesService {
     stopId: string,
     order: number,
     arrivalTime?: string,
+    arrivalOffset?: string,
   ) {
     const supabase = this.supabaseService.getClient();
 
@@ -462,6 +511,7 @@ export class RoutesService {
         stop_id: stopId,
         stop_order: order,
         arrival_time: arrivalTime || null,
+        arrival_offset: arrivalOffset || null,
       })
       .select()
       .single();

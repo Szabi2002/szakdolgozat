@@ -1,0 +1,126 @@
+<div class="login-page">
+  <!-- Hero Section (Left side - Desktop only) -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <mat-icon class="hero-icon">directions_bus</mat-icon>
+      <h1>Utazz okosan,<br />fizess egyszerűen</h1>
+      <p>Közlekedési jegykezelés és utazástervezés egyszerűen</p>
+    </div>
+  </div>
+
+  <!-- Login Panel (Right side) -->
+  <div class="login-panel">
+    <div class="login-content">
+      <!-- Logo -->
+      <mat-icon class="logo">directions_bus</mat-icon>
+
+      <!-- Heading -->
+      <h2>Bejelentkezés</h2>
+      <p class="subtitle">Jelentkezz be a fiókodba</p>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="error-message">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Email/Password Login Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onEmailLogin()" class="login-form">
+        <!-- Email Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email cím</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="pelda@email.com"
+            autocomplete="email"
+          />
+          <mat-icon matPrefix>email</mat-icon>
+          <mat-error *ngIf="emailControl?.invalid && emailControl?.touched">
+            {{ getErrorMessage('email') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Password Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Jelszó</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="Jelszó"
+            autocomplete="off"
+          />
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="hidePassword ? 'Jelszó mutatása' : 'Jelszó elrejtése'"
+            [attr.aria-pressed]="!hidePassword"
+          >
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="passwordControl?.invalid && passwordControl?.touched">
+            {{ getErrorMessage('password') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="form-options">
+          <mat-checkbox formControlName="rememberMe" color="primary">
+            Emlékezz rám
+          </mat-checkbox>
+          <a routerLink="/forgot-password" class="forgot-password-link">
+            Elfelejtett jelszó?
+          </a>
+        </div>
+
+        <!-- Login Button -->
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="full-width login-button"
+          [disabled]="isLoading || loginForm.invalid"
+        >
+          <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+          <span *ngIf="!isLoading">Bejelentkezés</span>
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>VAGY</span>
+      </div>
+
+      <!-- Google Login Button -->
+      <button
+        mat-stroked-button
+        class="google-login-button full-width"
+        (click)="onGoogleLogin()"
+        [disabled]="isGoogleLoading"
+      >
+        <mat-icon *ngIf="!isGoogleLoading" svgIcon="google" class="google-icon"></mat-icon>
+        <mat-spinner *ngIf="isGoogleLoading" [diameter]="20"></mat-spinner>
+        <span>{{ isGoogleLoading ? 'Bejelentkezés...' : 'Bejelentkezés Google-lal' }}</span>
+      </button>
+
+      <!-- Register Link -->
+      <p class="register-link">
+        Még nincs fiókod?
+        <a routerLink="/register">Regisztrálj</a>
+      </p>
+
+      <!-- Footer -->
+      <p class="footer-text">
+        Bejelentkezéssel elfogadod az
+        <a href="/terms" target="_blank">Általános Szerződési Feltételeket</a>
+        és az
+        <a href="/privacy" target="_blank">Adatvédelmi Nyilatkozatot</a>
+      </p>
+    </div>
+  </div>
+</div>

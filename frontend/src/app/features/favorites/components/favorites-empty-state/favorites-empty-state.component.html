@@ -1,0 +1,38 @@
+<div class="empty-state" role="status">
+  <div class="empty-icon">
+    <mat-icon>favorite_border</mat-icon>
+  </div>
+
+  <h2>Még nincsenek kedvenc útvonalaid</h2>
+
+  <p>
+    Mentsd el a gyakran használt útvonalakat az útvonaltervezőből, hogy később gyorsan elérd őket.
+  </p>
+
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onGoToPlanner()"
+    aria-label="Ugrás az útvonaltervezőhöz útvonalak mentéséhez">
+    <mat-icon>explore</mat-icon>
+    <span>Útvonaltervező Megnyitása</span>
+  </button>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <mat-icon>speed</mat-icon>
+      <h3>Gyors Hozzáférés</h3>
+      <p>Azonnal elérheted a kedvenc útvonalaid egyetlen kattintással</p>
+    </div>
+    <div class="info-card">
+      <mat-icon>bookmark</mat-icon>
+      <h3>Akár 20 Kedvenc</h3>
+      <p>Menthetsz maximum 20 gyakran használt útvonalat</p>
+    </div>
+    <div class="info-card">
+      <mat-icon>edit</mat-icon>
+      <h3>Szerkeszthető</h3>
+      <p>Bármikor átnevezheted vagy törölheted a kedvenceidet</p>
+    </div>
+  </div>
+</div>

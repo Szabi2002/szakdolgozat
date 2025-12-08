@@ -1,0 +1,492 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// TICKET DETAILS DIALOG - DARK THEME WITH GLASSMORPHISM
+// ============================================================================
+
+.ticket-details-dialog {
+  @include flex-column;
+  max-height: 90vh;
+  min-width: 600px;
+  background: $persian-blue-950;
+  border-radius: 20px;
+  overflow: hidden;
+
+  @include mobile {
+    min-width: 320px;
+  }
+
+  // ============================================================================
+  // DIALOG HEADER
+  // ============================================================================
+
+  .dialog-header {
+    position: relative;
+    @include flex-between;
+    align-items: center;
+    padding: $spacing-5 $spacing-6;
+    overflow: hidden;
+
+    // Dark gradient background with glow effects
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba($persian-blue-600, 0.4), transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba($persian-blue-500, 0.3), transparent 50%),
+      linear-gradient(135deg, $persian-blue-800 0%, $persian-blue-900 100%);
+
+    // Decorative pattern
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path fill="%23ffffff" fill-opacity="0.03" d="M0,0 Q300,80 600,40 T1200,60 L1200,120 L0,120 Z"/></svg>') no-repeat bottom;
+      background-size: cover;
+      pointer-events: none;
+    }
+
+    .header-content {
+      @include flex-start;
+      gap: $spacing-3;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+
+      .header-icon {
+        @include flex-center;
+        width: 48px;
+        height: 48px;
+        border-radius: $radius-full;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+
+        mat-icon {
+          font-size: 28px;
+          width: 28px;
+          height: 28px;
+          color: $persian-blue-300;
+        }
+      }
+
+      h2 {
+        margin: 0;
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-bold;
+        color: $persian-blue-50;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .close-button {
+      position: relative;
+      z-index: 1;
+      color: $persian-blue-200;
+      transition: all 0.3s ease;
+
+      mat-icon {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: $persian-blue-100;
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  // ============================================================================
+  // DIALOG CONTENT
+  // ============================================================================
+
+  mat-dialog-content {
+    padding: 0 !important;
+    margin: 0;
+    overflow-y: auto;
+    max-height: calc(90vh - 180px);
+    background: $persian-blue-950;
+
+    // ============================================================================
+    // STATUS BANNER
+    // ============================================================================
+
+    .ticket-status-banner {
+      @include flex-start;
+      align-items: center;
+      gap: $spacing-4;
+      padding: $spacing-5;
+      margin: $spacing-6;
+      border-radius: 16px;
+      animation: fadeInUp 0.5s ease forwards;
+
+      // Glassmorphism base
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 2px solid;
+
+      &.valid {
+        border-color: rgba(#4ade80, 0.3);
+        background: rgba(#4ade80, 0.1);
+
+        mat-icon {
+          color: #4ade80;
+          font-size: 56px;
+          width: 56px;
+          height: 56px;
+        }
+
+        .status-info {
+          h3 {
+            color: #4ade80;
+          }
+        }
+      }
+
+      &.invalid {
+        border-color: rgba(#f87171, 0.3);
+        background: rgba(#f87171, 0.1);
+
+        mat-icon {
+          color: #f87171;
+          font-size: 56px;
+          width: 56px;
+          height: 56px;
+        }
+
+        .status-info {
+          h3 {
+            color: #f87171;
+          }
+        }
+      }
+
+      .status-info {
+        flex: 1;
+
+        h3 {
+          margin: 0 0 $spacing-1 0;
+          font-size: $font-size-2xl;
+          font-weight: $font-weight-bold;
+        }
+
+        p {
+          margin: 0;
+          font-size: $font-size-base;
+          color: $persian-blue-300;
+          font-weight: $font-weight-medium;
+        }
+      }
+
+      @include mobile {
+        flex-direction: column;
+        text-align: center;
+        margin: $spacing-4;
+        padding: $spacing-4;
+      }
+    }
+
+    // ============================================================================
+    // TABS STYLING
+    // ============================================================================
+
+    ::ng-deep .mat-mdc-tab-group {
+      .mat-mdc-tab-header {
+        background: rgba(255, 255, 255, 0.02);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .mat-mdc-tab-labels {
+        padding: 0 $spacing-6;
+      }
+
+      .mat-mdc-tab {
+        color: $persian-blue-400;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.04);
+        }
+
+        &.mdc-tab--active {
+          background: rgba($persian-blue-500, 0.15);
+
+          .mdc-tab__text-label {
+            color: $persian-blue-200;
+          }
+        }
+
+        .mdc-tab__text-label {
+          color: inherit;
+        }
+      }
+
+      .mat-mdc-tab-label-content {
+        @include flex-center;
+        gap: $spacing-2;
+        font-weight: $font-weight-semibold;
+
+        .tab-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .mdc-tab-indicator__content--underline {
+        border-color: $persian-blue-400;
+      }
+    }
+
+    // ============================================================================
+    // TAB CONTENT
+    // ============================================================================
+
+    .tab-content {
+      padding: $spacing-6;
+
+      @include mobile {
+        padding: $spacing-4;
+      }
+
+      .info-section {
+        margin-bottom: $spacing-6;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .section-header {
+          @include flex-start;
+          gap: $spacing-3;
+          margin-bottom: $spacing-4;
+          padding-bottom: $spacing-3;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+          mat-icon {
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+            color: $persian-blue-400;
+          }
+
+          h3 {
+            margin: 0;
+            font-size: $font-size-lg;
+            font-weight: $font-weight-semibold;
+            color: $persian-blue-100;
+          }
+        }
+
+        .info-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: $spacing-4;
+
+          @include mobile {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        .info-item {
+          @include flex-start;
+          gap: $spacing-3;
+          padding: $spacing-4;
+          border-radius: $radius-lg;
+          transition: all 0.3s ease;
+
+          // Glassmorphism
+          background: rgba(255, 255, 255, 0.04);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+
+          &:hover {
+            background: rgba($persian-blue-500, 0.1);
+            border-color: rgba($persian-blue-400, 0.2);
+            transform: translateY(-2px);
+          }
+
+          &.full-width {
+            grid-column: 1 / -1;
+          }
+
+          .item-icon {
+            font-size: 26px;
+            width: 26px;
+            height: 26px;
+            color: $persian-blue-400;
+            flex-shrink: 0;
+          }
+
+          .item-content {
+            @include flex-column;
+            gap: $spacing-1;
+            flex: 1;
+
+            .label {
+              font-size: $font-size-xs;
+              font-weight: $font-weight-semibold;
+              color: $persian-blue-400;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+            }
+
+            .value {
+              font-size: $font-size-base;
+              color: $persian-blue-100;
+              font-weight: $font-weight-medium;
+
+              &.price {
+                color: #4ade80;
+                font-weight: $font-weight-bold;
+                font-size: $font-size-xl;
+              }
+
+              &.code {
+                font-family: $font-family-mono;
+                background: rgba(255, 255, 255, 0.06);
+                padding: $spacing-1 $spacing-2;
+                border-radius: $radius-sm;
+                font-size: $font-size-sm;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: $persian-blue-200;
+              }
+
+              &.route {
+                @include flex-start;
+                gap: $spacing-2;
+                align-items: center;
+                flex-wrap: wrap;
+              }
+            }
+
+            mat-chip {
+              font-size: $font-size-xs;
+              font-weight: $font-weight-bold;
+              height: 28px;
+            }
+          }
+
+          @include mobile {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: $spacing-2;
+          }
+        }
+      }
+
+      mat-divider {
+        margin: $spacing-6 0;
+        border-top-color: rgba(255, 255, 255, 0.08);
+      }
+    }
+  }
+
+  // ============================================================================
+  // DIALOG ACTIONS
+  // ============================================================================
+
+  mat-dialog-actions {
+    @include flex-end;
+    gap: $spacing-3;
+    padding: $spacing-5 $spacing-6 $spacing-6 $spacing-6 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+
+    @include mobile {
+      flex-direction: column-reverse;
+      padding: $spacing-4 !important;
+
+      button {
+        width: 100%;
+      }
+    }
+
+    button {
+      @include flex-center;
+      gap: $spacing-2;
+      padding: $spacing-3 $spacing-5;
+      font-weight: $font-weight-semibold;
+      transition: all 0.3s ease;
+
+      mat-icon,
+      mat-spinner {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      mat-spinner {
+        display: inline-block;
+        vertical-align: middle;
+
+        ::ng-deep circle {
+          stroke: white;
+        }
+      }
+    }
+
+    .close-action-button {
+      color: $persian-blue-300 !important;
+      border: 1px solid rgba($persian-blue-400, 0.3) !important;
+      background: transparent !important;
+
+      &:hover:not(:disabled) {
+        background: rgba($persian-blue-400, 0.1) !important;
+        border-color: rgba($persian-blue-400, 0.5) !important;
+        transform: translateY(-2px);
+      }
+    }
+
+    .resend-button {
+      background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+      color: white !important;
+      font-weight: $font-weight-bold;
+      border-radius: $radius-lg;
+      box-shadow: 0 4px 16px rgba($persian-blue-500, 0.4);
+      transition: all 0.3s ease;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba($persian-blue-500, 0.5);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none !important;
+        box-shadow: none !important;
+      }
+    }
+  }
+}
+
+::ng-deep .mat-mdc-tab-body-content {
+  overflow: visible !important;
+}
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

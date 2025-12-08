@@ -1,0 +1,216 @@
+<div class="payment-dialog">
+  <!-- Dialog Header -->
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon>payment</mat-icon>
+      <h2>Fizetés</h2>
+    </div>
+    <button mat-icon-button (click)="onCancel()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content>
+    <!-- Progress Indicator -->
+    <div class="progress-indicator">
+      <div class="step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+        <div class="step-number">1</div>
+        <div class="step-label">Összesítés</div>
+      </div>
+      <div class="step-line" [class.active]="currentStep >= 2"></div>
+      <div class="step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+        <div class="step-number">2</div>
+        <div class="step-label">Fizetés</div>
+      </div>
+      <div class="step-line" [class.active]="currentStep >= 3"></div>
+      <div class="step" [class.active]="currentStep >= 3">
+        <div class="step-number">3</div>
+        <div class="step-label">Kész</div>
+      </div>
+    </div>
+
+    <!-- Step 1: Order Summary -->
+    @if (currentStep === 1) {
+      <div class="step-content">
+        <h3>
+          <mat-icon>shopping_cart</mat-icon>
+          Rendelés összesítése
+        </h3>
+
+        <div class="order-summary">
+          <div class="summary-item ticket-info">
+            <mat-icon>confirmation_number</mat-icon>
+            <div class="item-details">
+              <h4>{{ data.ticketType.name }}</h4>
+              <p>{{ data.ticketType.description }}</p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="price-breakdown">
+            <div class="price-item">
+              <span class="label">Jegy ára</span>
+              <span class="value">{{ formatPrice(ticketPrice) }}</span>
+            </div>
+            <div class="price-item">
+              <span class="label">Szolgáltatási díj</span>
+              <span class="value">{{ formatPrice(serviceFee) }}</span>
+            </div>
+            <div class="divider"></div>
+            <div class="price-item total">
+              <span class="label">Összesen</span>
+              <span class="value">{{ formatPrice(totalPrice) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Step 2: Payment Details -->
+    @if (currentStep === 2) {
+      <div class="step-content">
+        <h3>
+          <mat-icon>credit_card</mat-icon>
+          Fizetési adatok
+        </h3>
+
+        <form [formGroup]="paymentForm" class="payment-form">
+          <!-- Payment Method Selection -->
+          <div class="payment-methods">
+            <mat-radio-group formControlName="paymentMethod" (change)="onPaymentMethodChange()">
+              @for (method of paymentMethods; track method.value) {
+                <mat-radio-button [value]="method.value" class="payment-method-option">
+                  <div class="method-content">
+                    <mat-icon>{{ method.icon }}</mat-icon>
+                    <span>{{ method.label }}</span>
+                  </div>
+                </mat-radio-button>
+              }
+            </mat-radio-group>
+          </div>
+
+          <!-- Card Details -->
+          @if (paymentForm.get('paymentMethod')?.value === 'card') {
+            <div class="card-details">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Kártyaszám</mat-label>
+                <input
+                  matInput
+                  formControlName="cardNumber"
+                  placeholder="1234 5678 9012 3456"
+                  maxlength="16"
+                  (input)="formatCardNumber($event)"
+                />
+                <mat-icon matPrefix>credit_card</mat-icon>
+                <mat-error>{{ getErrorMessage('cardNumber') }}</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Kártyatulajdonos neve</mat-label>
+                <input matInput formControlName="cardHolder" placeholder="KOVÁCS JÁNOS" />
+                <mat-icon matPrefix>person</mat-icon>
+                <mat-error>{{ getErrorMessage('cardHolder') }}</mat-error>
+              </mat-form-field>
+
+              <div class="card-details-row">
+                <mat-form-field appearance="outline">
+                  <mat-label>Lejárat</mat-label>
+                  <input
+                    matInput
+                    formControlName="expiryDate"
+                    placeholder="HH/ÉÉ"
+                    maxlength="5"
+                    (input)="formatExpiryDate($event)"
+                  />
+                  <mat-icon matPrefix>event</mat-icon>
+                  <mat-error>{{ getErrorMessage('expiryDate') }}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>CVV</mat-label>
+                  <input
+                    matInput
+                    formControlName="cvv"
+                    placeholder="123"
+                    maxlength="4"
+                    type="password"
+                    (input)="formatCVV($event)"
+                  />
+                  <mat-icon matPrefix>lock</mat-icon>
+                  <mat-error>{{ getErrorMessage('cvv') }}</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="save-card-option">
+                <mat-checkbox formControlName="saveCard">
+                  Kártya mentése későbbi vásárlásokhoz
+                </mat-checkbox>
+              </div>
+            </div>
+          }
+
+          <!-- Alternative Payment Methods Info -->
+          @if (paymentForm.get('paymentMethod')?.value !== 'card') {
+            <div class="alternative-payment-info">
+              <mat-icon>info</mat-icon>
+              <p>Átirányítunk a {{ selectedPaymentMethodLabel }} fizetési oldalára.</p>
+            </div>
+          }
+        </form>
+
+        <div class="security-note">
+          <mat-icon>security</mat-icon>
+          <span>Fizetési adatai biztonságosan titkosítva vannak</span>
+        </div>
+      </div>
+    }
+
+    <!-- Step 3: Processing/Complete -->
+    @if (currentStep === 3) {
+      <div class="step-content">
+        @if (isProcessing) {
+          <div class="processing-state">
+            <mat-spinner diameter="60"></mat-spinner>
+            <h3>Fizetés feldolgozása...</h3>
+            <p>Kérjük várjon, míg feldolgozzuk a fizetését</p>
+          </div>
+        } @else {
+          <div class="success-state">
+            <div class="success-icon-wrapper">
+              <mat-icon>check_circle</mat-icon>
+            </div>
+            <h3>Sikeres fizetés!</h3>
+            <p>A jegye hamarosan elérhető lesz</p>
+          </div>
+        }
+      </div>
+    }
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    @if (currentStep > 1 && currentStep < 3) {
+      <button mat-stroked-button (click)="previousStep()" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+        Vissza
+      </button>
+    }
+    @if (currentStep === 1) {
+      <button mat-raised-button (click)="nextStep()" class="continue-btn">
+        Tovább
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    }
+    @if (currentStep === 2) {
+      <button
+        mat-raised-button
+        (click)="onSubmit()"
+        [disabled]="paymentForm.invalid || isProcessing"
+        class="pay-btn"
+      >
+        <mat-icon>payment</mat-icon>
+        Fizetés {{ formatPrice(totalPrice) }}
+      </button>
+    }
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,247 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// TICKET TYPE SELECTOR - DARK THEME WITH GLASSMORPHISM
+// ============================================================================
+
+.ticket-type-selector {
+  padding: $spacing-4 0;
+
+  .selector-title {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $persian-blue-50;
+    margin-bottom: $spacing-6;
+
+    mat-icon {
+      color: $persian-blue-400;
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  .ticket-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: $spacing-5;
+    margin-bottom: $spacing-6;
+
+    .ticket-type-card {
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+      // Glassmorphism
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+      // Glow line at top (hidden by default)
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, $persian-blue-500, $persian-blue-400);
+        opacity: 0;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: all 0.3s ease;
+        z-index: 10;
+      }
+
+      &:hover {
+        transform: translateY(-8px);
+        border-color: rgba($persian-blue-400, 0.3);
+        box-shadow:
+          0 20px 50px rgba(0, 0, 0, 0.4),
+          0 0 30px rgba($persian-blue-500, 0.15);
+
+        &::before {
+          opacity: 1;
+          transform: scaleX(1);
+        }
+      }
+
+      &.selected {
+        border-color: $persian-blue-400;
+        box-shadow:
+          0 8px 32px rgba(0, 0, 0, 0.3),
+          0 0 20px rgba($persian-blue-500, 0.25);
+
+        &::before {
+          opacity: 1;
+          transform: scaleX(1);
+        }
+
+        .card-header {
+          background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+        }
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $spacing-4;
+        color: white;
+        min-height: 80px;
+        background: linear-gradient(135deg, $persian-blue-700, $persian-blue-800);
+        transition: all 0.3s ease;
+
+        .type-icon {
+          font-size: 40px;
+          width: 40px;
+          height: 40px;
+          color: white;
+        }
+
+        .type-badge {
+          font-size: $font-size-xs;
+          font-weight: $font-weight-bold;
+          letter-spacing: 0.5px;
+          background: rgba(255, 255, 255, 0.2);
+          padding: $spacing-1 $spacing-3;
+          border-radius: $radius-full;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+      }
+
+      mat-card-content {
+        padding: $spacing-5;
+        background: rgba($persian-blue-900, 0.3);
+
+        .ticket-name {
+          font-size: $font-size-lg;
+          font-weight: $font-weight-semibold;
+          color: $persian-blue-50;
+          margin: 0 0 $spacing-2 0;
+        }
+
+        .ticket-description {
+          font-size: $font-size-sm;
+          color: $persian-blue-300;
+          margin: 0 0 $spacing-4 0;
+          min-height: 40px;
+          line-height: 1.5;
+        }
+
+        .ticket-details {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-3;
+
+          .detail-item {
+            display: flex;
+            align-items: center;
+            gap: $spacing-3;
+            padding: $spacing-3;
+            background: rgba($persian-blue-800, 0.4);
+            border-radius: $radius-md;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+
+            mat-icon {
+              color: $persian-blue-400;
+              font-size: 20px;
+              width: 20px;
+              height: 20px;
+            }
+
+            .detail-content {
+              display: flex;
+              flex-direction: column;
+              flex: 1;
+
+              .detail-label {
+                font-size: $font-size-xs;
+                color: $persian-blue-400;
+                font-weight: $font-weight-medium;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+              }
+
+              .detail-value {
+                font-size: $font-size-base;
+                color: $persian-blue-100;
+                font-weight: $font-weight-semibold;
+
+                &.price {
+                  color: #4ade80;
+                  font-size: $font-size-lg;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .selection-indicator {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600);
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: $spacing-1;
+        padding: $spacing-2 $spacing-3;
+        border-bottom-left-radius: $radius-md;
+        font-weight: $font-weight-semibold;
+        font-size: $font-size-sm;
+        z-index: 5;
+        box-shadow: 0 2px 8px rgba($persian-blue-500, 0.3);
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+  }
+
+  .no-tickets {
+    text-align: center;
+    padding: $spacing-12 $spacing-4;
+    color: $persian-blue-300;
+
+    mat-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      color: $persian-blue-500;
+      margin-bottom: $spacing-4;
+      opacity: 0.5;
+    }
+
+    p {
+      font-size: $font-size-lg;
+      margin: 0;
+    }
+  }
+}
+
+@include mobile {
+  .ticket-type-selector {
+    .ticket-types-grid {
+      grid-template-columns: 1fr;
+      gap: $spacing-4;
+    }
+  }
+}

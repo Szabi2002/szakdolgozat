@@ -9,6 +9,7 @@ import {
   Query,
   UseGuards,
   Request,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -98,10 +99,14 @@ export class RoutesController {
     type: RouteResponseDto,
   })
   @ApiResponse({
+    status: 400,
+    description: 'Bad request - invalid UUID format',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Route not found',
   })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.routesService.findOne(id);
   }
 
@@ -136,7 +141,11 @@ export class RoutesController {
     status: 404,
     description: 'Route not found',
   })
-  async update(@Param('id') id: string, @Request() req, @Body() updateRouteDto: UpdateRouteDto) {
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Request() req,
+    @Body() updateRouteDto: UpdateRouteDto,
+  ) {
     return this.routesService.update(id, req.user.id, updateRouteDto);
   }
 
@@ -167,7 +176,7 @@ export class RoutesController {
     status: 404,
     description: 'Route not found',
   })
-  async remove(@Param('id') id: string, @Request() req) {
+  async remove(@Param('id', ParseUUIDPipe) id: string, @Request() req) {
     return this.routesService.remove(id, req.user.id);
   }
 
@@ -210,7 +219,7 @@ export class RoutesController {
     description: 'Route not found',
   })
   async assignStops(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Request() req,
     @Body() assignStopsDto: AssignStopsDto,
   ) {
@@ -236,6 +245,7 @@ export class RoutesController {
           id: { type: 'string', format: 'uuid' },
           order: { type: 'number', example: 1 },
           arrival_time: { type: 'string', example: '10:30', nullable: true },
+          arrival_offset: { type: 'string', example: '00:05:30', nullable: true },
           stop: {
             type: 'object',
             properties: {
@@ -251,7 +261,7 @@ export class RoutesController {
       },
     },
   })
-  async getRouteStops(@Param('id') id: string) {
+  async getRouteStops(@Param('id', ParseUUIDPipe) id: string) {
     return this.routesService.getRouteStops(id);
   }
 
@@ -277,6 +287,7 @@ export class RoutesController {
         stop_id: { type: 'string', format: 'uuid' },
         stop_order: { type: 'number', example: 1 },
         arrival_time: { type: 'string', example: '10:30', nullable: true },
+        arrival_offset: { type: 'string', example: '00:05:30', nullable: true },
         created_at: { type: 'string', format: 'date-time' },
       },
     },
@@ -294,8 +305,8 @@ export class RoutesController {
     description: 'Forbidden - user does not own this route',
   })
   async addStopToRoute(
-    @Param('id') id: string,
-    @Param('stopId') stopId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('stopId', ParseUUIDPipe) stopId: string,
     @Request() req,
     @Body() addStopDto: AddStopToRouteDto,
   ) {
@@ -305,6 +316,7 @@ export class RoutesController {
       stopId,
       addStopDto.order,
       addStopDto.arrival_time,
+      addStopDto.arrival_offset,
     );
   }
 
@@ -337,8 +349,8 @@ export class RoutesController {
     description: 'Forbidden - user does not own this route',
   })
   async removeStopFromRoute(
-    @Param('id') id: string,
-    @Param('stopId') stopId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('stopId', ParseUUIDPipe) stopId: string,
     @Request() req,
   ) {
     await this.routesService.removeStopFromRoute(id, req.user.id, stopId);

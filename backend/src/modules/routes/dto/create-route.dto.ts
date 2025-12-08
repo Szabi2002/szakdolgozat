@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsBoolean, IsOptional, MaxLength } from 'class-validator';
+import { IsString, IsNotEmpty, IsBoolean, IsOptional, MaxLength, IsEnum } from 'class-validator';
+
+export enum RouteType {
+  BUS = 'bus',
+  TRAM = 'tram',
+  METRO = 'metro',
+  TROLLEY = 'trolley',
+}
 
 export class CreateRouteDto {
   @ApiProperty({
@@ -31,4 +38,14 @@ export class CreateRouteDto {
   @IsBoolean()
   @IsOptional()
   is_accessible?: boolean;
+
+  @ApiProperty({
+    description: 'Route type (transportation mode)',
+    enum: RouteType,
+    example: RouteType.METRO,
+    required: false,
+  })
+  @IsEnum(RouteType, { message: 'route_type must be one of: bus, tram, metro, trolley' })
+  @IsOptional()
+  route_type?: RouteType;
 }

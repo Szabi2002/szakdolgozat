@@ -1,0 +1,199 @@
+<div class="report-details-modal">
+  <!-- Header -->
+  <div class="modal-header">
+    <div class="header-content">
+      <div class="icon-wrapper" [style.background-color]="typeMetadata.color + '20'">
+        <mat-icon class="header-icon" [style.color]="typeMetadata.color">{{ typeMetadata.icon }}</mat-icon>
+      </div>
+      <div class="title-section">
+        <h2 mat-dialog-title>{{ report.title }}</h2>
+        <span class="reference-number">{{ referenceNumber }}</span>
+      </div>
+    </div>
+    <button mat-icon-button (click)="close()" class="close-button" aria-label="Bezárás">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Content -->
+  <mat-dialog-content class="dialog-content">
+    <!-- Status and Priority Badges -->
+    <div class="badges-section">
+      <mat-chip [style.background-color]="statusColor.color" class="status-chip">
+        <mat-icon>{{ statusColor.icon }}</mat-icon>
+        {{ getStatusLabel(report.status) }}
+      </mat-chip>
+      <mat-chip
+        *ngIf="shouldShowPriority"
+        [style.background-color]="priorityColor.color"
+        class="priority-chip"
+        [class.critical]="report.priority === 'critical'"
+      >
+        <mat-icon>{{ report.priority === 'critical' ? 'priority_high' : 'warning' }}</mat-icon>
+        {{ getPriorityLabel(report.priority) }}
+      </mat-chip>
+      <mat-chip class="type-chip">
+        <mat-icon>{{ typeMetadata.icon }}</mat-icon>
+        {{ typeMetadata.label }}
+      </mat-chip>
+    </div>
+
+    <!-- Description Section -->
+    <section class="info-section">
+      <div class="section-header">
+        <mat-icon>description</mat-icon>
+        <h3>Leírás</h3>
+      </div>
+      <p class="description-text">{{ report.description }}</p>
+    </section>
+
+    <!-- Location Information -->
+    <section class="info-section" *ngIf="report.route || report.stop || report.location">
+      <div class="section-header">
+        <mat-icon>place</mat-icon>
+        <h3>Helyszín információ</h3>
+      </div>
+      <div class="info-grid">
+        <div *ngIf="report.route" class="info-item">
+          <mat-icon class="item-icon">directions_bus</mat-icon>
+          <div class="item-content">
+            <span class="label">Járat</span>
+            <span class="value">{{ report.route.route_number }} - {{ report.route.name }}</span>
+          </div>
+        </div>
+        <div *ngIf="report.stop" class="info-item">
+          <mat-icon class="item-icon">pin_drop</mat-icon>
+          <div class="item-content">
+            <span class="label">Megálló</span>
+            <span class="value">{{ report.stop.name }}</span>
+          </div>
+        </div>
+        <div *ngIf="report.location" class="info-item full-width">
+          <mat-icon class="item-icon">location_on</mat-icon>
+          <div class="item-content">
+            <span class="label">További részletek</span>
+            <span class="value">{{ report.location }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Photos Section -->
+    <section class="info-section photos-section" *ngIf="report.photos && report.photos.length > 0">
+      <div class="section-header">
+        <mat-icon>photo_library</mat-icon>
+        <h3>Fotók ({{ report.photos.length }})</h3>
+      </div>
+      <div class="photos-gallery">
+        <div
+          *ngFor="let photo of report.photos; let i = index"
+          class="photo-thumbnail"
+          (click)="openPhoto(i)"
+        >
+          <img [src]="photo.photo_url" [alt]="'Bejelentés fotó ' + (i + 1)" />
+          <div class="photo-overlay">
+            <mat-icon>zoom_in</mat-icon>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Admin Response -->
+    <section
+      class="info-section admin-section"
+      *ngIf="(report.status === 'resolved' || report.status === 'dismissed') && report.admin_notes"
+    >
+      <div class="section-header">
+        <mat-icon>admin_panel_settings</mat-icon>
+        <h3>Admin válasz</h3>
+      </div>
+      <div class="admin-notes">
+        <p>{{ report.admin_notes }}</p>
+        <div class="admin-info" *ngIf="resolvedDate">
+          <mat-icon>check_circle</mat-icon>
+          <span>{{ getStatusLabel(report.status) }} - {{ resolvedDate }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timestamps -->
+    <section class="info-section timestamps-section">
+      <div class="section-header">
+        <mat-icon>schedule</mat-icon>
+        <h3>Időpontok</h3>
+      </div>
+      <div class="timestamp-grid">
+        <div class="timestamp-item">
+          <mat-icon>send</mat-icon>
+          <div class="timestamp-content">
+            <span class="label">Beküldve</span>
+            <span class="value">{{ createdDate }}</span>
+          </div>
+        </div>
+        <div class="timestamp-item" *ngIf="report.updated_at !== report.created_at">
+          <mat-icon>update</mat-icon>
+          <div class="timestamp-content">
+            <span class="label">Utoljára frissítve</span>
+            <span class="value">{{ updatedDate }}</span>
+          </div>
+        </div>
+        <div class="timestamp-item" *ngIf="resolvedDate">
+          <mat-icon>check_circle</mat-icon>
+          <div class="timestamp-content">
+            <span class="label">{{ getStatusLabel(report.status) }}</span>
+            <span class="value">{{ resolvedDate }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </mat-dialog-content>
+
+  <!-- Actions Footer -->
+  <mat-dialog-actions class="dialog-actions">
+    <button mat-stroked-button (click)="close()" class="cancel-button">
+      <mat-icon>close</mat-icon>
+      Bezárás
+    </button>
+    <div class="action-buttons" *ngIf="canEdit || canDelete">
+      <button mat-raised-button (click)="onEdit()" *ngIf="canEdit" class="edit-button">
+        <mat-icon>edit</mat-icon>
+        Szerkesztés
+      </button>
+      <button mat-raised-button (click)="onDelete()" *ngIf="canDelete" class="delete-button">
+        <mat-icon>delete</mat-icon>
+        Törlés
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>
+
+<!-- Lightbox for Photos -->
+<div class="lightbox" *ngIf="selectedPhotoIndex >= 0 && report.photos" (click)="closeLightbox()">
+  <button mat-icon-button class="close-lightbox" (click)="closeLightbox(); $event.stopPropagation()" aria-label="Bezárás">
+    <mat-icon>close</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    class="nav-button prev"
+    *ngIf="selectedPhotoIndex > 0"
+    (click)="previousPhoto(); $event.stopPropagation()"
+    aria-label="Előző fotó"
+  >
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  <img
+    [src]="report.photos[selectedPhotoIndex].photo_url"
+    [alt]="'Fotó ' + (selectedPhotoIndex + 1)"
+    (click)="$event.stopPropagation()"
+  />
+  <button
+    mat-icon-button
+    class="nav-button next"
+    *ngIf="selectedPhotoIndex < report.photos.length - 1"
+    (click)="nextPhoto(); $event.stopPropagation()"
+    aria-label="Következő fotó"
+  >
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+  <div class="photo-counter">{{ selectedPhotoIndex + 1 }} / {{ report.photos.length }}</div>
+</div>

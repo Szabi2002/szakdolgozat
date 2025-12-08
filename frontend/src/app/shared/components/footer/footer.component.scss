@@ -1,0 +1,257 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/colors';
+@import '../../../../styles/typography';
+@import '../../../../styles/mixins';
+@import '../../../../styles/persian-blue';
+@import '../../../../styles/glassmorphism';
+
+// ===========================
+// FOOTER - DARK THEME
+// ===========================
+
+.footer {
+  background: darken($persian-blue-950, 2%);
+  color: $persian-blue-200;
+  border-top: 1px solid rgba($persian-blue-400, 0.15);
+  margin-top: auto;
+  @include fade-in(400ms);
+
+  // Desktop: Use CSS variable for sidebar width
+  @include desktop {
+    margin-left: var(--sidebar-width, 260px);
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+.footer-content {
+  max-width: $container-xl;
+  margin: 0 auto;
+  padding: $spacing-12 $spacing-4;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-8;
+
+  // Tablet: 2 columns
+  @include tablet-up {
+    grid-template-columns: 1fr 1fr;
+    padding: $spacing-12 $spacing-6;
+  }
+
+  // Desktop: 4 columns
+  @include desktop {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    padding: $spacing-12 $spacing-8;
+    gap: $spacing-10;
+  }
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+}
+
+// ===========================
+// LOGO COLUMN
+// ===========================
+
+.logo-column {
+  .logo {
+    @include flex-start;
+    gap: $spacing-3;
+    margin-bottom: $spacing-3;
+
+    .logo-icon {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+      color: $persian-blue-400;
+    }
+
+    .logo-text {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: $persian-blue-50;
+    }
+  }
+
+  .tagline {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $persian-blue-300;
+    margin: 0 0 $spacing-3 0;
+  }
+
+  .description {
+    font-size: 0.875rem;
+    color: $persian-blue-400;
+    margin: 0;
+    line-height: 1.7;
+  }
+}
+
+// ===========================
+// COLUMN HEADINGS
+// ===========================
+
+.column-heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $persian-blue-50;
+  margin: 0 0 $spacing-4 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+// ===========================
+// FOOTER LINKS
+// ===========================
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+
+  .footer-link {
+    @include flex-start;
+    gap: $spacing-2;
+    color: $persian-blue-300;
+    text-decoration: none;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: $spacing-1 0;
+    border-radius: 6px;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: $persian-blue-500;
+      transition: all 0.2s ease;
+    }
+
+    &:hover {
+      color: $persian-blue-50;
+      transform: translateX(4px);
+
+      mat-icon {
+        color: $persian-blue-400;
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid $persian-blue-400;
+      outline-offset: 2px;
+    }
+  }
+}
+
+// ===========================
+// CONTACT COLUMN
+// ===========================
+
+.contact-column {
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-4;
+
+    .contact-item {
+      @include flex-start;
+      gap: $spacing-3;
+
+      .contact-icon {
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+        color: $persian-blue-400;
+        flex-shrink: 0;
+      }
+
+      .contact-details {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        .contact-label {
+          font-size: 0.6875rem;
+          color: $persian-blue-500;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .contact-value {
+          font-size: 0.875rem;
+          color: $persian-blue-200;
+          text-decoration: none;
+          transition: color 0.2s ease;
+
+          &:hover {
+            color: $persian-blue-50;
+          }
+        }
+      }
+    }
+  }
+}
+
+// ===========================
+// BOTTOM BAR
+// ===========================
+
+.footer-bottom {
+  border-top: 1px solid rgba($persian-blue-400, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.footer-bottom-content {
+  max-width: $container-xl;
+  margin: 0 auto;
+  padding: $spacing-4;
+  @include flex-between;
+  flex-direction: column;
+  gap: $spacing-2;
+
+  @include tablet-up {
+    flex-direction: row;
+    padding: $spacing-4 $spacing-6;
+  }
+
+  @include desktop {
+    padding: $spacing-4 $spacing-8;
+  }
+
+  .copyright {
+    @include flex-start;
+    gap: $spacing-2;
+    font-size: 0.75rem;
+    color: $persian-blue-500;
+    margin: 0;
+    text-align: center;
+
+    mat-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+    }
+
+    @include tablet-up {
+      text-align: left;
+    }
+  }
+
+  .footer-meta {
+    @include flex-center;
+    gap: $spacing-3;
+
+    .version {
+      font-size: 0.6875rem;
+      color: $persian-blue-400;
+      padding: $spacing-1 $spacing-2;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+      border: 1px solid rgba($persian-blue-400, 0.15);
+    }
+  }
+}

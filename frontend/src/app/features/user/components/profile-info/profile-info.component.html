@@ -1,0 +1,116 @@
+<div class="profile-info-section">
+  <form [formGroup]="profileForm" class="profile-form">
+    <!-- Email (Read-only) -->
+    <mat-form-field appearance="outline" class="full-width readonly-field">
+      <mat-label>Email cím</mat-label>
+      <mat-icon matPrefix>email</mat-icon>
+      <input
+        matInput
+        type="email"
+        [value]="profile.email"
+        readonly
+        disabled
+        aria-label="Email cím (nem módosítható)"
+      >
+      <mat-hint>Ez a bejelentkezési email címed és nem módosítható</mat-hint>
+    </mat-form-field>
+
+    <!-- Display Name (Editable) -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Megjelenített név</mat-label>
+      <mat-icon matPrefix>badge</mat-icon>
+      <input
+        matInput
+        type="text"
+        formControlName="display_name"
+        placeholder="Add meg a megjelenített nevedet"
+        (blur)="onBlur()"
+        maxlength="50"
+        aria-label="Megjelenített név"
+      >
+      <mat-hint align="start">Hogyan szeretnéd, hogy szólítsunk (opcionális)</mat-hint>
+      <mat-hint align="end">
+        {{ profileForm.get('display_name')?.value?.length || 0 }}/50
+      </mat-hint>
+      @if (profileForm.get('display_name')?.invalid) {
+        <mat-error>{{ getDisplayNameError() }}</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Preferred Language -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Előnyben részesített nyelv</mat-label>
+      <mat-icon matPrefix>language</mat-icon>
+      <mat-select formControlName="preferred_language" (blur)="onBlur()" aria-label="Előnyben részesített nyelv">
+        @for (lang of languages; track lang.value) {
+          <mat-option [value]="lang.value">{{ lang.label }}</mat-option>
+        }
+      </mat-select>
+      <mat-hint>Emailek és értesítések nyelve</mat-hint>
+    </mat-form-field>
+
+    <!-- Save Status -->
+    <div class="save-status">
+      @if (saving) {
+        <div class="status-indicator saving">
+          <mat-spinner diameter="20"></mat-spinner>
+          <span>Változások mentése...</span>
+        </div>
+      }
+      @if (hasUnsavedChanges && !saving) {
+        <div class="status-indicator unsaved">
+          <mat-icon>schedule</mat-icon>
+          <span>A változások automatikusan mentésre kerülnek</span>
+        </div>
+      }
+      @if (!hasUnsavedChanges && !saving && profileForm.pristine) {
+        <div class="status-indicator saved">
+          <mat-icon>check_circle</mat-icon>
+          <span>Minden változás mentve</span>
+        </div>
+      }
+    </div>
+
+    <!-- Manual Save Button -->
+    <div class="form-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="saveProfile()"
+        [disabled]="profileForm.invalid || !profileForm.dirty || saving"
+        class="save-button"
+        aria-label="Változások manuális mentése"
+      >
+        <mat-icon>save</mat-icon>
+        <span>Mentés Most</span>
+      </button>
+    </div>
+  </form>
+
+  <!-- Account Info -->
+  <div class="account-info">
+    <div class="info-header">
+      <mat-icon>info</mat-icon>
+      <h3>Fiók Információk</h3>
+    </div>
+    <div class="info-rows">
+      <div class="info-row">
+        <mat-icon>event</mat-icon>
+        <div class="info-content">
+          <span class="info-label">Tag lettél:</span>
+          <span class="info-value">{{ profile.created_at | date:'yyyy. MM. dd.' }}</span>
+        </div>
+      </div>
+      @if (profile.last_login_at) {
+        <div class="info-row">
+          <mat-icon>access_time</mat-icon>
+          <div class="info-content">
+            <span class="info-label">Utolsó bejelentkezés:</span>
+            <span class="info-value">{{ profile.last_login_at | date:'yyyy. MM. dd. HH:mm' }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

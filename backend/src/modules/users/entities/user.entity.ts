@@ -50,4 +50,41 @@ export class User {
     example: '2025-01-01T00:00:00.000Z',
   })
   updated_at: Date;
+
+  @ApiProperty({
+    description: 'User-customizable display name',
+    example: 'John Doe',
+    required: false,
+  })
+  display_name?: string;
+
+  @ApiProperty({
+    description: 'Preferred UI language (hu or en)',
+    example: 'hu',
+    enum: ['hu', 'en'],
+  })
+  preferred_language: string;
+
+  @ApiProperty({
+    description: 'Last successful login timestamp',
+    example: '2025-01-13T10:00:00.000Z',
+    required: false,
+  })
+  last_login_at?: Date;
+
+  @ApiProperty({
+    description: 'Notification preferences (JSONB)',
+    example: {
+      emailTicketPurchase: true,
+      emailRouteDisruptions: false,
+      emailPromotional: false,
+      pushNotifications: false,
+    },
+  })
+  notification_preferences: {
+    emailTicketPurchase: boolean;
+    emailRouteDisruptions: boolean;
+    emailPromotional: boolean;
+    pushNotifications: boolean;
+  };
 }

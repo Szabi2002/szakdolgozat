@@ -34,6 +34,17 @@ export class RouteStopItemDto {
     message: 'arrival_time must be in HH:mm format (e.g., 10:30)',
   })
   arrival_time?: string;
+
+  @ApiProperty({
+    required: false,
+    example: '00:05:30',
+    description: 'Time offset from first stop on route (e.g., "00:05:30" means 5.5 minutes from route start)',
+  })
+  @IsOptional()
+  @Matches(/^(\d{2}):([0-5][0-9]):([0-5][0-9])$/, {
+    message: 'arrival_offset must be in HH:mm:ss format (e.g., 00:05:30)',
+  })
+  arrival_offset?: string;
 }
 
 /**
@@ -80,4 +91,15 @@ export class AddStopToRouteDto {
     message: 'arrival_time must be in HH:mm format (e.g., 10:30)',
   })
   arrival_time?: string;
+
+  @ApiProperty({
+    required: false,
+    example: '00:05:30',
+    description: 'Time offset from first stop on route (e.g., "00:05:30" means 5.5 minutes from route start)',
+  })
+  @IsOptional()
+  @Matches(/^(\d{2}):([0-5][0-9]):([0-5][0-9])$/, {
+    message: 'arrival_offset must be in HH:mm:ss format (e.g., 00:05:30)',
+  })
+  arrival_offset?: string;
 }

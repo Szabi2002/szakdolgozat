@@ -1,0 +1,424 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// ROUTE RATING OVERVIEW - DARK THEME WITH GLASSMORPHISM
+// ============================================================================
+
+.rating-overview-card {
+  padding: $spacing-6;
+  margin-bottom: $spacing-8;
+  border-radius: 20px;
+  @include fade-in(400ms);
+
+  // Glassmorphism effect
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+  @include mobile {
+    padding: $spacing-4;
+    margin-bottom: $spacing-6;
+  }
+}
+
+// ============================================================================
+// LOADING, ERROR, NO RATINGS STATES
+// ============================================================================
+
+.loading-state,
+.error-state,
+.no-ratings-state {
+  @include flex-column-center;
+  justify-content: center;
+  padding: $spacing-12 $spacing-6;
+  text-align: center;
+
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: $spacing-4;
+    color: $persian-blue-600;
+  }
+
+  p {
+    font-size: $font-size-base;
+    color: $persian-blue-200;
+    margin: 0 0 $spacing-4 0;
+  }
+
+  @include mobile {
+    padding: $spacing-8 $spacing-4;
+  }
+}
+
+.loading-state {
+  ::ng-deep .mat-mdc-progress-spinner circle {
+    stroke: #facc15;
+  }
+}
+
+.error-state {
+  mat-icon {
+    color: #f87171;
+  }
+
+  p {
+    color: $persian-blue-200;
+  }
+
+  button {
+    @include flex-center;
+    gap: $spacing-2;
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%) !important;
+    color: white !important;
+    border-radius: $radius-lg;
+    box-shadow: 0 4px 16px rgba(#f87171, 0.3);
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 8px 24px rgba(#f87171, 0.4);
+      transform: translateY(-2px);
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      margin-right: $spacing-2;
+      color: inherit;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.no-ratings-state {
+  h3 {
+    margin: 0 0 $spacing-2 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $persian-blue-100;
+  }
+
+  p {
+    color: $persian-blue-300;
+  }
+
+  button {
+    margin-top: $spacing-2;
+    @include flex-center;
+    gap: $spacing-2;
+    background: linear-gradient(135deg, #facc15 0%, #eab308 100%) !important;
+    color: $persian-blue-950 !important;
+    font-weight: $font-weight-bold;
+    border-radius: $radius-lg;
+    box-shadow: 0 4px 16px rgba(#facc15, 0.3);
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 8px 24px rgba(#facc15, 0.4);
+      transform: translateY(-2px);
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      margin-right: $spacing-2;
+      color: inherit;
+      margin-bottom: 0;
+    }
+  }
+}
+
+// ============================================================================
+// STATS CONTENT
+// ============================================================================
+
+.stats-content {
+  @include flex-column;
+  gap: $spacing-8;
+}
+
+// ============================================================================
+// OVERALL RATING - GRADIENT CARD
+// ============================================================================
+
+.overall-rating {
+  @include flex-column-center;
+  padding: $spacing-6;
+  border-radius: $radius-xl;
+  position: relative;
+  overflow: hidden;
+
+  // Dark gradient with gold accent
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(#facc15, 0.3), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-600, 0.2), transparent 50%),
+    linear-gradient(135deg, $persian-blue-800 0%, $persian-blue-900 100%);
+
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  // Decorative pattern
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="2" fill="rgba(255,255,255,0.04)"/></svg>');
+    opacity: 0.6;
+  }
+
+  .rating-value {
+    @include flex-center;
+    gap: $spacing-2;
+    margin-bottom: $spacing-3;
+    position: relative;
+    z-index: 1;
+
+    .rating-number {
+      font-size: 56px;
+      font-weight: $font-weight-extrabold;
+      color: $persian-blue-50;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .star-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      color: #facc15;
+      filter: drop-shadow(0 4px 8px rgba(#facc15, 0.3));
+    }
+
+    @include mobile {
+      .rating-number {
+        font-size: 40px;
+      }
+
+      .star-icon {
+        font-size: 36px;
+        width: 36px;
+        height: 36px;
+      }
+    }
+  }
+
+  app-star-rating {
+    margin-bottom: $spacing-3;
+    position: relative;
+    z-index: 1;
+  }
+
+  .total-ratings {
+    margin: 0;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $persian-blue-200;
+    position: relative;
+    z-index: 1;
+  }
+
+  @include mobile {
+    padding: $spacing-5;
+  }
+}
+
+// ============================================================================
+// STAR DISTRIBUTION & CATEGORY BREAKDOWN - SECTION TITLES
+// ============================================================================
+
+.star-distribution,
+.category-breakdown {
+  h4 {
+    margin: 0 0 $spacing-4 0;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $persian-blue-100;
+  }
+}
+
+// ============================================================================
+// DISTRIBUTION BARS
+// ============================================================================
+
+.distribution-bars {
+  @include flex-column;
+  gap: $spacing-2;
+
+  .distribution-item {
+    @include flex-start;
+    align-items: center;
+    gap: $spacing-2;
+    padding: $spacing-2 $spacing-3;
+    border-radius: $radius-md;
+    transition: all 0.3s ease;
+
+    // Subtle glass effect
+    background: rgba(255, 255, 255, 0.02);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .stars-label {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-bold;
+      color: $persian-blue-100;
+      min-width: 12px;
+    }
+
+    .star-icon-small {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      color: #facc15;
+    }
+
+    .bar-container {
+      flex: 1;
+      height: 20px;
+      border-radius: $radius-full;
+      overflow: hidden;
+
+      // Dark background for bar
+      background: rgba(255, 255, 255, 0.08);
+
+      .bar-fill {
+        height: 100%;
+        border-radius: $radius-full;
+        transition: width 0.5s ease;
+
+        // Gradient fill with gold accent
+        background: linear-gradient(90deg, #facc15 0%, #eab308 100%);
+        box-shadow: 0 2px 8px rgba(#facc15, 0.3);
+      }
+    }
+
+    .count-label {
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      color: $persian-blue-300;
+      min-width: 40px;
+      text-align: right;
+    }
+
+    @include mobile {
+      .count-label {
+        min-width: 30px;
+        font-size: 11px;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// CATEGORY ITEMS
+// ============================================================================
+
+.category-items {
+  @include flex-column;
+  gap: $spacing-4;
+
+  .category-item {
+    padding: $spacing-3;
+    border-radius: $radius-lg;
+    transition: all 0.3s ease;
+
+    // Subtle glass card
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba($persian-blue-400, 0.2);
+    }
+
+    .category-header {
+      @include flex-start;
+      align-items: center;
+      gap: $spacing-3;
+      margin-bottom: $spacing-2;
+
+      .category-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        color: $persian-blue-400;
+      }
+
+      .category-label {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-semibold;
+        color: $persian-blue-100;
+        flex: 1;
+      }
+
+      .category-value {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-bold;
+        color: #facc15;
+      }
+    }
+
+    .category-bar-container {
+      height: 8px;
+      border-radius: $radius-full;
+      overflow: hidden;
+
+      // Dark background
+      background: rgba(255, 255, 255, 0.08);
+
+      .category-bar-fill {
+        height: 100%;
+        border-radius: $radius-full;
+        transition: width 0.5s ease;
+
+        // Persian Blue gradient
+        background: linear-gradient(90deg, $persian-blue-500 0%, $persian-blue-400 100%);
+        box-shadow: 0 2px 8px rgba($persian-blue-500, 0.3);
+      }
+    }
+  }
+}
+
+// ============================================================================
+// RATE BUTTON CONTAINER
+// ============================================================================
+
+.rate-button-container {
+  @include flex-center;
+  padding-top: $spacing-5;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+  button {
+    @include flex-center;
+    gap: $spacing-2;
+    padding: $spacing-3 $spacing-6;
+    background: linear-gradient(135deg, #facc15 0%, #eab308 100%) !important;
+    color: $persian-blue-950 !important;
+    font-weight: $font-weight-bold;
+    border-radius: $radius-lg;
+    box-shadow: 0 4px 16px rgba(#facc15, 0.3);
+    transition: all 0.3s ease;
+
+    mat-icon {
+      margin-right: $spacing-2;
+    }
+
+    &:hover {
+      box-shadow: 0 8px 24px rgba(#facc15, 0.4);
+      transform: translateY(-2px);
+    }
+  }
+}

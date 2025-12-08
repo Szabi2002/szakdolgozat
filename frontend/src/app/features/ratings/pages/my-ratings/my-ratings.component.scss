@@ -1,0 +1,577 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// MY RATINGS PAGE - DARK THEME WITH GLASSMORPHISM (Persian Blue, NO yellow)
+// ============================================================================
+
+.my-ratings-page {
+  min-height: 100vh;
+  width: 100%;
+  background: $persian-blue-950;
+  overflow-x: hidden;
+  @include fade-in(400ms);
+}
+
+// ============================================================================
+// COMPACT HEADER
+// ============================================================================
+
+.ratings-header {
+  width: 100%;
+  padding: $spacing-8 $spacing-4;
+  position: relative;
+  overflow: hidden;
+
+  // Dark gradient background with glow effects
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba($persian-blue-600, 0.3), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-500, 0.2), transparent 50%),
+    linear-gradient(180deg, $persian-blue-900 0%, $persian-blue-950 100%);
+
+  @include mobile {
+    padding: $spacing-6 $spacing-3;
+  }
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  @include flex-between;
+  align-items: center;
+  gap: $spacing-6;
+  position: relative;
+  z-index: 1;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-4;
+  }
+}
+
+.header-left {
+  @include flex-column;
+  gap: $spacing-3;
+}
+
+.header-badge {
+  @include flex-start;
+  gap: $spacing-2;
+  padding: $spacing-1 $spacing-3;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: $radius-full;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  width: fit-content;
+  color: $persian-blue-200;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    color: $persian-blue-400;
+  }
+}
+
+.title-section {
+  @include flex-column;
+  gap: $spacing-1;
+}
+
+.page-title {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $persian-blue-50;
+  margin: 0;
+  line-height: 1.2;
+
+  .highlight {
+    background: linear-gradient(135deg, $persian-blue-400, $persian-blue-300);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  @include mobile {
+    font-size: $font-size-xl;
+  }
+}
+
+.page-subtitle {
+  font-size: $font-size-base;
+  color: $persian-blue-300;
+  margin: 0;
+
+  @include mobile {
+    font-size: $font-size-sm;
+  }
+}
+
+.header-right {
+  @include mobile {
+    width: 100%;
+  }
+
+  .refresh-btn {
+    @include flex-center;
+    gap: $spacing-2;
+    padding: $spacing-3 $spacing-6;
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: $persian-blue-100 !important;
+    font-weight: $font-weight-semibold;
+    border-radius: $radius-lg;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.15) !important;
+      border-color: rgba($persian-blue-400, 0.3) !important;
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: $persian-blue-400;
+    }
+
+    @include mobile {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+// ============================================================================
+// CONTENT SECTION
+// ============================================================================
+
+.content-section {
+  padding: $spacing-8 $spacing-4;
+
+  // Dark gradient background
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba($persian-blue-800, 0.2), transparent 50%),
+    $persian-blue-950;
+
+  @include mobile {
+    padding: $spacing-6 $spacing-3;
+  }
+}
+
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  @include flex-column;
+  gap: $spacing-6;
+}
+
+// ============================================================================
+// STATS CARD - GLASSMORPHISM (Persian Blue theme)
+// ============================================================================
+
+.stats-card {
+  @include flex-center;
+  gap: $spacing-6;
+  padding: $spacing-5 $spacing-6;
+  border-radius: 20px;
+  animation: fadeInUp 0.5s ease forwards;
+
+  // Glassmorphism effect
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba($persian-blue-400, 0.3);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  }
+
+  @include mobile {
+    flex-direction: column;
+    gap: $spacing-4;
+    padding: $spacing-4;
+  }
+}
+
+.stat-item {
+  @include flex-center;
+  gap: $spacing-3;
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    color: $persian-blue-400;
+  }
+
+  .stat-content {
+    @include flex-column;
+    gap: $spacing-1;
+
+    .stat-value {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+      color: $persian-blue-50;
+    }
+
+    .stat-label {
+      font-size: $font-size-xs;
+      color: $persian-blue-400;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+.stat-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+
+  @include mobile {
+    width: 100%;
+    height: 1px;
+  }
+}
+
+// ============================================================================
+// LOADING & EMPTY STATES - GLASSMORPHISM
+// ============================================================================
+
+.loading-card {
+  @include flex-column-center;
+  gap: $spacing-4;
+  padding: $spacing-12;
+  border-radius: 20px;
+
+  // Glassmorphism effect
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  p {
+    margin: 0;
+    font-size: $font-size-base;
+    color: $persian-blue-200;
+  }
+
+  ::ng-deep .mat-mdc-progress-spinner circle {
+    stroke: $persian-blue-400;
+  }
+}
+
+.empty-card {
+  @include flex-column-center;
+  gap: $spacing-4;
+  padding: $spacing-12 $spacing-8;
+  text-align: center;
+  border-radius: 20px;
+
+  // Glassmorphism effect
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  .empty-icon-wrapper {
+    @include flex-center;
+    width: 80px;
+    height: 80px;
+    background: rgba($persian-blue-500, 0.15);
+    border: 1px solid rgba($persian-blue-400, 0.2);
+    border-radius: $radius-full;
+
+    mat-icon {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+      color: $persian-blue-400;
+    }
+  }
+
+  h3 {
+    margin: 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $persian-blue-50;
+  }
+
+  p {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $persian-blue-300;
+    line-height: 1.6;
+    max-width: 400px;
+  }
+}
+
+// ============================================================================
+// TABS CARD - GLASSMORPHISM
+// ============================================================================
+
+.tabs-card {
+  border-radius: 20px;
+  overflow: hidden;
+  animation: fadeInUp 0.5s ease 100ms backwards;
+
+  // Glassmorphism effect
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+    border-color: rgba($persian-blue-400, 0.2);
+  }
+}
+
+.ratings-tabs {
+  ::ng-deep {
+    .mat-mdc-tab-header {
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .mat-mdc-tab-labels {
+      padding: $spacing-2;
+      gap: $spacing-2;
+    }
+
+    .mat-mdc-tab {
+      min-width: 100px;
+      padding: $spacing-2 $spacing-3;
+      border-radius: $radius-md;
+      transition: all 0.3s ease;
+      color: $persian-blue-300;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      &.mdc-tab--active {
+        background: rgba($persian-blue-500, 0.2);
+        color: $persian-blue-100;
+      }
+
+      .mdc-tab__text-label {
+        color: inherit;
+      }
+    }
+
+    .mdc-tab-indicator {
+      display: none;
+    }
+  }
+}
+
+.tab-label {
+  @include flex-center;
+  gap: $spacing-2;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  span {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+  }
+
+  .tab-count {
+    @include flex-center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 $spacing-2;
+    background: rgba(255, 255, 255, 0.1);
+    color: $persian-blue-200;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+    border-radius: $radius-full;
+
+    &.pending {
+      background: rgba($persian-blue-400, 0.2);
+      color: $persian-blue-300;
+    }
+
+    &.approved {
+      background: rgba(#4ade80, 0.2);
+      color: #4ade80;
+    }
+
+    &.rejected {
+      background: rgba(#f87171, 0.2);
+      color: #f87171;
+    }
+  }
+}
+
+.tab-content {
+  padding: $spacing-6;
+  animation: fadeIn 0.3s ease forwards;
+
+  @include mobile {
+    padding: $spacing-4;
+  }
+}
+
+// ============================================================================
+// INFO BANNERS - DARK THEME (Persian Blue for pending)
+// ============================================================================
+
+.info-banner {
+  @include flex-start;
+  gap: $spacing-3;
+  padding: $spacing-4;
+  margin-bottom: $spacing-6;
+  border-radius: $radius-lg;
+  border-left: 4px solid;
+
+  // Glassmorphism base
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  span {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  &.pending {
+    border-color: $persian-blue-400;
+    background: rgba($persian-blue-500, 0.1);
+
+    mat-icon {
+      color: $persian-blue-400;
+    }
+
+    span {
+      color: $persian-blue-200;
+    }
+  }
+
+  &.approved {
+    border-color: #4ade80;
+    background: rgba(#4ade80, 0.1);
+
+    mat-icon {
+      color: #4ade80;
+    }
+
+    span {
+      color: #bbf7d0;
+    }
+  }
+
+  &.rejected {
+    border-color: #f87171;
+    background: rgba(#f87171, 0.1);
+
+    mat-icon {
+      color: #f87171;
+    }
+
+    span {
+      color: #fecaca;
+    }
+  }
+}
+
+// ============================================================================
+// RATINGS GRID
+// ============================================================================
+
+.ratings-grid {
+  @include flex-column;
+  gap: $spacing-4;
+
+  app-rating-card {
+    display: block;
+    animation: fadeInUp 0.4s ease forwards;
+
+    @for $i from 1 through 20 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 50}ms;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// TAB EMPTY STATE
+// ============================================================================
+
+.tab-empty-state {
+  @include flex-column-center;
+  gap: $spacing-3;
+  padding: $spacing-8;
+  text-align: center;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: $persian-blue-600;
+  }
+
+  p {
+    margin: 0;
+    font-size: $font-size-base;
+    color: $persian-blue-400;
+    font-weight: $font-weight-medium;
+  }
+}
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

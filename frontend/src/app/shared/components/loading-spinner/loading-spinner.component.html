@@ -1,0 +1,8 @@
+<div class="spinner-container" [style.min-height.px]="height">
+  <div class="spinner-wrapper">
+    <mat-spinner [diameter]="diameter" class="spinner"></mat-spinner>
+  </div>
+  @if (message) {
+    <p class="spinner-message">{{ message }}</p>
+  }
+</div>

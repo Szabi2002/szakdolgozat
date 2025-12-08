@@ -1,0 +1,46 @@
+<div class="active-tickets">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && errorMessage" class="error-state">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && !errorMessage && activeTickets.length === 0" class="empty-state">
+    <mat-icon>confirmation_number</mat-icon>
+    <p>Nincs aktív jegyed.</p>
+    <button mat-stroked-button color="primary" (click)="viewAllTickets()">
+      Jegyek vásárlása
+    </button>
+  </div>
+
+  <!-- Tickets List -->
+  <div *ngIf="!isLoading && !errorMessage && activeTickets.length > 0" class="tickets-list">
+    <div *ngFor="let ticket of activeTickets" class="ticket-item" (click)="viewTicket(ticket.id)">
+      <div class="ticket-info">
+        <div class="ticket-type">
+          <mat-icon>confirmation_number</mat-icon>
+          <span class="type-name">{{ getTicketTypeName(ticket) }}</span>
+        </div>
+        <div class="ticket-meta">
+          <span class="ticket-id">#{{ ticket.id.substring(0, 8) }}</span>
+          <mat-chip class="status-chip" [class.expiring-soon]="getTimeRemaining(ticket.valid_until) === 'Lejárt'">
+            <mat-icon>schedule</mat-icon>
+            {{ getTimeRemaining(ticket.valid_until) }}
+          </mat-chip>
+        </div>
+      </div>
+      <mat-icon class="arrow-icon">chevron_right</mat-icon>
+    </div>
+
+    <button mat-button color="primary" class="view-all-button" (click)="viewAllTickets()">
+      Összes jegy megtekintése
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </div>
+</div>

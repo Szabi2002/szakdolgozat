@@ -1,0 +1,185 @@
+<div class="route-details-page">
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="loading-container">
+      <mat-spinner diameter="60"></mat-spinner>
+      <p>Útvonal részleteinek betöltése...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error && !isLoading) {
+    <section class="error-section">
+      <div class="error-card">
+        <div class="error-icon-wrapper">
+          <mat-icon>error_outline</mat-icon>
+        </div>
+        <h3>Hiba történt</h3>
+        <p>{{ error }}</p>
+      </div>
+    </section>
+  }
+
+  <!-- Route Details -->
+  @if (route && !isLoading) {
+    <!-- Compact Header -->
+    <section class="route-header">
+      <div class="header-container">
+        <div class="header-left">
+          <div class="header-badge">
+            <mat-icon>directions_bus</mat-icon>
+            <span>Járat részletek</span>
+          </div>
+
+          <div class="title-section">
+            <div class="route-number-badge">{{ route.route_number }}</div>
+            <h1 class="page-title">
+              {{ route.name }}
+            </h1>
+          </div>
+
+          <div class="route-meta">
+            @if (route.is_accessible) {
+              <span class="meta-badge accessible">
+                <mat-icon>accessible</mat-icon>
+                Akadálymentes
+              </span>
+            }
+            <span class="meta-badge">
+              <mat-icon>location_on</mat-icon>
+              {{ route.stops.length || route.stops_count || 0 }} megálló
+            </span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          @if (currentUserId) {
+            <button
+              mat-raised-button
+              class="cta-primary"
+              (click)="openRatingDialog()"
+              aria-label="Útvonal értékelése"
+            >
+              <mat-icon>star</mat-icon>
+              Értékelés írása
+            </button>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="content-section">
+      <div class="content-container">
+        <!-- Two Column Layout -->
+        <div class="content-grid">
+          <!-- Left Column: Stops -->
+          <div class="stops-panel">
+            <div class="panel-header">
+              <mat-icon>location_on</mat-icon>
+              <h3>Megállók</h3>
+              <span class="results-badge">{{ route.stops.length || 0 }}</span>
+            </div>
+
+            @if (route.stops && route.stops.length > 0) {
+              <div class="stops-list">
+                @for (stop of route.stops; track stop.id; let i = $index) {
+                  <div class="stop-item">
+                    <div class="stop-marker">
+                      <div class="stop-number">{{ stop.stop_order || i + 1 }}</div>
+                      @if (i < route.stops.length - 1) {
+                        <div class="stop-line"></div>
+                      }
+                    </div>
+                    <div class="stop-info">
+                      <h4>{{ stop.name }}</h4>
+                      <span class="stop-type">
+                        <mat-icon>{{ stop.type === 'metro' ? 'subway' : stop.type === 'tram' ? 'tram' : 'directions_bus' }}</mat-icon>
+                        {{ stop.type === 'metro' ? 'Metró' : stop.type === 'tram' ? 'Villamos' : 'Busz' }}
+                      </span>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Right Column: Ratings -->
+          @if (currentUserId) {
+            <div class="ratings-panel">
+              <!-- Rating Stats Card -->
+              <div class="rating-card">
+                <div class="panel-header">
+                  <mat-icon>star</mat-icon>
+                  <h3>Értékelések</h3>
+                </div>
+
+                <div class="card-content">
+                  @if (ratingStats && ratingStats.total_ratings > 0) {
+                    <div class="rating-stats">
+                      <!-- Overall Rating -->
+                      <div class="overall-rating">
+                        <div class="rating-number">{{ formatRating(ratingStats.avg_overall) }}</div>
+                        <div class="rating-stars">
+                          @for (star of getStarArray(ratingStats.avg_overall); track $index) {
+                            <mat-icon [class.filled]="star === 1">
+                              {{ star === 1 ? 'star' : 'star_border' }}
+                            </mat-icon>
+                          }
+                        </div>
+                        <div class="rating-count">{{ ratingStats.total_ratings }} értékelés</div>
+                      </div>
+
+                      <!-- Category Ratings -->
+                      <div class="category-ratings">
+                        <div class="category-item">
+                          <mat-icon>cleaning_services</mat-icon>
+                          <span class="label">Tisztaság</span>
+                          <span class="value">{{ formatRating(ratingStats.avg_cleanliness) }}</span>
+                        </div>
+                        <div class="category-item">
+                          <mat-icon>schedule</mat-icon>
+                          <span class="label">Pontosság</span>
+                          <span class="value">{{ formatRating(ratingStats.avg_punctuality) }}</span>
+                        </div>
+                        <div class="category-item">
+                          <mat-icon>person</mat-icon>
+                          <span class="label">Sofőr</span>
+                          <span class="value">{{ formatRating(ratingStats.avg_driver) }}</span>
+                        </div>
+                        <div class="category-item">
+                          <mat-icon>airline_seat_recline_normal</mat-icon>
+                          <span class="label">Kényelem</span>
+                          <span class="value">{{ formatRating(ratingStats.avg_comfort) }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  } @else {
+                    <div class="no-ratings">
+                      <mat-icon>star_border</mat-icon>
+                      <p>Még nincs értékelés. Légy te az első!</p>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Ratings List Card -->
+              <div class="ratings-list-card">
+                <div class="panel-header">
+                  <mat-icon>reviews</mat-icon>
+                  <h3>Vélemények</h3>
+                </div>
+                <div class="card-content">
+                  <app-ratings-list
+                    [routeId]="route.id"
+                    [currentUserId]="currentUserId">
+                  </app-ratings-list>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+  }
+</div>

@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   Res,
+  Query,
 } from '@nestjs/common';
 import { Response } from 'express';
 import {
@@ -17,10 +18,14 @@ import {
   ApiResponse,
   ApiBearerAuth,
   ApiParam,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { TicketsService } from './tickets.service';
 import { PurchaseTicketDto } from './dto/purchase-ticket.dto';
+import { HistoryFiltersDto } from './dto/history-filters.dto';
+import { PurchaseHistoryResponse } from './entities/purchase-history.entity';
+import { Ticket } from './entities/ticket.entity';
 
 @ApiTags('tickets')
 @Controller('tickets')
@@ -34,6 +39,7 @@ export class TicketsController {
   @ApiResponse({
     status: 201,
     description: 'Ticket purchased successfully',
+    type: Ticket,
   })
   @ApiResponse({
     status: 400,
@@ -47,7 +53,7 @@ export class TicketsController {
     status: 429,
     description: 'Too many ticket purchase attempts. Please try again later.',
   })
-  async purchase(@Req() req: any, @Body() purchaseTicketDto: PurchaseTicketDto) {
+  async purchase(@Req() req: any, @Body() purchaseTicketDto: PurchaseTicketDto): Promise<Ticket> {
     const userId = req.user.id;
     return this.ticketsService.purchase(userId, purchaseTicketDto);
   }
@@ -57,12 +63,13 @@ export class TicketsController {
   @ApiResponse({
     status: 200,
     description: 'List of user tickets',
+    type: [Ticket],
   })
   @ApiResponse({
     status: 401,
     description: 'Unauthorized',
   })
-  async getMyTickets(@Req() req: any) {
+  async getMyTickets(@Req() req: any): Promise<Ticket[]> {
     const userId = req.user.id;
     return this.ticketsService.findByUserId(userId);
   }
@@ -72,14 +79,43 @@ export class TicketsController {
   @ApiResponse({
     status: 200,
     description: 'List of active tickets',
+    type: [Ticket],
   })
   @ApiResponse({
     status: 401,
     description: 'Unauthorized',
   })
-  async getMyActiveTickets(@Req() req: any) {
+  async getMyActiveTickets(@Req() req: any): Promise<Ticket[]> {
     const userId = req.user.id;
     return this.ticketsService.findActiveByUserId(userId);
+  }
+
+  @Get('history')
+  @ApiOperation({
+    summary: 'Get purchase history',
+    description: 'Retrieve paginated purchase history with filters for status, ticket type, and date range',
+  })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 10 })
+  @ApiQuery({ name: 'status', required: false, enum: ['active', 'expired'] })
+  @ApiQuery({ name: 'ticket_type_id', required: false, type: String })
+  @ApiQuery({ name: 'from_date', required: false, type: String, example: '2025-01-01T00:00:00.000Z' })
+  @ApiQuery({ name: 'to_date', required: false, type: String, example: '2025-01-31T23:59:59.999Z' })
+  @ApiResponse({
+    status: 200,
+    description: 'Purchase history retrieved successfully',
+    type: PurchaseHistoryResponse,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  async getHistory(
+    @Req() req: any,
+    @Query() filters: HistoryFiltersDto,
+  ): Promise<PurchaseHistoryResponse> {
+    const userId = req.user.id;
+    return this.ticketsService.getHistory(userId, filters);
   }
 
   @Get(':id')
@@ -92,6 +128,7 @@ export class TicketsController {
   @ApiResponse({
     status: 200,
     description: 'Ticket details',
+    type: Ticket,
   })
   @ApiResponse({
     status: 401,
@@ -101,7 +138,7 @@ export class TicketsController {
     status: 404,
     description: 'Ticket not found',
   })
-  async findOne(@Req() req: any, @Param('id') id: string) {
+  async findOne(@Req() req: any, @Param('id') id: string): Promise<Ticket> {
     const userId = req.user.id;
     return this.ticketsService.findOne(id, userId);
   }
@@ -189,5 +226,38 @@ export class TicketsController {
   async cancel(@Req() req: any, @Param('id') id: string) {
     const userId = req.user.id;
     await this.ticketsService.cancel(id, userId);
+  }
+
+  @Post(':id/resend-email')
+  @Throttle({ default: { ttl: 3600000, limit: 5 } }) // 5 requests per hour
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Resend ticket email',
+    description: 'Resend ticket confirmation email. Rate limited to 5 requests per hour per user.',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Ticket UUID',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Email sent successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Ticket not found',
+  })
+  @ApiResponse({
+    status: 429,
+    description: 'Too many requests - Rate limit exceeded (max 5 per hour)',
+  })
+  async resendEmail(@Req() req: any, @Param('id') id: string) {
+    const userId = req.user.id;
+    return this.ticketsService.resendEmail(id, userId);
   }
 }

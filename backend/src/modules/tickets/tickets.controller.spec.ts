@@ -26,6 +26,7 @@ describe('TicketsController', () => {
     user: {
       id: '123e4567-e89b-12d3-a456-426614174000',
     },
+    accessToken: 'mock-jwt-token-for-testing',
   };
 
   beforeEach(async () => {
@@ -59,13 +60,13 @@ describe('TicketsController', () => {
   describe('purchase', () => {
     it('should purchase a ticket', async () => {
       const purchaseDto = {
-        ticketTypeId: '123e4567-e89b-12d3-a456-426614174001',
+        ticket_type_id: '123e4567-e89b-12d3-a456-426614174001',
       };
 
       const mockTicket = {
         id: '123e4567-e89b-12d3-a456-426614174002',
         user_id: mockRequest.user.id,
-        ticket_type_id: purchaseDto.ticketTypeId,
+        ticket_type_id: purchaseDto.ticket_type_id,
         status: 'active',
       };
 
@@ -74,7 +75,10 @@ describe('TicketsController', () => {
       const result = await controller.purchase(mockRequest, purchaseDto);
 
       expect(result).toEqual(mockTicket);
-      expect(service.purchase).toHaveBeenCalledWith(mockRequest.user.id, purchaseDto);
+      expect(service.purchase).toHaveBeenCalledWith(
+        mockRequest.user.id,
+        purchaseDto
+      );
     });
   });
 
@@ -90,7 +94,9 @@ describe('TicketsController', () => {
       const result = await controller.getMyTickets(mockRequest);
 
       expect(result).toEqual(mockTickets);
-      expect(service.findByUserId).toHaveBeenCalledWith(mockRequest.user.id);
+      expect(service.findByUserId).toHaveBeenCalledWith(
+        mockRequest.user.id
+      );
     });
   });
 
@@ -103,7 +109,9 @@ describe('TicketsController', () => {
       const result = await controller.getMyActiveTickets(mockRequest);
 
       expect(result).toEqual(mockTickets);
-      expect(service.findActiveByUserId).toHaveBeenCalledWith(mockRequest.user.id);
+      expect(service.findActiveByUserId).toHaveBeenCalledWith(
+        mockRequest.user.id
+      );
     });
   });
 
@@ -120,7 +128,10 @@ describe('TicketsController', () => {
       const result = await controller.findOne(mockRequest, ticketId);
 
       expect(result).toEqual(mockTicket);
-      expect(service.findOne).toHaveBeenCalledWith(ticketId, mockRequest.user.id);
+      expect(service.findOne).toHaveBeenCalledWith(
+        ticketId,
+        mockRequest.user.id
+      );
     });
   });
 
@@ -138,7 +149,10 @@ describe('TicketsController', () => {
 
       await controller.getQRCode(mockRequest, ticketId, mockResponse);
 
-      expect(service.getQRCodeBuffer).toHaveBeenCalledWith(ticketId, mockRequest.user.id);
+      expect(service.getQRCodeBuffer).toHaveBeenCalledWith(
+        ticketId,
+        mockRequest.user.id
+      );
       expect(mockResponse.setHeader).toHaveBeenCalledWith('Content-Type', 'image/png');
       expect(mockResponse.send).toHaveBeenCalledWith(mockBuffer);
     });
@@ -157,7 +171,10 @@ describe('TicketsController', () => {
       const result = await controller.sendEmail(mockRequest, ticketId);
 
       expect(result).toEqual(mockResult);
-      expect(service.sendEmail).toHaveBeenCalledWith(ticketId, mockRequest.user.id);
+      expect(service.sendEmail).toHaveBeenCalledWith(
+        ticketId,
+        mockRequest.user.id
+      );
     });
   });
 
@@ -169,7 +186,10 @@ describe('TicketsController', () => {
 
       await controller.cancel(mockRequest, ticketId);
 
-      expect(service.cancel).toHaveBeenCalledWith(ticketId, mockRequest.user.id);
+      expect(service.cancel).toHaveBeenCalledWith(
+        ticketId,
+        mockRequest.user.id
+      );
     });
   });
 });

@@ -1,0 +1,492 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// RATING CARD - DARK THEME WITH GLASSMORPHISM (Persian Blue, NO yellow)
+// ============================================================================
+
+.rating-card {
+  position: relative;
+  margin-bottom: $spacing-4;
+  border-radius: 20px;
+  overflow: hidden;
+  animation: fadeInUp 0.3s ease backwards;
+
+  // Glassmorphism effect
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // Glow line
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $persian-blue-500, $persian-blue-400);
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    border-color: rgba($persian-blue-400, 0.3);
+    box-shadow:
+      0 20px 50px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba($persian-blue-500, 0.15);
+
+    &::before {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+  }
+
+  &.compact {
+    mat-card-content {
+      padding: $spacing-3;
+    }
+  }
+
+  ::ng-deep mat-card-header {
+    background: rgba(255, 255, 255, 0.03);
+    padding: $spacing-4;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+// ============================================================================
+// RATING HEADER
+// ============================================================================
+
+.rating-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: $spacing-4;
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+    flex: 1;
+    min-width: 0;
+
+    .user-avatar {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+      color: $persian-blue-400;
+      flex-shrink: 0;
+    }
+
+    .user-details {
+      @include flex-column;
+      gap: $spacing-1;
+      min-width: 0;
+
+      .user-name {
+        margin: 0;
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
+        color: $persian-blue-100;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .rating-date {
+        font-size: $font-size-sm;
+        color: $persian-blue-400;
+      }
+    }
+  }
+
+  .rating-overall {
+    @include flex-column;
+    align-items: flex-end;
+    gap: $spacing-1;
+    flex-shrink: 0;
+
+    .rating-value {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-bold;
+      color: $persian-blue-400;
+    }
+  }
+}
+
+// ============================================================================
+// ROUTE INFO
+// ============================================================================
+
+.route-info {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  margin-bottom: $spacing-3;
+  padding: $spacing-3;
+  background: rgba($persian-blue-500, 0.1);
+  border-radius: $radius-md;
+  border: 1px solid rgba($persian-blue-400, 0.15);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba($persian-blue-500, 0.15);
+    border-color: rgba($persian-blue-400, 0.25);
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: $persian-blue-400;
+    flex-shrink: 0;
+  }
+
+  span {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $persian-blue-200;
+    flex: 1;
+  }
+
+  .route-link-btn {
+    flex-shrink: 0;
+    color: $persian-blue-400;
+
+    mat-icon {
+      color: $persian-blue-400;
+    }
+
+    &:hover {
+      background: rgba($persian-blue-400, 0.15);
+    }
+  }
+}
+
+// ============================================================================
+// STATUS CHIPS
+// ============================================================================
+
+.status-chip {
+  margin-bottom: $spacing-3;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-sm;
+
+  &.mat-mdc-chip.mat-primary {
+    background: rgba(#4ade80, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(#4ade80, 0.3);
+  }
+
+  &.mat-mdc-chip.mat-accent {
+    background: rgba($persian-blue-400, 0.2);
+    color: $persian-blue-300;
+    border: 1px solid rgba($persian-blue-400, 0.3);
+  }
+
+  &.mat-mdc-chip.mat-warn {
+    background: rgba(#f87171, 0.2);
+    color: #f87171;
+    border: 1px solid rgba(#f87171, 0.3);
+  }
+}
+
+// ============================================================================
+// REJECTION REASON
+// ============================================================================
+
+.rejection-reason {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-2;
+  padding: $spacing-3;
+  margin-bottom: $spacing-3;
+  background: rgba(#f87171, 0.1);
+  border: 1px solid rgba(#f87171, 0.2);
+  border-radius: $radius-md;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: #f87171;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  span {
+    font-size: $font-size-sm;
+    color: #fecaca;
+    line-height: 1.6;
+    flex: 1;
+  }
+}
+
+// ============================================================================
+// COMMENT
+// ============================================================================
+
+.comment {
+  margin-bottom: $spacing-4;
+
+  p {
+    margin: 0 0 $spacing-2 0;
+    font-size: $font-size-sm;
+    line-height: 1.7;
+    color: $persian-blue-200;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .show-more-button {
+    padding: 0;
+    min-width: auto;
+    font-size: $font-size-xs;
+    color: $persian-blue-400;
+    font-weight: $font-weight-semibold;
+    transition: color 0.3s ease;
+    background: transparent !important;
+
+    &:hover {
+      color: $persian-blue-300;
+      background: transparent !important;
+    }
+  }
+}
+
+// ============================================================================
+// CATEGORY BREAKDOWN
+// ============================================================================
+
+.category-breakdown {
+  margin-bottom: $spacing-4;
+  border-radius: $radius-md;
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+
+  ::ng-deep {
+    .mat-expansion-panel-header {
+      padding: $spacing-3 $spacing-4;
+      background: transparent;
+      color: $persian-blue-200;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+    }
+
+    .mat-expansion-panel-body {
+      padding: 0 $spacing-4 $spacing-3 $spacing-4;
+    }
+
+    .mat-expansion-indicator::after {
+      color: $persian-blue-400;
+    }
+  }
+
+  mat-expansion-panel-header {
+    mat-panel-title {
+      display: flex;
+      align-items: center;
+      gap: $spacing-2;
+      font-weight: $font-weight-medium;
+      color: $persian-blue-200;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        color: $persian-blue-400;
+      }
+    }
+  }
+
+  .category-ratings {
+    @include flex-column;
+    gap: $spacing-2;
+    padding: $spacing-3 0;
+
+    .category-item {
+      display: flex;
+      align-items: center;
+      gap: $spacing-3;
+      padding: $spacing-2;
+      border-radius: $radius-sm;
+      background: rgba(255, 255, 255, 0.04);
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: rgba($persian-blue-500, 0.1);
+      }
+
+      .category-label {
+        font-size: $font-size-sm;
+        color: $persian-blue-300;
+        min-width: 80px;
+        font-weight: $font-weight-medium;
+      }
+
+      app-star-rating {
+        flex: 1;
+      }
+
+      .category-value {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-bold;
+        color: $persian-blue-400;
+        min-width: 32px;
+        text-align: right;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// PHOTO GALLERY
+// ============================================================================
+
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $spacing-2;
+  margin-top: $spacing-4;
+
+  @include mobile {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .photo-thumbnail {
+    aspect-ratio: 1;
+    border-radius: $radius-md;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      border-color: $persian-blue-400;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+}
+
+// ============================================================================
+// CARD ACTIONS
+// ============================================================================
+
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-2;
+  padding: $spacing-3 $spacing-4;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+  button {
+    font-weight: $font-weight-medium;
+    font-size: $font-size-sm;
+    padding: $spacing-2 $spacing-4;
+    border-radius: $radius-md;
+    transition: all 0.3s ease;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      margin-right: $spacing-1;
+    }
+
+    &.mat-primary {
+      color: $persian-blue-400;
+      border: 1px solid rgba($persian-blue-400, 0.3);
+      background: transparent;
+
+      &:hover {
+        background: rgba($persian-blue-400, 0.15);
+        border-color: rgba($persian-blue-400, 0.5);
+      }
+    }
+
+    &.mat-warn {
+      color: #f87171;
+      border: 1px solid rgba(#f87171, 0.3);
+      background: transparent;
+
+      &:hover {
+        background: rgba(#f87171, 0.15);
+        border-color: rgba(#f87171, 0.5);
+      }
+    }
+  }
+}
+
+// ============================================================================
+// RESPONSIVE
+// ============================================================================
+
+@include mobile {
+  .rating-header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .rating-overall {
+      align-self: flex-end;
+    }
+  }
+
+  .route-info {
+    flex-wrap: wrap;
+
+    span {
+      flex-basis: calc(100% - 32px);
+    }
+  }
+
+  mat-card-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

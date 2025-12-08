@@ -1,0 +1,180 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <mat-icon>home</mat-icon>
+        <span>Főoldal</span>
+      </div>
+
+      <h1 class="hero-title">
+        Közlekedési <span class="highlight">Jegykezelő</span><br>
+        és Utazástervező
+      </h1>
+
+      <p class="hero-description">
+        Vásárolj jegyeket, tervezz utazásokat és értékeld a járatokat.<br>
+        Minden egy helyen, egyszerűen és gyorsan.
+      </p>
+    </div>
+
+    <!-- Backend Health Check Card -->
+    <mat-card class="health-card">
+      <mat-card-header>
+        <div class="health-header">
+          <mat-icon class="health-icon">cloud_done</mat-icon>
+          <mat-card-title>Backend Státusz</mat-card-title>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        @if (loading) {
+          <app-loading-spinner
+            [diameter]="40"
+            [height]="100"
+            message="Backend ellenőrzése..."/>
+        } @else if (health) {
+          <div class="health-status">
+            <div class="status-item">
+              <span class="status-label">Státusz:</span>
+              <mat-chip class="status-chip success">
+                <mat-icon>check_circle</mat-icon>
+                {{ health.status }}
+              </mat-chip>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Verzió:</span>
+              <span class="status-value">{{ health.version }}</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Adatbázis:</span>
+              <mat-chip class="status-chip">{{ health.services.database }}</mat-chip>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Storage:</span>
+              <mat-chip class="status-chip">{{ health.services.storage }}</mat-chip>
+            </div>
+          </div>
+        } @else {
+          <div class="error-state">
+            <mat-icon>error_outline</mat-icon>
+            <p class="error-text">Backend nem elérhető</p>
+            <button mat-raised-button color="primary" (click)="checkBackendHealth()">
+              <mat-icon>refresh</mat-icon>
+              Újrapróbálás
+            </button>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="section-header">
+      <h2 class="section-title">
+        Elérhető <span class="highlight">Funkciók</span>
+      </h2>
+      <p class="section-description">
+        Fedezd fel az alkalmazás főbb funkcióit
+      </p>
+    </div>
+
+    <div class="feature-grid">
+      <mat-card class="feature-card">
+        <mat-card-header>
+          <div class="feature-header">
+            <div class="feature-icon-wrapper">
+              <mat-icon class="feature-icon">directions_bus</mat-icon>
+            </div>
+            <mat-card-title>Utazástervező</mat-card-title>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Tervezz multimodális utazásokat busz, villamos és metró kombinációkkal.</p>
+          <div class="feature-tags">
+            <mat-chip>Multimodális</mat-chip>
+            <mat-chip>Valós idejű</mat-chip>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary">
+            <mat-icon>arrow_forward</mat-icon>
+            Megtekintés
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card class="feature-card">
+        <mat-card-header>
+          <div class="feature-header">
+            <div class="feature-icon-wrapper">
+              <mat-icon class="feature-icon">confirmation_number</mat-icon>
+            </div>
+            <mat-card-title>Jegyvásárlás</mat-card-title>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Vásárolj jegyeket és bérleteket egyszerűen és gyorsan.</p>
+          <div class="feature-tags">
+            <mat-chip>Gyors</mat-chip>
+            <mat-chip>Biztonságos</mat-chip>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary">
+            <mat-icon>arrow_forward</mat-icon>
+            Megtekintés
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card class="feature-card">
+        <mat-card-header>
+          <div class="feature-header">
+            <div class="feature-icon-wrapper">
+              <mat-icon class="feature-icon">map</mat-icon>
+            </div>
+            <mat-card-title>Térkép</mat-card-title>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Nézd meg a megállókat és járatokat interaktív térképen.</p>
+          <div class="feature-tags">
+            <mat-chip>Interaktív</mat-chip>
+            <mat-chip>Megállók</mat-chip>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary">
+            <mat-icon>arrow_forward</mat-icon>
+            Megtekintés
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card class="feature-card">
+        <mat-card-header>
+          <div class="feature-header">
+            <div class="feature-icon-wrapper">
+              <mat-icon class="feature-icon">star</mat-icon>
+            </div>
+            <mat-card-title>Értékelések</mat-card-title>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Értékeld a járatokat és olvasd el mások véleményét.</p>
+          <div class="feature-tags">
+            <mat-chip>Közösségi</mat-chip>
+            <mat-chip>Fotók</mat-chip>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary">
+            <mat-icon>arrow_forward</mat-icon>
+            Megtekintés
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </section>
+</div>

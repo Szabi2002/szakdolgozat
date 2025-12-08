@@ -1,0 +1,119 @@
+<div class="ratings-list-container">
+  <!-- Controls Bar -->
+  @if (!isLoading && !error) {
+    <div class="list-controls">
+      <div class="controls-left">
+        <mat-form-field class="filter-field" appearance="outline">
+          <mat-label>
+            <mat-icon class="field-icon">filter_list</mat-icon>
+            Szűrés
+          </mat-label>
+          <mat-select
+            [(value)]="selectedFilter"
+            (selectionChange)="onFilterChange($event.value)"
+          >
+            @for (option of filterOptions; track option.value) {
+              <mat-option [value]="option.value">
+                <span class="option-content">
+                  @if (option.value !== 'all') {
+                    <mat-icon>star</mat-icon>
+                  }
+                  {{ option.label }}
+                </span>
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="sort-field" appearance="outline">
+          <mat-label>
+            <mat-icon class="field-icon">sort</mat-icon>
+            Rendezés
+          </mat-label>
+          <mat-select
+            [(value)]="selectedSort"
+            (selectionChange)="onSortChange($event.value)"
+          >
+            @for (option of sortOptions; track option.value) {
+              <mat-option [value]="option.value">
+                {{ option.label }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="controls-right">
+        @if (totalRatings > 0) {
+          <div class="results-count">
+            <mat-icon>info</mat-icon>
+            <span>{{ totalRatings }} értékelés</span>
+          </div>
+        }
+        <button mat-mini-fab class="refresh-button" (click)="refresh()" matTooltip="Frissítés">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="loading-state">
+      <mat-spinner diameter="60"></mat-spinner>
+      <p>Értékelések betöltése...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error && !isLoading) {
+    <div class="error-state">
+      <mat-icon>error_outline</mat-icon>
+      <p>{{ error }}</p>
+      <button mat-raised-button color="primary" (click)="loadRatings()" class="retry-button">
+        <mat-icon>refresh</mat-icon>
+        Újrapróbálás
+      </button>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!isLoading && !error && filteredRatings.length === 0) {
+    <div class="empty-state">
+      <mat-icon>rate_review</mat-icon>
+      <p class="empty-title">Még nincs értékelés</p>
+      <p class="empty-subtitle">Légy az első, aki értékeli ezt a járatot!</p>
+    </div>
+  }
+
+  <!-- Ratings List -->
+  @if (!isLoading && !error && paginatedRatings.length > 0) {
+    <div class="ratings-list">
+      @for (rating of paginatedRatings; track trackByRatingId($index, rating)) {
+        <app-rating-card
+          [rating]="rating"
+          [showActions]="showActions"
+          [isOwner]="isOwner(rating)"
+          (edit)="onEdit($event)"
+          (delete)="onDelete($event)"
+          (photoClick)="onPhotoClick($event)"
+          (viewRoute)="onViewRoute($event)"
+        ></app-rating-card>
+      }
+    </div>
+  }
+
+  <!-- Pagination -->
+  @if (!isLoading && !error && totalRatings > pageSize) {
+    <mat-paginator
+      [length]="totalRatings"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="[5, 10, 25, 50]"
+      (page)="onPageChange($event)"
+      class="ratings-paginator"
+      aria-label="Értékelések lapozása"
+    >
+    </mat-paginator>
+  }
+</div>

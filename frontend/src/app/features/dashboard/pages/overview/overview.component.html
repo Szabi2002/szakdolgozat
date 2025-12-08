@@ -1,0 +1,141 @@
+<div class="dashboard-page">
+  <!-- Compact Header -->
+  <section class="dashboard-header" *ngIf="currentUser$ | async as user">
+    <div class="header-container">
+      <!-- Left Side: Badge + Greeting -->
+      <div class="header-left">
+        <div class="header-badge">
+          <mat-icon>dashboard</mat-icon>
+          <span>Irányítópult</span>
+        </div>
+
+        <div class="greeting-section">
+          <h1 class="greeting-heading">
+            Üdvözlünk, <span class="highlight">{{ user.name || 'Felhasználó' }}</span>!
+          </h1>
+          <p class="greeting-subtext">{{ getCurrentGreeting() }}</p>
+        </div>
+      </div>
+
+      <!-- Right Side: Actions -->
+      <div class="header-right">
+        <div class="header-actions">
+          <button
+            mat-raised-button
+            class="cta-primary"
+            (click)="navigateToTickets()"
+            aria-label="Jegyek megtekintése">
+            <mat-icon>confirmation_number</mat-icon>
+            Jegyeim
+          </button>
+          <button
+            mat-stroked-button
+            class="cta-secondary"
+            (click)="navigateToRoutes()"
+            aria-label="Útvonalak megtekintése">
+            <mat-icon>directions_bus</mat-icon>
+            Útvonalak
+          </button>
+        </div>
+
+        <!-- Feature Chips -->
+        <div class="header-features">
+          <div class="feature-chip">
+            <mat-icon>flash_on</mat-icon>
+            <span>Gyors tervezés</span>
+          </div>
+          <div class="feature-chip">
+            <mat-icon>qr_code</mat-icon>
+            <span>Digitális jegyek</span>
+          </div>
+          <div class="feature-chip">
+            <mat-icon>star</mat-icon>
+            <span>Kedvencek</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Widgets Section -->
+  <section class="widgets-section">
+    <div class="widgets-container">
+      <!-- Section Header -->
+      <div class="section-header">
+        <h2 class="section-heading">
+          Gyors <span class="highlight">hozzáférés</span>
+        </h2>
+        <p class="section-subheading">
+          Tervezd meg utazásod és kezeld jegyeidet egy helyen
+        </p>
+      </div>
+
+      <!-- Widgets Grid -->
+      <div class="widgets-grid">
+        <!-- Quick Trip Planner Widget -->
+        <div class="widget-card primary-widget">
+          <div class="widget-icon-wrapper">
+            <div class="icon-glow"></div>
+            <mat-icon class="widget-icon">route</mat-icon>
+          </div>
+          <h3 class="widget-title">Gyors Utazástervező</h3>
+          <p class="widget-description">Tervezd meg következő utazásod percek alatt</p>
+          <div class="widget-content">
+            <app-quick-trip-planner></app-quick-trip-planner>
+          </div>
+          <div class="widget-arrow">
+            <mat-icon>arrow_forward</mat-icon>
+          </div>
+        </div>
+
+        <!-- Active Tickets Widget -->
+        <div class="widget-card">
+          <div class="widget-icon-wrapper">
+            <div class="icon-glow"></div>
+            <mat-icon class="widget-icon">confirmation_number</mat-icon>
+          </div>
+          <h3 class="widget-title">Aktív Jegyek</h3>
+          <p class="widget-description">Meglévő jegyeid és bérleted</p>
+          <div class="widget-content">
+            <app-active-tickets></app-active-tickets>
+          </div>
+          <button mat-icon-button class="view-all-button" (click)="navigateToTickets()">
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+
+        <!-- Favorite Routes Widget -->
+        <div class="widget-card">
+          <div class="widget-icon-wrapper">
+            <div class="icon-glow"></div>
+            <mat-icon class="widget-icon">star</mat-icon>
+          </div>
+          <h3 class="widget-title">Kedvenc Útvonalak</h3>
+          <p class="widget-description">Gyakran használt útvonalaid</p>
+          <div class="widget-content">
+            <app-favorite-routes></app-favorite-routes>
+          </div>
+          <button mat-icon-button class="view-all-button" (click)="navigateToRoutes()">
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+
+        <!-- Statistics Widget -->
+        <div class="widget-card">
+          <div class="widget-icon-wrapper">
+            <div class="icon-glow"></div>
+            <mat-icon class="widget-icon">insights</mat-icon>
+          </div>
+          <h3 class="widget-title">Statisztikák</h3>
+          <p class="widget-description">Utazási szokásaid egy pillantásra</p>
+          <div class="widget-content">
+            <app-user-statistics></app-user-statistics>
+          </div>
+          <div class="widget-arrow">
+            <mat-icon>arrow_forward</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

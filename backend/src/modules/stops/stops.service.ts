@@ -20,10 +20,11 @@ export class StopsService {
 
   /**
    * Create a new stop (admin only)
+   * @param adminId - Admin user ID
    * @param dto - Stop creation data
    * @returns Created stop
    */
-  async create(dto: CreateStopDto): Promise<StopResponseDto> {
+  async create(adminId: string, dto: CreateStopDto): Promise<StopResponseDto> {
     const supabase = this.supabaseService.getClient();
 
     const { data, error } = await supabase
@@ -45,6 +46,21 @@ export class StopsService {
       }
       throw new InternalServerErrorException('Failed to create stop: ' + error.message);
     }
+
+    // Log admin activity
+    await supabase.from('admin_activity_log').insert({
+      admin_id: adminId,
+      action: 'create_stop',
+      details: {
+        target_type: 'stop',
+        target_id: data.id,
+        name: data.name,
+        type: data.type,
+        latitude: data.latitude,
+        longitude: data.longitude,
+        is_accessible: data.is_accessible,
+      },
+    });
 
     return {
       ...data,
@@ -95,7 +111,7 @@ export class StopsService {
     }
 
     // Transform data to include routes_count
-    const stops: StopResponseDto[] = (data || []).map((stop: any) => ({
+    let stops: StopResponseDto[] = (data || []).map((stop: any) => ({
       id: stop.id,
       name: stop.name,
       latitude: stop.latitude,
@@ -106,6 +122,34 @@ export class StopsService {
       updated_at: stop.updated_at,
       routes_count: stop.route_stops?.[0]?.count || 0,
     }));
+
+    // Deduplication for autocomplete: when searching, keep only the most relevant stop per name
+    // Prioritize: 1) metro/tram/bus over general, 2) higher routes_count, 3) first occurrence
+    if (filters.search && stops.length > 0) {
+      const deduplicatedMap = new Map<string, StopResponseDto>();
+
+      stops.forEach((stop) => {
+        const existing = deduplicatedMap.get(stop.name);
+
+        if (!existing) {
+          // First occurrence of this name
+          deduplicatedMap.set(stop.name, stop);
+        } else {
+          // Keep the better stop based on priority
+          const shouldReplace =
+            // Prioritize specific types (metro, tram, bus) over general
+            
+            // If same type, keep the one with more routes
+            (stop.type === existing.type && (stop.routes_count ?? 0) > (existing.routes_count ?? 0));
+
+          if (shouldReplace) {
+            deduplicatedMap.set(stop.name, stop);
+          }
+        }
+      });
+
+      stops = Array.from(deduplicatedMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+    }
 
     return {
       data: stops,
@@ -281,11 +325,12 @@ export class StopsService {
 
   /**
    * Update a stop (admin only)
+   * @param adminId - Admin user ID
    * @param id - Stop ID
    * @param dto - Update data
    * @returns Updated stop
    */
-  async update(id: string, dto: UpdateStopDto): Promise<StopResponseDto> {
+  async update(adminId: string, id: string, dto: UpdateStopDto): Promise<StopResponseDto> {
     const supabase = this.supabaseService.getClient();
 
     const { data, error } = await supabase
@@ -313,6 +358,21 @@ export class StopsService {
       throw new NotFoundException(`Stop with ID '${id}' not found`);
     }
 
+    // Log admin activity
+    await supabase.from('admin_activity_log').insert({
+      admin_id: adminId,
+      action: 'update_stop',
+      details: {
+        target_type: 'stop',
+        target_id: id,
+        name: data.name,
+        type: data.type,
+        latitude: data.latitude,
+        longitude: data.longitude,
+        is_accessible: data.is_accessible,
+      },
+    });
+
     // Fetch routes count
     const { count } = await supabase
       .from('route_stops')
@@ -328,10 +388,18 @@ export class StopsService {
   /**
    * Delete a stop (admin only)
    * Note: This is a hard delete. Consider soft delete in production.
+   * @param adminId - Admin user ID
    * @param id - Stop ID
    */
-  async remove(id: string): Promise<void> {
+  async remove(adminId: string, id: string): Promise<void> {
     const supabase = this.supabaseService.getClient();
+
+    // Fetch stop data for logging before deletion
+    const { data: stopData } = await supabase
+      .from('stops')
+      .select('name, type')
+      .eq('id', id)
+      .single();
 
     // Check if stop is used in any routes
     const { count } = await supabase
@@ -350,5 +418,17 @@ export class StopsService {
     if (error) {
       throw new InternalServerErrorException('Failed to delete stop: ' + error.message);
     }
+
+    // Log admin activity
+    await supabase.from('admin_activity_log').insert({
+      admin_id: adminId,
+      action: 'delete_stop',
+      details: {
+        target_type: 'stop',
+        target_id: id,
+        name: stopData?.name,
+        type: stopData?.type,
+      },
+    });
   }
 }

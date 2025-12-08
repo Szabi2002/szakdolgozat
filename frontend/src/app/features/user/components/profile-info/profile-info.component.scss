@@ -1,0 +1,223 @@
+@import '../../../../../styles/variables';
+@import '../../../../../styles/colors';
+@import '../../../../../styles/typography';
+@import '../../../../../styles/mixins';
+
+.profile-info-section {
+  @include flex-column;
+  gap: $spacing-6;
+}
+
+// Profile Form
+.profile-form {
+  @include flex-column;
+  gap: $spacing-5;
+
+  .full-width {
+    width: 100%;
+  }
+
+  mat-form-field {
+    ::ng-deep {
+      .mat-mdc-text-field-wrapper {
+        background: $white;
+      }
+
+      .mat-mdc-form-field-icon-prefix {
+        color: $brand-primary;
+        margin-right: $spacing-2;
+      }
+
+      .mat-mdc-form-field-focus-overlay {
+        background-color: transparent;
+      }
+
+      .mdc-text-field--focused {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: $brand-primary !important;
+        }
+      }
+
+      .mat-mdc-form-field-hint,
+      .mat-mdc-form-field-error {
+        font-size: $font-size-xs;
+      }
+    }
+
+    &.readonly-field {
+      ::ng-deep {
+        .mat-mdc-text-field-wrapper {
+          background: $neutral-50;
+        }
+
+        .mat-mdc-form-field-icon-prefix {
+          color: $neutral-500;
+        }
+
+        input {
+          cursor: not-allowed;
+          color: $neutral-600;
+        }
+      }
+    }
+  }
+}
+
+// Save Status
+.save-status {
+  min-height: 40px;
+  padding: $spacing-2 0;
+
+  .status-indicator {
+    @include flex-start;
+    align-items: center;
+    gap: $spacing-2;
+    padding: $spacing-2 $spacing-3;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    &.saving {
+      background: rgba($brand-primary, 0.1);
+      color: $brand-primary;
+    }
+
+    &.unsaved {
+      background: rgba($warning-500, 0.1);
+      color: darken($warning-500, 10%);
+
+      mat-icon {
+        color: $warning-500;
+      }
+    }
+
+    &.saved {
+      background: rgba($success-500, 0.1);
+      color: darken($success-500, 10%);
+
+      mat-icon {
+        color: $success-500;
+      }
+    }
+  }
+}
+
+// Form Actions
+.form-actions {
+  @include flex-end;
+  margin-top: $spacing-2;
+
+  .save-button {
+    @include flex-center;
+    gap: $spacing-2;
+    min-width: 160px;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  @include mobile {
+    .save-button {
+      width: 100%;
+    }
+  }
+}
+
+// Account Info
+.account-info {
+  @include flex-column;
+  gap: $spacing-4;
+  padding: $spacing-5;
+  background: linear-gradient(135deg, $neutral-50 0%, $white 100%);
+  border: 2px solid $neutral-200;
+  border-radius: $radius-lg;
+
+  .info-header {
+    @include flex-start;
+    gap: $spacing-2;
+    align-items: center;
+    padding-bottom: $spacing-3;
+    border-bottom: 2px solid $neutral-200;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: $brand-primary;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: $font-size-base;
+      font-weight: $font-weight-bold;
+      color: $brand-dark;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .info-rows {
+    @include flex-column;
+    gap: $spacing-2;
+  }
+
+  .info-row {
+    @include flex-start;
+    gap: $spacing-3;
+    padding: $spacing-3;
+    border-radius: $radius-md;
+    transition: all $transition-base $ease-out;
+
+    &:hover {
+      background: rgba($brand-primary, 0.05);
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: $brand-primary;
+      flex-shrink: 0;
+    }
+
+    .info-content {
+      @include flex-column;
+      gap: $spacing-1;
+      flex: 1;
+
+      .info-label {
+        font-size: $font-size-xs;
+        font-weight: $font-weight-bold;
+        color: $neutral-600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .info-value {
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
+        color: $brand-dark;
+      }
+    }
+
+    @include mobile {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @include mobile {
+    padding: $spacing-4;
+  }
+}

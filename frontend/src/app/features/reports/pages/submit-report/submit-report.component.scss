@@ -1,0 +1,443 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// SUBMIT REPORT PAGE - DARK THEME WITH GLASSMORPHISM (Persian Blue, NO red)
+// ============================================================================
+
+.submit-report-page {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: $spacing-6;
+  min-height: 100vh;
+  background: $persian-blue-950;
+  @include fade-in(400ms);
+
+  @include mobile {
+    padding: $spacing-4;
+  }
+}
+
+// ============================================================================
+// BREADCRUMB - DARK THEME
+// ============================================================================
+
+.breadcrumb {
+  @include flex-start;
+  align-items: center;
+  gap: $spacing-2;
+  margin-bottom: $spacing-6;
+  font-size: $font-size-sm;
+  animation: fadeInUp 0.4s ease backwards;
+
+  .breadcrumb-link {
+    @include flex-center;
+    gap: $spacing-1;
+    color: $persian-blue-400;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: $font-weight-medium;
+    transition: all 0.3s ease;
+    padding: $spacing-1 $spacing-2;
+    border-radius: $radius-md;
+
+    &:hover {
+      background: rgba($persian-blue-400, 0.1);
+      color: $persian-blue-300;
+      text-decoration: none;
+    }
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .breadcrumb-separator {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: $persian-blue-600;
+  }
+
+  .breadcrumb-current {
+    color: $persian-blue-200;
+    font-weight: $font-weight-semibold;
+  }
+
+  @include mobile {
+    font-size: $font-size-xs;
+    margin-bottom: $spacing-5;
+    gap: $spacing-1;
+
+    .breadcrumb-link {
+      padding: $spacing-1;
+
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .breadcrumb-separator {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+// ============================================================================
+// PAGE HEADER - DARK THEME WITH GRADIENT (Persian Blue accent)
+// ============================================================================
+
+.page-header {
+  position: relative;
+  margin-bottom: $spacing-6;
+  padding: $spacing-8;
+  overflow: hidden;
+  border-radius: 20px;
+  animation: fadeInUp 0.4s ease 100ms backwards;
+
+  .header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    // Dark Persian Blue gradient
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba($persian-blue-600, 0.4), transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba($persian-blue-500, 0.3), transparent 50%),
+      linear-gradient(135deg, $persian-blue-800 0%, $persian-blue-900 100%);
+
+    // Decorative pattern overlay
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.08)"/></pattern></defs><rect x="0" y="0" width="100%" height="100%" fill="url(%23pattern)"/></svg>');
+      opacity: 0.6;
+    }
+
+    // Wave decoration
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100px;
+      background: url('data:image/svg+xml,<svg viewBox="0 0 1200 100" xmlns="http://www.w3.org/2000/svg"><path d="M0,50 Q300,20 600,50 T1200,50 L1200,100 L0,100 Z" fill="white" opacity="0.05"/></svg>');
+      background-size: cover;
+      background-position: bottom;
+    }
+  }
+
+  .header-content {
+    position: relative;
+    z-index: 1;
+
+    .header-left {
+      @include flex-start;
+      gap: $spacing-4;
+      align-items: center;
+
+      .header-icon {
+        @include flex-center;
+        width: 64px;
+        height: 64px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        flex-shrink: 0;
+
+        mat-icon {
+          font-size: 32px;
+          width: 32px;
+          height: 32px;
+          color: $persian-blue-300;
+        }
+      }
+
+      .header-text {
+        flex: 1;
+
+        h1 {
+          margin: 0;
+          font-size: $font-size-3xl;
+          font-weight: $font-weight-bold;
+          color: $persian-blue-50;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-subtitle {
+          margin: $spacing-1 0 0 0;
+          font-size: $font-size-base;
+          font-weight: $font-weight-medium;
+          color: $persian-blue-200;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+
+  @include tablet {
+    padding: $spacing-6;
+
+    .header-content .header-left {
+      .header-icon {
+        width: 56px;
+        height: 56px;
+
+        mat-icon {
+          font-size: 28px;
+          width: 28px;
+          height: 28px;
+        }
+      }
+
+      .header-text h1 {
+        font-size: $font-size-2xl;
+      }
+    }
+  }
+
+  @include mobile {
+    padding: $spacing-5;
+    margin-bottom: $spacing-5;
+
+    .header-content .header-left {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .header-icon {
+        width: 48px;
+        height: 48px;
+
+        mat-icon {
+          font-size: 24px;
+          width: 24px;
+          height: 24px;
+        }
+      }
+
+      .header-text {
+        h1 {
+          font-size: $font-size-xl;
+        }
+
+        .header-subtitle {
+          font-size: $font-size-sm;
+        }
+      }
+    }
+  }
+}
+
+// ============================================================================
+// INFO BANNER - DARK THEME
+// ============================================================================
+
+.info-banner {
+  @include flex-start;
+  gap: $spacing-3;
+  align-items: flex-start;
+  padding: $spacing-5;
+  margin-bottom: $spacing-6;
+  border-radius: $radius-lg;
+  animation: fadeInUp 0.4s ease 200ms backwards;
+
+  // Glassmorphism with accent
+  background: rgba($persian-blue-500, 0.1);
+  border: 1px solid rgba($persian-blue-400, 0.2);
+  border-left: 4px solid $persian-blue-400;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    color: $persian-blue-400;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .info-content {
+    @include flex-column;
+    gap: $spacing-1;
+    flex: 1;
+
+    .info-title {
+      font-size: $font-size-base;
+      font-weight: $font-weight-bold;
+      color: $persian-blue-200;
+    }
+
+    .info-text {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      color: $persian-blue-300;
+      line-height: 1.5;
+    }
+  }
+
+  @include mobile {
+    padding: $spacing-4;
+    gap: $spacing-2;
+    margin-bottom: $spacing-5;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .info-content {
+      .info-title {
+        font-size: $font-size-sm;
+      }
+
+      .info-text {
+        font-size: $font-size-xs;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// FORM CONTAINER - GLASSMORPHISM
+// ============================================================================
+
+.form-container {
+  animation: fadeInUp 0.4s ease 300ms backwards;
+
+  // Glassmorphism card wrapper
+  border-radius: 20px;
+  padding: $spacing-6;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: rgba($persian-blue-400, 0.2);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+  }
+
+  @include mobile {
+    padding: $spacing-4;
+  }
+
+  // Style for the report form component inside
+  ::ng-deep {
+    // Form field styling for dark theme
+    .mat-mdc-form-field {
+      .mdc-text-field--outlined {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: rgba(255, 255, 255, 0.15) !important;
+        }
+
+        &:hover {
+          .mdc-notched-outline__leading,
+          .mdc-notched-outline__notch,
+          .mdc-notched-outline__trailing {
+            border-color: rgba($persian-blue-400, 0.4) !important;
+          }
+        }
+
+        &.mdc-text-field--focused {
+          .mdc-notched-outline__leading,
+          .mdc-notched-outline__notch,
+          .mdc-notched-outline__trailing {
+            border-color: $persian-blue-400 !important;
+          }
+        }
+      }
+
+      .mat-mdc-text-field-wrapper {
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .mdc-floating-label {
+        color: $persian-blue-300 !important;
+      }
+
+      .mat-mdc-input-element {
+        color: $persian-blue-50 !important;
+      }
+
+      .mat-mdc-select-value {
+        color: $persian-blue-50 !important;
+      }
+
+      mat-hint {
+        color: $persian-blue-400;
+      }
+    }
+
+    // Submit button styling
+    button[type="submit"],
+    .submit-button,
+    .primary-button {
+      background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+      color: white !important;
+      font-weight: $font-weight-semibold;
+      border-radius: $radius-lg;
+      box-shadow: 0 4px 16px rgba($persian-blue-500, 0.4);
+      transition: all 0.3s ease;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba($persian-blue-500, 0.5);
+      }
+    }
+
+    // Cancel button styling
+    button[type="button"],
+    .cancel-button,
+    .secondary-button {
+      color: $persian-blue-300 !important;
+      border-color: rgba($persian-blue-400, 0.3) !important;
+
+      &:hover {
+        background: rgba($persian-blue-400, 0.1) !important;
+        border-color: rgba($persian-blue-400, 0.5) !important;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

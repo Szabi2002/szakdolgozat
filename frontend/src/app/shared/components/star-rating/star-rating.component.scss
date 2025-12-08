@@ -1,0 +1,87 @@
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// STAR RATING - PERSIAN BLUE THEME (NO YELLOW)
+// ============================================================================
+
+.star-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-1;
+
+  .star-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:not(.readonly):hover {
+      transform: scale(1.15);
+    }
+
+    &:not(.readonly):focus {
+      outline: 2px solid $persian-blue-400;
+      outline-offset: 2px;
+      border-radius: $radius-sm;
+    }
+
+    &.readonly {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    mat-icon {
+      // Inactive star - muted Persian Blue
+      color: rgba($persian-blue-400, 0.3);
+      transition: color 0.2s ease;
+
+      // Active star - bright Persian Blue
+      &.filled {
+        color: $persian-blue-400;
+        filter: drop-shadow(0 0 4px rgba($persian-blue-400, 0.5));
+      }
+    }
+  }
+}
+
+// ============================================================================
+// SIZE VARIANTS
+// ============================================================================
+
+.star-rating-small {
+  gap: 1px;
+
+  .star-button mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.star-rating-medium {
+  .star-button mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.star-rating-large {
+  gap: $spacing-2;
+
+  .star-button mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+}

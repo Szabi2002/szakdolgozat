@@ -1,0 +1,232 @@
+<div class="ticket-purchase-page">
+  <!-- Success Message -->
+  @if (showSuccessMessage && purchasedTicket) {
+    <section class="success-section">
+      <div class="success-card">
+        <div class="success-icon-wrapper">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <h2>Jegy sikeresen megvásárolva!</h2>
+        <p class="email-confirmation">
+          <mat-icon>email</mat-icon>
+          Visszaigazoló e-mailt küldtünk a <strong>{{ userEmail }}</strong> címre
+        </p>
+
+        <div class="ticket-summary">
+          <h3>Jegy részletei</h3>
+          <div class="detail-row">
+            <span>Jegy típusa:</span>
+            <strong>{{ purchasedTicket.ticket_type?.name }}</strong>
+          </div>
+          <div class="detail-row">
+            <span>Ár:</span>
+            <strong>{{ formatPrice(purchasedTicket.price) }}</strong>
+          </div>
+          <div class="detail-row">
+            <span>Érvényes kezdete:</span>
+            <strong>{{ formatDate(purchasedTicket.valid_from) }}</strong>
+          </div>
+          @if (purchasedTicket.valid_until) {
+            <div class="detail-row">
+              <span>Érvényes vége:</span>
+              <strong>{{ formatDate(purchasedTicket.valid_until) }}</strong>
+            </div>
+          }
+        </div>
+
+        <div class="redirect-info">
+          <mat-spinner diameter="20"></mat-spinner>
+          <span>Átirányítás a Jegyeimhez 3 másodperc múlva...</span>
+        </div>
+
+        <button mat-raised-button class="view-tickets-button" (click)="onViewMyTickets()">
+          <mat-icon>confirmation_number</mat-icon>
+          Jegyeim megtekintése most
+        </button>
+      </div>
+    </section>
+  }
+
+  <!-- Purchase Form -->
+  @if (!showSuccessMessage) {
+    <!-- Compact Header -->
+    <section class="purchase-header">
+      <div class="header-container">
+        <div class="header-left">
+          <div class="header-badge">
+            <mat-icon>shopping_cart</mat-icon>
+            <span>Jegyvásárlás</span>
+          </div>
+
+          <div class="title-section">
+            <h1 class="page-title">
+              Vásárolj <span class="highlight">jegyet</span>
+            </h1>
+            <p class="page-subtitle">Válassz jegytípust a folytatáshoz</p>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <button mat-stroked-button class="back-button" (click)="onCancel()">
+            <mat-icon>arrow_back</mat-icon>
+            Vissza
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="content-section">
+      <div class="content-container">
+        <!-- Route Information (if preselected) -->
+        @if (hasPreselectedRoute) {
+          <div class="route-info-card">
+            <div class="panel-header">
+              <mat-icon>directions_bus</mat-icon>
+              <h3>Kiválasztott járat</h3>
+            </div>
+            <div class="card-content">
+              <div class="route-details">
+                <div class="detail-item">
+                  <mat-icon>route</mat-icon>
+                  <div class="detail-content">
+                    <span class="label">Járat</span>
+                    <span class="value">{{ preselectedRoute.route_number }} - {{ preselectedRoute.route_name }}</span>
+                  </div>
+                </div>
+                @if (preselectedFromStop && preselectedToStop) {
+                  <div class="detail-item">
+                    <mat-icon>pin_drop</mat-icon>
+                    <div class="detail-content">
+                      <span class="label">Útvonal</span>
+                      <span class="value">{{ preselectedFromStop.name }} → {{ preselectedToStop.name }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Loading State -->
+        @if (isLoading && ticketTypes.length === 0) {
+          <div class="loading-container">
+            <mat-spinner diameter="60"></mat-spinner>
+            <p>Jegytípusok betöltése...</p>
+          </div>
+        }
+
+        <!-- Error State -->
+        @if (error && !isLoading) {
+          <div class="error-card">
+            <div class="error-icon-wrapper">
+              <mat-icon>error_outline</mat-icon>
+            </div>
+            <h3>Nem sikerült betölteni a jegytípusokat</h3>
+            <p>{{ error }}</p>
+            <button mat-raised-button class="retry-button" (click)="loadTicketTypes()">
+              <mat-icon>refresh</mat-icon>
+              Újrapróbálás
+            </button>
+          </div>
+        }
+
+        <!-- Ticket Type Selector -->
+        @if (!isLoading && !error && ticketTypes.length > 0) {
+          <div class="ticket-selection-section">
+            <div class="section-header">
+              <h2 class="section-heading">
+                Válassz <span class="highlight">jegytípust</span>
+              </h2>
+              <p class="section-subheading">Kattints a kívánt jegytípusra</p>
+            </div>
+            <app-ticket-type-selector
+              [ticketTypes]="ticketTypes"
+              [selectedType]="selectedTicketType"
+              (selectionChange)="onTicketTypeSelected($event)">
+            </app-ticket-type-selector>
+          </div>
+        }
+
+        <!-- Purchase Summary -->
+        @if (selectedTicketType) {
+          <div class="purchase-summary">
+            <div class="panel-header summary-header">
+              <mat-icon>receipt</mat-icon>
+              <h3>Vásárlás összesítése</h3>
+            </div>
+            <div class="card-content">
+              <div class="summary-details">
+                <div class="summary-item">
+                  <div class="item-label">
+                    <mat-icon>label</mat-icon>
+                    <span>Kiválasztott jegy</span>
+                  </div>
+                  <span class="item-value">{{ selectedTicketType.name }}</span>
+                </div>
+                <div class="summary-item">
+                  <div class="item-label">
+                    <mat-icon>description</mat-icon>
+                    <span>Leírás</span>
+                  </div>
+                  <span class="item-value">{{ selectedTicketType.description }}</span>
+                </div>
+                <div class="summary-item">
+                  <div class="item-label">
+                    <mat-icon>schedule</mat-icon>
+                    <span>Érvényesség</span>
+                  </div>
+                  <span class="item-value">
+                    {{ selectedTicketType.validity_hours ? (selectedTicketType.validity_hours + ' óra') : 'Korlátlan' }}
+                  </span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-item total">
+                  <div class="item-label">
+                    <mat-icon>payments</mat-icon>
+                    <span>Teljes ár</span>
+                  </div>
+                  <span class="item-value price">{{ formatPrice(totalPrice) }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-actions">
+              <button mat-stroked-button class="change-button" (click)="selectedTicketType = null">
+                <mat-icon>close</mat-icon>
+                Módosítás
+              </button>
+              <button
+                mat-raised-button
+                class="payment-button"
+                (click)="onProceedToPayment()"
+                [disabled]="isLoading"
+              >
+                @if (isLoading) {
+                  <mat-spinner diameter="20"></mat-spinner>
+                } @else {
+                  <mat-icon>payment</mat-icon>
+                }
+                Fizetés
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- Empty State -->
+        @if (!isLoading && !error && ticketTypes.length === 0) {
+          <div class="empty-card">
+            <div class="empty-icon-wrapper">
+              <mat-icon>info</mat-icon>
+            </div>
+            <h3>Nincs elérhető jegytípus</h3>
+            <p>Jelenleg nincs elérhető jegytípus vásárlásra.</p>
+            <button mat-stroked-button class="back-button" (click)="onCancel()">
+              <mat-icon>arrow_back</mat-icon>
+              Vissza
+            </button>
+          </div>
+        }
+      </div>
+    </section>
+  }
+</div>

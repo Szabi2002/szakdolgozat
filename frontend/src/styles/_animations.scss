@@ -1,0 +1,377 @@
+// ===========================
+// Animation System
+// Dark Theme + Glassmorphism Animations
+// ===========================
+
+@import 'persian-blue';
+
+// ===========================
+// FLOAT ANIMATIONS
+// For orbs and floating elements
+// ===========================
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  50% {
+    transform: translateY(-10px) translateX(-5px);
+  }
+  75% {
+    transform: translateY(-25px) translateX(5px);
+  }
+}
+
+@keyframes float-medium {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(3deg);
+  }
+}
+
+@keyframes float-fast {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// ===========================
+// SHINE ANIMATIONS
+// For glass card hover effects
+// ===========================
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  50%, 100% {
+    left: 100%;
+  }
+}
+
+@keyframes shine-continuous {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// ===========================
+// PULSE GLOW ANIMATIONS
+// For buttons and accent elements
+// ===========================
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba($persian-blue-500, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba($persian-blue-500, 0.6), 0 0 50px rgba($persian-blue-600, 0.3);
+  }
+}
+
+@keyframes pulse-glow-subtle {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba($persian-blue-500, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba($persian-blue-500, 0.4);
+  }
+}
+
+@keyframes glow-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba($persian-blue-500, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba($persian-blue-500, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba($persian-blue-500, 0);
+  }
+}
+
+// ===========================
+// ICON GLOW ANIMATION
+// For feature icons
+// ===========================
+
+@keyframes icon-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba($persian-blue-400, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba($persian-blue-400, 0.6));
+  }
+}
+
+// ===========================
+// GRADIENT SHIFT ANIMATION
+// For background gradients
+// ===========================
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+// ===========================
+// BORDER GLOW ANIMATION
+// For card borders
+// ===========================
+
+@keyframes border-glow {
+  0%, 100% {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    border-color: rgba($persian-blue-400, 0.3);
+  }
+}
+
+// ===========================
+// ORIGINAL NEUMORPHISM ANIMATIONS
+// ===========================
+
+// Fade in up animation
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Fade in animation
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Scale in animation
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Slide in from left
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Slide in from right
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Pulse animation
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+// Shimmer loading animation
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// Staggered card animation mixin
+@mixin staggered-cards($base-delay: 0.1s) {
+  animation: fadeInUp 0.4s ease-out backwards;
+
+  @for $i from 1 through 12 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * $base-delay};
+    }
+  }
+}
+
+// Page enter animation
+@mixin page-enter {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+// Hover lift
+@mixin hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+}
+
+// Smooth transition
+@mixin smooth-transition($properties: all) {
+  transition: $properties 0.3s ease;
+}
+
+// Loading shimmer
+@mixin loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.06) 25%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+// Fade in mixin
+@mixin fade-in-animation($duration: 0.3s, $delay: 0s) {
+  animation: fadeIn $duration ease-out $delay backwards;
+}
+
+// Scale in mixin
+@mixin scale-in-animation($duration: 0.3s, $delay: 0s) {
+  animation: scaleIn $duration ease-out $delay backwards;
+}
+
+// Slide animations mixin
+@mixin slide-in-left($duration: 0.4s, $delay: 0s) {
+  animation: slideInLeft $duration ease-out $delay backwards;
+}
+
+@mixin slide-in-right($duration: 0.4s, $delay: 0s) {
+  animation: slideInRight $duration ease-out $delay backwards;
+}
+
+// ===========================
+// DARK THEME ANIMATION MIXINS
+// ===========================
+
+// Float animation mixin
+@mixin float-animation($speed: slow) {
+  @if $speed == slow {
+    animation: float-slow 8s ease-in-out infinite;
+  } @else if $speed == medium {
+    animation: float-medium 5s ease-in-out infinite;
+  } @else if $speed == fast {
+    animation: float-fast 3s ease-in-out infinite;
+  }
+}
+
+// Pulse glow mixin
+@mixin pulse-glow-animation($intensity: normal) {
+  @if $intensity == subtle {
+    animation: pulse-glow-subtle 3s ease-in-out infinite;
+  } @else if $intensity == normal {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+}
+
+// Icon glow mixin
+@mixin icon-glow-animation {
+  animation: icon-glow 2s ease-in-out infinite;
+}
+
+// Glow ring mixin (for buttons)
+@mixin glow-ring-animation {
+  animation: glow-ring 2s ease-out infinite;
+}
+
+// Gradient shift mixin (for backgrounds)
+@mixin gradient-shift-animation($duration: 10s) {
+  background-size: 200% 200%;
+  animation: gradient-shift $duration ease infinite;
+}
+
+// Hover glow effect
+@mixin hover-glow($color: $persian-blue-500, $intensity: 0.4) {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0 25px rgba($color, $intensity);
+    transform: translateY(-2px);
+  }
+}
+
+// Glass card hover effect
+@mixin glass-hover-effect {
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// ===========================
+// UTILITY ANIMATION CLASSES
+// ===========================
+
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.animate-float-medium {
+  animation: float-medium 5s ease-in-out infinite;
+}
+
+.animate-float-fast {
+  animation: float-fast 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-icon-glow {
+  animation: icon-glow 2s ease-in-out infinite;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 10s ease infinite;
+}

@@ -32,7 +32,9 @@ export class AuthGuard implements CanActivate {
 
     try {
       const user = await this.supabaseService.verifyToken(token);
+      // Store both user and token for RLS-enabled operations
       request.user = user;
+      request.accessToken = token;
       return true;
     } catch (error) {
       throw new UnauthorizedException('Érvénytelen token');

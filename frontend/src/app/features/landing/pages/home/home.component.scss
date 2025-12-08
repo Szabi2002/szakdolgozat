@@ -1,0 +1,17 @@
+@import '../../../../../styles/variables';
+@import '../../../../../styles/colors';
+@import '../../../../../styles/typography';
+@import '../../../../../styles/mixins';
+
+.landing-page {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%; // Ensure landing page respects parent container width
+  background: linear-gradient(180deg,
+    $white 0%,
+    rgba($brand-primary, 0.02) 50%,
+    $white 100%
+  );
+  overflow-x: hidden;
+  animation: fade-in 600ms $ease-out forwards;
+}

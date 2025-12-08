@@ -7,6 +7,7 @@ import {
   Body,
   Param,
   Query,
+  Req,
   UseGuards,
   HttpCode,
   HttpStatus,
@@ -62,8 +63,9 @@ export class StopsController {
     status: 403,
     description: 'Forbidden - insufficient permissions',
   })
-  async create(@Body() createStopDto: CreateStopDto) {
-    return this.stopsService.create(createStopDto);
+  async create(@Req() req: any, @Body() createStopDto: CreateStopDto) {
+    const adminId = req.user.id;
+    return this.stopsService.create(adminId, createStopDto);
   }
 
   @Get()
@@ -172,8 +174,9 @@ export class StopsController {
     status: 404,
     description: 'Stop not found',
   })
-  async update(@Param('id') id: string, @Body() updateStopDto: UpdateStopDto) {
-    return this.stopsService.update(id, updateStopDto);
+  async update(@Req() req: any, @Param('id') id: string, @Body() updateStopDto: UpdateStopDto) {
+    const adminId = req.user.id;
+    return this.stopsService.update(adminId, id, updateStopDto);
   }
 
   @Delete(':id')
@@ -207,7 +210,8 @@ export class StopsController {
     status: 404,
     description: 'Stop not found',
   })
-  async remove(@Param('id') id: string) {
-    await this.stopsService.remove(id);
+  async remove(@Req() req: any, @Param('id') id: string) {
+    const adminId = req.user.id;
+    await this.stopsService.remove(adminId, id);
   }
 }

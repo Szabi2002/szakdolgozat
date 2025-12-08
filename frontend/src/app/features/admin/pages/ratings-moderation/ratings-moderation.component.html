@@ -1,0 +1,231 @@
+<div class="ratings-moderation-page">
+  <!-- Background Orbs -->
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-icon-wrapper">
+        <mat-icon class="header-icon">star_rate</mat-icon>
+      </div>
+      <div class="header-text">
+        <h1>Ertekelesek Moderalasa</h1>
+        <p>Felhasznaloi ertekelesek attekintese es jovahagyasa</p>
+      </div>
+    </div>
+
+    <div class="header-stats">
+      <div class="stat-badge pending">
+        <mat-icon>schedule</mat-icon>
+        <span class="stat-value">{{ pendingCount() }}</span>
+        <span class="stat-label">Fuggoben</span>
+      </div>
+      <div class="stat-badge approved">
+        <mat-icon>check_circle</mat-icon>
+        <span class="stat-value">{{ approvedCount() }}</span>
+        <span class="stat-label">Jovahagyva</span>
+      </div>
+      <div class="stat-badge rejected">
+        <mat-icon>cancel</mat-icon>
+        <span class="stat-value">{{ rejectedCount() }}</span>
+        <span class="stat-label">Elutasitva</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter Tabs -->
+  <nav class="filter-tabs">
+    <button class="filter-tab"
+            [class.active]="activeFilter() === 'pending'"
+            (click)="setFilter('pending')">
+      <mat-icon>schedule</mat-icon>
+      <span>Fuggoben</span>
+      <span class="count-badge" *ngIf="pendingCount() > 0">{{ pendingCount() }}</span>
+    </button>
+    <button class="filter-tab"
+            [class.active]="activeFilter() === 'approved'"
+            (click)="setFilter('approved')">
+      <mat-icon>check_circle</mat-icon>
+      <span>Jovahagyva</span>
+    </button>
+    <button class="filter-tab"
+            [class.active]="activeFilter() === 'rejected'"
+            (click)="setFilter('rejected')">
+      <mat-icon>cancel</mat-icon>
+      <span>Elutasitva</span>
+    </button>
+    <button class="filter-tab"
+            [class.active]="activeFilter() === 'all'"
+            (click)="setFilter('all')">
+      <mat-icon>list</mat-icon>
+      <span>Osszes</span>
+    </button>
+  </nav>
+
+  <!-- Bulk Actions Toolbar -->
+  <div class="bulk-actions-toolbar" *ngIf="hasSelection()">
+    <div class="selection-info">
+      <mat-checkbox [checked]="allSelected()"
+                    [indeterminate]="hasSelection() && !allSelected()"
+                    (change)="toggleSelectAll()"
+                    color="accent">
+      </mat-checkbox>
+      <span>{{ selectedRatings().size }} kivalasztva</span>
+    </div>
+    <div class="bulk-buttons">
+      <button class="bulk-btn approve" (click)="bulkModerate('approved')">
+        <mat-icon>check_circle</mat-icon>
+        <span>Mind Jovahagyasa</span>
+      </button>
+      <button class="bulk-btn reject" (click)="bulkModerate('rejected')">
+        <mat-icon>cancel</mat-icon>
+        <span>Mind Elutasitasa</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="state-container loading-state">
+    <div class="glass-card state-card">
+      <mat-spinner diameter="56" color="accent"></mat-spinner>
+      <p>Ertekelesek betoltese...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading() && errorMessage()" class="state-container error-state">
+    <div class="glass-card state-card">
+      <div class="state-icon error">
+        <mat-icon>error_outline</mat-icon>
+      </div>
+      <h3>Hiba tortent</h3>
+      <p>{{ errorMessage() }}</p>
+      <button class="glass-btn primary" (click)="loadRatings()">
+        <mat-icon>refresh</mat-icon>
+        <span>Ujraprobalas</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading() && !errorMessage() && filteredRatings().length === 0" class="state-container empty-state">
+    <div class="glass-card state-card">
+      <div class="state-icon success">
+        <mat-icon>task_alt</mat-icon>
+      </div>
+      <h3>Nincs megjelenitendo ertekeles</h3>
+      <p>{{ activeFilter() === 'pending' ? 'Minden ertekeles feldolgozasra kerult!' : 'Nincs a szuronek megfelelo ertekeles.' }}</p>
+    </div>
+  </div>
+
+  <!-- Ratings Grid -->
+  <div *ngIf="!isLoading() && !errorMessage() && filteredRatings().length > 0" class="ratings-grid">
+    <article *ngFor="let rating of filteredRatings(); let i = index"
+             class="rating-card glass-card"
+             [class.expanded]="isExpanded(rating.id)"
+             [class.selected]="isSelected(rating.id)"
+             [style.animation-delay]="(i * 50) + 'ms'">
+
+      <!-- Selection Checkbox -->
+      <div class="card-selection" *ngIf="activeFilter() === 'pending'">
+        <mat-checkbox [checked]="isSelected(rating.id)"
+                      (change)="toggleSelection(rating.id)"
+                      (click)="$event.stopPropagation()"
+                      color="accent">
+        </mat-checkbox>
+      </div>
+
+      <!-- Card Header -->
+      <header class="card-header" (click)="toggleExpand(rating.id)">
+        <div class="user-section">
+          <div class="user-avatar">
+            <mat-icon>account_circle</mat-icon>
+          </div>
+          <div class="user-info">
+            <span class="user-name">{{ rating.user?.name || 'Ismeretlen felhasznalo' }}</span>
+            <span class="rating-date">{{ formatDate(rating.created_at) }}</span>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <span class="status-badge" [class]="rating.status">
+            <mat-icon>{{ rating.status === 'approved' ? 'check_circle' : rating.status === 'rejected' ? 'cancel' : 'schedule' }}</mat-icon>
+            {{ rating.status === 'approved' ? 'Jovahagyva' : rating.status === 'rejected' ? 'Elutasitva' : 'Fuggoben' }}
+          </span>
+          <button class="expand-btn" [class.expanded]="isExpanded(rating.id)">
+            <mat-icon>expand_more</mat-icon>
+          </button>
+        </div>
+      </header>
+
+      <!-- Star Rating Display -->
+      <div class="rating-display">
+        <div class="stars-row">
+          <span *ngFor="let filled of getStarArray(rating.rating_overall)"
+                class="star"
+                [class.filled]="filled">
+            <mat-icon>{{ filled ? 'star' : 'star_border' }}</mat-icon>
+          </span>
+          <span class="rating-value">{{ rating.rating_overall }}/5</span>
+        </div>
+
+        <!-- Route Chip -->
+        <div class="route-chip" *ngIf="rating.route">
+          <mat-icon>directions_bus</mat-icon>
+          <span class="route-number">{{ rating.route.route_number }}</span>
+          <span class="route-name">{{ rating.route.name }}</span>
+        </div>
+      </div>
+
+      <!-- Comment Preview -->
+      <div class="comment-preview" *ngIf="rating.comment">
+        <p [class.truncated]="!isExpanded(rating.id)">{{ rating.comment }}</p>
+      </div>
+
+      <!-- Expanded Content -->
+      <div class="expanded-content" *ngIf="isExpanded(rating.id)">
+        <!-- Category Ratings -->
+        <div class="category-ratings" *ngIf="getCategoryRatings(rating).length > 0">
+          <h4>Reszletes Ertekelesek</h4>
+          <div class="categories-grid">
+            <div class="category-item" *ngFor="let cat of getCategoryRatings(rating)">
+              <mat-icon>{{ cat.icon }}</mat-icon>
+              <span class="cat-label">{{ cat.label }}</span>
+              <div class="cat-stars">
+                <span *ngFor="let filled of getStarArray(cat.value)"
+                      class="mini-star"
+                      [class.filled]="filled">
+                  <mat-icon>{{ filled ? 'star' : 'star_border' }}</mat-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photos -->
+        <div class="photos-section" *ngIf="rating.photos && rating.photos.length > 0">
+          <h4>Fotok ({{ rating.photos.length }})</h4>
+          <div class="photos-grid">
+            <div class="photo-thumb" *ngFor="let photo of rating.photos">
+              <img [src]="photo.photo_url" [alt]="'Ertekeles foto'">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Actions -->
+      <footer class="card-actions" *ngIf="rating.status === 'pending'">
+        <button class="action-btn reject" (click)="moderateRating(rating.id, 'rejected'); $event.stopPropagation()">
+          <mat-icon>cancel</mat-icon>
+          <span>Elutasitas</span>
+        </button>
+        <button class="action-btn approve" (click)="moderateRating(rating.id, 'approved'); $event.stopPropagation()">
+          <mat-icon>check_circle</mat-icon>
+          <span>Jovahagy</span>
+        </button>
+      </footer>
+    </article>
+  </div>
+</div>

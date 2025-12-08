@@ -1,0 +1,57 @@
+{
+  "name": "kozlekedesi-jegykezelo",
+  "version": "0.1.0",
+  "description": "Közlekedési Jegykezelő Rendszer - Monorepo",
+  "private": true,
+  "author": "Szakdolgozat",
+  "license": "MIT",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm install --workspace=frontend && npm install --workspace=backend",
+    "clean": "npm run clean --workspaces",
+    "clean:all": "npm run clean && rm -rf node_modules",
+    "dev": "concurrently \"npm run dev --workspace=backend\" \"npm run start --workspace=frontend\"",
+    "dev:backend": "npm run start:dev --workspace=backend",
+    "dev:frontend": "npm run start --workspace=frontend",
+    "build": "npm run build --workspaces",
+    "build:backend": "npm run build --workspace=backend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "build:prod": "npm run build:backend && npm run build:prod --workspace=frontend",
+    "test": "npm run test --workspaces",
+    "test:backend": "npm run test --workspace=backend",
+    "test:frontend": "npm run test --workspace=frontend",
+    "test:cov": "npm run test:cov --workspace=backend && npm run test:headless --workspace=frontend",
+    "lint": "npm run lint --workspaces",
+    "lint:backend": "npm run lint --workspace=backend",
+    "lint:frontend": "npm run lint --workspace=frontend",
+    "format": "npm run format --workspaces",
+    "format:check": "npm run format:check --workspaces",
+    "db:migrate": "node scripts/db-migrate.js",
+    "db:seed": "node scripts/db-seed.js",
+    "health:check": "bash scripts/utilities/check-health.sh",
+    "setup:dev": "bash scripts/setup-dev.sh"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "shadcn": "^3.5.1"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/szakdolgozat/kozlekedesi-jegykezelo.git"
+  },
+  "keywords": [
+    "monorepo",
+    "transport",
+    "tickets",
+    "angular",
+    "nestjs",
+    "supabase"
+  ]
+}

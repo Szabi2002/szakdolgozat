@@ -1,0 +1,58 @@
+<div class="callback-page">
+  <!-- Hero Section (Left side - Desktop only) -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <mat-icon class="hero-icon">sync</mat-icon>
+      <h1>Bejelentkezés<br />folyamatban</h1>
+      <p>Kérjük, várj, amíg befejezzük a bejelentkezési folyamatot</p>
+    </div>
+  </div>
+
+  <!-- Callback Panel (Right side) -->
+  <div class="callback-panel">
+    <div class="callback-content">
+      <!-- Logo -->
+      <mat-icon class="logo">directions_bus</mat-icon>
+
+      <!-- Loading State -->
+      <div *ngIf="!errorMessage" class="loading-container">
+        <mat-spinner diameter="80" class="loading-spinner"></mat-spinner>
+        <h2>Bejelentkezés folyamatban...</h2>
+        <p class="subtitle">Kérjük, várj, amíg hitelesítjük a bejelentkezésedet</p>
+        <div class="loading-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="errorMessage" class="error-container">
+        <mat-icon class="error-icon">error</mat-icon>
+        <h2>Bejelentkezés sikertelen</h2>
+        <div class="error-message">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+        <p class="error-text">
+          Hiba történt a bejelentkezés során. Kérjük, próbáld újra.
+        </p>
+        <button
+          mat-raised-button
+          color="primary"
+          routerLink="/login"
+          class="full-width action-button"
+        >
+          <mat-icon>arrow_back</mat-icon>
+          <span>Vissza a bejelentkezéshez</span>
+        </button>
+      </div>
+
+      <!-- Footer -->
+      <p class="footer-text">
+        Probléma merült fel?
+        <a href="mailto:info&#64;kozlekedes.hu">Segítünk</a>
+      </p>
+    </div>
+  </div>
+</div>

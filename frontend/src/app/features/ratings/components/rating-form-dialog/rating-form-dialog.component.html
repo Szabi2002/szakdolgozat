@@ -1,0 +1,47 @@
+<div class="rating-form-dialog">
+  <!-- Dialog Header -->
+  <div class="dialog-header">
+    <div class="header-background"></div>
+    <div class="header-content">
+      <div class="header-left">
+        <div class="dialog-icon">
+          <mat-icon>{{ data.existingRating ? 'edit' : 'star_rate' }}</mat-icon>
+        </div>
+        <div class="header-text">
+          <h2 mat-dialog-title>
+            {{ data.existingRating ? 'Értékelés Szerkesztése' : 'Járat Értékelése' }}
+          </h2>
+          <p class="header-subtitle">{{ data.existingRating ? 'Módosítsd az értékelésedet' : 'Oszd meg tapasztalataidat' }}</p>
+        </div>
+      </div>
+      <button mat-icon-button mat-dialog-close class="close-button" aria-label="Bezárás">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Dialog Content -->
+  <mat-dialog-content class="dialog-content">
+    <!-- Route Info Banner -->
+    <div class="route-info">
+      <div class="route-icon-wrapper">
+        <mat-icon class="route-icon">directions_bus</mat-icon>
+      </div>
+      <div class="route-details">
+        <span class="route-label">
+          <mat-icon>route</mat-icon>
+          Értékelt járat
+        </span>
+        <span class="route-name">{{ data.routeName }}</span>
+      </div>
+    </div>
+
+    <!-- Rating Form -->
+    <app-rating-form
+      [routeId]="data.routeId"
+      [existingRating]="data.existingRating"
+      (success)="onSuccess($event)"
+      (cancel)="onCancel()">
+    </app-rating-form>
+  </mat-dialog-content>
+</div>

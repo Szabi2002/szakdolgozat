@@ -1,0 +1,128 @@
+<div class="save-favorite-dialog">
+  <!-- Dialog Header with Gradient -->
+  <div class="dialog-header">
+    <div class="header-background"></div>
+    <div class="header-content">
+      <div class="header-icon">
+        <mat-icon>{{ isCreateMode ? 'favorite' : 'edit' }}</mat-icon>
+      </div>
+      <h2 mat-dialog-title>{{ dialogTitle }}</h2>
+    </div>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <!-- Error Banner -->
+    @if (errorMessage) {
+      <div class="error-banner" role="alert">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    <!-- Form -->
+    <form [formGroup]="favoriteForm" (ngSubmit)="onSubmit()" class="favorite-form">
+      <!-- Route Name Input -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Kedvenc neve</mat-label>
+        <mat-icon matPrefix>label</mat-icon>
+        <input
+          matInput
+          formControlName="routeName"
+          placeholder="pl. Haza - Munka, Hétvégi kirándulás"
+          required
+          maxlength="100"
+          cdkFocusInitial
+          autocomplete="off"
+          aria-label="Kedvenc útvonal neve"
+        />
+        @if (!routeName?.errors) {
+          <mat-hint>3-100 karakter szükséges</mat-hint>
+        }
+        @if (routeName?.hasError('required')) {
+          <mat-error>A kedvenc neve kötelező</mat-error>
+        }
+        @if (routeName?.hasError('minlength')) {
+          <mat-error>Minimum 3 karakter szükséges</mat-error>
+        }
+        @if (routeName?.hasError('maxlength')) {
+          <mat-error>Maximum 100 karakter lehet</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Route Details (Read-only) -->
+      <div class="route-details">
+        <div class="route-details-header">
+          <div class="header-icon-small">
+            <mat-icon>route</mat-icon>
+          </div>
+          <h3>Útvonal részletei</h3>
+        </div>
+
+        <div class="stops-container">
+          <div class="detail-row from-stop">
+            <div class="stop-marker">
+              <mat-icon>trip_origin</mat-icon>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Honnan</span>
+              <span class="detail-value">{{ data.fromStopName }}</span>
+            </div>
+          </div>
+
+          <div class="route-connector">
+            <div class="connector-line"></div>
+            <div class="connector-icon">
+              <mat-icon>south</mat-icon>
+            </div>
+          </div>
+
+          <div class="detail-row to-stop">
+            <div class="stop-marker">
+              <mat-icon>place</mat-icon>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Hova</span>
+              <span class="detail-value">{{ data.toStopName }}</span>
+            </div>
+          </div>
+        </div>
+
+        @if (!isCreateMode) {
+          <div class="help-text">
+            <mat-icon>info_outline</mat-icon>
+            <span>Az útvonal részletei nem módosíthatók. Az állomások módosításához töröld és hozz létre új kedvencet.</span>
+          </div>
+        }
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="dialog-actions">
+    <button
+      mat-stroked-button
+      (click)="onCancel()"
+      [disabled]="loading"
+      class="cancel-button"
+      aria-label="Mégsem, dialógus bezárása"
+    >
+      <mat-icon>close</mat-icon>
+      <span>Mégsem</span>
+    </button>
+
+    <button
+      mat-raised-button
+      (click)="onSubmit()"
+      [disabled]="favoriteForm.invalid || loading"
+      class="submit-button"
+      [attr.aria-label]="isCreateMode ? 'Kedvenc mentése' : 'Módosítások mentése'"
+    >
+      @if (loading) {
+        <mat-spinner diameter="20" class="button-spinner"></mat-spinner>
+        <span>Mentés...</span>
+      } @else {
+        <mat-icon>{{ isCreateMode ? 'favorite' : 'check' }}</mat-icon>
+        <span>{{ submitButtonText }}</span>
+      }
+    </button>
+  </mat-dialog-actions>
+</div>

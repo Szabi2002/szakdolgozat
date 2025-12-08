@@ -1,0 +1,260 @@
+<div class="reports-moderation-page">
+  <!-- Background Orbs -->
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-icon-wrapper">
+        <mat-icon class="header-icon">report_problem</mat-icon>
+      </div>
+      <div class="header-text">
+        <h1>Bejelentesek Moderalasa</h1>
+        <p>Felhasznaloi bejelentesek attekintese es kezelese</p>
+      </div>
+    </div>
+
+    <div class="header-stats">
+      <div class="stat-badge pending">
+        <mat-icon>schedule</mat-icon>
+        <span class="stat-value">{{ pendingCount() }}</span>
+        <span class="stat-label">Fuggoben</span>
+      </div>
+      <div class="stat-badge in-review">
+        <mat-icon>hourglass_empty</mat-icon>
+        <span class="stat-value">{{ inReviewCount() }}</span>
+        <span class="stat-label">Vizsgalat</span>
+      </div>
+      <div class="stat-badge resolved">
+        <mat-icon>check_circle</mat-icon>
+        <span class="stat-value">{{ resolvedCount() }}</span>
+        <span class="stat-label">Megoldva</span>
+      </div>
+      <div class="stat-badge critical" *ngIf="criticalCount() > 0">
+        <mat-icon>priority_high</mat-icon>
+        <span class="stat-value">{{ criticalCount() }}</span>
+        <span class="stat-label">Kritikus</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filters Section -->
+  <section class="filters-section">
+    <!-- Status Filter -->
+    <nav class="filter-tabs status-tabs">
+      <span class="filter-label">Statusz:</span>
+      <button class="filter-tab"
+              [class.active]="statusFilter() === 'pending'"
+              (click)="setStatusFilter('pending')">
+        <mat-icon>schedule</mat-icon>
+        <span>Fuggoben</span>
+        <span class="count-badge" *ngIf="pendingCount() > 0">{{ pendingCount() }}</span>
+      </button>
+      <button class="filter-tab"
+              [class.active]="statusFilter() === 'in_review'"
+              (click)="setStatusFilter('in_review')">
+        <mat-icon>hourglass_empty</mat-icon>
+        <span>Vizsgalat</span>
+      </button>
+      <button class="filter-tab"
+              [class.active]="statusFilter() === 'resolved'"
+              (click)="setStatusFilter('resolved')">
+        <mat-icon>check_circle</mat-icon>
+        <span>Megoldva</span>
+      </button>
+      <button class="filter-tab"
+              [class.active]="statusFilter() === 'dismissed'"
+              (click)="setStatusFilter('dismissed')">
+        <mat-icon>cancel</mat-icon>
+        <span>Elutasitva</span>
+      </button>
+      <button class="filter-tab"
+              [class.active]="statusFilter() === 'all'"
+              (click)="setStatusFilter('all')">
+        <mat-icon>list</mat-icon>
+        <span>Osszes</span>
+      </button>
+    </nav>
+
+    <!-- Priority Filter -->
+    <nav class="filter-tabs priority-tabs">
+      <span class="filter-label">Prioritas:</span>
+      <button class="filter-chip"
+              [class.active]="priorityFilter() === 'all'"
+              (click)="setPriorityFilter('all')">
+        Mind
+      </button>
+      <button class="filter-chip critical"
+              [class.active]="priorityFilter() === 'critical'"
+              (click)="setPriorityFilter('critical')">
+        <mat-icon>priority_high</mat-icon>
+        Kritikus
+      </button>
+      <button class="filter-chip high"
+              [class.active]="priorityFilter() === 'high'"
+              (click)="setPriorityFilter('high')">
+        <mat-icon>arrow_upward</mat-icon>
+        Surgos
+      </button>
+      <button class="filter-chip medium"
+              [class.active]="priorityFilter() === 'medium'"
+              (click)="setPriorityFilter('medium')">
+        Kozepes
+      </button>
+      <button class="filter-chip low"
+              [class.active]="priorityFilter() === 'low'"
+              (click)="setPriorityFilter('low')">
+        Alacsony
+      </button>
+    </nav>
+  </section>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="state-container loading-state">
+    <div class="glass-card state-card">
+      <mat-spinner diameter="56" color="accent"></mat-spinner>
+      <p>Bejelentesek betoltese...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading() && errorMessage()" class="state-container error-state">
+    <div class="glass-card state-card">
+      <div class="state-icon error">
+        <mat-icon>error_outline</mat-icon>
+      </div>
+      <h3>Hiba tortent</h3>
+      <p>{{ errorMessage() }}</p>
+      <button class="glass-btn primary" (click)="loadReports()">
+        <mat-icon>refresh</mat-icon>
+        <span>Ujraprobalas</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading() && !errorMessage() && filteredReports().length === 0" class="state-container empty-state">
+    <div class="glass-card state-card">
+      <div class="state-icon success">
+        <mat-icon>task_alt</mat-icon>
+      </div>
+      <h3>Nincs megjelenitendo bejelentes</h3>
+      <p>{{ statusFilter() === 'pending' ? 'Minden bejelentes feldolgozasra kerult!' : 'Nincs a szuroknek megfelelo bejelentes.' }}</p>
+    </div>
+  </div>
+
+  <!-- Reports List -->
+  <div *ngIf="!isLoading() && !errorMessage() && filteredReports().length > 0" class="reports-list">
+    <article *ngFor="let report of filteredReports(); let i = index"
+             class="report-card glass-card"
+             [class.expanded]="isExpanded(report.id)"
+             [class]="'priority-' + report.priority"
+             [style.animation-delay]="(i * 60) + 'ms'">
+
+      <!-- Priority Indicator -->
+      <div class="priority-indicator" [class]="report.priority"></div>
+
+      <!-- Card Header -->
+      <header class="card-header" (click)="toggleExpand(report.id)">
+        <div class="header-left">
+          <div class="user-section">
+            <div class="user-avatar">
+              <mat-icon>account_circle</mat-icon>
+            </div>
+            <div class="user-info">
+              <span class="user-name">{{ report.user?.name || 'Ismeretlen felhasznalo' }}</span>
+              <span class="report-date">{{ formatDate(report.created_at) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <span class="priority-badge" [class]="report.priority" *ngIf="report.priority">
+            <mat-icon>{{ getPriorityIcon(report.priority) }}</mat-icon>
+            {{ getPriorityLabel(report.priority) }}
+          </span>
+          <span class="status-badge" [class]="report.status">
+            <mat-icon>{{ getStatusIcon(report.status) }}</mat-icon>
+            {{ getStatusLabel(report.status) }}
+          </span>
+          <button class="expand-btn" [class.expanded]="isExpanded(report.id)">
+            <mat-icon>expand_more</mat-icon>
+          </button>
+        </div>
+      </header>
+
+      <!-- Report Type & Title -->
+      <div class="title-section">
+        <div class="type-badge"
+             [style.background]="getTypeColor(report.report_type).bg"
+             [style.border-color]="getTypeColor(report.report_type).border"
+             [style.color]="getTypeColor(report.report_type).text">
+          <mat-icon>{{ getTypeIcon(report.report_type) }}</mat-icon>
+          <span>{{ getTypeLabel(report.report_type) }}</span>
+        </div>
+        <h3 class="report-title">{{ report.title }}</h3>
+      </div>
+
+      <!-- Description Preview -->
+      <div class="description-preview">
+        <p [class.truncated]="!isExpanded(report.id)">{{ report.description }}</p>
+      </div>
+
+      <!-- Expanded Content -->
+      <div class="expanded-content" *ngIf="isExpanded(report.id)">
+        <!-- Location Info -->
+        <div class="location-section" *ngIf="report.route || report.stop || report.location">
+          <h4>Helyszin Informaciok</h4>
+          <div class="location-items">
+            <div class="location-item" *ngIf="report.route">
+              <mat-icon>directions_bus</mat-icon>
+              <span>{{ report.route.route_number }} - {{ report.route.name }}</span>
+            </div>
+            <div class="location-item" *ngIf="report.stop">
+              <mat-icon>pin_drop</mat-icon>
+              <span>{{ report.stop.name }}</span>
+            </div>
+            <div class="location-item" *ngIf="report.location">
+              <mat-icon>location_on</mat-icon>
+              <span>{{ report.location }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photos -->
+        <div class="photos-section" *ngIf="report.photos && report.photos.length > 0">
+          <h4>Csatolt Fotok ({{ report.photos.length }})</h4>
+          <div class="photos-grid">
+            <div class="photo-thumb" *ngFor="let photo of report.photos">
+              <img [src]="photo.photo_url" [alt]="'Bejelentes foto'">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Actions -->
+      <footer class="card-actions">
+        <button class="action-btn dismiss"
+                (click)="updateReportStatus(report.id, 'dismissed'); $event.stopPropagation()"
+                *ngIf="report.status !== 'dismissed' && report.status !== 'resolved'">
+          <mat-icon>cancel</mat-icon>
+          <span>Elutasitas</span>
+        </button>
+        <button class="action-btn review"
+                (click)="updateReportStatus(report.id, 'in_review'); $event.stopPropagation()"
+                *ngIf="report.status === 'pending'">
+          <mat-icon>hourglass_empty</mat-icon>
+          <span>Vizsgalat</span>
+        </button>
+        <button class="action-btn resolve"
+                (click)="updateReportStatus(report.id, 'resolved'); $event.stopPropagation()"
+                *ngIf="report.status !== 'resolved' && report.status !== 'dismissed'">
+          <mat-icon>check_circle</mat-icon>
+          <span>Megoldva</span>
+        </button>
+      </footer>
+    </article>
+  </div>
+</div>

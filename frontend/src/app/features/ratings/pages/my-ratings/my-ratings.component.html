@@ -1,0 +1,220 @@
+<div class="my-ratings-page">
+  <!-- Compact Header -->
+  <section class="ratings-header">
+    <div class="header-container">
+      <div class="header-left">
+        <div class="header-badge">
+          <mat-icon>star</mat-icon>
+          <span>Értékelések</span>
+        </div>
+
+        <div class="title-section">
+          <h1 class="page-title">
+            Saját <span class="highlight">értékeléseim</span>
+          </h1>
+          <p class="page-subtitle">Összes értékelésed és azok státuszai</p>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <button mat-raised-button class="refresh-btn" (click)="onRefresh()">
+          <mat-icon>refresh</mat-icon>
+          Frissítés
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="content-section">
+    <div class="content-container">
+      <!-- Stats Card -->
+      @if (!isLoading && allRatings.length > 0) {
+        <div class="stats-card">
+          <div class="stat-item">
+            <mat-icon>star</mat-icon>
+            <div class="stat-content">
+              <span class="stat-value">{{ getStatusCount('all') }}</span>
+              <span class="stat-label">Összes</span>
+            </div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <mat-icon>schedule</mat-icon>
+            <div class="stat-content">
+              <span class="stat-value">{{ getStatusCount('pending') }}</span>
+              <span class="stat-label">Függőben</span>
+            </div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <mat-icon>check_circle</mat-icon>
+            <div class="stat-content">
+              <span class="stat-value">{{ getStatusCount('approved') }}</span>
+              <span class="stat-label">Jóváhagyva</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Loading State -->
+      @if (isLoading) {
+        <div class="loading-card">
+          <mat-spinner diameter="60"></mat-spinner>
+          <p>Értékelések betöltése...</p>
+        </div>
+      }
+
+      <!-- Empty State -->
+      @if (!isLoading && allRatings.length === 0) {
+        <div class="empty-card">
+          <div class="empty-icon-wrapper">
+            <mat-icon>star_border</mat-icon>
+          </div>
+          <h3>Még nincs értékelésed</h3>
+          <p>Értékeld a járatokat az utazásaid után, hogy segíts másoknak a döntésben.</p>
+        </div>
+      }
+
+      <!-- Tabs -->
+      @if (!isLoading && allRatings.length > 0) {
+        <div class="tabs-card">
+          <mat-tab-group class="ratings-tabs" animationDuration="300ms">
+            <!-- All Ratings Tab -->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <div class="tab-label">
+                  <mat-icon>list</mat-icon>
+                  <span>Összes</span>
+                  <span class="tab-count">{{ getStatusCount('all') }}</span>
+                </div>
+              </ng-template>
+              <div class="tab-content">
+                <div class="ratings-grid">
+                  @for (rating of allRatings; track trackByRatingId($index, rating)) {
+                    <app-rating-card
+                      [rating]="rating"
+                      [showActions]="true"
+                      [isOwner]="true"
+                      (edit)="onEditRating($event)"
+                      (delete)="onDeleteRating($event)"
+                      (photoClick)="onPhotoClick($event)"
+                      (viewRoute)="onViewRoute($event)"
+                    ></app-rating-card>
+                  }
+                </div>
+              </div>
+            </mat-tab>
+
+            <!-- Pending Ratings Tab -->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <div class="tab-label">
+                  <mat-icon>schedule</mat-icon>
+                  <span>Függőben</span>
+                  <span class="tab-count pending">{{ getStatusCount('pending') }}</span>
+                </div>
+              </ng-template>
+              <div class="tab-content">
+                <div class="info-banner pending">
+                  <mat-icon>info</mat-icon>
+                  <span>Ezek az értékelések moderálásra várnak.</span>
+                </div>
+                @if (pendingRatings.length > 0) {
+                  <div class="ratings-grid">
+                    @for (rating of pendingRatings; track trackByRatingId($index, rating)) {
+                      <app-rating-card
+                        [rating]="rating"
+                        [showActions]="true"
+                        [isOwner]="true"
+                        (edit)="onEditRating($event)"
+                        (delete)="onDeleteRating($event)"
+                        (photoClick)="onPhotoClick($event)"
+                        (viewRoute)="onViewRoute($event)"
+                      ></app-rating-card>
+                    }
+                  </div>
+                } @else {
+                  <div class="tab-empty-state">
+                    <mat-icon>pending_actions</mat-icon>
+                    <p>Nincs függőben lévő értékelés</p>
+                  </div>
+                }
+              </div>
+            </mat-tab>
+
+            <!-- Approved Ratings Tab -->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <div class="tab-label">
+                  <mat-icon>check_circle</mat-icon>
+                  <span>Jóváhagyva</span>
+                  <span class="tab-count approved">{{ getStatusCount('approved') }}</span>
+                </div>
+              </ng-template>
+              <div class="tab-content">
+                <div class="info-banner approved">
+                  <mat-icon>verified</mat-icon>
+                  <span>Ezek az értékelések jóváhagyva lettek és mindenki számára láthatóak.</span>
+                </div>
+                @if (approvedRatings.length > 0) {
+                  <div class="ratings-grid">
+                    @for (rating of approvedRatings; track trackByRatingId($index, rating)) {
+                      <app-rating-card
+                        [rating]="rating"
+                        [showActions]="false"
+                        [isOwner]="true"
+                        (photoClick)="onPhotoClick($event)"
+                        (viewRoute)="onViewRoute($event)"
+                      ></app-rating-card>
+                    }
+                  </div>
+                } @else {
+                  <div class="tab-empty-state">
+                    <mat-icon>approval</mat-icon>
+                    <p>Még nincs jóváhagyott értékelés</p>
+                  </div>
+                }
+              </div>
+            </mat-tab>
+
+            <!-- Rejected Ratings Tab -->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <div class="tab-label">
+                  <mat-icon>cancel</mat-icon>
+                  <span>Elutasítva</span>
+                  <span class="tab-count rejected">{{ getStatusCount('rejected') }}</span>
+                </div>
+              </ng-template>
+              <div class="tab-content">
+                <div class="info-banner rejected">
+                  <mat-icon>block</mat-icon>
+                  <span>Ezek az értékelések el lettek utasítva a moderálás során.</span>
+                </div>
+                @if (rejectedRatings.length > 0) {
+                  <div class="ratings-grid">
+                    @for (rating of rejectedRatings; track trackByRatingId($index, rating)) {
+                      <app-rating-card
+                        [rating]="rating"
+                        [showActions]="false"
+                        [isOwner]="true"
+                        (photoClick)="onPhotoClick($event)"
+                        (viewRoute)="onViewRoute($event)"
+                      ></app-rating-card>
+                    }
+                  </div>
+                } @else {
+                  <div class="tab-empty-state">
+                    <mat-icon>block</mat-icon>
+                    <p>Nincs elutasított értékelés</p>
+                  </div>
+                }
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      }
+    </div>
+  </section>
+</div>

@@ -1,0 +1,151 @@
+<mat-card [class.selected]="selected" class="route-card" [class.expanded]="isExpanded">
+  <!-- Badge -->
+  @if (badgeInfo) {
+    <div class="badge" [class]="badgeInfo.class">
+      <mat-icon class="badge-icon">{{
+        badgeInfo.class === 'recommended' ? 'star' :
+        badgeInfo.class === 'direct' ? 'trending_flat' :
+        'directions_walk'
+      }}</mat-icon>
+      <span class="badge-label">{{ badgeInfo.label }}</span>
+    </div>
+  }
+
+  <!-- Selection indicator -->
+  @if (selected) {
+    <div class="selection-indicator">
+      <mat-icon>check_circle</mat-icon>
+    </div>
+  }
+
+  <!-- Summary Section -->
+  <mat-card-content class="card-summary">
+    <!-- Main metrics -->
+    <div class="metrics">
+      <div class="metric main-metric">
+        <div class="metric-icon">
+          <mat-icon>schedule</mat-icon>
+        </div>
+        <div class="metric-value">
+          <span class="value-large">{{ route.total_time }}</span>
+          <span class="unit">perc</span>
+        </div>
+      </div>
+
+      <div class="metric-divider"></div>
+
+      <div class="metric">
+        <mat-icon>swap_horiz</mat-icon>
+        <div class="metric-content">
+          <span class="value">{{ route.transfers }}</span>
+          <span class="label">átszállás</span>
+        </div>
+      </div>
+
+      <div class="metric-divider"></div>
+
+      <div class="metric">
+        <mat-icon>directions_walk</mat-icon>
+        <div class="metric-content">
+          <span class="value">{{ formatWalkingDistance(route.walking_distance) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Route steps preview -->
+    <div class="steps-preview">
+      @for (step of route.steps; track $index) {
+        <div class="step-icon" [class]="step.type">
+          <mat-icon>{{ getStepIcon(step) }}</mat-icon>
+          @if (step.type === 'transit' && step.route_number) {
+            <span class="route-number">{{ step.route_number }}</span>
+          }
+        </div>
+        @if (!$last) {
+          <mat-icon class="arrow">arrow_forward</mat-icon>
+        }
+      }
+    </div>
+
+    <!-- Expand button -->
+    <button mat-button class="expand-btn" (click)="toggleExpand(); $event.stopPropagation()">
+      <span>{{ isExpanded ? 'Kevesebb' : 'Részletek' }}</span>
+      <mat-icon>{{ isExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </button>
+  </mat-card-content>
+
+  <!-- Detailed Section (expandable) -->
+  @if (isExpanded) {
+    <mat-card-content class="card-details">
+      <mat-divider></mat-divider>
+
+      <div class="detailed-steps">
+        @for (step of route.steps; track $index) {
+          <div class="step-detail">
+            <div class="step-header">
+              <mat-icon [class]="step.type">{{ getStepIcon(step) }}</mat-icon>
+              <div class="step-info">
+                @if (step.type === 'transit') {
+                  <strong>{{ step.route_number }} - {{ step.route_name }}</strong>
+                  <span class="duration">{{ step.duration }} perc · {{ step.stop_count }} megálló</span>
+                } @else {
+                  <strong>Gyaloglás</strong>
+                  <span class="duration">{{ step.duration }} perc · {{ step.distance }}m</span>
+                }
+              </div>
+            </div>
+
+            <div class="step-route">
+              <div class="stop">
+                <mat-icon class="stop-icon">radio_button_checked</mat-icon>
+                <span>{{ step.start_stop.name }}</span>
+              </div>
+              <div class="stop">
+                <mat-icon class="stop-icon">place</mat-icon>
+                <span>{{ step.end_stop.name }}</span>
+              </div>
+            </div>
+          </div>
+
+          @if (!$last) {
+            <div class="transfer-indicator">
+              <mat-icon>swap_horiz</mat-icon>
+              <span>Átszállás</span>
+            </div>
+          }
+        }
+      </div>
+
+      <!-- Card Actions -->
+      <div class="card-actions">
+        <button
+          mat-stroked-button
+          class="view-route-btn"
+          (click)="viewRouteDetails(); $event.stopPropagation()"
+          matTooltip="Járat részletes információinak megtekintése"
+        >
+          <mat-icon>info</mat-icon>
+          <span>Járat Részletei</span>
+        </button>
+        <button
+          mat-stroked-button
+          class="save-favorite-btn"
+          (click)="onSaveAsFavorite(); $event.stopPropagation()"
+          [disabled]="!canSaveFavorite"
+          [matTooltip]="canSaveFavorite ? 'Útvonal mentése kedvencek közé' : 'Elérted a maximum 20 kedvenc limitet'"
+        >
+          <mat-icon>favorite_border</mat-icon>
+          <span>Mentés Kedvencként</span>
+        </button>
+        <button
+          mat-raised-button
+          class="buy-ticket-btn"
+          (click)="onBuyTicket(); $event.stopPropagation()"
+        >
+          <mat-icon>confirmation_number</mat-icon>
+          <span>Jegy Vásárlása</span>
+        </button>
+      </div>
+    </mat-card-content>
+  }
+</mat-card>

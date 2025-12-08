@@ -1,0 +1,102 @@
+# ================================
+# EditorConfig
+# Közlekedési Jegykezelő Rendszer
+# ================================
+#
+# EditorConfig helps maintain consistent coding styles across different
+# editors and IDEs. See https://editorconfig.org for more info.
+#
+# This is the top-most EditorConfig file
+root = true
+
+# ================================
+# All Files
+# ================================
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# ================================
+# TypeScript & JavaScript
+# ================================
+[*.{ts,js,tsx,jsx}]
+indent_style = space
+indent_size = 2
+quote_type = single
+max_line_length = 100
+
+# ================================
+# JSON Files
+# ================================
+[*.json]
+indent_style = space
+indent_size = 2
+insert_final_newline = false
+
+# ================================
+# YAML Files
+# ================================
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
+# ================================
+# Markdown Files
+# ================================
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = off
+
+# ================================
+# HTML Templates
+# ================================
+[*.html]
+indent_style = space
+indent_size = 2
+
+# ================================
+# CSS, SCSS, LESS
+# ================================
+[*.{css,scss,less}]
+indent_style = space
+indent_size = 2
+
+# ================================
+# SQL Files
+# ================================
+[*.sql]
+indent_style = space
+indent_size = 2
+
+# ================================
+# Shell Scripts
+# ================================
+[*.sh]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+
+# ================================
+# Batch Files
+# ================================
+[*.bat]
+indent_style = space
+indent_size = 2
+end_of_line = crlf
+
+# ================================
+# Configuration Files
+# ================================
+[{package.json,.prettierrc,.eslintrc,.stylelintrc}]
+indent_style = space
+indent_size = 2
+
+# ================================
+# Makefiles (must use tabs)
+# ================================
+[Makefile]
+indent_style = tab

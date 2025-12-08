@@ -1,0 +1,45 @@
+<section class="features-section" id="features-section">
+  <div class="features-container">
+    <!-- Section Header -->
+    <div class="features-header">
+      <div class="header-badge">
+        <mat-icon>auto_awesome</mat-icon>
+        <span>Funkciók</span>
+      </div>
+      <h2 class="features-heading">
+        Miért válaszd az <span class="highlight">appot</span>?
+      </h2>
+      <p class="features-subheading">
+        Fedezd fel a funkciókat, amelyek megkönnyítik mindennapi utazásod
+      </p>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="features-grid">
+      @for (feature of features; track feature.title) {
+        <mat-card class="feature-card">
+          <mat-card-content>
+            <div class="feature-icon-wrapper">
+              <div class="icon-glow"></div>
+              <mat-icon class="feature-icon">{{ feature.icon }}</mat-icon>
+            </div>
+            <h3 class="feature-title">{{ feature.title }}</h3>
+            <p class="feature-description">{{ feature.description }}</p>
+            <div class="feature-arrow">
+              <mat-icon>arrow_forward</mat-icon>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="features-cta">
+      <p class="cta-text">Készen állsz a kezdésre?</p>
+      <button mat-raised-button color="primary" class="cta-button">
+        <mat-icon>rocket_launch</mat-icon>
+        Próbáld ki most
+      </button>
+    </div>
+  </div>
+</section>
