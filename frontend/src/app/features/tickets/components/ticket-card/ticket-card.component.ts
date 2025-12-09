@@ -29,35 +29,7 @@ export class TicketCardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('=== TICKET CARD INIT ===');
-    console.log('Received ticket input:', this.ticket);
-    console.log('Ticket type:', typeof this.ticket);
-    console.log('Ticket is array:', Array.isArray(this.ticket));
-    console.log('Ticket is null/undefined:', this.ticket === null || this.ticket === undefined);
-
-    if (this.ticket) {
-      console.log('Ticket keys:', Object.keys(this.ticket));
-      console.log('Ticket has id:', 'id' in this.ticket);
-      console.log('Ticket has ticket_id:', 'ticket_id' in this.ticket);
-      console.log('Ticket.id value:', this.ticket.id);
-      console.log('Ticket.ticket_id value:', (this.ticket as any).ticket_id);
-      console.log('Ticket.id type:', typeof this.ticket.id);
-      console.log('Ticket.ticket_id type:', typeof (this.ticket as any).ticket_id);
-      console.log('Full ticket object:', JSON.stringify(this.ticket, null, 2));
-    }
-    console.log('=======================');
-
-    // Validate ticket object on initialization
-    if (!this.ticket) {
-      console.error('TicketCardComponent: No ticket object provided');
-      return;
-    }
-
-    if (!this.ticket.id) {
-      console.error('TicketCardComponent: Invalid ticket object - missing id field', this.ticket);
-      console.error('Available fields:', Object.keys(this.ticket));
-      console.error('Has ticket_id instead?:', 'ticket_id' in this.ticket, (this.ticket as any).ticket_id);
-    }
+    // Component initialization - ticket validation handled by template
   }
 
   get isValid(): boolean {

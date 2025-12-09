@@ -100,8 +100,8 @@ export class MyTicketsComponent implements OnInit, OnDestroy {
         next: (types) => {
           this.ticketTypes = types;
         },
-        error: (err) => {
-          console.error('Failed to load ticket types:', err);
+        error: () => {
+          // Silent fail - ticket types are optional for filtering
         }
       });
   }
@@ -130,45 +130,15 @@ export class MyTicketsComponent implements OnInit, OnDestroy {
       filters.ticket_type_id = formValue.ticket_type_id;
     }
 
-    console.log('=== MY-TICKETS COMPONENT: loadTickets() ===');
-    console.log('Calling ticketsService.getMyTickets() - FIXED to use correct endpoint');
-    console.log('==========================================');
-
-    // FIXED: Use getMyTickets() instead of getHistory()
-    // getMyTickets() returns Ticket[] with 'id' field
-    // getHistory() returns PurchaseHistory[] with 'ticket_id' field
     this.ticketsService.getMyTickets(this.selectedStatus || undefined)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (tickets: Ticket[]) => {
-          console.log('=== IN COMPONENT: Received Tickets ===');
-          console.log('Tickets:', tickets);
-          console.log('Tickets is array:', Array.isArray(tickets));
-          console.log('Tickets length:', tickets?.length);
-          console.log('First ticket:', tickets?.[0]);
-          console.log('First ticket keys:', tickets?.[0] ? Object.keys(tickets[0]) : 'undefined');
-          console.log('First ticket has id:', tickets?.[0] ? 'id' in tickets[0] : 'N/A');
-          console.log('First ticket.id:', tickets?.[0]?.id);
-          console.log('=====================================');
-
           this.tickets = tickets;
           this.totalTickets = tickets.length;
-          // Note: getMyTickets() doesn't return pagination info
-          // Using simple client-side pagination
           this.isLoading = false;
-
-          console.log('=== AFTER ASSIGNMENT ===');
-          console.log('this.tickets:', this.tickets);
-          console.log('this.tickets length:', this.tickets?.length);
-          console.log('this.tickets[0]:', this.tickets?.[0]);
-          console.log('========================');
         },
-        error: (err) => {
-          console.error('=== COMPONENT ERROR ===');
-          console.error('Error:', err);
-          console.error('Error status:', err.status);
-          console.error('Error message:', err.message);
-          console.error('=====================');
+        error: () => {
           this.error = 'Nem sikerült betölteni a jegyeket. Próbáld újra.';
           this.isLoading = false;
         }

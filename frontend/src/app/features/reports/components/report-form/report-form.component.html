@@ -3,11 +3,11 @@
     <!-- Step 1: Report Type -->
     <mat-step [stepControl]="typeForm">
       <form [formGroup]="typeForm">
-        <ng-template matStepLabel>Select Issue Type</ng-template>
+        <ng-template matStepLabel>Probléma típusa</ng-template>
 
         <div class="step-content">
-          <h2>What type of issue are you reporting?</h2>
-          <p class="step-description">Choose the category that best describes your report</p>
+          <h2>Milyen típusú problémát jelentesz?</h2>
+          <p class="step-description">Válaszd ki a bejelentésednek legmegfelelőbb kategóriát</p>
 
           <app-report-type-selector
             [selected]="typeForm.value.report_type"
@@ -16,7 +16,7 @@
 
           <div class="step-actions">
             <button mat-raised-button color="primary" matStepperNext [disabled]="typeForm.invalid">
-              Next
+              Következő
               <mat-icon>arrow_forward</mat-icon>
             </button>
           </div>
@@ -27,57 +27,57 @@
     <!-- Step 2: Details -->
     <mat-step [stepControl]="detailsForm">
       <form [formGroup]="detailsForm">
-        <ng-template matStepLabel>Provide Details</ng-template>
+        <ng-template matStepLabel>Részletek</ng-template>
 
         <div class="step-content">
-          <h2>Tell us more about the issue</h2>
-          <p class="step-description">Provide as much detail as possible to help us resolve the issue</p>
+          <h2>Mesélj többet a problémáról</h2>
+          <p class="step-description">Adj meg minél több részletet, hogy segíthessünk megoldani a problémát</p>
 
           <!-- Title -->
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Report Title</mat-label>
+            <mat-label>Bejelentés címe</mat-label>
             <input
               matInput
               formControlName="title"
-              placeholder="Brief summary of the issue"
+              placeholder="A probléma rövid összefoglalása"
               maxlength="200"
               required
             />
-            <mat-hint align="end">{{ titleCharCount }}/200 characters</mat-hint>
+            <mat-hint align="end">{{ titleCharCount }}/200 karakter</mat-hint>
             <mat-error *ngIf="detailsForm.get('title')?.hasError('required')">
-              Title is required
+              A cím megadása kötelező
             </mat-error>
             <mat-error *ngIf="detailsForm.get('title')?.hasError('minlength')">
-              Title must be at least 10 characters
+              A címnek legalább 10 karakter hosszúnak kell lennie
             </mat-error>
           </mat-form-field>
 
           <!-- Description -->
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Description</mat-label>
+            <mat-label>Leírás</mat-label>
             <textarea
               matInput
               formControlName="description"
-              placeholder="Detailed description of the issue"
+              placeholder="A probléma részletes leírása"
               rows="5"
               required
             ></textarea>
-            <mat-hint align="end">{{ descriptionCharCount }} characters (minimum 20)</mat-hint>
+            <mat-hint align="end">{{ descriptionCharCount }} karakter (minimum 20)</mat-hint>
             <mat-error *ngIf="detailsForm.get('description')?.hasError('required')">
-              Description is required
+              A leírás megadása kötelező
             </mat-error>
             <mat-error *ngIf="detailsForm.get('description')?.hasError('minlength')">
-              Description must be at least 20 characters
+              A leírásnak legalább 20 karakter hosszúnak kell lennie
             </mat-error>
           </mat-form-field>
 
           <!-- Route (optional) -->
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Route (Optional)</mat-label>
+            <mat-label>Útvonal (opcionális)</mat-label>
             <input
               matInput
               formControlName="route_search"
-              placeholder="Search for a route"
+              placeholder="Útvonal keresése"
               [matAutocomplete]="routeAuto"
             />
             <mat-icon matPrefix>directions_bus</mat-icon>
@@ -86,16 +86,16 @@
                 {{ route.route_number }} - {{ route.name }}
               </mat-option>
             </mat-autocomplete>
-            <mat-hint>Select the route related to this issue</mat-hint>
+            <mat-hint>Válaszd ki a problémához kapcsolódó útvonalat</mat-hint>
           </mat-form-field>
 
           <!-- Stop (optional) -->
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Stop (Optional)</mat-label>
+            <mat-label>Megálló (opcionális)</mat-label>
             <input
               matInput
               formControlName="stop_search"
-              placeholder="Search for a stop"
+              placeholder="Megálló keresése"
               [matAutocomplete]="stopAuto"
             />
             <mat-icon matPrefix>place</mat-icon>
@@ -104,28 +104,28 @@
                 {{ stop.name }}
               </mat-option>
             </mat-autocomplete>
-            <mat-hint>Select the stop related to this issue</mat-hint>
+            <mat-hint>Válaszd ki a problémához kapcsolódó megállót</mat-hint>
           </mat-form-field>
 
           <!-- Location (optional) -->
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Location Details (Optional)</mat-label>
+            <mat-label>Helyszín részletei (opcionális)</mat-label>
             <input
               matInput
               formControlName="location"
-              placeholder="e.g., Between Main St and 2nd Ave"
+              placeholder="pl. a Fő utca és a Kossuth tér között"
             />
             <mat-icon matPrefix>location_on</mat-icon>
-            <mat-hint>Provide additional location information</mat-hint>
+            <mat-hint>Adj meg további helyszíni információkat</mat-hint>
           </mat-form-field>
 
           <div class="step-actions">
             <button mat-button matStepperPrevious>
               <mat-icon>arrow_back</mat-icon>
-              Back
+              Vissza
             </button>
             <button mat-raised-button color="primary" matStepperNext [disabled]="detailsForm.invalid">
-              Next
+              Következő
               <mat-icon>arrow_forward</mat-icon>
             </button>
           </div>
@@ -135,11 +135,11 @@
 
     <!-- Step 3: Photos (optional) -->
     <mat-step>
-      <ng-template matStepLabel>Add Photos (Optional)</ng-template>
+      <ng-template matStepLabel>Fotók (opcionális)</ng-template>
 
       <div class="step-content">
-        <h2>Add photos to support your report</h2>
-        <p class="step-description">Photos help us understand and resolve the issue faster (maximum 5 photos)</p>
+        <h2>Adj hozzá fotókat a bejelentésedhez</h2>
+        <p class="step-description">A fotók segítenek megérteni és gyorsabban megoldani a problémát (maximum 5 fotó)</p>
 
         <app-photo-upload
           [maxPhotos]="5"
@@ -152,7 +152,7 @@
         <div class="step-actions">
           <button mat-button matStepperPrevious>
             <mat-icon>arrow_back</mat-icon>
-            Back
+            Vissza
           </button>
           <button
             mat-raised-button
@@ -163,11 +163,11 @@
             <mat-spinner *ngIf="isSubmitting" diameter="20" class="inline-spinner"></mat-spinner>
             <span *ngIf="!isSubmitting">
               <mat-icon>send</mat-icon>
-              Submit Report
+              Bejelentés küldése
             </span>
           </button>
           <button mat-button (click)="onCancel()" [disabled]="isSubmitting">
-            Cancel
+            Mégse
           </button>
         </div>
       </div>

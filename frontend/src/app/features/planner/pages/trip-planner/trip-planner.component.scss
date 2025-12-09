@@ -217,12 +217,14 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, $persian-blue-500, $persian-blue-400);
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba($persian-blue-400, 0.5) 50%,
+      transparent 100%
+    );
     opacity: 0;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease;
   }
 
   // Shine effect overlay
@@ -250,7 +252,6 @@
 
     &::before {
       opacity: 1;
-      transform: scaleX(1);
     }
 
     &::after {

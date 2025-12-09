@@ -200,36 +200,7 @@ export class TicketsService {
       }
     }
 
-    console.log('=== TICKETS SERVICE: getHistory() ===');
-    console.log('Filters:', filters);
-    console.log('API URL:', `${this.apiUrl}/history`);
-    console.log('====================================');
-
-    return this.http.get<PaginatedHistory>(`${this.apiUrl}/history`, { params }).pipe(
-      tap(response => {
-        console.log('=== RAW API RESPONSE (getHistory) ===');
-        console.log('Response type:', typeof response);
-        console.log('Response keys:', response ? Object.keys(response) : 'null');
-        console.log('Data array:', response?.data);
-        console.log('Data is array:', Array.isArray(response?.data));
-        console.log('Data length:', response?.data?.length);
-        console.log('First item:', response?.data?.[0]);
-        console.log('First item keys:', response?.data?.[0] ? Object.keys(response.data[0]) : 'undefined');
-        console.log('First item has id:', 'id' in (response?.data?.[0] || {}));
-        console.log('First item has ticket_id:', 'ticket_id' in (response?.data?.[0] || {}));
-        console.log('First item id value:', response?.data?.[0]?.id);
-        console.log('First item ticket_id value:', (response?.data?.[0] as any)?.ticket_id);
-        console.log('===================================');
-      }),
-      catchError(error => {
-        console.error('=== API ERROR (getHistory) ===');
-        console.error('Error:', error);
-        console.error('Error status:', error.status);
-        console.error('Error message:', error.message);
-        console.error('=============================');
-        throw error;
-      })
-    );
+    return this.http.get<PaginatedHistory>(`${this.apiUrl}/history`, { params });
   }
 
   /**

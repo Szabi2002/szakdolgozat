@@ -105,6 +105,61 @@ $sidebar-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           padding: $spacing-3;
         }
       }
+
+      // Hover-re kinyílás
+      &:hover {
+        width: $sidebar-width;
+
+        .logo-text,
+        .user-details,
+        .nav-label,
+        .nav-section-title {
+          opacity: 1;
+          visibility: visible;
+          width: auto;
+        }
+
+        .sidebar-header {
+          justify-content: space-between;
+          padding: $spacing-5 $spacing-4;
+
+          .logo {
+            justify-content: flex-start;
+          }
+
+          .collapse-toggle {
+            position: static;
+            margin: 0;
+          }
+        }
+
+        .sidebar-user {
+          padding: $spacing-4 $spacing-4;
+          flex-direction: row;
+        }
+
+        .sidebar-nav {
+          padding: $spacing-3;
+
+          .sidebar-item {
+            justify-content: flex-start;
+            padding: $spacing-3 $spacing-4;
+
+            mat-icon {
+              margin: 0;
+            }
+          }
+        }
+
+        .sidebar-footer {
+          padding: $spacing-3;
+
+          .sidebar-action {
+            justify-content: flex-start;
+            padding: $spacing-3 $spacing-4;
+          }
+        }
+      }
     }
   }
 }

@@ -41,7 +41,17 @@ async function bootstrap() {
           defaultSrc: ["'self'"],
           styleSrc: ["'self'", "'unsafe-inline'"],
           scriptSrc: ["'self'"],
-          imgSrc: ["'self'", 'data:', 'https:'],
+          imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
+          connectSrc: [
+            "'self'",
+            'https://*.supabase.co',
+            'https://api.mapbox.com',
+            'https://*.tiles.mapbox.com',
+            'https://events.mapbox.com',
+            'https://kozlekedesi-jegykezelo-backend-production.up.railway.app',
+          ],
+          fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+          workerSrc: ["'self'", 'blob:'],
         },
       },
       hsts: {
