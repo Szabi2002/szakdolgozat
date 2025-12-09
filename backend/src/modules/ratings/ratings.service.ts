@@ -8,14 +8,12 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { SupabaseService } from '@common/supabase/supabase.service';
-import { FileUploadValidator } from '@common/validators/file-upload.validator';
 import { InputSanitizer } from '@common/validators/input-sanitizer';
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
 import { ModerateRatingDto } from './dto/moderate-rating.dto';
 import { RatingResponseDto, RouteRatingStatsDto } from './dto/rating-response.dto';
 import { Rating } from './entities/rating.entity';
-import { RatingPhoto } from './entities/rating-photo.entity';
 
 @Injectable()
 export class RatingsService {
@@ -581,138 +579,6 @@ export class RatingsService {
       }
       this.logger.error(`Error deleting rating: ${error.message}`, error.stack);
       throw new InternalServerErrorException('Failed to delete rating');
-    }
-  }
-
-  /**
-   * Uploads photos to a rating
-   * Maximum 5 photos per rating (enforced by database trigger)
-   * Photos must be uploaded to Supabase Storage bucket 'rating-photos'
-   * Only the owner can upload photos to their pending ratings
-   * @param ratingId - Rating ID
-   * @param userId - User ID (for authorization)
-   * @param photoUrls - Array of photo URLs from Supabase Storage
-   * @returns Array of created photo records
-   * @throws NotFoundException if rating doesn't exist
-   * @throws ForbiddenException if user doesn't own the rating
-   * @throws BadRequestException if rating is not pending or too many photos
-   */
-  async uploadPhotos(
-    ratingId: string,
-    userId: string,
-    photoUrls: string[],
-  ): Promise<RatingPhoto[]> {
-    try {
-      // SECURITY: Validate photo URLs before processing
-      FileUploadValidator.validatePhotoUrls(photoUrls);
-
-      // Check rating exists and belongs to user
-      const existing = await this.findOne(ratingId);
-
-      if (existing.user_id !== userId) {
-        throw new ForbiddenException('You can only upload photos to your own ratings');
-      }
-
-      if (existing.status !== 'pending') {
-        throw new BadRequestException('Photos can only be added to pending ratings');
-      }
-
-      // Check current photo count
-      const currentPhotoCount = existing.photos?.length || 0;
-      const newPhotoCount = photoUrls.length;
-
-      if (currentPhotoCount + newPhotoCount > 5) {
-        throw new BadRequestException(
-          `Cannot add ${newPhotoCount} photos. Maximum 5 photos per rating. Currently have ${currentPhotoCount} photos.`,
-        );
-      }
-
-      const supabase = this.supabaseService.getClient();
-
-      // Prepare photo records
-      const photoRecords = photoUrls.map((url) => ({
-        rating_id: ratingId,
-        photo_url: url,
-      }));
-
-      const { data, error } = await supabase
-        .from('rating_photos')
-        .insert(photoRecords)
-        .select();
-
-      if (error) {
-        // Check if it's the 5 photo limit trigger error
-        if (error.message?.includes('more than 5 photos')) {
-          throw new BadRequestException('Cannot add more than 5 photos to a rating');
-        }
-        this.logger.error(`Failed to upload photos: ${error.message}`, error);
-        throw new InternalServerErrorException('Failed to upload photos');
-      }
-
-      this.logger.log(`Uploaded ${photoUrls.length} photos to rating ${ratingId}`);
-      return data || [];
-    } catch (error) {
-      if (
-        error instanceof NotFoundException ||
-        error instanceof ForbiddenException ||
-        error instanceof BadRequestException ||
-        error instanceof InternalServerErrorException
-      ) {
-        throw error;
-      }
-      this.logger.error(`Error uploading photos: ${error.message}`, error.stack);
-      throw new InternalServerErrorException('Failed to upload photos');
-    }
-  }
-
-  /**
-   * Deletes a photo from a rating
-   * Only the owner can delete photos from their pending ratings
-   * @param ratingId - Rating ID
-   * @param photoId - Photo ID to delete
-   * @param userId - User ID (for authorization)
-   * @throws NotFoundException if rating or photo doesn't exist
-   * @throws ForbiddenException if user doesn't own the rating
-   * @throws BadRequestException if rating is not pending
-   */
-  async deletePhoto(ratingId: string, photoId: string, userId: string): Promise<void> {
-    try {
-      // Check rating exists and belongs to user
-      const existing = await this.findOne(ratingId);
-
-      if (existing.user_id !== userId) {
-        throw new ForbiddenException('You can only delete photos from your own ratings');
-      }
-
-      if (existing.status !== 'pending') {
-        throw new BadRequestException('Photos can only be deleted from pending ratings');
-      }
-
-      const supabase = this.supabaseService.getClient();
-
-      const { error } = await supabase
-        .from('rating_photos')
-        .delete()
-        .eq('id', photoId)
-        .eq('rating_id', ratingId);
-
-      if (error) {
-        this.logger.error(`Failed to delete photo: ${error.message}`, error);
-        throw new InternalServerErrorException('Failed to delete photo');
-      }
-
-      this.logger.log(`Photo ${photoId} deleted from rating ${ratingId}`);
-    } catch (error) {
-      if (
-        error instanceof NotFoundException ||
-        error instanceof ForbiddenException ||
-        error instanceof BadRequestException ||
-        error instanceof InternalServerErrorException
-      ) {
-        throw error;
-      }
-      this.logger.error(`Error deleting photo: ${error.message}`, error.stack);
-      throw new InternalServerErrorException('Failed to delete photo');
     }
   }
 

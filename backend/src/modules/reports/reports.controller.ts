@@ -34,7 +34,6 @@ import {
   CriticalReportsQueueDto,
 } from './dto/report-response.dto';
 import { Report, ReportStatus, ReportPriority } from './entities/report.entity';
-import { ReportPhoto } from './entities/report-photo.entity';
 
 @ApiTags('reports')
 @Controller('reports')
@@ -368,103 +367,6 @@ export class ReportsController {
   async delete(@Req() req: any, @Param('id') id: string): Promise<void> {
     const userId = req.user.id;
     await this.reportsService.delete(id, userId);
-  }
-
-  /**
-   * Upload photos to a report
-   */
-  @Post(':id/photos')
-  @Throttle({ default: { ttl: 3600000, limit: 10 } }) // 10 photo uploads per hour
-  @ApiOperation({
-    summary: 'Upload photos to report',
-    description:
-      'Upload photos to a pending report. Maximum 5 photos per report. Expects array of photo URLs from Supabase Storage.',
-  })
-  @ApiParam({
-    name: 'id',
-    description: 'Report UUID',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
-  @ApiResponse({
-    status: 201,
-    description: 'Photos uploaded successfully',
-    type: [ReportPhoto],
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad request - Too many photos or report not pending',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized',
-  })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden - You can only upload photos to your own reports',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Report not found',
-  })
-  @ApiResponse({
-    status: 429,
-    description: 'Too many requests - Rate limit exceeded',
-  })
-  async uploadPhotos(
-    @Req() req: any,
-    @Param('id') id: string,
-    @Body('photoUrls') photoUrls: string[],
-  ): Promise<ReportPhoto[]> {
-    const userId = req.user.id;
-    return this.reportsService.uploadPhotos(id, userId, photoUrls);
-  }
-
-  /**
-   * Delete a photo from a report
-   */
-  @Delete(':id/photos/:photoId')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({
-    summary: 'Delete photo from report',
-    description: 'Delete a specific photo from a pending report.',
-  })
-  @ApiParam({
-    name: 'id',
-    description: 'Report UUID',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
-  @ApiParam({
-    name: 'photoId',
-    description: 'Photo UUID',
-    example: '123e4567-e89b-12d3-a456-426614174001',
-  })
-  @ApiResponse({
-    status: 204,
-    description: 'Photo deleted successfully',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad request - Photos can only be deleted from pending reports',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized',
-  })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden - You can only delete photos from your own reports',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Report or photo not found',
-  })
-  async deletePhoto(
-    @Req() req: any,
-    @Param('id') id: string,
-    @Param('photoId') photoId: string,
-  ): Promise<void> {
-    const userId = req.user.id;
-    await this.reportsService.deletePhoto(id, photoId, userId);
   }
 
   /**

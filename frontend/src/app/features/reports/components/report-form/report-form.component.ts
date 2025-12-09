@@ -12,13 +12,11 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Observable, Subject, of } from 'rxjs';
 import { map, startWith, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 import { ReportTypeSelectorComponent } from '@shared/components/report-type-selector/report-type-selector.component';
-import { PhotoUploadComponent } from '@shared/components/photo-upload/photo-upload.component';
 import { CreateReportDto, ReportType } from '@core/models/report.model';
 import { ReportsService } from '@core/services/reports.service';
 import { RoutesService, Route } from '@core/services/routes.service';
 import { StopsService } from '@core/services/stops.service';
 import { Stop } from '@core/services/routes.service';
-import { SupabaseService } from '@core/services/supabase.service';
 
 /**
  * Report form component with multi-step wizard
@@ -38,8 +36,7 @@ import { SupabaseService } from '@core/services/supabase.service';
     MatAutocompleteModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    ReportTypeSelectorComponent,
-    PhotoUploadComponent
+    ReportTypeSelectorComponent
   ],
   templateUrl: './report-form.component.html',
   styleUrls: ['./report-form.component.scss']
@@ -54,14 +51,12 @@ export class ReportFormComponent implements OnInit, OnDestroy {
   private reportsService = inject(ReportsService);
   private routesService = inject(RoutesService);
   private stopsService = inject(StopsService);
-  private supabaseService = inject(SupabaseService);
   private snackBar = inject(MatSnackBar);
   private destroy$ = new Subject<void>();
 
   typeForm!: FormGroup;
   detailsForm!: FormGroup;
   isSubmitting = false;
-  selectedPhotos: File[] = [];
   routes$!: Observable<Route[]>;
   stops$!: Observable<Stop[]>;
 
@@ -191,20 +186,6 @@ export class ReportFormComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handle photos change
-   */
-  onPhotosChange(photos: File[]): void {
-    this.selectedPhotos = photos;
-  }
-
-  /**
-   * Handle photo upload error
-   */
-  onPhotoError(error: string): void {
-    this.snackBar.open(error, 'Bezár', { duration: 5000, panelClass: 'error-snackbar' });
-  }
-
-  /**
    * Get character count for title
    */
   get titleCharCount(): number {
@@ -247,21 +228,6 @@ export class ReportFormComponent implements OnInit, OnDestroy {
         throw new Error('Failed to create report');
       }
 
-      // Upload photos if any
-      if (this.selectedPhotos.length > 0) {
-        try {
-          const photoUrls = await this.uploadPhotos(report.id);
-          await this.reportsService.uploadPhotos(report.id, photoUrls).toPromise();
-        } catch (photoError) {
-          console.error('Photo upload failed:', photoError);
-          this.snackBar.open(
-            'Bejelentés létrehozva, de a fényképek feltöltése sikertelen. Később hozzáadhatod őket.',
-            'Bezár',
-            { duration: 7000, panelClass: 'warning-snackbar' }
-          );
-        }
-      }
-
       const referenceNumber = this.reportsService.formatReferenceNumber(report.id);
       this.snackBar.open(
         `Bejelentés sikeresen elküldve! Hivatkozási szám: ${referenceNumber}`,
@@ -294,43 +260,11 @@ export class ReportFormComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Upload photos to Supabase storage
-   */
-  private async uploadPhotos(reportId: string): Promise<string[]> {
-    const photoUrls: string[] = [];
-
-    for (const photo of this.selectedPhotos) {
-      const fileName = `${reportId}/${Date.now()}_${photo.name}`;
-      const { data, error } = await this.supabaseService.client
-        .storage
-        .from('report-photos')
-        .upload(fileName, photo, {
-          cacheControl: '3600',
-          upsert: false
-        });
-
-      if (error) {
-        throw error;
-      }
-
-      const { data: urlData } = this.supabaseService.client
-        .storage
-        .from('report-photos')
-        .getPublicUrl(fileName);
-
-      photoUrls.push(urlData.publicUrl);
-    }
-
-    return photoUrls;
-  }
-
-  /**
    * Reset form to initial state
    */
   private resetForm(): void {
     this.typeForm.reset();
     this.detailsForm.reset();
-    this.selectedPhotos = [];
   }
 
   /**

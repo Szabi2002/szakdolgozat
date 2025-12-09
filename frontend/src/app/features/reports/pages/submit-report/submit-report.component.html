@@ -1,54 +1,106 @@
-<div class="submit-report-page">
-  <div class="content-wrapper">
-    <!-- Breadcrumb -->
-    <div class="breadcrumb">
-      <a routerLink="/" class="breadcrumb-link" aria-label="Vissza a főoldalra">
-        <mat-icon>home</mat-icon>
-        Főoldal
-      </a>
-      <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
-      <a (click)="navigateToMyReports()" class="breadcrumb-link" role="button" tabindex="0" aria-label="Vissza a bejelentésekhez">
-        Bejelentések
-      </a>
-      <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
-      <span class="breadcrumb-current">Új Bejelentés</span>
-    </div>
+<div class="submit-report-container">
+  <!-- Background Orbs -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
 
-    <!-- Page Header (Dashboard Style) -->
-    <div class="page-header">
-      <div class="header-content">
-        <div class="header-left">
-          <div class="header-icon-wrapper">
-            <div class="icon-glow"></div>
-            <mat-icon>report_problem</mat-icon>
+  <!-- Compact Header -->
+  <section class="dashboard-header">
+    <div class="header-container">
+      <div class="header-left">
+        <div class="header-badge">
+          <mat-icon>report_problem</mat-icon>
+          <span>Bejelentes</span>
+        </div>
+        <div class="greeting-section">
+          <h1 class="greeting-heading">
+            Uj <span class="highlight">Bejelentes</span>
+          </h1>
+          <p class="greeting-subtext">Segits javitani a szolgaltatast! Jelentsd be a problemakat.</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-actions">
+          <a routerLink="/reports/my" class="nav-badge">
+            <mat-icon>list_alt</mat-icon>
+            <span>Bejelenteseim</span>
+          </a>
+        </div>
+        <div class="header-features">
+          <div class="feature-chip">
+            <mat-icon>flash_on</mat-icon>
+            <span>Gyors feldolgozas</span>
           </div>
-          <div class="header-text">
-            <h1>Új Bejelentés</h1>
-            <p class="header-subtitle">Segíts javítani a szolgáltatást a problémák bejelentésével</p>
+          <div class="feature-chip">
+            <mat-icon>visibility</mat-icon>
+            <span>Atlathato statusz</span>
           </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- Info Banner -->
+  <!-- Info Banner -->
+  <div class="info-section">
     <div class="info-banner">
       <div class="info-icon-wrapper">
-        <mat-icon>info</mat-icon>
+        <mat-icon>lightbulb</mat-icon>
       </div>
       <div class="info-content">
-        <span class="info-title">Mire kell figyelni?</span>
-        <span class="info-text">Légy pontos és részletes. Minél több információt adsz meg, annál gyorsabban tudunk segíteni.</span>
+        <span class="info-title">Tipp a hatekony bejelenteshez</span>
+        <span class="info-text">
+          Legy pontos es reszletes! Minel tobb informaciot adsz meg a problemarol,
+          annal gyorsabban tudunk segiteni. Add meg a pontos helyszint es idopontot is.
+        </span>
       </div>
     </div>
+  </div>
 
-    <!-- Report Form Card -->
+  <!-- Form Section -->
+  <section class="form-section">
     <div class="form-container">
-      <app-report-form
-        [prefilledRouteId]="prefilledRouteId"
-        [prefilledStopId]="prefilledStopId"
-        (submitted)="onSubmitted($event)"
-        (cancelled)="onCancelled()"
-      ></app-report-form>
+      <div class="form-card">
+        <!-- Form Header -->
+        <div class="form-header">
+          <div class="form-header-icon">
+            <mat-icon>edit_note</mat-icon>
+          </div>
+          <div class="form-header-text">
+            <h2>Bejelentes reszletei</h2>
+            <p>Toltsd ki az alabbi urlapot a bejelentes leadasahoz</p>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <!-- Report Form Component -->
+        <div class="form-content">
+          <app-report-form
+            [prefilledRouteId]="prefilledRouteId"
+            [prefilledStopId]="prefilledStopId"
+            (submitted)="onSubmitted($event)"
+            (cancelled)="onCancelled()"
+          ></app-report-form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Stats -->
+  <div class="bottom-stats">
+    <div class="stat-badge">
+      <mat-icon>schedule</mat-icon>
+      <span>24h valaszido</span>
+    </div>
+    <div class="stat-badge">
+      <mat-icon>verified</mat-icon>
+      <span>95% megoldasi arany</span>
+    </div>
+    <div class="stat-badge">
+      <mat-icon>check_circle</mat-icon>
+      <span>Minden bejelentest kezelunk</span>
     </div>
   </div>
 </div>

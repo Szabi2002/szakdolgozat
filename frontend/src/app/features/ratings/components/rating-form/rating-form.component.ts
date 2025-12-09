@@ -11,7 +11,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { RatingsService } from '../../../../core/services/ratings.service';
 import { CreateRatingDto, Rating, UpdateRatingDto } from '../../../../core/models/rating.model';
 import { StarRatingComponent } from '../../../../shared/components/star-rating/star-rating.component';
-import { PhotoUploadComponent } from '../../../../shared/components/photo-upload/photo-upload.component';
 
 /**
  * Form component for creating and editing ratings
@@ -28,8 +27,7 @@ import { PhotoUploadComponent } from '../../../../shared/components/photo-upload
     MatIconModule,
     MatProgressBarModule,
     MatSnackBarModule,
-    StarRatingComponent,
-    PhotoUploadComponent
+    StarRatingComponent
   ],
   templateUrl: './rating-form.component.html',
   styleUrls: ['./rating-form.component.scss']
@@ -43,7 +41,6 @@ export class RatingFormComponent implements OnInit, OnDestroy {
   ratingForm!: FormGroup;
   isSubmitting = false;
   isEditMode = false;
-  uploadedPhotos: File[] = [];
   maxCommentLength = 500;
   private destroy$ = new Subject<void>();
 
@@ -130,11 +127,7 @@ export class RatingFormComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (rating) => {
-          if (this.uploadedPhotos.length > 0) {
-            this.uploadPhotos(rating.id, rating);
-          } else {
-            this.handleSuccess(rating);
-          }
+          this.handleSuccess(rating);
         },
         error: (error) => {
           this.handleError(error);
@@ -152,37 +145,10 @@ export class RatingFormComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (rating) => {
-          if (this.uploadedPhotos.length > 0) {
-            this.uploadPhotos(rating.id, rating);
-          } else {
-            this.handleSuccess(rating);
-          }
+          this.handleSuccess(rating);
         },
         error: (error) => {
           this.handleError(error);
-        }
-      });
-  }
-
-  /**
-   * Upload photos for a rating
-   * @param ratingId Rating ID
-   * @param rating Rating object
-   */
-  private uploadPhotos(ratingId: string, rating: Rating): void {
-    this.ratingsService.uploadPhotos(ratingId, this.uploadedPhotos)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.handleSuccess(rating);
-        },
-        error: (error) => {
-          this.snackBar.open(
-            'Értékelés mentve, de a fényképek feltöltése sikertelen: ' + error.message,
-            'Bezár',
-            { duration: 5000, panelClass: ['warning-snackbar'] }
-          );
-          this.handleSuccess(rating);
         }
       });
   }
@@ -219,25 +185,6 @@ export class RatingFormComponent implements OnInit, OnDestroy {
    */
   onCancel(): void {
     this.cancel.emit();
-  }
-
-  /**
-   * Handle photos change from upload component
-   * @param photos Array of files
-   */
-  onPhotosChange(photos: File[]): void {
-    this.uploadedPhotos = photos;
-  }
-
-  /**
-   * Handle photo upload error
-   * @param error Error message
-   */
-  onPhotosError(error: string): void {
-    this.snackBar.open(error, 'Close', {
-      duration: 3000,
-      panelClass: ['error-snackbar']
-    });
   }
 
   /**

@@ -128,19 +128,6 @@
     </mat-form-field>
   </div>
 
-  <!-- Photo Upload -->
-  <div class="form-section photo-section">
-    <label class="section-label">
-      <mat-icon>add_photo_alternate</mat-icon>
-      <span>Fényképek Hozzáadása (Opcionális)</span>
-    </label>
-    <app-photo-upload
-      [maxPhotos]="5"
-      (photosChange)="onPhotosChange($event)"
-      (photosError)="onPhotosError($event)"
-    ></app-photo-upload>
-  </div>
-
   <!-- Progress Bar -->
   <mat-progress-bar
     *ngIf="isSubmitting"

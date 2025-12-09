@@ -4,41 +4,39 @@
   <div class="bg-orb bg-orb-2"></div>
   <div class="bg-orb bg-orb-3"></div>
 
-  <!-- Page Header -->
-  <header class="page-header">
-    <div class="header-content">
-      <div class="header-icon-wrapper">
-        <mat-icon class="header-icon">report_problem</mat-icon>
+  <!-- Compact Header -->
+  <section class="dashboard-header">
+    <div class="header-container">
+      <div class="header-left">
+        <div class="header-badge">
+          <mat-icon>report_problem</mat-icon>
+          <span>Bejelentesek</span>
+        </div>
+        <div class="greeting-section">
+          <h1 class="greeting-heading">
+            Bejelentesek <span class="highlight">Moderalasa</span>
+          </h1>
+          <p class="greeting-subtext">Felhasznaloi bejelentesek attekintese es kezelese</p>
+        </div>
       </div>
-      <div class="header-text">
-        <h1>Bejelentesek Moderalasa</h1>
-        <p>Felhasznaloi bejelentesek attekintese es kezelese</p>
-      </div>
-    </div>
-
-    <div class="header-stats">
-      <div class="stat-badge pending">
-        <mat-icon>schedule</mat-icon>
-        <span class="stat-value">{{ pendingCount() }}</span>
-        <span class="stat-label">Fuggoben</span>
-      </div>
-      <div class="stat-badge in-review">
-        <mat-icon>hourglass_empty</mat-icon>
-        <span class="stat-value">{{ inReviewCount() }}</span>
-        <span class="stat-label">Vizsgalat</span>
-      </div>
-      <div class="stat-badge resolved">
-        <mat-icon>check_circle</mat-icon>
-        <span class="stat-value">{{ resolvedCount() }}</span>
-        <span class="stat-label">Megoldva</span>
-      </div>
-      <div class="stat-badge critical" *ngIf="criticalCount() > 0">
-        <mat-icon>priority_high</mat-icon>
-        <span class="stat-value">{{ criticalCount() }}</span>
-        <span class="stat-label">Kritikus</span>
+      <div class="header-right">
+        <div class="header-actions">
+          <div class="stat-badge pending">
+            <mat-icon>schedule</mat-icon>
+            <span>{{ pendingCount() }} Függőben</span>
+          </div>
+          <div class="stat-badge in-review">
+            <mat-icon>hourglass_empty</mat-icon>
+            <span>{{ inReviewCount() }} Vizsgálat</span>
+          </div>
+          <div class="stat-badge resolved">
+            <mat-icon>check_circle</mat-icon>
+            <span>{{ resolvedCount() }} Megoldva</span>
+          </div>
+        </div>
       </div>
     </div>
-  </header>
+  </section>
 
   <!-- Filters Section -->
   <section class="filters-section">
@@ -145,116 +143,108 @@
     </div>
   </div>
 
-  <!-- Reports List -->
-  <div *ngIf="!isLoading() && !errorMessage() && filteredReports().length > 0" class="reports-list">
-    <article *ngFor="let report of filteredReports(); let i = index"
-             class="report-card glass-card"
-             [class.expanded]="isExpanded(report.id)"
-             [class]="'priority-' + report.priority"
-             [style.animation-delay]="(i * 60) + 'ms'">
+  <!-- Reports Table -->
+  <div *ngIf="!isLoading() && !errorMessage() && filteredReports().length > 0" class="reports-table-wrapper">
+    <div class="reports-table-container glass-card">
+      <table class="reports-table">
+        <thead>
+          <tr>
+            <th class="th-user">Felhasznalo</th>
+            <th class="th-date">Datum</th>
+            <th class="th-type">Tipus</th>
+            <th class="th-priority">Prioritas</th>
+            <th class="th-title">Cim</th>
+            <th class="th-status">Statusz</th>
+            <th class="th-actions">Muveletek</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of filteredReports(); let i = index"
+              class="report-row">
 
-      <!-- Priority Indicator -->
-      <div class="priority-indicator" [class]="report.priority"></div>
+            <!-- User -->
+            <td class="td-user">
+              <div class="user-info">
+                <div class="user-avatar">
+                  <mat-icon>account_circle</mat-icon>
+                </div>
+                <span class="user-name">{{ report.user?.name || 'Ismeretlen' }}</span>
+              </div>
+            </td>
 
-      <!-- Card Header -->
-      <header class="card-header" (click)="toggleExpand(report.id)">
-        <div class="header-left">
-          <div class="user-section">
-            <div class="user-avatar">
-              <mat-icon>account_circle</mat-icon>
-            </div>
-            <div class="user-info">
-              <span class="user-name">{{ report.user?.name || 'Ismeretlen felhasznalo' }}</span>
-              <span class="report-date">{{ formatDate(report.created_at) }}</span>
-            </div>
-          </div>
-        </div>
+            <!-- Date -->
+            <td class="td-date">
+              <div class="date-info">
+                <mat-icon>calendar_today</mat-icon>
+                <span>{{ formatDate(report.created_at) }}</span>
+              </div>
+            </td>
 
-        <div class="header-right">
-          <span class="priority-badge" [class]="report.priority" *ngIf="report.priority">
-            <mat-icon>{{ getPriorityIcon(report.priority) }}</mat-icon>
-            {{ getPriorityLabel(report.priority) }}
-          </span>
-          <span class="status-badge" [class]="report.status">
-            <mat-icon>{{ getStatusIcon(report.status) }}</mat-icon>
-            {{ getStatusLabel(report.status) }}
-          </span>
-          <button class="expand-btn" [class.expanded]="isExpanded(report.id)">
-            <mat-icon>expand_more</mat-icon>
-          </button>
-        </div>
-      </header>
+            <!-- Type -->
+            <td class="td-type">
+              <div class="type-badge"
+                   [style.background]="getTypeColor(report.report_type).bg"
+                   [style.border-color]="getTypeColor(report.report_type).border"
+                   [style.color]="getTypeColor(report.report_type).text">
+                <mat-icon>{{ getTypeIcon(report.report_type) }}</mat-icon>
+                <span>{{ getTypeLabel(report.report_type) }}</span>
+              </div>
+            </td>
 
-      <!-- Report Type & Title -->
-      <div class="title-section">
-        <div class="type-badge"
-             [style.background]="getTypeColor(report.report_type).bg"
-             [style.border-color]="getTypeColor(report.report_type).border"
-             [style.color]="getTypeColor(report.report_type).text">
-          <mat-icon>{{ getTypeIcon(report.report_type) }}</mat-icon>
-          <span>{{ getTypeLabel(report.report_type) }}</span>
-        </div>
-        <h3 class="report-title">{{ report.title }}</h3>
-      </div>
+            <!-- Priority -->
+            <td class="td-priority">
+              <span class="priority-badge" [class]="report.priority" *ngIf="report.priority">
+                <mat-icon>{{ getPriorityIcon(report.priority) }}</mat-icon>
+                {{ getPriorityLabel(report.priority) }}
+              </span>
+              <span *ngIf="!report.priority" class="no-priority">-</span>
+            </td>
 
-      <!-- Description Preview -->
-      <div class="description-preview">
-        <p [class.truncated]="!isExpanded(report.id)">{{ report.description }}</p>
-      </div>
+            <!-- Title -->
+            <td class="td-title">
+              <p class="title-text">{{ report.title | slice:0:40 }}{{ report.title.length > 40 ? '...' : '' }}</p>
+            </td>
 
-      <!-- Expanded Content -->
-      <div class="expanded-content" *ngIf="isExpanded(report.id)">
-        <!-- Location Info -->
-        <div class="location-section" *ngIf="report.route || report.stop || report.location">
-          <h4>Helyszin Informaciok</h4>
-          <div class="location-items">
-            <div class="location-item" *ngIf="report.route">
-              <mat-icon>directions_bus</mat-icon>
-              <span>{{ report.route.route_number }} - {{ report.route.name }}</span>
-            </div>
-            <div class="location-item" *ngIf="report.stop">
-              <mat-icon>pin_drop</mat-icon>
-              <span>{{ report.stop.name }}</span>
-            </div>
-            <div class="location-item" *ngIf="report.location">
-              <mat-icon>location_on</mat-icon>
-              <span>{{ report.location }}</span>
-            </div>
-          </div>
-        </div>
+            <!-- Status -->
+            <td class="td-status">
+              <span class="status-badge" [class]="report.status">
+                <span class="status-indicator"></span>
+                {{ getStatusLabel(report.status) }}
+              </span>
+            </td>
 
-        <!-- Photos -->
-        <div class="photos-section" *ngIf="report.photos && report.photos.length > 0">
-          <h4>Csatolt Fotok ({{ report.photos.length }})</h4>
-          <div class="photos-grid">
-            <div class="photo-thumb" *ngFor="let photo of report.photos">
-              <img [src]="photo.photo_url" [alt]="'Bejelentes foto'">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card Actions -->
-      <footer class="card-actions">
-        <button class="action-btn dismiss"
-                (click)="updateReportStatus(report.id, 'dismissed'); $event.stopPropagation()"
-                *ngIf="report.status !== 'dismissed' && report.status !== 'resolved'">
-          <mat-icon>cancel</mat-icon>
-          <span>Elutasitas</span>
-        </button>
-        <button class="action-btn review"
-                (click)="updateReportStatus(report.id, 'in_review'); $event.stopPropagation()"
-                *ngIf="report.status === 'pending'">
-          <mat-icon>hourglass_empty</mat-icon>
-          <span>Vizsgalat</span>
-        </button>
-        <button class="action-btn resolve"
-                (click)="updateReportStatus(report.id, 'resolved'); $event.stopPropagation()"
-                *ngIf="report.status !== 'resolved' && report.status !== 'dismissed'">
-          <mat-icon>check_circle</mat-icon>
-          <span>Megoldva</span>
-        </button>
-      </footer>
-    </article>
+            <!-- Actions -->
+            <td class="td-actions">
+              <button class="action-btn"
+                      [matMenuTriggerFor]="reportMenu"
+                      matTooltip="Muveletek">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #reportMenu="matMenu" class="glass-menu">
+                <button mat-menu-item
+                        *ngIf="report.status === 'pending'"
+                        (click)="updateReportStatus(report.id, 'in_review')">
+                  <mat-icon>hourglass_empty</mat-icon>
+                  <span>Vizsgalat</span>
+                </button>
+                <button mat-menu-item
+                        *ngIf="report.status !== 'resolved' && report.status !== 'dismissed'"
+                        (click)="updateReportStatus(report.id, 'resolved')">
+                  <mat-icon>check_circle</mat-icon>
+                  <span>Megoldva</span>
+                </button>
+                <mat-divider *ngIf="report.status === 'pending' || (report.status !== 'resolved' && report.status !== 'dismissed')"></mat-divider>
+                <button mat-menu-item
+                        *ngIf="report.status !== 'dismissed' && report.status !== 'resolved'"
+                        (click)="updateReportStatus(report.id, 'dismissed')">
+                  <mat-icon>cancel</mat-icon>
+                  <span>Elutasitas</span>
+                </button>
+              </mat-menu>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

@@ -1,7 +1,3 @@
-// ============================================================================
-// ADMIN DASHBOARD - DARK GLASSMORPHISM THEME
-// ============================================================================
-
 @import 'variables';
 @import 'colors';
 @import 'typography';
@@ -11,210 +7,72 @@
 @import 'animations';
 
 // ============================================================================
-// PAGE CONTAINER
+// ADMIN DASHBOARD PAGE - DARK THEME (User Dashboard Style)
 // ============================================================================
 
-.admin-dashboard {
+.dashboard-page {
   min-height: 100vh;
   width: 100%;
   max-width: 100%;
   background: $persian-blue-950;
   overflow-x: hidden;
-  position: relative;
-
-  // Ambient background orbs
-  &::before,
-  &::after {
-    content: '';
-    position: fixed;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  &::before {
-    top: -20%;
-    left: -10%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba($persian-blue-600, 0.15) 0%, transparent 70%);
-    animation: float-slow 20s ease-in-out infinite;
-  }
-
-  &::after {
-    bottom: -10%;
-    right: -10%;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba($persian-blue-500, 0.1) 0%, transparent 70%);
-    animation: float-medium 15s ease-in-out infinite;
-  }
-}
-
-.dashboard-content-wrapper {
-  position: relative;
-  z-index: 1;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: $spacing-8 $spacing-6;
-
-  @include tablet {
-    padding: $spacing-6 $spacing-4;
-  }
-
-  @include mobile {
-    padding: $spacing-4 $spacing-3;
-  }
+  @include fade-in(400ms);
 }
 
 // ============================================================================
-// HEADER SECTION
+// COMPACT HEADER
 // ============================================================================
 
 .dashboard-header {
-  margin-bottom: $spacing-10;
-  padding: $spacing-8;
+  width: 100%;
+  padding: $spacing-8 $spacing-4;
   position: relative;
   overflow: hidden;
-  animation: fadeInUp 0.5s ease-out forwards;
 
-  // Glassmorphism effect
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-
-  // Gradient accent line
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, $persian-blue-500, $persian-blue-400, $persian-blue-600);
-    border-radius: 24px 24px 0 0;
-  }
-
-  @include tablet {
-    padding: $spacing-6;
-    margin-bottom: $spacing-8;
-  }
+  // Dark gradient background with glow effects
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba($persian-blue-600, 0.3), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-500, 0.2), transparent 50%),
+    linear-gradient(180deg, $persian-blue-900 0%, $persian-blue-950 100%);
 
   @include mobile {
-    padding: $spacing-5;
-    margin-bottom: $spacing-6;
-    border-radius: 20px;
+    padding: $spacing-6 $spacing-3;
   }
 }
 
-.header-content {
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
   @include flex-between;
   align-items: center;
   gap: $spacing-6;
+  position: relative;
+  z-index: 1;
 
   @include tablet {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-.header-left {
-  @include flex-start;
-  gap: $spacing-5;
-  align-items: center;
-
-  @include mobile {
     flex-direction: column;
     align-items: flex-start;
     gap: $spacing-4;
   }
 }
 
-.header-icon-wrapper {
-  position: relative;
-  @include flex-center;
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
-  border: 1px solid rgba($persian-blue-400, 0.3);
-  border-radius: $radius-full;
-  animation: pulse-glow-subtle 3s ease-in-out infinite;
-
-  @include mobile {
-    width: 64px;
-    height: 64px;
-  }
-
-  .icon-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 120%;
-    height: 120%;
-    background: radial-gradient(circle, rgba($persian-blue-400, 0.3) 0%, transparent 70%);
-    border-radius: 50%;
-    opacity: 0.5;
-  }
-
-  mat-icon {
-    position: relative;
-    z-index: 1;
-    font-size: 40px;
-    width: 40px;
-    height: 40px;
-    color: $persian-blue-400;
-    filter: drop-shadow(0 0 10px rgba($persian-blue-400, 0.5));
-
-    @include mobile {
-      font-size: 32px;
-      width: 32px;
-      height: 32px;
-    }
-  }
-}
-
-.header-text {
+.header-left {
   @include flex-column;
-  gap: $spacing-2;
-
-  h1 {
-    margin: 0;
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: $font-weight-extrabold;
-    color: $persian-blue-50;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-
-    .highlight {
-      color: $persian-blue-400;
-    }
-  }
-
-  p {
-    margin: 0;
-    font-size: $font-size-base;
-    color: $persian-blue-300;
-    line-height: 1.5;
-
-    @include mobile {
-      font-size: $font-size-sm;
-    }
-  }
+  gap: $spacing-3;
 }
 
-.last-refresh {
+.header-badge {
   @include flex-start;
   gap: $spacing-2;
-  align-items: center;
-  margin-top: $spacing-2;
   padding: $spacing-1 $spacing-3;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   border-radius: $radius-full;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   width: fit-content;
+  color: $persian-blue-200;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
 
   mat-icon {
     font-size: 14px;
@@ -222,20 +80,56 @@
     height: 14px;
     color: $persian-blue-400;
   }
+}
 
-  span {
-    font-size: $font-size-xs;
-    color: $persian-blue-300;
-    font-weight: $font-weight-medium;
+.greeting-section {
+  @include flex-column;
+  gap: $spacing-1;
+}
+
+.greeting-heading {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $persian-blue-50;
+  margin: 0;
+  line-height: 1.2;
+
+  .highlight {
+    color: $persian-blue-400;
+  }
+
+  @include mobile {
+    font-size: $font-size-xl;
+  }
+}
+
+.greeting-subtext {
+  font-size: $font-size-base;
+  color: $persian-blue-300;
+  margin: 0;
+
+  @include mobile {
+    font-size: $font-size-sm;
   }
 }
 
 .header-right {
-  @include flex-center;
+  @include flex-column;
+  align-items: flex-end;
   gap: $spacing-3;
 
   @include tablet {
-    align-self: flex-end;
+    align-items: flex-start;
+    width: 100%;
+  }
+}
+
+.header-actions {
+  @include flex-start;
+  gap: $spacing-3;
+
+  @include mobile {
+    width: 100%;
   }
 }
 
@@ -259,24 +153,27 @@
   }
 }
 
-.refresh-button {
-  width: 48px;
-  height: 48px;
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  border-radius: $radius-md !important;
-  transition: all 0.3s ease !important;
+.refresh-btn {
+  @include flex-center;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: $radius-md;
+  color: $persian-blue-300;
+  cursor: pointer;
+  transition: all 0.3s ease;
 
   mat-icon {
-    color: $persian-blue-300;
-    font-size: 24px;
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
     transition: all 0.3s ease;
   }
 
   &:hover:not(:disabled) {
-    background: rgba($persian-blue-500, 0.2) !important;
-    border-color: rgba($persian-blue-400, 0.4) !important;
-    transform: scale(1.05);
+    background: rgba($persian-blue-500, 0.2);
+    border-color: rgba($persian-blue-400, 0.4);
 
     mat-icon {
       color: $persian-blue-400;
@@ -298,6 +195,31 @@
   to { transform: rotate(360deg); }
 }
 
+.header-features {
+  @include flex-start;
+  gap: $spacing-4;
+
+  @include mobile {
+    gap: $spacing-3;
+    flex-wrap: wrap;
+  }
+
+  .feature-chip {
+    @include flex-start;
+    gap: $spacing-1;
+    color: $persian-blue-300;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+
+    mat-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+      color: $persian-blue-400;
+    }
+  }
+}
+
 // ============================================================================
 // LOADING STATE
 // ============================================================================
@@ -308,31 +230,12 @@
   padding: $spacing-16;
   text-align: center;
   min-height: 400px;
-  animation: fadeIn 0.3s ease-out;
 
   .spinner-wrapper {
-    position: relative;
     margin-bottom: $spacing-6;
 
-    .spinner-glow {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 100px;
-      height: 100px;
-      background: radial-gradient(circle, rgba($persian-blue-500, 0.3) 0%, transparent 70%);
-      border-radius: 50%;
-      animation: pulse-glow 2s ease-in-out infinite;
-    }
-
-    mat-spinner {
-      position: relative;
-      z-index: 1;
-
-      ::ng-deep circle {
-        stroke: $persian-blue-400;
-      }
+    ::ng-deep .mat-mdc-progress-spinner circle {
+      stroke: $persian-blue-400;
     }
   }
 
@@ -354,39 +257,28 @@
   padding: $spacing-12;
   text-align: center;
   min-height: 400px;
-  animation: fadeIn 0.3s ease-out;
+  max-width: 500px;
+  margin: 0 auto;
 
   // Glass card effect
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(16px);
   border: 1px solid rgba($error-500, 0.2);
   border-radius: 24px;
-  max-width: 500px;
-  margin: 0 auto;
 
   .error-icon-wrapper {
-    position: relative;
     @include flex-center;
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     background: rgba($error-500, 0.1);
     border-radius: 50%;
     margin-bottom: $spacing-6;
 
     mat-icon {
-      font-size: 56px;
-      width: 56px;
-      height: 56px;
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
       color: $error-500;
-      animation: shake 0.5s ease-in-out;
-    }
-
-    .error-glow {
-      position: absolute;
-      width: 140%;
-      height: 140%;
-      background: radial-gradient(circle, rgba($error-500, 0.2) 0%, transparent 70%);
-      border-radius: 50%;
     }
   }
 
@@ -404,16 +296,24 @@
     max-width: 360px;
   }
 
-  .retry-button {
+  .retry-btn {
     @include flex-center;
     gap: $spacing-2;
     padding: $spacing-3 $spacing-6;
-    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
-    color: white !important;
-    border-radius: $radius-md !important;
+    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600);
+    color: white;
+    border: none;
+    border-radius: $radius-md;
     font-weight: $font-weight-semibold;
+    cursor: pointer;
     box-shadow: 0 4px 20px rgba($persian-blue-500, 0.4);
     transition: all 0.3s ease;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
 
     &:hover {
       transform: translateY(-2px);
@@ -422,46 +322,155 @@
   }
 }
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-  20%, 40%, 60%, 80% { transform: translateX(5px); }
-}
-
 // ============================================================================
-// STATS CARDS GRID
+// WIDGETS SECTION
 // ============================================================================
 
-.stats-section {
-  margin-bottom: $spacing-10;
+.widgets-section {
+  width: 100%;
+  max-width: 100%;
+  padding: $spacing-12 $spacing-4;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  // Dark gradient background
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba($persian-blue-800, 0.2), transparent 50%),
+    $persian-blue-950;
+
+  @include tablet {
+    padding: $spacing-10 $spacing-4;
+  }
 
   @include mobile {
-    margin-bottom: $spacing-8;
+    padding: $spacing-8 $spacing-3;
   }
 }
 
-.stat-cards-grid {
+.widgets-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 $spacing-4;
+  box-sizing: border-box;
+
+  @include mobile {
+    padding: 0 $spacing-2;
+  }
+}
+
+.section-header {
+  @include flex-column-center;
+  text-align: center;
+  margin-bottom: $spacing-8;
+  gap: $spacing-3;
+  animation: fadeInUp 0.6s ease-out forwards;
+
+  &.charts-header,
+  &.actions-header {
+    margin-top: $spacing-12;
+
+    @include mobile {
+      margin-top: $spacing-8;
+    }
+  }
+
+  @include mobile {
+    margin-bottom: $spacing-6;
+  }
+}
+
+.section-heading {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-extrabold;
+  color: $persian-blue-50;
+  margin: 0;
+  line-height: 1.2;
+
+  .highlight {
+    color: $persian-blue-400;
+  }
+
+  @include tablet {
+    font-size: $font-size-xl;
+  }
+
+  @include mobile {
+    font-size: $font-size-lg;
+  }
+}
+
+.section-subheading {
+  font-size: $font-size-base;
+  color: $persian-blue-300;
+  max-width: 640px;
+  margin: 0;
+  line-height: 1.6;
+
+  @include mobile {
+    font-size: $font-size-sm;
+  }
+}
+
+// ============================================================================
+// WIDGETS GRID
+// ============================================================================
+
+.widgets-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: $spacing-6;
 
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(2, 1fr);
+  &.stats-grid {
+    @media (max-width: 1100px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mobile {
+      grid-template-columns: 1fr;
+      gap: $spacing-4;
+    }
   }
 
-  @include mobile {
-    grid-template-columns: 1fr;
-    gap: $spacing-4;
+  &.charts-grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    @include mobile {
+      grid-template-columns: 1fr;
+      gap: $spacing-4;
+    }
+  }
+
+  &.actions-grid {
+    @media (max-width: 1100px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mobile {
+      grid-template-columns: 1fr;
+      gap: $spacing-4;
+    }
   }
 }
 
-.stat-card {
+// ============================================================================
+// WIDGET CARD - GLASS STYLE
+// ============================================================================
+
+.widget-card {
   position: relative;
-  padding: $spacing-6;
   border-radius: 20px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  cursor: default;
+  padding: $spacing-6;
+  @include flex-column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
 
   // Glassmorphism effect
   background: rgba(255, 255, 255, 0.06);
@@ -470,34 +479,43 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 
-  // Shine effect on hover
   &::before {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.5s ease;
-    pointer-events: none;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $persian-blue-500, $persian-blue-400);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
   }
 
   &:hover {
-    transform: translateY(-8px);
+    transform: translateY(-10px);
     background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba($persian-blue-500, 0.15);
+    border-color: rgba($persian-blue-400, 0.3);
+    box-shadow:
+      0 20px 50px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba($persian-blue-500, 0.15);
 
     &::before {
-      left: 100%;
+      transform: scaleX(1);
     }
 
-    .stat-icon-wrapper {
+    .widget-icon-wrapper {
       transform: scale(1.1);
     }
 
-    .stat-trend {
-      transform: translateX(4px);
+    .widget-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .icon-glow {
+      opacity: 1;
+      transform: scale(1.5);
     }
   }
 
@@ -513,148 +531,157 @@
   }
 }
 
-.stat-card-inner {
-  @include flex-start;
-  gap: $spacing-5;
-  align-items: flex-start;
+// ============================================================================
+// WIDGET ICON WRAPPER
+// ============================================================================
 
-  @include mobile {
-    gap: $spacing-4;
-  }
-}
-
-.stat-icon-wrapper {
+.widget-icon-wrapper {
   position: relative;
   @include flex-center;
   width: 72px;
   height: 72px;
+  background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
+  border: 1px solid rgba($persian-blue-400, 0.3);
   border-radius: $radius-full;
-  flex-shrink: 0;
-  transition: all 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: $spacing-4;
+
+  &.small {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0;
+
+    .widget-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  // Color variants
+  &.users {
+    background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
+    border-color: rgba($persian-blue-400, 0.3);
+
+    .widget-icon { color: $persian-blue-400; }
+    .icon-glow { background: radial-gradient(circle, rgba($persian-blue-400, 0.4) 0%, transparent 70%); }
+  }
+
+  &.ratings {
+    background: linear-gradient(135deg, rgba($warning-500, 0.3), rgba($warning-600, 0.2));
+    border-color: rgba($warning-400, 0.3);
+
+    .widget-icon { color: $warning-400; }
+    .icon-glow { background: radial-gradient(circle, rgba($warning-400, 0.4) 0%, transparent 70%); }
+  }
+
+  &.reports {
+    background: linear-gradient(135deg, rgba($error-500, 0.3), rgba($error-600, 0.2));
+    border-color: rgba($error-400, 0.3);
+
+    .widget-icon { color: $error-400; }
+    .icon-glow { background: radial-gradient(circle, rgba($error-400, 0.4) 0%, transparent 70%); }
+  }
+
+  &.tickets {
+    background: linear-gradient(135deg, rgba($success-500, 0.3), rgba($success-600, 0.2));
+    border-color: rgba($success-400, 0.3);
+
+    .widget-icon { color: $success-400; }
+    .icon-glow { background: radial-gradient(circle, rgba($success-400, 0.4) 0%, transparent 70%); }
+  }
+
+  &.routes {
+    background: linear-gradient(135deg, rgba($success-500, 0.3), rgba($success-600, 0.2));
+    border-color: rgba($success-400, 0.3);
+
+    .widget-icon { color: $success-400; }
+    .icon-glow { background: radial-gradient(circle, rgba($success-400, 0.4) 0%, transparent 70%); }
+  }
 
   @include mobile {
     width: 60px;
     height: 60px;
   }
+}
 
-  .icon-glow {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    opacity: 0.5;
+.icon-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 100%;
+  height: 100%;
+  border-radius: $radius-full;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.widget-icon {
+  position: relative;
+  z-index: 1;
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  color: $persian-blue-400;
+  transition: all 0.4s ease;
+
+  @include mobile {
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
   }
+}
+
+.widget-title {
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: $persian-blue-50;
+  margin: 0 0 $spacing-2 0;
+  line-height: 1.3;
+
+  @include mobile {
+    font-size: $font-size-sm;
+  }
+}
+
+.widget-description {
+  font-size: $font-size-sm;
+  color: $persian-blue-300;
+  line-height: 1.6;
+  margin: 0;
+
+  @include mobile {
+    font-size: $font-size-xs;
+  }
+}
+
+.widget-arrow {
+  @include flex-center;
+  margin-top: $spacing-4;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
 
   mat-icon {
-    position: relative;
-    z-index: 1;
-    font-size: 36px;
-    width: 36px;
-    height: 36px;
-    color: white;
-
-    @include mobile {
-      font-size: 28px;
-      width: 28px;
-      height: 28px;
-    }
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    color: $persian-blue-400;
   }
 }
 
-// Card color variants
-.stat-card {
-  &.users-card {
-    border-color: rgba($persian-blue-400, 0.2);
-
-    &:hover {
-      border-color: rgba($persian-blue-400, 0.4);
-    }
-
-    .stat-icon-wrapper {
-      background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600);
-      box-shadow: 0 8px 24px rgba($persian-blue-500, 0.4);
-
-      .icon-glow {
-        background: radial-gradient(circle, rgba($persian-blue-400, 0.4) 0%, transparent 70%);
-      }
-    }
-  }
-
-  &.ratings-card {
-    border-color: rgba($warning-500, 0.2);
-
-    &:hover {
-      border-color: rgba($warning-500, 0.4);
-    }
-
-    .stat-icon-wrapper {
-      background: linear-gradient(135deg, $warning-500, $warning-600);
-      box-shadow: 0 8px 24px rgba($warning-500, 0.4);
-
-      .icon-glow {
-        background: radial-gradient(circle, rgba($warning-300, 0.4) 0%, transparent 70%);
-      }
-    }
-  }
-
-  &.reports-card {
-    border-color: rgba($error-500, 0.2);
-
-    &:hover {
-      border-color: rgba($error-500, 0.4);
-    }
-
-    .stat-icon-wrapper {
-      background: linear-gradient(135deg, $error-500, $error-600);
-      box-shadow: 0 8px 24px rgba($error-500, 0.4);
-
-      .icon-glow {
-        background: radial-gradient(circle, rgba($error-300, 0.4) 0%, transparent 70%);
-      }
-    }
-  }
-
-  &.tickets-card {
-    border-color: rgba($success-500, 0.2);
-
-    &:hover {
-      border-color: rgba($success-500, 0.4);
-    }
-
-    .stat-icon-wrapper {
-      background: linear-gradient(135deg, $success-500, $success-600);
-      box-shadow: 0 8px 24px rgba($success-500, 0.4);
-
-      .icon-glow {
-        background: radial-gradient(circle, rgba($success-300, 0.4) 0%, transparent 70%);
-      }
-    }
-  }
-}
-
-.stat-details {
-  @include flex-column;
-  gap: $spacing-2;
-  flex: 1;
-  min-width: 0;
-}
+// ============================================================================
+// STAT VALUE & TRENDS
+// ============================================================================
 
 .stat-value {
-  margin: 0;
-  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-size: clamp(2rem, 4vw, 2.5rem);
   font-weight: $font-weight-extrabold;
   color: $persian-blue-50;
   line-height: 1;
+  margin: $spacing-2 0;
   letter-spacing: -0.02em;
-}
-
-.stat-label {
-  margin: 0;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  color: $persian-blue-300;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .stat-trend {
@@ -667,7 +694,6 @@
   width: fit-content;
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
-  transition: transform 0.3s ease;
 
   mat-icon {
     font-size: 14px;
@@ -685,14 +711,12 @@
     background: rgba($warning-500, 0.15);
     color: $warning-300;
     border: 1px solid rgba($warning-500, 0.3);
-    animation: pulse-subtle 2s ease-in-out infinite;
   }
 
   &.error {
     background: rgba($error-500, 0.15);
     color: $error-300;
     border: 1px solid rgba($error-500, 0.3);
-    animation: pulse-subtle 1.5s ease-in-out infinite;
   }
 
   &.info {
@@ -702,107 +726,39 @@
   }
 }
 
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
 // ============================================================================
-// CHARTS SECTION
+// DISTRIBUTION & CHART CARDS
 // ============================================================================
 
-.charts-section {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: $spacing-6;
-  margin-bottom: $spacing-10;
+.distribution-card,
+.chart-card {
+  align-items: stretch;
+  text-align: left;
 
-  @media (max-width: 1000px) {
-    grid-template-columns: 1fr;
-  }
+  .widget-header {
+    @include flex-start;
+    gap: $spacing-3;
+    align-items: center;
+    margin-bottom: $spacing-6;
+    padding-bottom: $spacing-4;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
-  @include mobile {
-    gap: $spacing-4;
-    margin-bottom: $spacing-8;
-  }
-}
-
-.chart-card,
-.distribution-card {
-  position: relative;
-  padding: $spacing-6;
-  border-radius: 20px;
-  overflow: hidden;
-  animation: fadeInUp 0.5s ease 0.4s backwards;
-
-  // Glassmorphism effect
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba($persian-blue-400, 0.2);
-  }
-
-  @include mobile {
-    padding: $spacing-5;
-  }
-}
-
-.card-header {
-  @include flex-between;
-  align-items: center;
-  margin-bottom: $spacing-6;
-  padding-bottom: $spacing-4;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.card-header-left {
-  @include flex-start;
-  gap: $spacing-3;
-  align-items: center;
-
-  .header-icon {
-    @include flex-center;
-    width: 44px;
-    height: 44px;
-    background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
-    border: 1px solid rgba($persian-blue-400, 0.2);
-    border-radius: $radius-md;
-
-    mat-icon {
-      font-size: 24px;
-      width: 24px;
-      height: 24px;
-      color: $persian-blue-400;
+    .widget-title {
+      margin: 0;
     }
   }
-
-  h3 {
-    margin: 0;
-    font-size: $font-size-lg;
-    font-weight: $font-weight-bold;
-    color: $persian-blue-50;
-  }
 }
-
-// ============================================================================
-// RATINGS DISTRIBUTION
-// ============================================================================
 
 .stats-distribution {
   @include flex-column;
   gap: $spacing-3;
+  width: 100%;
 }
 
 .stat-row {
   @include flex-between;
   align-items: center;
-  padding: $spacing-4;
+  padding: $spacing-3 $spacing-4;
   border-radius: $radius-md;
   transition: all 0.3s ease;
   border: 1px solid transparent;
@@ -817,22 +773,20 @@
     align-items: center;
 
     mat-icon {
-      font-size: 24px;
-      width: 24px;
-      height: 24px;
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
     }
 
     .stat-label {
       font-size: $font-size-base;
       font-weight: $font-weight-medium;
       color: $persian-blue-100;
-      text-transform: none;
-      letter-spacing: 0;
     }
   }
 
   .stat-count {
-    font-size: $font-size-2xl;
+    font-size: $font-size-xl;
     font-weight: $font-weight-bold;
     padding: $spacing-1 $spacing-3;
     border-radius: $radius-sm;
@@ -847,10 +801,7 @@
       background: rgba($success-500, 0.15);
     }
 
-    mat-icon {
-      color: $success-300;
-    }
-
+    mat-icon { color: $success-300; }
     .stat-count {
       color: $success-300;
       background: rgba($success-500, 0.15);
@@ -866,10 +817,7 @@
       background: rgba($warning-500, 0.15);
     }
 
-    mat-icon {
-      color: $warning-300;
-    }
-
+    mat-icon { color: $warning-300; }
     .stat-count {
       color: $warning-300;
       background: rgba($warning-500, 0.15);
@@ -885,10 +833,7 @@
       background: rgba($error-500, 0.15);
     }
 
-    mat-icon {
-      color: $error-300;
-    }
-
+    mat-icon { color: $error-300; }
     .stat-count {
       color: $error-300;
       background: rgba($error-500, 0.15);
@@ -902,13 +847,12 @@
 
 .chart-container {
   width: 100%;
-  height: 350px;
-  padding: $spacing-4;
+  height: 280px;
+  padding: $spacing-2;
   position: relative;
 
   @include mobile {
-    height: 280px;
-    padding: $spacing-2;
+    height: 220px;
   }
 
   canvas {
@@ -920,364 +864,64 @@
 .chart-placeholder {
   @include flex-column-center;
   justify-content: center;
-  min-height: 300px;
-  padding: $spacing-8;
+  min-height: 200px;
   text-align: center;
 
   mat-icon {
-    font-size: 64px;
-    width: 64px;
-    height: 64px;
-    color: $persian-blue-600;
-    margin-bottom: $spacing-4;
-    opacity: 0.5;
-  }
-
-  .placeholder-text {
-    margin: 0;
-    font-size: $font-size-lg;
-    font-weight: $font-weight-medium;
-    color: $persian-blue-300;
-  }
-
-  .placeholder-hint {
-    margin: $spacing-2 0 0 0;
-    font-size: $font-size-sm;
-    color: $persian-blue-400;
-  }
-}
-
-// ============================================================================
-// QUICK ACTIONS SECTION
-// ============================================================================
-
-.quick-actions-section {
-  padding: $spacing-8;
-  border-radius: 24px;
-  position: relative;
-  overflow: hidden;
-  animation: fadeInUp 0.5s ease 0.6s backwards;
-
-  // Glassmorphism effect
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-
-  // Subtle gradient overlay
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba($persian-blue-600, 0.05) 0%, transparent 50%);
-    pointer-events: none;
-  }
-
-  @include mobile {
-    padding: $spacing-6;
-    border-radius: 20px;
-  }
-}
-
-.section-header {
-  @include flex-start;
-  gap: $spacing-3;
-  align-items: center;
-  margin-bottom: $spacing-6;
-  position: relative;
-  z-index: 1;
-
-  .section-icon-wrapper {
-    @include flex-center;
+    font-size: 48px;
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
-    border: 1px solid rgba($persian-blue-400, 0.3);
-    border-radius: $radius-md;
-    animation: pulse-glow-subtle 3s ease-in-out infinite;
-
-    mat-icon {
-      font-size: 28px;
-      width: 28px;
-      height: 28px;
-      color: $persian-blue-400;
-    }
-  }
-
-  h2 {
-    margin: 0;
-    font-size: $font-size-xl;
-    font-weight: $font-weight-bold;
-    color: $persian-blue-50;
-  }
-}
-
-.actions-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: $spacing-4;
-  position: relative;
-  z-index: 1;
-
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @include mobile {
-    grid-template-columns: 1fr;
-  }
-}
-
-.action-card {
-  position: relative;
-  @include flex-column-center;
-  gap: $spacing-4;
-  padding: $spacing-6;
-  text-align: center;
-  text-decoration: none;
-  border-radius: 16px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-
-  // Glass effect
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--action-color), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  &:hover {
-    transform: translateY(-8px);
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(var(--action-color-rgb), 0.2);
-
-    &::before {
-      opacity: 1;
-    }
-
-    .action-icon-wrapper {
-      transform: scale(1.15);
-    }
-
-    .action-arrow {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  // Stagger animation
-  @for $i from 1 through 4 {
-    &:nth-child(#{$i}) {
-      animation: fadeInUp 0.4s ease #{0.6s + ($i * 0.1s)} backwards;
-    }
-  }
-}
-
-.action-icon-wrapper {
-  @include flex-center;
-  width: 64px;
-  height: 64px;
-  border-radius: $radius-full;
-  transition: all 0.4s ease;
-  position: relative;
-
-  mat-icon {
-    font-size: 32px;
-    width: 32px;
-    height: 32px;
-    color: white;
-    position: relative;
-    z-index: 1;
-  }
-
-  .icon-glow {
-    position: absolute;
-    width: 120%;
-    height: 120%;
-    border-radius: 50%;
-    opacity: 0.4;
-  }
-}
-
-.action-text {
-  @include flex-column;
-  gap: $spacing-1;
-
-  h3 {
-    margin: 0;
-    font-size: $font-size-base;
-    font-weight: $font-weight-semibold;
-    color: $persian-blue-50;
+    color: $persian-blue-600;
+    margin-bottom: $spacing-3;
+    opacity: 0.5;
   }
 
   p {
     margin: 0;
-    font-size: $font-size-xs;
+    font-size: $font-size-base;
     color: $persian-blue-400;
   }
 }
 
-.action-arrow {
-  @include flex-center;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
-  margin-top: $spacing-2;
+// ============================================================================
+// ACTION CARDS
+// ============================================================================
 
-  mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-    color: $persian-blue-400;
-  }
-}
-
-.action-badge {
-  position: absolute;
-  top: -$spacing-2;
-  right: -$spacing-2;
-  min-width: 24px;
-  height: 24px;
-  @include flex-center;
-  background: $error-500 !important;
-  color: white !important;
-  font-size: 11px !important;
-  font-weight: $font-weight-bold !important;
-  border-radius: $radius-full !important;
-  box-shadow: 0 4px 12px rgba($error-500, 0.5);
-  animation: pulse-subtle 2s ease-in-out infinite;
-  padding: 0 $spacing-1 !important;
-}
-
-// Action card color variants
 .action-card {
-  &.ratings-action {
-    --action-color: #{$warning-500};
-    --action-color-rgb: 255, 152, 0;
-
-    &:hover {
-      border-color: rgba($warning-500, 0.4);
-    }
-
-    .action-icon-wrapper {
-      background: linear-gradient(135deg, $warning-500, $warning-600);
-      box-shadow: 0 8px 24px rgba($warning-500, 0.4);
-
-      .icon-glow {
-        background: radial-gradient(circle, rgba($warning-300, 0.4) 0%, transparent 70%);
-      }
-    }
-  }
-
-  &.reports-action {
-    --action-color: #{$error-500};
-    --action-color-rgb: 244, 67, 54;
-
-    &:hover {
-      border-color: rgba($error-500, 0.4);
-    }
-
-    .action-icon-wrapper {
-      background: linear-gradient(135deg, $error-500, $error-600);
-      box-shadow: 0 8px 24px rgba($error-500, 0.4);
-
-      .icon-glow {
-        background: radial-gradient(circle, rgba($error-300, 0.4) 0%, transparent 70%);
-      }
-    }
-  }
-
-  &.users-action {
-    --action-color: #{$persian-blue-500};
-    --action-color-rgb: 91, 100, 249;
-
-    &:hover {
-      border-color: rgba($persian-blue-500, 0.4);
-    }
-
-    .action-icon-wrapper {
-      background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600);
-      box-shadow: 0 8px 24px rgba($persian-blue-500, 0.4);
-
-      .icon-glow {
-        background: radial-gradient(circle, rgba($persian-blue-400, 0.4) 0%, transparent 70%);
-      }
-    }
-  }
-
-  &.routes-action {
-    --action-color: #{$success-500};
-    --action-color-rgb: 76, 175, 80;
-
-    &:hover {
-      border-color: rgba($success-500, 0.4);
-    }
-
-    .action-icon-wrapper {
-      background: linear-gradient(135deg, $success-500, $success-600);
-      box-shadow: 0 8px 24px rgba($success-500, 0.4);
-
-      .icon-glow {
-        background: radial-gradient(circle, rgba($success-300, 0.4) 0%, transparent 70%);
-      }
-    }
+  .action-badge {
+    position: absolute;
+    top: -$spacing-2;
+    right: -$spacing-2;
+    min-width: 24px;
+    height: 24px;
+    @include flex-center;
+    background: $error-500;
+    color: white;
+    font-size: 11px;
+    font-weight: $font-weight-bold;
+    border-radius: $radius-full;
+    box-shadow: 0 4px 12px rgba($error-500, 0.5);
+    animation: pulse-subtle 2s ease-in-out infinite;
+    padding: 0 $spacing-1;
   }
 }
 
-// ============================================================================
-// RESPONSIVE ADJUSTMENTS
-// ============================================================================
-
-@include tablet {
-  .stat-card {
-    @for $i from 1 through 4 {
-      &:nth-child(#{$i}) {
-        animation-delay: #{($i - 1) * 0.08s};
-      }
-    }
-  }
-}
-
-@include mobile {
-  .stat-card {
-    @for $i from 1 through 4 {
-      &:nth-child(#{$i}) {
-        animation-delay: #{($i - 1) * 0.05s};
-      }
-    }
-  }
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
 // ============================================================================
-// KEYFRAME ANIMATIONS
+// ANIMATIONS
 // ============================================================================
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }

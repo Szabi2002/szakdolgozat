@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import {
   Rating,
   RatingStats,
   CreateRatingDto,
   UpdateRatingDto,
-  ModerateRatingDto,
-  PhotoUploadResponse
+  ModerateRatingDto
 } from '../models/rating.model';
 import { environment } from '../../../environments/environment';
 
@@ -114,39 +113,6 @@ export class RatingsService {
   }
 
   /**
-   * Upload photos for a rating
-   * @param ratingId Rating identifier
-   * @param photos Array of image files
-   * @returns Array of photo URLs
-   */
-  uploadPhotos(ratingId: string, photos: File[]): Observable<string[]> {
-    const formData = new FormData();
-    photos.forEach(photo => {
-      formData.append('photos', photo);
-    });
-
-    return this.http.post<PhotoUploadResponse>(
-      `${this.apiUrl}/${ratingId}/photos`,
-      formData
-    ).pipe(
-      map(response => response.urls),
-      catchError(this.handleError)
-    );
-  }
-
-  /**
-   * Delete a photo from a rating
-   * @param ratingId Rating identifier
-   * @param photoId Photo identifier (filename)
-   * @returns Observable void
-   */
-  deletePhoto(ratingId: string, photoId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${ratingId}/photos/${photoId}`).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  /**
    * Moderate a rating (admin only)
    * @param id Rating identifier
    * @param dto Moderation data
@@ -164,6 +130,17 @@ export class RatingsService {
    */
   getPendingRatings(): Observable<Rating[]> {
     return this.http.get<Rating[]>(`${this.apiUrl}/admin/pending`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * Get all ratings for admin moderation (admin only)
+   * Returns ratings with all statuses (pending, approved, rejected)
+   * @returns Array of all ratings
+   */
+  getAllRatingsForAdmin(): Observable<Rating[]> {
+    return this.http.get<Rating[]>(`${this.apiUrl}/admin/all`).pipe(
       catchError(this.handleError)
     );
   }

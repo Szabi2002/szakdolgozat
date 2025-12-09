@@ -61,13 +61,15 @@ export class RatingsModerationComponent implements OnInit {
     this.isLoading.set(true);
     this.errorMessage.set('');
 
-    this.ratingsService.getPendingRatings().subscribe({
+    // Use getAllRatingsForAdmin to get all ratings (pending, approved, rejected)
+    // This enables proper filtering across all tabs
+    this.ratingsService.getAllRatingsForAdmin().subscribe({
       next: (ratings) => {
         this.allRatings.set(ratings);
         this.isLoading.set(false);
       },
       error: (error) => {
-        this.errorMessage.set(error?.message || 'Nem sikerult betolteni az ertekeléseket. Probáld újra.');
+        this.errorMessage.set(error?.message || 'Nem sikerült betölteni az értékeléseket. Próbáld újra.');
         this.isLoading.set(false);
       }
     });

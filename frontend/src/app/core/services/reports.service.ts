@@ -111,30 +111,6 @@ export class ReportsService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  /**
-   * Upload photos to a report
-   * Rate limited: 10 uploads per hour
-   * Maximum 5 photos per report
-   * @param reportId Report ID
-   * @param photoUrls Array of photo URLs from Supabase storage
-   * @returns Observable of created photo URLs
-   */
-  uploadPhotos(reportId: string, photoUrls: string[]): Observable<string[]> {
-    return this.http.post<string[]>(`${this.apiUrl}/${reportId}/photos`, {
-      photoUrls
-    });
-  }
-
-  /**
-   * Delete a photo from a report
-   * @param reportId Report ID
-   * @param photoId Photo ID
-   * @returns Observable of void
-   */
-  deletePhoto(reportId: string, photoId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${reportId}/photos/${photoId}`);
-  }
-
   // ===================================
   // ADMIN METHODS (6 endpoints)
   // ===================================
@@ -239,26 +215,6 @@ export class ReportsService {
    */
   canDeleteReport(report: Report): boolean {
     return report.status === 'pending';
-  }
-
-  /**
-   * Check if more photos can be added to a report
-   * @param report Report to check
-   * @returns True if less than 5 photos and report is pending
-   */
-  canAddPhotos(report: Report): boolean {
-    const photoCount = report.photos?.length || 0;
-    return report.status === 'pending' && photoCount < 5;
-  }
-
-  /**
-   * Get remaining photo slots for a report
-   * @param report Report to check
-   * @returns Number of photos that can still be added
-   */
-  getRemainingPhotoSlots(report: Report): number {
-    const photoCount = report.photos?.length || 0;
-    return Math.max(0, 5 - photoCount);
   }
 
   /**

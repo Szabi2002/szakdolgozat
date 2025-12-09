@@ -27,7 +27,6 @@ import { UpdateRatingDto } from './dto/update-rating.dto';
 import { ModerateRatingDto } from './dto/moderate-rating.dto';
 import { RatingResponseDto, RouteRatingStatsDto } from './dto/rating-response.dto';
 import { Rating } from './entities/rating.entity';
-import { RatingPhoto } from './entities/rating-photo.entity';
 
 @ApiTags('ratings')
 @Controller('ratings')
@@ -95,6 +94,32 @@ export class RatingsController {
   async getPendingRatings(): Promise<any[]> {
     return this.ratingsService.getPendingRatings();
   }
+
+  /**
+   * ADMIN: Get all ratings for moderation (all statuses)
+   */
+  @Get('admin/all')
+  @UseGuards(AdminGuard)
+  @ApiOperation({
+    summary: 'Get all ratings (Admin only)',
+    description: 'Get all ratings for moderation regardless of status. Admin only.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'List of all ratings',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - Admin only',
+  })
+  async getAllRatingsForAdmin(): Promise<any[]> {
+    return this.ratingsService.getAllRatings();
+  }
+
   /**
    * Get all approved ratings for a specific route
    */
@@ -344,101 +369,4 @@ export class RatingsController {
     const userId = req.user.id;
     await this.ratingsService.delete(id, userId);
   }
-
-  /**
-   * Upload photos to a rating
-   */
-  @Post(':id/photos')
-  @Throttle({ default: { ttl: 3600000, limit: 10 } }) // 10 photo uploads per hour
-  @ApiOperation({
-    summary: 'Upload photos to rating',
-    description: 'Upload photos to a pending rating. Maximum 5 photos per rating. Expects array of photo URLs from Supabase Storage.',
-  })
-  @ApiParam({
-    name: 'id',
-    description: 'Rating UUID',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
-  @ApiResponse({
-    status: 201,
-    description: 'Photos uploaded successfully',
-    type: [RatingPhoto],
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad request - Too many photos or rating not pending',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized',
-  })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden - You can only upload photos to your own ratings',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Rating not found',
-  })
-  @ApiResponse({
-    status: 429,
-    description: 'Too many requests - Rate limit exceeded',
-  })
-  async uploadPhotos(
-    @Req() req: any,
-    @Param('id') id: string,
-    @Body('photoUrls') photoUrls: string[],
-  ): Promise<RatingPhoto[]> {
-    const userId = req.user.id;
-    return this.ratingsService.uploadPhotos(id, userId, photoUrls);
-  }
-
-  /**
-   * Delete a photo from a rating
-   */
-  @Delete(':id/photos/:photoId')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({
-    summary: 'Delete photo from rating',
-    description: 'Delete a specific photo from a pending rating.',
-  })
-  @ApiParam({
-    name: 'id',
-    description: 'Rating UUID',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
-  @ApiParam({
-    name: 'photoId',
-    description: 'Photo UUID',
-    example: '123e4567-e89b-12d3-a456-426614174001',
-  })
-  @ApiResponse({
-    status: 204,
-    description: 'Photo deleted successfully',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad request - Photos can only be deleted from pending ratings',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized',
-  })
-  @ApiResponse({
-    status: 403,
-    description: 'Forbidden - You can only delete photos from your own ratings',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Rating or photo not found',
-  })
-  async deletePhoto(
-    @Req() req: any,
-    @Param('id') id: string,
-    @Param('photoId') photoId: string,
-  ): Promise<void> {
-    const userId = req.user.id;
-    await this.ratingsService.deletePhoto(id, photoId, userId);
-  }
-
 }

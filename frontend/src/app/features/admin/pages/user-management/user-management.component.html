@@ -6,24 +6,31 @@
     <div class="orb orb-3"></div>
   </div>
 
-  <!-- Page Header -->
-  <div class="page-header">
-    <div class="header-content">
-      <div class="header-icon-wrapper">
-        <mat-icon class="header-icon">people</mat-icon>
+  <!-- Compact Header -->
+  <section class="dashboard-header">
+    <div class="header-container">
+      <div class="header-left">
+        <div class="header-badge">
+          <mat-icon>people</mat-icon>
+          <span>Felhasznalok</span>
+        </div>
+        <div class="greeting-section">
+          <h1 class="greeting-heading">
+            Felhasznalok <span class="highlight">Kezelese</span>
+          </h1>
+          <p class="greeting-subtext">Felhasznaloi szerepkorok es fiok adminisztracio</p>
+        </div>
       </div>
-      <div class="header-text">
-        <h1>Felhasznalok Kezelese</h1>
-        <p>Felhasznaloi szerepkorok es fiok adminisztracio</p>
+      <div class="header-right">
+        <div class="header-actions">
+          <div class="stat-badge">
+            <mat-icon>groups</mat-icon>
+            <span>{{ users.length }} felhasznalo</span>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="header-actions">
-      <div class="user-count-badge">
-        <mat-icon>groups</mat-icon>
-        <span>{{ users.length }} felhasznalo</span>
-      </div>
-    </div>
-  </div>
+  </section>
 
   <!-- Search and Filter Section -->
   <div class="controls-section">

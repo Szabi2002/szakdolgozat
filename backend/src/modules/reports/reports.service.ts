@@ -7,7 +7,6 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { SupabaseService } from '@common/supabase/supabase.service';
-import { FileUploadValidator } from '@common/validators/file-upload.validator';
 import { InputSanitizer } from '@common/validators/input-sanitizer';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
@@ -20,7 +19,6 @@ import {
   CriticalReportsQueueDto,
 } from './dto/report-response.dto';
 import { Report, ReportStatus, ReportPriority } from './entities/report.entity';
-import { ReportPhoto } from './entities/report-photo.entity';
 
 @Injectable()
 export class ReportsService {
@@ -560,138 +558,6 @@ export class ReportsService {
       }
       this.logger.error(`Error deleting report: ${error.message}`, error.stack);
       throw new InternalServerErrorException('Failed to delete report');
-    }
-  }
-
-  /**
-   * Uploads photos to a report
-   * Maximum 5 photos per report (enforced by database trigger)
-   * Photos must be uploaded to Supabase Storage bucket 'report-photos'
-   * Only the owner can upload photos to their pending reports
-   * @param reportId - Report ID
-   * @param userId - User ID (for authorization)
-   * @param photoUrls - Array of photo URLs from Supabase Storage
-   * @returns Array of created photo records
-   * @throws NotFoundException if report doesn't exist
-   * @throws ForbiddenException if user doesn't own the report
-   * @throws BadRequestException if report is not pending or too many photos
-   */
-  async uploadPhotos(
-    reportId: string,
-    userId: string,
-    photoUrls: string[],
-  ): Promise<ReportPhoto[]> {
-    try {
-      // SECURITY: Validate photo URLs before processing
-      FileUploadValidator.validatePhotoUrls(photoUrls);
-
-      // Check report exists and belongs to user
-      const existing = await this.findOne(reportId);
-
-      if (existing.user_id !== userId) {
-        throw new ForbiddenException('You can only upload photos to your own reports');
-      }
-
-      if (existing.status !== 'pending') {
-        throw new BadRequestException('Photos can only be added to pending reports');
-      }
-
-      // Check current photo count
-      const currentPhotoCount = existing.photos?.length || 0;
-      const newPhotoCount = photoUrls.length;
-
-      if (currentPhotoCount + newPhotoCount > 5) {
-        throw new BadRequestException(
-          `Cannot add ${newPhotoCount} photos. Maximum 5 photos per report. Currently have ${currentPhotoCount} photos.`,
-        );
-      }
-
-      const supabase = this.supabaseService.getClient();
-
-      // Prepare photo records
-      const photoRecords = photoUrls.map((url) => ({
-        report_id: reportId,
-        photo_url: url,
-      }));
-
-      const { data, error } = await supabase
-        .from('report_photos')
-        .insert(photoRecords)
-        .select();
-
-      if (error) {
-        // Check if it's the 5 photo limit trigger error
-        if (error.message?.includes('more than 5 photos')) {
-          throw new BadRequestException('Cannot add more than 5 photos to a report');
-        }
-        this.logger.error(`Failed to upload photos: ${error.message}`, error);
-        throw new InternalServerErrorException('Failed to upload photos');
-      }
-
-      this.logger.log(`Uploaded ${photoUrls.length} photos to report ${reportId}`);
-      return data || [];
-    } catch (error) {
-      if (
-        error instanceof NotFoundException ||
-        error instanceof ForbiddenException ||
-        error instanceof BadRequestException ||
-        error instanceof InternalServerErrorException
-      ) {
-        throw error;
-      }
-      this.logger.error(`Error uploading photos: ${error.message}`, error.stack);
-      throw new InternalServerErrorException('Failed to upload photos');
-    }
-  }
-
-  /**
-   * Deletes a photo from a report
-   * Only the owner can delete photos from their pending reports
-   * @param reportId - Report ID
-   * @param photoId - Photo ID to delete
-   * @param userId - User ID (for authorization)
-   * @throws NotFoundException if report or photo doesn't exist
-   * @throws ForbiddenException if user doesn't own the report
-   * @throws BadRequestException if report is not pending
-   */
-  async deletePhoto(reportId: string, photoId: string, userId: string): Promise<void> {
-    try {
-      // Check report exists and belongs to user
-      const existing = await this.findOne(reportId);
-
-      if (existing.user_id !== userId) {
-        throw new ForbiddenException('You can only delete photos from your own reports');
-      }
-
-      if (existing.status !== 'pending') {
-        throw new BadRequestException('Photos can only be deleted from pending reports');
-      }
-
-      const supabase = this.supabaseService.getClient();
-
-      const { error } = await supabase
-        .from('report_photos')
-        .delete()
-        .eq('id', photoId)
-        .eq('report_id', reportId);
-
-      if (error) {
-        this.logger.error(`Failed to delete photo: ${error.message}`, error);
-        throw new InternalServerErrorException('Failed to delete photo');
-      }
-
-      this.logger.log(`Photo ${photoId} deleted from report ${reportId}`);
-    } catch (error) {
-      if (
-        error instanceof NotFoundException ||
-        error instanceof ForbiddenException ||
-        error instanceof BadRequestException ||
-        error instanceof InternalServerErrorException
-      ) {
-        throw error;
-      }
-      this.logger.error(`Error deleting photo: ${error.message}`, error.stack);
-      throw new InternalServerErrorException('Failed to delete photo');
     }
   }
 

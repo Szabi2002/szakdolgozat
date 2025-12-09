@@ -124,53 +124,24 @@
               <mat-icon>arrow_back</mat-icon>
               Vissza
             </button>
-            <button mat-raised-button color="primary" matStepperNext [disabled]="detailsForm.invalid">
-              Következő
-              <mat-icon>arrow_forward</mat-icon>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="onSubmit()"
+              [disabled]="detailsForm.invalid || isSubmitting"
+            >
+              <mat-spinner *ngIf="isSubmitting" diameter="20" class="inline-spinner"></mat-spinner>
+              <span *ngIf="!isSubmitting">
+                <mat-icon>send</mat-icon>
+                Bejelentés küldése
+              </span>
+            </button>
+            <button mat-button (click)="onCancel()" [disabled]="isSubmitting">
+              Mégse
             </button>
           </div>
         </div>
       </form>
-    </mat-step>
-
-    <!-- Step 3: Photos (optional) -->
-    <mat-step>
-      <ng-template matStepLabel>Fotók (opcionális)</ng-template>
-
-      <div class="step-content">
-        <h2>Adj hozzá fotókat a bejelentésedhez</h2>
-        <p class="step-description">A fotók segítenek megérteni és gyorsabban megoldani a problémát (maximum 5 fotó)</p>
-
-        <app-photo-upload
-          [maxPhotos]="5"
-          [maxSizeBytes]="5242880"
-          [acceptedTypes]="['image/jpeg', 'image/png', 'image/webp']"
-          (photosChange)="onPhotosChange($event)"
-          (photosError)="onPhotoError($event)"
-        ></app-photo-upload>
-
-        <div class="step-actions">
-          <button mat-button matStepperPrevious>
-            <mat-icon>arrow_back</mat-icon>
-            Vissza
-          </button>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="onSubmit()"
-            [disabled]="isSubmitting"
-          >
-            <mat-spinner *ngIf="isSubmitting" diameter="20" class="inline-spinner"></mat-spinner>
-            <span *ngIf="!isSubmitting">
-              <mat-icon>send</mat-icon>
-              Bejelentés küldése
-            </span>
-          </button>
-          <button mat-button (click)="onCancel()" [disabled]="isSubmitting">
-            Mégse
-          </button>
-        </div>
-      </div>
     </mat-step>
   </mat-stepper>
 </div>
