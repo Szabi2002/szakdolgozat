@@ -76,7 +76,8 @@
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
       img-src 'self' data: https: blob:;
-      connect-src 'self' https://*.supabase.co https://kozlekedesi-jegykezelo-backend-production.up.railway.app https://api.mapbox.com https://*.tiles.mapbox.com;
+      connect-src 'self' https://*.supabase.co https://kozlekedesi-jegykezelo-backend-production.up.railway.app https://api.mapbox.com https://*.tiles.mapbox.com https://events.mapbox.com;
+      worker-src 'self' blob:;
       frame-ancestors 'none';
       base-uri 'self';
       form-action 'self';

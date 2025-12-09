@@ -1,20 +1,28 @@
 <div class="callback-page">
-  <!-- Callback Panel -->
   <div class="callback-panel">
     <div class="callback-content">
       <!-- Logo -->
-      <mat-icon class="logo">directions_bus</mat-icon>
+      <div class="logo-wrapper">
+        <div class="icon-glow"></div>
+        <mat-icon class="logo">directions_bus</mat-icon>
+      </div>
 
       <!-- Loading State -->
       <div *ngIf="!errorMessage" class="loading-container">
-        <mat-spinner diameter="80" class="loading-spinner"></mat-spinner>
+        <div class="spinner-wrapper">
+          <div class="spinner-glow"></div>
+          <mat-spinner diameter="80" class="loading-spinner"></mat-spinner>
+        </div>
         <h2>Bejelentkezés folyamatban...</h2>
         <p class="subtitle">Kérjük, várj, amíg hitelesítjük a bejelentkezésedet</p>
       </div>
 
       <!-- Error State -->
       <div *ngIf="errorMessage" class="error-container">
-        <mat-icon class="error-icon">error</mat-icon>
+        <div class="error-icon-wrapper">
+          <div class="error-glow"></div>
+          <mat-icon class="error-icon">error</mat-icon>
+        </div>
         <h2>Bejelentkezés sikertelen</h2>
         <div class="error-message">
           <mat-icon>error_outline</mat-icon>
@@ -25,9 +33,8 @@
         </p>
         <button
           mat-raised-button
-          color="primary"
           routerLink="/login"
-          class="full-width action-button"
+          class="action-button"
         >
           <mat-icon>arrow_back</mat-icon>
           <span>Vissza a bejelentkezéshez</span>
@@ -35,7 +42,7 @@
       </div>
 
       <!-- Footer -->
-      <p class="footer-text">
+      <p class="footer-text" *ngIf="errorMessage">
         Probléma merült fel?
         <a href="mailto:info&#64;kozlekedes.hu">Segítünk</a>
       </p>

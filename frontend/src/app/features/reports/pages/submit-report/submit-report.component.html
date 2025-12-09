@@ -1,50 +1,54 @@
 <div class="submit-report-page">
-  <!-- Breadcrumb -->
-  <div class="breadcrumb">
-    <a routerLink="/" class="breadcrumb-link" aria-label="Vissza a főoldalra">
-      <mat-icon>home</mat-icon>
-      Főoldal
-    </a>
-    <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
-    <a (click)="navigateToMyReports()" class="breadcrumb-link" role="button" tabindex="0" aria-label="Vissza a bejelentésekhez">
-      Bejelentések
-    </a>
-    <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
-    <span class="breadcrumb-current">Új Bejelentés</span>
-  </div>
+  <div class="content-wrapper">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a routerLink="/" class="breadcrumb-link" aria-label="Vissza a főoldalra">
+        <mat-icon>home</mat-icon>
+        Főoldal
+      </a>
+      <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+      <a (click)="navigateToMyReports()" class="breadcrumb-link" role="button" tabindex="0" aria-label="Vissza a bejelentésekhez">
+        Bejelentések
+      </a>
+      <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+      <span class="breadcrumb-current">Új Bejelentés</span>
+    </div>
 
-  <!-- Page Header -->
-  <div class="page-header">
-    <div class="header-background"></div>
-    <div class="header-content">
-      <div class="header-left">
-        <div class="header-icon">
-          <mat-icon>report_problem</mat-icon>
-        </div>
-        <div class="header-text">
-          <h1>Új Bejelentés</h1>
-          <p class="header-subtitle">Segíts javítani a szolgáltatást a problémák bejelentésével</p>
+    <!-- Page Header (Dashboard Style) -->
+    <div class="page-header">
+      <div class="header-content">
+        <div class="header-left">
+          <div class="header-icon-wrapper">
+            <div class="icon-glow"></div>
+            <mat-icon>report_problem</mat-icon>
+          </div>
+          <div class="header-text">
+            <h1>Új Bejelentés</h1>
+            <p class="header-subtitle">Segíts javítani a szolgáltatást a problémák bejelentésével</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Info Banner -->
-  <div class="info-banner">
-    <mat-icon>info</mat-icon>
-    <div class="info-content">
-      <span class="info-title">Mire kell figyelni?</span>
-      <span class="info-text">Légy pontos és részletes. Minél több információt adsz meg, annál gyorsabban tudunk segíteni.</span>
+    <!-- Info Banner -->
+    <div class="info-banner">
+      <div class="info-icon-wrapper">
+        <mat-icon>info</mat-icon>
+      </div>
+      <div class="info-content">
+        <span class="info-title">Mire kell figyelni?</span>
+        <span class="info-text">Légy pontos és részletes. Minél több információt adsz meg, annál gyorsabban tudunk segíteni.</span>
+      </div>
     </div>
-  </div>
 
-  <!-- Report Form Card -->
-  <div class="form-container">
-    <app-report-form
-      [prefilledRouteId]="prefilledRouteId"
-      [prefilledStopId]="prefilledStopId"
-      (submitted)="onSubmitted($event)"
-      (cancelled)="onCancelled()"
-    ></app-report-form>
+    <!-- Report Form Card -->
+    <div class="form-container">
+      <app-report-form
+        [prefilledRouteId]="prefilledRouteId"
+        [prefilledStopId]="prefilledStopId"
+        (submitted)="onSubmitted($event)"
+        (cancelled)="onCancelled()"
+      ></app-report-form>
+    </div>
   </div>
 </div>

@@ -1,7 +1,18 @@
-@import '../../../../../styles/variables';
-@import '../../../../../styles/colors';
-@import '../../../../../styles/typography';
-@import '../../../../../styles/mixins';
+// ============================================================================
+// CALLBACK PAGE - DARK GLASSMORPHISM THEME
+// ============================================================================
+
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+@import 'persian-blue';
+@import 'glassmorphism';
+@import 'animations';
+
+// ============================================================================
+// PAGE CONTAINER
+// ============================================================================
 
 .callback-page {
   display: flex;
@@ -9,16 +20,50 @@
   align-items: center;
   min-height: 100vh;
   width: 100%;
-  background: $gradient-hero;
-  @include fade-in(400ms);
+  background: $persian-blue-950;
+  position: relative;
+  overflow: hidden;
+
+  // Ambient background orbs
+  &::before,
+  &::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &::before {
+    top: -20%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba($persian-blue-600, 0.15) 0%, transparent 70%);
+    animation: float-slow 20s ease-in-out infinite;
+  }
+
+  &::after {
+    bottom: -10%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba($persian-blue-500, 0.1) 0%, transparent 70%);
+    animation: float-medium 15s ease-in-out infinite;
+  }
 }
 
-// Callback Panel (Centered)
+// ============================================================================
+// CALLBACK PANEL
+// ============================================================================
+
 .callback-panel {
   @include flex-column-center;
   padding: $spacing-6;
   width: 100%;
   max-width: 600px;
+  position: relative;
+  z-index: 1;
 
   @include desktop {
     padding: $spacing-16;
@@ -27,155 +72,298 @@
 
 .callback-content {
   width: 100%;
-  max-width: 520px;
+  max-width: 480px;
   @include flex-column;
   align-items: center;
-  @include slide-up(500ms, 30px, 100ms);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+// ============================================================================
+// LOGO ICON
+// ============================================================================
+
+.logo-wrapper {
+  position: relative;
+  @include flex-center;
+  width: 100px;
+  height: 100px;
+  margin-bottom: $spacing-8;
+  background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
+  border: 1px solid rgba($persian-blue-400, 0.3);
+  border-radius: $radius-full;
+  animation: pulse-glow-subtle 3s ease-in-out infinite;
+
+  .icon-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba($persian-blue-400, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
 
   .logo {
-    font-size: 56px;
-    width: 56px;
-    height: 56px;
-    color: $white;
-    margin-bottom: $spacing-8;
-    @include bounce(1s);
-    animation-delay: 400ms;
+    position: relative;
+    z-index: 1;
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: $persian-blue-400;
+    filter: drop-shadow(0 0 15px rgba($persian-blue-400, 0.5));
   }
+}
 
-  // Loading Container
-  .loading-container {
-    width: 100%;
-    @include flex-column;
-    align-items: center;
-    text-align: center;
-    background: $white;
-    padding: $spacing-10;
-    border-radius: $radius-lg;
-    box-shadow: $shadow-lg;
+// ============================================================================
+// LOADING STATE
+// ============================================================================
+
+.loading-container {
+  width: 100%;
+  @include flex-column;
+  align-items: center;
+  text-align: center;
+  padding: $spacing-10;
+  border-radius: 24px;
+  animation: fadeInUp 0.5s ease 0.2s backwards;
+
+  // Glassmorphism effect
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  .spinner-wrapper {
+    position: relative;
+    margin-bottom: $spacing-6;
+
+    .spinner-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba($persian-blue-500, 0.3) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
 
     .loading-spinner {
-      margin-bottom: $spacing-6;
+      position: relative;
+      z-index: 1;
 
       ::ng-deep circle {
-        stroke: $brand-primary;
+        stroke: $persian-blue-400;
       }
-    }
-
-    h2 {
-      @include heading-2;
-      color: $brand-dark;
-      margin-bottom: $spacing-4;
-    }
-
-    .subtitle {
-      font-size: $font-size-base;
-      color: $neutral-600;
-      line-height: $line-height-relaxed;
-      max-width: 400px;
     }
   }
 
-  // Error Container
-  .error-container {
-    width: 100%;
-    @include flex-column;
-    align-items: center;
-    text-align: center;
-    background: $white;
-    padding: $spacing-10;
-    border-radius: $radius-lg;
-    box-shadow: $shadow-lg;
+  h2 {
+    margin: 0 0 $spacing-3 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $persian-blue-50;
+  }
+
+  .subtitle {
+    margin: 0;
+    font-size: $font-size-base;
+    color: $persian-blue-300;
+    line-height: $line-height-relaxed;
+    max-width: 360px;
+  }
+}
+
+// ============================================================================
+// ERROR STATE
+// ============================================================================
+
+.error-container {
+  width: 100%;
+  @include flex-column;
+  align-items: center;
+  text-align: center;
+  padding: $spacing-10;
+  border-radius: 24px;
+  animation: fadeInUp 0.5s ease 0.2s backwards;
+
+  // Glassmorphism effect
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba($error-500, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  .error-icon-wrapper {
+    position: relative;
+    @include flex-center;
+    width: 100px;
+    height: 100px;
+    background: rgba($error-500, 0.15);
+    border-radius: 50%;
+    margin-bottom: $spacing-6;
+
+    .error-glow {
+      position: absolute;
+      width: 140%;
+      height: 140%;
+      background: radial-gradient(circle, rgba($error-500, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+    }
 
     .error-icon {
-      font-size: 96px;
-      width: 96px;
-      height: 96px;
+      position: relative;
+      z-index: 1;
+      font-size: 56px;
+      width: 56px;
+      height: 56px;
       color: $error-500;
-      margin-bottom: $spacing-6;
-      @include shake(500ms);
-    }
-
-    h2 {
-      @include heading-2;
-      color: $brand-dark;
-      margin-bottom: $spacing-4;
-    }
-
-    .error-message {
-      width: 100%;
-      @include flex-start;
-      gap: $spacing-3;
-      padding: $spacing-4;
-      margin-bottom: $spacing-4;
-      background: $error-50;
-      color: $error-700;
-      border-radius: $radius-base;
-      font-size: $font-size-sm;
-      font-weight: $font-weight-medium;
-      border-left: 4px solid $error-700;
-
-      mat-icon {
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
-        flex-shrink: 0;
-      }
-    }
-
-    .error-text {
-      font-size: $font-size-base;
-      color: $neutral-600;
-      line-height: $line-height-relaxed;
-      margin-bottom: $spacing-6;
-      max-width: 400px;
-    }
-
-    .full-width {
-      width: 100%;
-    }
-
-    .action-button {
-      height: $button-height-lg;
-      font-size: $font-size-base;
-      font-weight: $font-weight-medium;
-      margin-top: $spacing-4;
-      background: $brand-primary !important;
-      color: $white !important;
-      box-shadow: $shadow-base;
-      transition: all $transition-base $ease-out;
-      @include flex-center;
-      gap: $spacing-2;
-
-      &:hover:not(:disabled) {
-        background: $brand-primary-light !important;
-        box-shadow: $shadow-md;
-        transform: translateY(-2px);
-      }
-
-      &:active:not(:disabled) {
-        transform: translateY(0);
-        box-shadow: $shadow-sm;
-      }
+      animation: shake 0.5s ease-in-out;
     }
   }
 
-  // Footer Text
-  .footer-text {
-    font-size: $font-size-xs;
-    color: rgba($white, 0.8);
-    text-align: center;
+  h2 {
+    margin: 0 0 $spacing-4 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $persian-blue-50;
+  }
+
+  .error-message {
+    width: 100%;
+    @include flex-start;
+    gap: $spacing-3;
+    padding: $spacing-4;
+    margin-bottom: $spacing-4;
+    background: rgba($error-500, 0.1);
+    border: 1px solid rgba($error-500, 0.3);
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $error-300;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      color: $error-400;
+    }
+  }
+
+  .error-text {
+    margin: 0 0 $spacing-6 0;
+    font-size: $font-size-base;
+    color: $persian-blue-300;
     line-height: $line-height-relaxed;
-    max-width: 400px;
-    margin-top: $spacing-8;
+    max-width: 360px;
+  }
 
-    a {
-      color: $white;
-      text-decoration: none;
-      font-weight: $font-weight-medium;
+  .action-button {
+    @include flex-center;
+    gap: $spacing-2;
+    width: 100%;
+    height: $button-height-lg;
+    padding: $spacing-3 $spacing-6;
+    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    color: white !important;
+    border-radius: $radius-md !important;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    box-shadow: 0 4px 20px rgba($persian-blue-500, 0.4);
+    transition: all 0.3s ease;
 
-      &:hover {
-        text-decoration: underline;
-      }
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba($persian-blue-500, 0.5);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
     }
   }
+}
+
+// ============================================================================
+// FOOTER
+// ============================================================================
+
+.footer-text {
+  margin-top: $spacing-8;
+  font-size: $font-size-sm;
+  color: $persian-blue-400;
+  text-align: center;
+
+  a {
+    color: $persian-blue-300;
+    text-decoration: none;
+    font-weight: $font-weight-medium;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $persian-blue-200;
+      text-decoration: underline;
+    }
+  }
+}
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+@keyframes pulse-glow-subtle {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba($persian-blue-500, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba($persian-blue-500, 0.4);
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, 30px); }
+}
+
+@keyframes float-medium {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-20px, -20px); }
 }

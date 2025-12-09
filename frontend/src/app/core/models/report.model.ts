@@ -169,38 +169,38 @@ export interface ReportTypeMetadata {
 export const REPORT_TYPE_METADATA: Record<ReportType, ReportTypeMetadata> = {
   service_issue: {
     type: 'service_issue',
-    label: 'Service Issue',
+    label: 'Szolgáltatási probléma',
     icon: 'directions_bus',
     color: '#FF9800',
-    description: 'Bus/tram/metro delays, no-shows, schedule issues'
+    description: 'Busz/villamos/metró késések, kimaradások, menetrendi problémák'
   },
   safety_concern: {
     type: 'safety_concern',
-    label: 'Safety Concern',
+    label: 'Biztonsági probléma',
     icon: 'warning',
     color: '#F44336',
-    description: 'Harassment, dangerous driving, emergency situations'
+    description: 'Zaklatás, veszélyes vezetés, vészhelyzetek'
   },
   cleanliness: {
     type: 'cleanliness',
-    label: 'Cleanliness',
+    label: 'Tisztaság',
     icon: 'cleaning_services',
     color: '#2196F3',
-    description: 'Dirty vehicles, trash, maintenance issues'
+    description: 'Piszkos járművek, szemét, karbantartási problémák'
   },
   accessibility: {
     type: 'accessibility',
-    label: 'Accessibility',
+    label: 'Akadálymentesség',
     icon: 'accessible',
     color: '#9C27B0',
-    description: 'Wheelchair access, elevators, ramps, facilities'
+    description: 'Kerekesszék hozzáférés, liftek, rámpák, létesítmények'
   },
   other: {
     type: 'other',
-    label: 'Other',
+    label: 'Egyéb',
     icon: 'feedback',
     color: '#757575',
-    description: 'General feedback and suggestions'
+    description: 'Általános visszajelzések és javaslatok'
   }
 };
 
