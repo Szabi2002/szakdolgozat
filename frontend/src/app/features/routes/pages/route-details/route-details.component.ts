@@ -48,7 +48,7 @@ export class RouteDetailsComponent implements OnInit, OnDestroy {
     private ratingsService: RatingsService,
     private authService: AuthService,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.currentUserId = this.authService.getCurrentUserSync()?.id;
@@ -117,19 +117,41 @@ export class RouteDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
+
   /**
-   * Open rating form dialog to create a new rating
+   * Open rating form dialog to create a new rating or edit existing one
    */
   openRatingDialog(): void {
     if (!this.route) return;
 
+    this.isLoading = true;
+
+    // Check if user already rated this route
+    this.ratingsService.getMyRatingForRoute(this.route.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (existingRating) => {
+          this.isLoading = false;
+          this.openDialog(existingRating);
+        },
+        error: (error) => {
+          console.error('Error checking existing rating:', error);
+          this.isLoading = false;
+          // Open dialog anyway, assuming no rating (worst case 409 handled by form error)
+          this.openDialog(null);
+        }
+      });
+  }
+
+  private openDialog(existingRating: any): void {
     const dialogRef = this.dialog.open(RatingFormDialogComponent, {
       width: '600px',
       maxWidth: '95vw',
       panelClass: 'glass-dialog-panel',
       data: {
-        routeId: this.route.id,
-        routeName: `${this.route.route_number} - ${this.route.name}`
+        routeId: this.route!.id,
+        routeName: `${this.route!.route_number} - ${this.route!.name}`,
+        existingRating: existingRating
       }
     });
 
