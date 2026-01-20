@@ -137,7 +137,7 @@ export class TripPlannerComponent implements OnInit {
       } else {
         // If same type, keep the one with smaller ID for consistency
         const shouldReplace =
-          
+
           (stop.type === existing.type && stop.id < existing.id);
 
         if (shouldReplace) {
@@ -300,10 +300,14 @@ export class TripPlannerComponent implements OnInit {
     this.isLoading.set(true);
 
     // Get all stops and find the ones we need
-    this.stopsService.getStops().subscribe({
-      next: (stops) => {
-        const fromStop = stops.find(s => s.id === fromStopId);
-        const toStop = stops.find(s => s.id === toStopId);
+    // Use forkJoin to fetch both stops concurrently by their exact ID
+    forkJoin({
+      from: this.stopsService.getStop(fromStopId),
+      to: this.stopsService.getStop(toStopId)
+    }).subscribe({
+      next: (results) => {
+        const fromStop = results.from;
+        const toStop = results.to;
 
         if (fromStop && toStop) {
           // Pre-fill the form with the selected stops
@@ -324,20 +328,16 @@ export class TripPlannerComponent implements OnInit {
           ).onAction().subscribe(() => {
             this.onSearch();
           });
-        } else {
-          this.snackBar.open(
-            'Hiba: Nem található a megadott megálló(k)',
-            'OK',
-            { duration: 3000 }
-          );
-        }
 
-        this.isLoading.set(false);
+          // Auto-trigger search if we have valid data
+          this.onSearch();
+        }
       },
       error: (error) => {
         this.isLoading.set(false);
+        console.error('Error loading stops:', error);
         this.snackBar.open(
-          error.message || 'Hiba történt a megállók betöltése során',
+          'Hiba: Nem található a megadott megálló(k) vagy hálózati hiba történt',
           'OK',
           { duration: 3000 }
         );

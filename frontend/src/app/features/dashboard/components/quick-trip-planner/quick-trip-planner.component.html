@@ -4,31 +4,37 @@
     <mat-form-field appearance="outline" class="location-field">
       <mat-label>Honnan</mat-label>
       <mat-icon matPrefix>location_on</mat-icon>
-      <input
-        matInput
-        formControlName="from"
-        placeholder="Pl. Deák Ferenc tér"
-        [matAutocomplete]="fromAutocomplete"
-      />
-      <mat-autocomplete
-        #fromAutocomplete="matAutocomplete"
-        [displayWith]="displayStopFn.bind(this)"
-      >
-        <mat-option *ngFor="let stop of filteredFromStops$ | async" [value]="stop">
-          <mat-icon>{{ getStopIcon(stop.type) }}</mat-icon>
-          <span>{{ stop.name }}</span>
+      <input matInput formControlName="from" placeholder="Pl. Deák Ferenc tér" [matAutocomplete]="fromAutocomplete" />
+      <mat-autocomplete #fromAutocomplete="matAutocomplete" [displayWith]="displayStopFn"
+        panelClass="planner-autocomplete-panel">
+        @for (stop of filteredFromStops$ | async; track stop.id) {
+        <mat-option [value]="stop">
+          <div class="autocomplete-option">
+            <mat-icon [class]="'stop-icon ' + stop.type">{{ getStopIcon(stop.type) }}</mat-icon>
+            <span class="stop-name">{{ stop.name }}</span>
+          </div>
         </mat-option>
+        }
+        @if (fromStopsCount() === 0 && fromInputLength() >= 2) {
+        <mat-option disabled>
+          <div class="no-results">
+            <mat-icon>search_off</mat-icon>
+            <span>Nem található megálló</span>
+          </div>
+        </mat-option>
+        }
+        @if (fromInputLength() > 0 && fromInputLength() < 2) { <mat-option disabled>
+          <div class="no-results">
+            <mat-icon>info</mat-icon>
+            <span>Írj be legalább 2 karaktert</span>
+          </div>
+          </mat-option>
+          }
       </mat-autocomplete>
     </mat-form-field>
 
     <!-- Swap Button -->
-    <button
-      type="button"
-      mat-icon-button
-      class="swap-button"
-      (click)="swapLocations()"
-      matTooltip="Helyek cseréje"
-    >
+    <button type="button" mat-icon-button class="swap-button" (click)="swapLocations()" matTooltip="Helyek cseréje">
       <mat-icon>swap_vert</mat-icon>
     </button>
 
@@ -36,20 +42,32 @@
     <mat-form-field appearance="outline" class="location-field">
       <mat-label>Hova</mat-label>
       <mat-icon matPrefix>location_on</mat-icon>
-      <input
-        matInput
-        formControlName="to"
-        placeholder="Pl. Keleti pályaudvar"
-        [matAutocomplete]="toAutocomplete"
-      />
-      <mat-autocomplete
-        #toAutocomplete="matAutocomplete"
-        [displayWith]="displayStopFn.bind(this)"
-      >
-        <mat-option *ngFor="let stop of filteredToStops$ | async" [value]="stop">
-          <mat-icon>{{ getStopIcon(stop.type) }}</mat-icon>
-          <span>{{ stop.name }}</span>
+      <input matInput formControlName="to" placeholder="Pl. Keleti pályaudvar" [matAutocomplete]="toAutocomplete" />
+      <mat-autocomplete #toAutocomplete="matAutocomplete" [displayWith]="displayStopFn"
+        panelClass="planner-autocomplete-panel">
+        @for (stop of filteredToStops$ | async; track stop.id) {
+        <mat-option [value]="stop">
+          <div class="autocomplete-option">
+            <mat-icon [class]="'stop-icon ' + stop.type">{{ getStopIcon(stop.type) }}</mat-icon>
+            <span class="stop-name">{{ stop.name }}</span>
+          </div>
         </mat-option>
+        }
+        @if (toStopsCount() === 0 && toInputLength() >= 2) {
+        <mat-option disabled>
+          <div class="no-results">
+            <mat-icon>search_off</mat-icon>
+            <span>Nem található megálló</span>
+          </div>
+        </mat-option>
+        }
+        @if (toInputLength() > 0 && toInputLength() < 2) { <mat-option disabled>
+          <div class="no-results">
+            <mat-icon>info</mat-icon>
+            <span>Írj be legalább 2 karaktert</span>
+          </div>
+          </mat-option>
+          }
       </mat-autocomplete>
     </mat-form-field>
   </div>
@@ -73,13 +91,7 @@
   </div>
 
   <!-- Search Button -->
-  <button
-    mat-raised-button
-    color="primary"
-    type="submit"
-    class="search-button"
-    [disabled]="tripForm.invalid"
-  >
+  <button mat-raised-button color="primary" type="submit" class="search-button" [disabled]="tripForm.invalid">
     <mat-icon>search</mat-icon>
     Útvonalak keresése
   </button>

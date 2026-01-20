@@ -199,6 +199,7 @@
         }
 
         .mdc-text-field--outlined {
+
           .mdc-notched-outline__leading,
           .mdc-notched-outline__notch,
           .mdc-notched-outline__trailing {
@@ -207,6 +208,7 @@
         }
 
         .mdc-text-field--focused {
+
           .mdc-notched-outline__leading,
           .mdc-notched-outline__notch,
           .mdc-notched-outline__trailing {
@@ -256,17 +258,7 @@
         }
       }
 
-      .forgot-password-link {
-        color: $persian-blue-400;
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.2s ease;
 
-        &:hover {
-          color: $persian-blue-300;
-          text-decoration: underline;
-        }
-      }
     }
 
     // Primary login button

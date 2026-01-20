@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -24,6 +24,12 @@ export class QuickTripPlannerComponent implements OnInit {
   tripForm: FormGroup;
   filteredFromStops$!: Observable<Stop[]>;
   filteredToStops$!: Observable<Stop[]>;
+
+  // Tracking signals for UI tracking
+  fromStopsCount = signal(0);
+  toStopsCount = signal(0);
+  fromInputLength = signal(0);
+  toInputLength = signal(0);
 
   constructor() {
     this.tripForm = this.fb.group({
@@ -53,14 +59,22 @@ export class QuickTripPlannerComponent implements OnInit {
       startWith(''),
       debounceTime(300),
       switchMap(value => {
+        const inputValue = typeof value === 'string' ? value : '';
+        this.fromInputLength.set(inputValue.length);
+
         if (typeof value === 'string' && value.length >= 2) {
           return this.stopsService.getStops({
             search: value,
             limit: 20
           }).pipe(
-            map(stops => this.deduplicateStops(stops))
+            map(stops => {
+              const deduplicated = this.deduplicateStops(stops);
+              this.fromStopsCount.set(deduplicated.length);
+              return deduplicated;
+            })
           );
         }
+        this.fromStopsCount.set(0);
         return of([]);
       })
     );
@@ -69,14 +83,22 @@ export class QuickTripPlannerComponent implements OnInit {
       startWith(''),
       debounceTime(300),
       switchMap(value => {
+        const inputValue = typeof value === 'string' ? value : '';
+        this.toInputLength.set(inputValue.length);
+
         if (typeof value === 'string' && value.length >= 2) {
           return this.stopsService.getStops({
             search: value,
             limit: 20
           }).pipe(
-            map(stops => this.deduplicateStops(stops))
+            map(stops => {
+              const deduplicated = this.deduplicateStops(stops);
+              this.toStopsCount.set(deduplicated.length);
+              return deduplicated;
+            })
           );
         }
+        this.toStopsCount.set(0);
         return of([]);
       })
     );
@@ -84,15 +106,26 @@ export class QuickTripPlannerComponent implements OnInit {
 
   /**
    * Deduplicates stops by name, keeping the most relevant stop
+   * Priority: 1) metro/tram/bus over general, 2) alphabetically first ID
    */
   private deduplicateStops(stops: Stop[]): Stop[] {
     const deduplicatedMap = new Map<string, Stop>();
+
     stops.forEach(stop => {
       const existing = deduplicatedMap.get(stop.name);
-      if (!existing || (stop.type === existing.type && stop.id < existing.id)) {
+
+      if (!existing) {
         deduplicatedMap.set(stop.name, stop);
+      } else {
+        // If same type, keep the one with smaller ID for consistency
+        const shouldReplace = (stop.type === existing.type && stop.id < existing.id);
+
+        if (shouldReplace) {
+          deduplicatedMap.set(stop.name, stop);
+        }
       }
     });
+
     return Array.from(deduplicatedMap.values());
   }
 
@@ -120,7 +153,7 @@ export class QuickTripPlannerComponent implements OnInit {
   }
 
   /**
-   * Search for routes - FIXED to pass stop IDs instead of names
+   * Search for routes
    */
   searchRoutes(): void {
     if (this.tripForm.valid) {
@@ -135,11 +168,10 @@ export class QuickTripPlannerComponent implements OnInit {
 
       const formValue = this.tripForm.value;
 
-      // Navigate to trip planner with stop IDs (FIXED: was passing names before)
       this.router.navigate(['/planner'], {
         queryParams: {
-          from: fromStop.id,  // FIXED: Pass stop ID instead of name
-          to: toStop.id,      // FIXED: Pass stop ID instead of name
+          from: fromStop.id,
+          to: toStop.id,
           date: formValue.date,
           time: formValue.time,
         },

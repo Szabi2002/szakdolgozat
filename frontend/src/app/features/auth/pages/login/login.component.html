@@ -29,13 +29,7 @@
         <!-- Email Field -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email cím</mat-label>
-          <input
-            matInput
-            type="email"
-            formControlName="email"
-            placeholder="pelda@email.com"
-            autocomplete="email"
-          />
+          <input matInput type="email" formControlName="email" placeholder="pelda@email.com" autocomplete="email" />
           <mat-icon matPrefix>email</mat-icon>
           <mat-error *ngIf="emailControl?.invalid && emailControl?.touched">
             {{ getErrorMessage('email') }}
@@ -45,22 +39,12 @@
         <!-- Password Field -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Jelszó</mat-label>
-          <input
-            matInput
-            [type]="hidePassword ? 'password' : 'text'"
-            formControlName="password"
-            placeholder="Jelszó"
-            autocomplete="off"
-          />
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Jelszó"
+            autocomplete="off" />
           <mat-icon matPrefix>lock</mat-icon>
-          <button
-            mat-icon-button
-            matSuffix
-            type="button"
-            (click)="togglePasswordVisibility()"
+          <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()"
             [attr.aria-label]="hidePassword ? 'Jelszó mutatása' : 'Jelszó elrejtése'"
-            [attr.aria-pressed]="!hidePassword"
-          >
+            [attr.aria-pressed]="!hidePassword">
             <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
           <mat-error *ngIf="passwordControl?.invalid && passwordControl?.touched">
@@ -73,19 +57,12 @@
           <mat-checkbox formControlName="rememberMe" color="primary">
             Emlékezz rám
           </mat-checkbox>
-          <a routerLink="/forgot-password" class="forgot-password-link">
-            Elfelejtett jelszó?
-          </a>
+
         </div>
 
         <!-- Login Button -->
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          class="full-width login-button"
-          [disabled]="isLoading || loginForm.invalid"
-        >
+        <button mat-raised-button color="primary" type="submit" class="full-width login-button"
+          [disabled]="isLoading || loginForm.invalid">
           <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
           <span *ngIf="!isLoading">Bejelentkezés</span>
         </button>
@@ -97,12 +74,8 @@
       </div>
 
       <!-- Google Login Button -->
-      <button
-        mat-stroked-button
-        class="google-login-button full-width"
-        (click)="onGoogleLogin()"
-        [disabled]="isGoogleLoading"
-      >
+      <button mat-stroked-button class="google-login-button full-width" (click)="onGoogleLogin()"
+        [disabled]="isGoogleLoading">
         <mat-icon *ngIf="!isGoogleLoading" svgIcon="google" class="google-icon"></mat-icon>
         <mat-spinner *ngIf="isGoogleLoading" [diameter]="20"></mat-spinner>
         <span>{{ isGoogleLoading ? 'Bejelentkezés...' : 'Bejelentkezés Google-lal' }}</span>

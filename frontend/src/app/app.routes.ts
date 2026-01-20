@@ -29,13 +29,7 @@ export const routes: Routes = [
       import('./features/auth/pages/register/register.component').then(m => m.RegisterComponent),
     canActivate: [guestGuard],
   },
-  {
-    path: 'forgot-password',
-    loadComponent: () =>
-      import('./features/auth/pages/forgot-password/forgot-password.component').then(
-        m => m.ForgotPasswordComponent
-      ),
-  },
+
   {
     path: 'reset-password/:token',
     loadComponent: () =>
@@ -129,7 +123,7 @@ export const routes: Routes = [
     path: 'planner',
     loadComponent: () =>
       import('./features/planner/pages/trip-planner/trip-planner.component').then(m => m.TripPlannerComponent),
-     canActivate: [authGuard],
+    canActivate: [authGuard],
   },
   {
     path: 'tickets',

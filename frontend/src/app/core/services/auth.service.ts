@@ -391,23 +391,7 @@ export class AuthService {
       );
   }
 
-  /**
-   * Request password reset email
-   */
-  forgotPassword(email: string): Observable<{ message: string }> {
-    return this.http
-      .post<{ message: string }>(`${environment.apiUrl}/auth/forgot-password`, {
-        email,
-      })
-      .pipe(
-        catchError((error) => {
-          if (!environment.production) {
-            console.error('[AuthService] Forgot password request failed:', error);
-          }
-          throw error;
-        })
-      );
-  }
+
 
   /**
    * Reset password with token

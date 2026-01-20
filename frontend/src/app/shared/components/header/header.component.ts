@@ -4,8 +4,16 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@shared/material/material.module';
 import { AuthService } from '@core/services/auth.service';
 import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil, map } from 'rxjs/operators';
 import { User } from '@core/models/user.model';
+
+export interface MenuItem {
+  label: string;
+  icon: string;
+  route: string;
+  exactMatch?: boolean;
+  section?: 'main' | 'admin';
+}
 
 @Component({
   selector: 'app-header',
@@ -22,12 +30,50 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAuthenticated$: Observable<boolean> = this.authService.isAuthenticated$;
   currentUser$: Observable<User | null> = this.authService.currentUser$;
 
+  // Menu Configurations
+  private readonly USER_MENU_ITEMS: MenuItem[] = [
+    { label: 'Főoldal', icon: 'home', route: '/dashboard', exactMatch: true, section: 'main' },
+    { label: 'Utazástervező', icon: 'route', route: '/planner', section: 'main' },
+    { label: 'Jegyeim', icon: 'confirmation_number', route: '/tickets/my-tickets', section: 'main' },
+    { label: 'Kedvencek', icon: 'favorite', route: '/favorites', section: 'main' },
+    { label: 'Értékeléseim', icon: 'star', route: '/ratings/my-ratings', section: 'main' },
+    { label: 'Jelentéseim', icon: 'feedback', route: '/reports/my-reports', section: 'main' },
+    { label: 'Profilom', icon: 'account_circle', route: '/profile', section: 'main' }
+  ];
+
+  private readonly ADMIN_MENU_ITEMS: MenuItem[] = [
+    { label: 'Áttekintő', icon: 'dashboard', route: '/admin', exactMatch: true, section: 'admin' },
+    { label: 'Értékelések moderálása', icon: 'rate_review', route: '/admin/ratings', section: 'admin' },
+    { label: 'Jelentések moderálása', icon: 'assignment', route: '/admin/reports', section: 'admin' },
+    { label: 'Útvonalak kezelése', icon: 'alt_route', route: '/admin/routes', section: 'admin' },
+    { label: 'Felhasználók kezelése', icon: 'group', route: '/admin/users', section: 'admin' }
+  ];
+
+  // Filtered Menu Items based on User Role
+  menuItems$: Observable<MenuItem[]> = this.currentUser$.pipe(
+    filter(user => !!user), // Ensure user exists
+    map((user: User | null) => {
+      if (!user) return [];
+
+      if (user.role === 'admin') {
+        return [...this.ADMIN_MENU_ITEMS];
+      }
+
+      return [...this.USER_MENU_ITEMS];
+    })
+  );
+
   // Mobile sidebar state
   isSidebarOpen = false;
   isMobile = false;
 
   // Desktop collapse state (using signals for reactivity)
-  isCollapsed = signal(false);
+  // isExpanded: true = sidebar is expanded (hovered). false = sidebar is collapsed.
+  isExpanded = signal(false);
+
+  // Sidebar is effectively collapsed if NOT expanded
+  isCollapsed = computed(() => !this.isExpanded());
+
   sidebarWidth = computed(() => this.isCollapsed() ? 70 : 260);
 
   // Effect to update CSS variable when sidebar width changes
@@ -37,7 +83,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.checkMobile();
-    this.loadCollapseState();
+    // No loadCollapseState needed for pure hover
 
     // Close sidebar on navigation (mobile only)
     this.router.events
@@ -69,16 +115,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Close sidebar if switching from mobile to desktop
     if (wasMobile && !this.isMobile) {
       this.isSidebarOpen = false;
-    }
-  }
-
-  /**
-   * Load collapse state from localStorage
-   */
-  private loadCollapseState(): void {
-    const saved = localStorage.getItem('sidebar_collapsed');
-    if (saved !== null) {
-      this.isCollapsed.set(saved === 'true');
+      this.isExpanded.set(false); // Ensure collapsed on desktop initially
     }
   }
 
@@ -89,12 +126,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
 
-  /**
-   * Toggle desktop sidebar collapse state
-   */
-  toggleCollapse(): void {
-    this.isCollapsed.update(v => !v);
-    localStorage.setItem('sidebar_collapsed', String(this.isCollapsed()));
+  onMouseEnter(): void {
+    if (!this.isMobile) {
+      this.isExpanded.set(true);
+    }
+  }
+
+  onMouseLeave(): void {
+    if (!this.isMobile) {
+      this.isExpanded.set(false);
+    }
   }
 
   getUserDisplayName(user: User): string {
