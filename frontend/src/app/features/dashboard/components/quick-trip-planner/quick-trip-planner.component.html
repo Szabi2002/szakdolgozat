@@ -1,10 +1,10 @@
 <form [formGroup]="tripForm" (ngSubmit)="searchRoutes()" class="trip-planner-form">
-  <div class="location-fields">
+  <div class="stops-row">
     <!-- From Location -->
-    <mat-form-field appearance="outline" class="location-field">
-      <mat-label>Honnan</mat-label>
-      <mat-icon matPrefix>location_on</mat-icon>
-      <input matInput formControlName="from" placeholder="Pl. Deák Ferenc tér" [matAutocomplete]="fromAutocomplete" />
+    <mat-form-field appearance="outline" class="stop-field">
+      <mat-label>Honnan?</mat-label>
+      <mat-icon matPrefix>my_location</mat-icon>
+      <input matInput formControlName="from" placeholder="" [matAutocomplete]="fromAutocomplete" />
       <mat-autocomplete #fromAutocomplete="matAutocomplete" [displayWith]="displayStopFn"
         panelClass="planner-autocomplete-panel">
         @for (stop of filteredFromStops$ | async; track stop.id) {
@@ -34,15 +34,15 @@
     </mat-form-field>
 
     <!-- Swap Button -->
-    <button type="button" mat-icon-button class="swap-button" (click)="swapLocations()" matTooltip="Helyek cseréje">
-      <mat-icon>swap_vert</mat-icon>
+    <button type="button" mat-icon-button class="swap-button" (click)="swapLocations()" aria-label="Megállók cseréje">
+      <mat-icon>swap_horiz</mat-icon>
     </button>
 
     <!-- To Location -->
-    <mat-form-field appearance="outline" class="location-field">
-      <mat-label>Hova</mat-label>
-      <mat-icon matPrefix>location_on</mat-icon>
-      <input matInput formControlName="to" placeholder="Pl. Keleti pályaudvar" [matAutocomplete]="toAutocomplete" />
+    <mat-form-field appearance="outline" class="stop-field">
+      <mat-label>Hova?</mat-label>
+      <mat-icon matPrefix>place</mat-icon>
+      <input matInput formControlName="to" placeholder="" [matAutocomplete]="toAutocomplete" />
       <mat-autocomplete #toAutocomplete="matAutocomplete" [displayWith]="displayStopFn"
         panelClass="planner-autocomplete-panel">
         @for (stop of filteredToStops$ | async; track stop.id) {
@@ -72,27 +72,26 @@
     </mat-form-field>
   </div>
 
-  <div class="datetime-fields">
-    <!-- Date -->
+  <!-- Date & Time Row with Search Button -->
+  <div class="date-time-row">
     <mat-form-field appearance="outline" class="date-field">
       <mat-label>Dátum</mat-label>
-      <mat-icon matPrefix>calendar_today</mat-icon>
       <input matInput [matDatepicker]="picker" formControlName="date" />
+      <mat-icon matPrefix>event</mat-icon>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
-    <!-- Time -->
     <mat-form-field appearance="outline" class="time-field">
       <mat-label>Időpont</mat-label>
-      <mat-icon matPrefix>access_time</mat-icon>
       <input matInput type="time" formControlName="time" />
+      <mat-icon matPrefix>schedule</mat-icon>
     </mat-form-field>
-  </div>
 
-  <!-- Search Button -->
-  <button mat-raised-button color="primary" type="submit" class="search-button" [disabled]="tripForm.invalid">
-    <mat-icon>search</mat-icon>
-    Útvonalak keresése
-  </button>
+    <!-- Search Button (in row with date/time) -->
+    <button type="submit" [disabled]="tripForm.invalid" class="search-button">
+      <mat-icon>search</mat-icon>
+      <span>Keresés</span>
+    </button>
+  </div>
 </form>

@@ -1,79 +1,71 @@
-<mat-card class="favorite-card" [class.compact]="compact" (click)="onSelect($event)">
-  <div class="card-header">
-    <div class="header-icon">
-      <mat-icon>favorite</mat-icon>
-    </div>
-    <div class="header-title">
-      <h3>{{ favorite.name }}</h3>
-    </div>
-  </div>
+<div class="favorite-card modern-card" [class.compact]="compact" (click)="onSelect($event)" tabindex="0"
+  (keydown.enter)="onSelect($event)" (keydown.space)="onSelect($event)">
+  <!-- Modern Minimalist Favorite Card (Modeled after Ticket Card) -->
+  <div class="card-main">
+    <!-- Visual Status Strip (Left Border) handled by SCSS -->
 
-  <mat-card-content>
-    <div class="route-info">
-      <div class="info-row from-stop">
-        <div class="stop-icon">
-          <mat-icon>trip_origin</mat-icon>
+    <!-- 1. Header: Icon & Name -->
+    <div class="card-header-row">
+      <div class="type-info">
+        <div class="icon-badge">
+          <mat-icon>favorite</mat-icon>
         </div>
-        <div class="stop-content">
-          <span class="label">Honnan</span>
+        <div class="text-content">
+          <h3 class="favorite-name">{{ favorite.name }}</h3>
+          <span class="favorite-label">Mentett útvonal</span>
+        </div>
+      </div>
+
+      <!-- Edit/Delete Actions (Top Right) -->
+      <div class="top-actions">
+        <button mat-icon-button class="action-icon-btn edit-btn" (click)="onEdit($event)" matTooltip="Szerkesztés">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button class="action-icon-btn delete-btn" (click)="onDelete($event)" matTooltip="Törlés">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. Body: Stops Info -->
+    <div class="card-body-row">
+      <!-- From Stop -->
+      <div class="info-block">
+        <span class="label">Honnan</span>
+        <div class="value-row">
+          <mat-icon class="stop-icon from">trip_origin</mat-icon>
           <span class="value">{{ favorite.from_stop?.name || 'Ismeretlen' }}</span>
         </div>
       </div>
 
-      <div class="route-arrow">
-        <mat-icon>south</mat-icon>
+      <!-- Arrow Separator (Vertical or Horizontal) -->
+      <div class="connector-line">
+        <div class="line"></div>
+        <mat-icon>arrow_downward</mat-icon>
       </div>
 
-      <div class="info-row to-stop">
-        <div class="stop-icon">
-          <mat-icon>place</mat-icon>
-        </div>
-        <div class="stop-content">
-          <span class="label">Hova</span>
+      <!-- To Stop -->
+      <div class="info-block">
+        <span class="label">Hova</span>
+        <div class="value-row">
+          <mat-icon class="stop-icon to">place</mat-icon>
           <span class="value">{{ favorite.to_stop?.name || 'Ismeretlen' }}</span>
         </div>
       </div>
-
-      @if (!compact) {
-        <div class="info-row created-date">
-          <mat-icon>event</mat-icon>
-          <div class="date-content">
-            <span class="label">Létrehozva</span>
-            <span class="value">{{ formatDate(favorite.created_at) }}</span>
-          </div>
-        </div>
-      }
     </div>
-  </mat-card-content>
 
-  <mat-card-actions>
-    <button
-      mat-raised-button
-      class="select-btn"
-      (click)="onSelect($event)"
-      [attr.aria-label]="'Kedvenc kiválasztása: ' + favorite.name">
-      <mat-icon>route</mat-icon>
-      <span>Útvonal Keresése</span>
-    </button>
+    <!-- 3. Footer: Primary Action -->
+    <div class="card-footer-row">
+      <!-- Created Date (Subtle) -->
+      <div class="meta-info" *ngIf="!compact">
+        <mat-icon>event</mat-icon>
+        <span>{{ formatDate(favorite.created_at) }}</span>
+      </div>
 
-    <div class="action-buttons">
-      <button
-        mat-icon-button
-        class="edit-btn"
-        (click)="onEdit($event)"
-        matTooltip="Szerkesztés"
-        [attr.aria-label]="'Kedvenc szerkesztése: ' + favorite.name">
-        <mat-icon>edit</mat-icon>
-      </button>
-
-      <button
-        mat-icon-button
-        class="delete-btn"
-        (click)="onDelete($event)"
-        matTooltip="Törlés"
-        [attr.aria-label]="'Kedvenc törlése: ' + favorite.name">
-        <mat-icon>delete</mat-icon>
+      <button mat-flat-button class="search-action-btn" (click)="onSelect($event)">
+        <mat-icon>search</mat-icon>
+        <span>Keresés</span>
       </button>
     </div>
-  </mat-card-actions>
-</mat-card>
+  </div>
+</div>

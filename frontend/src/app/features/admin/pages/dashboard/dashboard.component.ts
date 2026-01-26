@@ -181,13 +181,13 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     const labels = this.stats.monthlyRegistrations.map(mr => this.formatMonthLabel(mr.month));
     const data = this.stats.monthlyRegistrations.map(mr => mr.count);
 
-    // Dark theme colors
-    const primaryColor = 'rgba(91, 100, 249, 1)'; // persian-blue-500
-    const primaryColorLight = 'rgba(91, 100, 249, 0.6)';
-    const primaryColorLighter = 'rgba(91, 100, 249, 0.2)';
-    const textColor = 'rgba(196, 210, 255, 1)'; // persian-blue-200
-    const mutedColor = 'rgba(160, 181, 255, 0.5)'; // persian-blue-300
-    const gridColor = 'rgba(255, 255, 255, 0.06)';
+    // Light theme colors (Mint/Teal)
+    const primaryColor = 'rgba(0, 168, 135, 1)'; // brand-primary
+    const primaryColorLight = 'rgba(0, 168, 135, 0.6)';
+    const primaryColorLighter = 'rgba(0, 168, 135, 0.15)';
+    const textColor = 'rgba(107, 114, 128, 1)'; // text-secondary
+    const mutedColor = 'rgba(156, 163, 175, 0.8)'; // text-muted
+    const gridColor = 'rgba(0, 0, 0, 0.06)';
 
     // Create gradient
     const gradient = ctx.createLinearGradient(0, 0, 0, 350);
@@ -206,7 +206,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
           borderWidth: 2,
           borderRadius: 8,
           hoverBackgroundColor: primaryColor,
-          hoverBorderColor: 'rgba(122, 139, 255, 1)', // persian-blue-400
+          hoverBorderColor: 'rgba(0, 143, 115, 1)', // brand-primary-dark
           hoverBorderWidth: 2,
         }]
       },
@@ -221,7 +221,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
               color: textColor,
               font: {
                 size: 12,
-                family: "'Plus Jakarta Sans', 'Roboto', sans-serif",
+                family: "'Lexend', 'Roboto', sans-serif",
                 weight: 500
               },
               padding: 20,
@@ -230,10 +230,10 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
             }
           },
           tooltip: {
-            backgroundColor: 'rgba(41, 41, 134, 0.95)', // persian-blue-900
-            titleColor: 'rgba(237, 242, 255, 1)', // persian-blue-50
-            bodyColor: 'rgba(196, 210, 255, 1)', // persian-blue-200
-            borderColor: 'rgba(91, 100, 249, 0.5)',
+            backgroundColor: 'rgba(255, 255, 255, 0.98)', // White background
+            titleColor: 'rgba(31, 41, 55, 1)', // text-main
+            bodyColor: 'rgba(107, 114, 128, 1)', // text-secondary
+            borderColor: 'rgba(0, 168, 135, 0.3)', // brand-primary
             borderWidth: 1,
             padding: 16,
             cornerRadius: 12,

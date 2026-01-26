@@ -1,357 +1,141 @@
-// ===========================
-// ROUTE FORM DIALOG - DARK GLASSMORPHISM DESIGN
-// Persian Blue Dark Theme with Glass Effects
-// ===========================
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
 
-@import '../../../../styles/variables';
-@import '../../../../styles/colors';
-@import '../../../../styles/typography';
-@import '../../../../styles/mixins';
-@import '../../../../styles/persian-blue';
-@import '../../../../styles/glassmorphism';
-@import '../../../../styles/animations';
+// ============================================================================
+// ROUTE FORM DIALOG - LIGHT THEME
+// ============================================================================
 
-// ===========================
-// DIALOG CONTAINER OVERRIDE
-// ===========================
-
-:host {
-  display: block;
-
-  // Override Material Dialog container
-  ::ng-deep .mat-mdc-dialog-container {
-    @include glass-modal;
-    padding: 0 !important;
-
-    .mdc-dialog__surface {
-      background: transparent !important;
-      box-shadow: none !important;
-      border-radius: 24px !important;
-      overflow: hidden;
-    }
-  }
-}
-
-// ===========================
-// MAIN DIALOG WRAPPER
-// ===========================
-
-.route-form-dialog {
-  @include flex-column;
-  min-width: 450px;
-  max-width: 100%;
-  background: rgba($persian-blue-900, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 24px;
+// Dialog container styling overrides
+::ng-deep .mat-mdc-dialog-container {
+  padding: 0;
+  border-radius: $radius-xl !important;
   overflow: hidden;
-  @include scale-in-animation(300ms);
-
-  @include mobile {
-    min-width: 100%;
-  }
 }
-
-// ===========================
-// DIALOG HEADER
-// ===========================
 
 .dialog-header {
-  @include flex-start;
-  gap: $spacing-3;
-  padding: $spacing-6;
-  background: rgba($persian-blue-800, 0.5);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  position: relative;
-
-  // Subtle gradient overlay
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba($persian-blue-500, 0.1), transparent);
-    pointer-events: none;
-  }
-
-  .dialog-icon {
-    position: relative;
-    font-size: 36px;
-    width: 36px;
-    height: 36px;
-    color: $persian-blue-400;
-    filter: drop-shadow(0 0 8px rgba($persian-blue-400, 0.5));
-    @include icon-glow-animation;
-  }
+  padding: $spacing-5 $spacing-6;
+  border-bottom: 1px solid $border-light;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
 
   h2 {
-    position: relative;
     margin: 0;
     font-size: $font-size-xl;
     font-weight: $font-weight-bold;
-    color: $dark-text-primary;
-    letter-spacing: -0.3px;
-  }
-}
-
-// ===========================
-// DIALOG CONTENT
-// ===========================
-
-.dialog-content {
-  padding: $spacing-6 !important;
-  max-height: 70vh;
-  overflow-y: auto;
-  @include dark-scrollbar;
-
-  @include mobile {
-    padding: $spacing-4 !important;
-  }
-}
-
-// ===========================
-// ROUTE FORM
-// ===========================
-
-.route-form {
-  @include flex-column;
-  gap: $spacing-5;
-
-  .full-width {
-    width: 100%;
+    color: $text-main;
   }
 
-  // Material Form Field Glass Override
-  mat-form-field {
-    ::ng-deep {
-      .mdc-text-field--outlined {
-        background: rgba(255, 255, 255, 0.06);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border-radius: 12px;
-
-        .mdc-notched-outline {
-          .mdc-notched-outline__leading,
-          .mdc-notched-outline__notch,
-          .mdc-notched-outline__trailing {
-            border-color: rgba(255, 255, 255, 0.12) !important;
-          }
-        }
-
-        &:hover .mdc-notched-outline {
-          .mdc-notched-outline__leading,
-          .mdc-notched-outline__notch,
-          .mdc-notched-outline__trailing {
-            border-color: rgba($persian-blue-400, 0.3) !important;
-          }
-        }
-
-        &.mdc-text-field--focused .mdc-notched-outline {
-          .mdc-notched-outline__leading,
-          .mdc-notched-outline__notch,
-          .mdc-notched-outline__trailing {
-            border-color: rgba($persian-blue-400, 0.6) !important;
-            border-width: 2px !important;
-          }
-        }
-
-        .mdc-text-field__input {
-          color: $dark-text-primary !important;
-          caret-color: $persian-blue-400;
-
-          &::placeholder {
-            color: $dark-text-muted !important;
-          }
-        }
-      }
-
-      .mat-mdc-form-field-icon-prefix {
-        color: $persian-blue-400 !important;
-        margin-right: $spacing-2;
-      }
-
-      .mdc-floating-label {
-        color: $dark-text-secondary !important;
-      }
-
-      .mdc-floating-label--float-above {
-        color: $persian-blue-300 !important;
-      }
-
-      .mat-mdc-form-field-error {
-        color: $error-400 !important;
-      }
-
-      .mat-mdc-form-field-hint {
-        color: $dark-text-muted !important;
-      }
-    }
-  }
-
-  // Checkbox Wrapper
-  .checkbox-wrapper {
-    @include flex-column;
-    gap: $spacing-2;
-    padding: $spacing-4;
-    background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: $radius-md;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    transition: all 0.2s ease;
+  button {
+    color: $text-secondary;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(255, 255, 255, 0.12);
-    }
-
-    mat-checkbox {
-      ::ng-deep {
-        .mdc-checkbox {
-          .mdc-checkbox__background {
-            border-color: $persian-blue-400 !important;
-            background-color: transparent;
-          }
-
-          .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
-            background-color: $persian-blue-500 !important;
-            border-color: $persian-blue-500 !important;
-          }
-
-          .mdc-checkbox__native-control:enabled:focus ~ .mdc-checkbox__ripple {
-            background-color: rgba($persian-blue-400, 0.2);
-          }
-        }
-
-        .mdc-form-field > label {
-          color: $dark-text-primary;
-        }
-      }
-
-      .checkbox-content {
-        @include flex-start;
-        gap: $spacing-2;
-        align-items: center;
-
-        mat-icon {
-          font-size: 22px;
-          width: 22px;
-          height: 22px;
-          color: $persian-blue-400;
-        }
-
-        span {
-          font-weight: $font-weight-medium;
-          color: $dark-text-primary;
-        }
-      }
-    }
-
-    .checkbox-hint {
-      margin: 0;
-      padding-left: calc(22px + $spacing-6);
-      font-size: $font-size-xs;
-      color: $dark-text-muted;
-      line-height: $line-height-relaxed;
+      background: $bg-light;
+      color: $error-500;
     }
   }
 }
 
-// ===========================
-// DIALOG ACTIONS
-// ===========================
+.dialog-content {
+  padding: $spacing-6;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: $bg-light;
 
-.dialog-actions {
-  @include flex-end;
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-5;
+  }
+}
+
+// Form Sections
+.form-section {
+  background: white;
+  padding: $spacing-5;
+  border-radius: $radius-lg;
+  border: 1px solid $border-light;
+
+  h3 {
+    margin: 0 0 $spacing-4 0;
+    font-size: $font-size-md;
+    font-weight: $font-weight-bold;
+    color: $text-main;
+    border-bottom: 1px solid $border-light;
+    padding-bottom: $spacing-2;
+  }
+
+  .form-row {
+    display: flex;
+    gap: $spacing-4;
+
+    @include mobile {
+      flex-direction: column;
+      gap: $spacing-3;
+    }
+
+    mat-form-field {
+      flex: 1;
+    }
+  }
+}
+
+// Stops List in Form
+.stops-list-editor {
+  display: flex;
+  flex-direction: column;
   gap: $spacing-3;
-  padding: $spacing-5 $spacing-6 $spacing-6 $spacing-6 !important;
-  background: rgba($persian-blue-800, 0.3);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
 
-  @include mobile {
-    flex-direction: column-reverse;
-    padding: $spacing-4 !important;
+  .stop-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+    padding: $spacing-3;
+    background: $bg-light;
+    border: 1px solid $border-light;
+    border-radius: $radius-md;
+
+    .drag-handle {
+      color: $text-muted;
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+
+    .stop-info {
+      flex: 1;
+      font-weight: $font-weight-medium;
+    }
 
     button {
-      width: 100%;
-    }
-  }
+      color: $text-secondary;
 
-  // Cancel Button
-  .cancel-button {
-    @include glass-button;
-    @include flex-center;
-    gap: $spacing-2;
-    min-width: 120px;
-    color: $dark-text-secondary !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
-
-    mat-icon {
-      font-size: 18px;
-      width: 18px;
-      height: 18px;
-    }
-
-    &:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.12) !important;
-      border-color: rgba(255, 255, 255, 0.25) !important;
-      color: $dark-text-primary !important;
-    }
-
-    &:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-  }
-
-  // Submit Button
-  .submit-button {
-    @include glass-button-primary;
-    @include flex-center;
-    gap: $spacing-2;
-    min-width: 150px;
-    position: relative;
-    overflow: hidden;
-    @include shine-effect;
-
-    mat-icon {
-      font-size: 18px;
-      width: 18px;
-      height: 18px;
-    }
-
-    .button-spinner {
-      ::ng-deep circle {
-        stroke: white !important;
-      }
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none !important;
-      box-shadow: none !important;
-
-      &::before {
-        display: none;
+      &:hover {
+        color: $error-500;
       }
     }
   }
+
+  .add-stop-btn {
+    align-self: flex-start;
+    margin-top: $spacing-2;
+  }
 }
 
-// ===========================
-// ERROR SHAKE ANIMATION
-// ===========================
+.dialog-actions {
+  padding: $spacing-4 $spacing-6;
+  border-top: 1px solid $border-light;
+  background: white;
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-3;
 
-.form-error {
-  @include shake(400ms);
-}
-
-// ===========================
-// BACKDROP OVERRIDE
-// ===========================
-
-::ng-deep .cdk-overlay-dark-backdrop {
-  background: rgba($persian-blue-950, 0.75) !important;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  button {
+    min-width: 100px;
+  }
 }

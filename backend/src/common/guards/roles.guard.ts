@@ -8,17 +8,13 @@ export class RolesGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private supabaseService: SupabaseService,
-  ) {}
+  ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const requiredRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
-
-    if (!requiredRoles) {
-      return true;
-    }
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
@@ -30,13 +26,20 @@ export class RolesGuard implements CanActivate {
     // Fetch user profile with role from database
     const { data: profile, error } = await this.supabaseService
       .getClient()
-      .from('user_profiles')
+      .from('users')
       .select('role')
-      .eq('user_id', user.id)
+      .eq('id', user.id)
       .single();
 
     if (error || !profile) {
       throw new ForbiddenException('User profile not found');
+    }
+
+    // Attach role to request for later use
+    request.user.role = profile.role;
+
+    if (!requiredRoles) {
+      return true;
     }
 
     const hasRole = requiredRoles.includes(profile.role);
@@ -45,9 +48,6 @@ export class RolesGuard implements CanActivate {
         `User role '${profile.role}' does not have permission to access this resource`,
       );
     }
-
-    // Attach role to request for later use
-    request.user.role = profile.role;
 
     return true;
   }

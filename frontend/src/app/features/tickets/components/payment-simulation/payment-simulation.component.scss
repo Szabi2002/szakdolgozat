@@ -2,12 +2,9 @@
 @import 'colors';
 @import 'typography';
 @import 'mixins';
-@import 'persian-blue';
-@import 'glassmorphism';
-@import 'animations';
 
 // ============================================================================
-// PAYMENT SIMULATION DIALOG - DARK THEME WITH GLASSMORPHISM
+// PAYMENT SIMULATION DIALOG - LIGHT THEME
 // ============================================================================
 
 .payment-dialog {
@@ -15,14 +12,10 @@
   flex-direction: column;
   width: 600px;
   max-width: 95vw;
-  background: $persian-blue-950;
-  border-radius: 20px;
+  background: $surface-light;
+  border-radius: $radius-xl;
   overflow: hidden;
 }
-
-// ============================================================================
-// DIALOG HEADER
-// ============================================================================
 
 .dialog-header {
   display: flex;
@@ -31,12 +24,7 @@
   padding: $spacing-5 $spacing-6;
   position: relative;
   overflow: hidden;
-
-  // Dark gradient background with glow effects
-  background:
-    radial-gradient(ellipse at 20% 0%, rgba($persian-blue-600, 0.4), transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-500, 0.3), transparent 50%),
-    linear-gradient(135deg, $persian-blue-800 0%, $persian-blue-900 100%);
+  background: linear-gradient(135deg, $brand-primary 0%, $brand-primary-dark 100%);
 
   .header-content {
     @include flex-center;
@@ -46,51 +34,37 @@
       font-size: 28px;
       width: 28px;
       height: 28px;
-      color: $persian-blue-300;
+      color: white;
     }
 
     h2 {
       margin: 0;
       font-size: $font-size-xl;
       font-weight: $font-weight-bold;
-      color: $persian-blue-50;
+      color: white;
     }
   }
 
   .close-button {
-    color: $persian-blue-200 !important;
+    color: rgba(255, 255, 255, 0.9) !important;
     transition: all 0.3s ease;
 
     &:hover {
       background: rgba(255, 255, 255, 0.1) !important;
-      color: $persian-blue-100 !important;
-    }
-
-    mat-icon {
-      font-size: 24px;
-      width: 24px;
-      height: 24px;
+      color: white !important;
     }
   }
 }
 
-// ============================================================================
-// DIALOG CONTENT
-// ============================================================================
-
 mat-dialog-content {
   padding: $spacing-6;
   min-height: 400px;
-  background: $persian-blue-950;
+  background: $surface-light;
 
   @include mobile {
     padding: $spacing-4;
   }
 }
-
-// ============================================================================
-// PROGRESS INDICATOR
-// ============================================================================
 
 .progress-indicator {
   display: flex;
@@ -108,43 +82,43 @@ mat-dialog-content {
       width: 40px;
       height: 40px;
       border-radius: $radius-full;
-      background: rgba(255, 255, 255, 0.06);
-      color: $persian-blue-400;
+      background: $bg-light;
+      color: $text-secondary;
       font-weight: $font-weight-bold;
       font-size: $font-size-base;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid $border-light;
       transition: all 0.3s ease;
     }
 
     .step-label {
       font-size: $font-size-sm;
-      color: $persian-blue-400;
+      color: $text-secondary;
       font-weight: $font-weight-medium;
       transition: all 0.3s ease;
     }
 
     &.active {
       .step-number {
-        background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600);
+        background: $brand-primary;
         color: white;
         border-color: transparent;
-        box-shadow: 0 4px 12px rgba($persian-blue-500, 0.4);
+        box-shadow: 0 4px 12px rgba($brand-primary, 0.3);
       }
 
       .step-label {
-        color: $persian-blue-200;
+        color: $text-main;
       }
     }
 
     &.completed {
       .step-number {
-        background: #4ade80;
+        background: #16a34a;
         color: white;
         border-color: transparent;
       }
 
       .step-label {
-        color: #4ade80;
+        color: #16a34a;
       }
     }
   }
@@ -152,45 +126,31 @@ mat-dialog-content {
   .step-line {
     flex: 1;
     height: 2px;
-    background: rgba(255, 255, 255, 0.1);
+    background: $border-light;
     margin: 0 $spacing-4;
     transition: all 0.3s ease;
 
     &.active {
-      background: linear-gradient(90deg, $persian-blue-500, $persian-blue-400);
+      background: $brand-primary;
     }
 
     @include mobile {
       margin: 0 $spacing-2;
     }
   }
-
-  @include mobile {
-    .step {
-      .step-label {
-        font-size: $font-size-xs;
-      }
-    }
-  }
 }
 
-// ============================================================================
-// STEP CONTENT
-// ============================================================================
-
 .step-content {
-  animation: fadeInUp 0.3s ease forwards;
-
   h3 {
     @include flex-start;
     gap: $spacing-2;
     font-size: $font-size-lg;
     font-weight: $font-weight-semibold;
-    color: $persian-blue-100;
+    color: $text-main;
     margin: 0 0 $spacing-4 0;
 
     mat-icon {
-      color: $persian-blue-400;
+      color: $brand-primary;
       font-size: 24px;
       width: 24px;
       height: 24px;
@@ -198,19 +158,11 @@ mat-dialog-content {
   }
 }
 
-// ============================================================================
-// ORDER SUMMARY (Step 1)
-// ============================================================================
-
 .order-summary {
   padding: $spacing-4;
   border-radius: $radius-lg;
-
-  // Glassmorphism
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: $bg-light;
+  border: 1px solid $border-light;
 
   .summary-item {
     &.ticket-info {
@@ -219,7 +171,7 @@ mat-dialog-content {
       margin-bottom: $spacing-3;
 
       mat-icon {
-        color: $persian-blue-400;
+        color: $brand-primary;
         font-size: 32px;
         width: 32px;
         height: 32px;
@@ -233,13 +185,13 @@ mat-dialog-content {
           margin: 0 0 $spacing-1 0;
           font-size: $font-size-base;
           font-weight: $font-weight-semibold;
-          color: $persian-blue-100;
+          color: $text-main;
         }
 
         p {
           margin: 0;
           font-size: $font-size-sm;
-          color: $persian-blue-300;
+          color: $text-secondary;
         }
       }
     }
@@ -247,7 +199,7 @@ mat-dialog-content {
 
   .divider {
     height: 1px;
-    background: rgba(255, 255, 255, 0.08);
+    background: $border-light;
     margin: $spacing-3 0;
   }
 
@@ -260,13 +212,13 @@ mat-dialog-content {
 
       .label {
         font-weight: $font-weight-medium;
-        color: $persian-blue-300;
+        color: $text-secondary;
         font-size: $font-size-sm;
       }
 
       .value {
         font-weight: $font-weight-semibold;
-        color: $persian-blue-200;
+        color: $text-main;
         font-size: $font-size-sm;
       }
 
@@ -275,13 +227,13 @@ mat-dialog-content {
         margin-top: $spacing-2;
 
         .label {
-          color: $persian-blue-100;
+          color: $text-main;
           font-weight: $font-weight-semibold;
           font-size: $font-size-base;
         }
 
         .value {
-          color: #4ade80;
+          color: #16a34a;
           font-size: $font-size-xl;
           font-weight: $font-weight-bold;
         }
@@ -289,10 +241,6 @@ mat-dialog-content {
     }
   }
 }
-
-// ============================================================================
-// PAYMENT FORM (Step 2)
-// ============================================================================
 
 .payment-form {
   .payment-methods {
@@ -309,15 +257,15 @@ mat-dialog-content {
     }
 
     .payment-method-option {
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid $border-light;
       border-radius: $radius-lg;
       padding: $spacing-4;
-      background: rgba(255, 255, 255, 0.04);
+      background: $bg-light;
       transition: all 0.3s ease;
 
       &:hover {
-        border-color: rgba($persian-blue-400, 0.3);
-        background: rgba($persian-blue-500, 0.1);
+        border-color: rgba($brand-primary, 0.3);
+        background: rgba($brand-primary, 0.05);
       }
 
       .method-content {
@@ -328,20 +276,20 @@ mat-dialog-content {
           font-size: 32px;
           width: 32px;
           height: 32px;
-          color: $persian-blue-400;
+          color: $brand-primary;
         }
 
         span {
           font-size: $font-size-sm;
           font-weight: $font-weight-medium;
           text-align: center;
-          color: $persian-blue-200;
+          color: $text-main;
         }
       }
 
       &.mat-mdc-radio-checked {
-        border-color: $persian-blue-400;
-        background: rgba($persian-blue-500, 0.15);
+        border-color: $brand-primary;
+        background: rgba($brand-primary, 0.08);
       }
     }
   }
@@ -349,10 +297,6 @@ mat-dialog-content {
   .card-details {
     @include flex-column;
     gap: $spacing-4;
-
-    .full-width {
-      width: 100%;
-    }
 
     .card-details-row {
       display: grid;
@@ -364,55 +308,49 @@ mat-dialog-content {
       }
     }
 
-    .save-card-option {
-      margin-top: $spacing-2;
-
-      ::ng-deep .mat-mdc-checkbox-label {
-        font-size: $font-size-sm;
-        color: $persian-blue-300;
-      }
-    }
-
     ::ng-deep {
       .mat-mdc-form-field {
         .mat-mdc-text-field-wrapper {
-          background: rgba(255, 255, 255, 0.04);
+          background: $bg-light;
         }
 
         .mdc-text-field--outlined {
+
           .mdc-notched-outline__leading,
           .mdc-notched-outline__notch,
           .mdc-notched-outline__trailing {
-            border-color: rgba(255, 255, 255, 0.15) !important;
+            border-color: $border-light !important;
           }
 
           &:hover {
+
             .mdc-notched-outline__leading,
             .mdc-notched-outline__notch,
             .mdc-notched-outline__trailing {
-              border-color: rgba($persian-blue-400, 0.4) !important;
+              border-color: rgba($brand-primary, 0.4) !important;
             }
           }
 
           &.mdc-text-field--focused {
+
             .mdc-notched-outline__leading,
             .mdc-notched-outline__notch,
             .mdc-notched-outline__trailing {
-              border-color: $persian-blue-400 !important;
+              border-color: $brand-primary !important;
             }
           }
         }
 
         .mat-mdc-form-field-icon-prefix {
-          color: $persian-blue-400;
+          color: $brand-primary;
         }
 
         .mdc-floating-label {
-          color: $persian-blue-300 !important;
+          color: $text-secondary !important;
         }
 
         .mat-mdc-input-element {
-          color: $persian-blue-100 !important;
+          color: $text-main !important;
         }
       }
     }
@@ -422,22 +360,22 @@ mat-dialog-content {
     @include flex-start;
     gap: $spacing-3;
     padding: $spacing-4;
-    background: rgba($persian-blue-500, 0.1);
-    border: 1px solid rgba($persian-blue-400, 0.2);
+    background: rgba($brand-primary, 0.05);
+    border: 1px solid rgba($brand-primary, 0.15);
     border-radius: $radius-lg;
 
     mat-icon {
       font-size: 24px;
       width: 24px;
       height: 24px;
-      color: $persian-blue-400;
+      color: $brand-primary;
       flex-shrink: 0;
     }
 
     p {
       margin: 0;
       font-size: $font-size-sm;
-      color: $persian-blue-200;
+      color: $text-main;
     }
   }
 }
@@ -447,27 +385,23 @@ mat-dialog-content {
   gap: $spacing-2;
   margin-top: $spacing-4;
   padding: $spacing-3;
-  background: rgba(#4ade80, 0.1);
-  border: 1px solid rgba(#4ade80, 0.2);
+  background: rgba(#16a34a, 0.08);
+  border: 1px solid rgba(#16a34a, 0.15);
   border-radius: $radius-lg;
 
   mat-icon {
     font-size: 20px;
     width: 20px;
     height: 20px;
-    color: #4ade80;
+    color: #16a34a;
   }
 
   span {
     font-size: $font-size-sm;
     font-weight: $font-weight-medium;
-    color: #4ade80;
+    color: #16a34a;
   }
 }
-
-// ============================================================================
-// PROCESSING & SUCCESS STATES (Step 3)
-// ============================================================================
 
 .processing-state,
 .success-state {
@@ -479,17 +413,17 @@ mat-dialog-content {
     margin: $spacing-4 0 $spacing-2 0 !important;
     font-size: $font-size-xl !important;
     justify-content: center;
-    color: $persian-blue-100;
+    color: $text-main;
   }
 
   p {
     margin: 0;
-    color: $persian-blue-300;
+    color: $text-secondary;
     font-size: $font-size-sm;
   }
 
   ::ng-deep .mat-mdc-progress-spinner circle {
-    stroke: $persian-blue-400;
+    stroke: $brand-primary;
   }
 }
 
@@ -498,28 +432,24 @@ mat-dialog-content {
     @include flex-center;
     width: 80px;
     height: 80px;
-    background: rgba(#4ade80, 0.15);
-    border: 1px solid rgba(#4ade80, 0.2);
+    background: rgba(#16a34a, 0.1);
+    border: 1px solid rgba(#16a34a, 0.15);
     border-radius: $radius-full;
 
     mat-icon {
       font-size: 48px;
       width: 48px;
       height: 48px;
-      color: #4ade80;
+      color: #16a34a;
     }
   }
 }
 
-// ============================================================================
-// DIALOG ACTIONS
-// ============================================================================
-
 mat-dialog-actions {
   @include flex-between;
   padding: $spacing-4 $spacing-6;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid $border-light;
+  background: $bg-light;
   gap: $spacing-3;
 
   @include mobile {
@@ -530,21 +460,15 @@ mat-dialog-actions {
   .back-btn {
     @include flex-center;
     gap: $spacing-2;
-    color: $persian-blue-300;
+    color: $text-secondary;
     font-weight: $font-weight-medium;
     background: transparent !important;
-    border: 1px solid rgba($persian-blue-400, 0.3) !important;
+    border: 1px solid $border-light !important;
     transition: all 0.3s ease;
 
     &:hover {
-      background: rgba($persian-blue-400, 0.1) !important;
-      border-color: rgba($persian-blue-400, 0.5) !important;
-    }
-
-    mat-icon {
-      font-size: 18px;
-      width: 18px;
-      height: 18px;
+      background: $bg-light !important;
+      border-color: $neutral-300 !important;
     }
 
     @include mobile {
@@ -556,22 +480,15 @@ mat-dialog-actions {
     @include flex-center;
     gap: $spacing-2;
     padding: $spacing-3 $spacing-6;
-    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    background: $brand-primary !important;
     color: white !important;
     font-weight: $font-weight-semibold;
     border-radius: $radius-lg;
-    box-shadow: 0 4px 16px rgba($persian-blue-500, 0.4);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba($brand-primary, 0.25);
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba($persian-blue-500, 0.5);
-    }
-
-    mat-icon {
-      font-size: 18px;
-      width: 18px;
-      height: 18px;
+      background: $brand-primary-dark !important;
+      box-shadow: 0 8px 20px rgba($brand-primary, 0.35);
     }
 
     @include mobile {
@@ -583,47 +500,22 @@ mat-dialog-actions {
     @include flex-center;
     gap: $spacing-2;
     padding: $spacing-3 $spacing-6;
-    background: linear-gradient(135deg, #4ade80, #22c55e) !important;
+    background: linear-gradient(135deg, #16a34a, #15803d) !important;
     color: white !important;
     font-weight: $font-weight-bold;
     border-radius: $radius-lg;
-    box-shadow: 0 4px 16px rgba(#4ade80, 0.4);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(#16a34a, 0.3);
 
     &:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(#4ade80, 0.5);
+      box-shadow: 0 8px 20px rgba(#16a34a, 0.4);
     }
 
     &:disabled {
       opacity: 0.6;
-      transform: none;
-      box-shadow: none;
-    }
-
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
     }
 
     @include mobile {
       width: 100%;
     }
-  }
-}
-
-// ============================================================================
-// ANIMATIONS
-// ============================================================================
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }

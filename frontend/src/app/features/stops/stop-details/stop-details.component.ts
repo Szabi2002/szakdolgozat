@@ -55,7 +55,7 @@ export class StopDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private stopsService: StopsService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.route.params

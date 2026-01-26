@@ -27,17 +27,17 @@ export class TicketTypeSelectorComponent {
 
   formatValidity(hours: number | null): string {
     if (!hours) {
-      return 'Unlimited';
+      return 'Korlátlan';
     }
 
     if (hours < 24) {
-      return `${hours} hours`;
+      return `${hours} óra`;
     } else if (hours < 720) {
-      return `${Math.round(hours / 24)} days`;
+      return `${Math.round(hours / 24)} nap`;
     } else if (hours < 8760) {
-      return `${Math.round(hours / 720)} months`;
+      return `${Math.round(hours / 720)} hónap`;
     } else {
-      return `${Math.round(hours / 8760)} years`;
+      return `${Math.round(hours / 8760)} év`;
     }
   }
 
@@ -52,24 +52,13 @@ export class TicketTypeSelectorComponent {
     return iconMap[type] || 'confirmation_number';
   }
 
-  getTypeColor(type: string): string {
-    const colorMap: Record<string, string> = {
-      single: '#2196f3',
-      return: '#ff9800',
-      day: '#4caf50',
-      monthly: '#9c27b0',
-      yearly: '#f44336'
-    };
-    return colorMap[type] || '#2196f3';
-  }
-
   getTypeBadge(type: string): string {
     const badgeMap: Record<string, string> = {
-      single: 'SINGLE',
-      return: 'RETURN',
-      day: 'DAY PASS',
-      monthly: 'MONTHLY',
-      yearly: 'YEARLY'
+      single: 'VONALJEGY',
+      return: 'MENETTÉRTÍ',
+      day: 'NAPIJEGY',
+      monthly: 'HAVI BÉRLET',
+      yearly: 'ÉVES BÉRLET'
     };
     return badgeMap[type] || type.toUpperCase();
   }

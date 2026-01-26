@@ -26,7 +26,7 @@ export class TicketCardComponent implements OnInit {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Component initialization - ticket validation handled by template
@@ -94,7 +94,7 @@ export class TicketCardComponent implements OnInit {
         return 'schedule';
       case 'used':
         return 'done_all';
-      case 'cancelled':
+      case 'refunded':
         return 'cancel';
       default:
         return 'help';
@@ -109,8 +109,8 @@ export class TicketCardComponent implements OnInit {
         return 'Lejárt';
       case 'used':
         return 'Használt';
-      case 'cancelled':
-        return 'Lemondva';
+      case 'refunded':
+        return 'Visszaváltva';
       default:
         return 'Ismeretlen';
     }

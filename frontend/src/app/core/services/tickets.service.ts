@@ -16,7 +16,7 @@ export class TicketsService {
   private readonly apiUrl = `${environment.apiUrl}/tickets`;
   private readonly ticketTypesUrl = `${environment.apiUrl}/ticket-types`;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   /**
    * Get all active ticket types
@@ -128,7 +128,7 @@ export class TicketsService {
         return 'warn';
       case 'used':
         return 'accent';
-      case 'cancelled':
+      case 'refunded':
         return 'basic';
       default:
         return 'basic';

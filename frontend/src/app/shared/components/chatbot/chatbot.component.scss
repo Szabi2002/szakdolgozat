@@ -2,12 +2,9 @@
 @import 'colors';
 @import 'typography';
 @import 'mixins';
-@import 'persian-blue';
-@import 'glassmorphism';
-@import 'animations';
 
 // ============================================================================
-// AI CHATBOT COMPONENT - DARK THEME (matching Landing & Dashboard)
+// AI CHATBOT COMPONENT - LIGHT THEME (Mint/Teal)
 // ============================================================================
 
 // ============================================================================
@@ -20,19 +17,20 @@
   right: $spacing-6;
   z-index: $z-index-fixed;
 
-  // Gradient background matching hero buttons
-  background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+  // Gradient background - primary mint
+  background: $brand-primary !important;
   color: white !important;
   box-shadow:
-    0 4px 20px rgba($persian-blue-500, 0.4),
-    0 0 40px rgba($persian-blue-500, 0.15);
+    0 4px 20px rgba($brand-primary, 0.35),
+    0 0 40px rgba($brand-primary, 0.1);
   transition: all $transition-medium $ease-out;
 
   &:hover {
     transform: scale(1.08) translateY(-2px);
+    background: $brand-primary-dark !important;
     box-shadow:
-      0 8px 30px rgba($persian-blue-500, 0.5),
-      0 0 60px rgba($persian-blue-500, 0.2);
+      0 8px 30px rgba($brand-primary, 0.45),
+      0 0 60px rgba($brand-primary, 0.15);
   }
 
   &:active {
@@ -40,7 +38,7 @@
   }
 
   &.open {
-    background: linear-gradient(135deg, $persian-blue-700, $persian-blue-800) !important;
+    background: $brand-primary-dark !important;
   }
 
   mat-icon {
@@ -56,7 +54,7 @@
 }
 
 // ============================================================================
-// CHAT WINDOW - GLASSMORPHISM STYLE
+// CHAT WINDOW - LIGHT GLASSMORPHISM
 // ============================================================================
 
 .chatbot-window {
@@ -72,16 +70,15 @@
   overflow: hidden;
   z-index: $z-index-modal;
 
-  // Glassmorphism card style
-  background: rgba($persian-blue-900, 0.95);
+  // Light glassmorphism
+  background: rgba($surface-light, 0.98);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: $radius-xl;
-  border: 1px solid rgba($persian-blue-400, 0.15);
+  border: 1px solid $border-light;
   box-shadow:
-    0 25px 50px rgba(0, 0, 0, 0.5),
-    0 0 40px rgba($persian-blue-500, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    0 25px 50px rgba(0, 0, 0, 0.15),
+    0 0 40px rgba($brand-primary, 0.05);
 
   @include mobile {
     right: 0;
@@ -104,9 +101,9 @@
   justify-content: space-between;
   padding: $spacing-4 $spacing-5;
 
-  // Gradient header matching hero style
-  background: linear-gradient(135deg, $persian-blue-800, $persian-blue-900);
-  border-bottom: 1px solid rgba($persian-blue-400, 0.15);
+  // Primary header
+  background: $brand-primary;
+  border-bottom: none;
 
   .header-info {
     display: flex;
@@ -117,8 +114,8 @@
       font-size: 36px;
       width: 36px;
       height: 36px;
-      color: $persian-blue-400;
-      filter: drop-shadow(0 0 8px rgba($persian-blue-400, 0.4));
+      color: white;
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
     }
 
     .header-text {
@@ -129,13 +126,13 @@
       .title {
         font-weight: $font-weight-bold;
         font-size: $font-size-lg;
-        color: $persian-blue-50;
+        color: white;
         letter-spacing: -0.01em;
       }
 
       .subtitle {
         font-size: $font-size-xs;
-        color: $persian-blue-400;
+        color: rgba(255, 255, 255, 0.8);
         font-weight: $font-weight-medium;
       }
     }
@@ -146,12 +143,12 @@
     gap: $spacing-1;
 
     button {
-      color: $persian-blue-300 !important;
+      color: rgba(255, 255, 255, 0.8) !important;
       transition: all $transition-fast $ease-out;
 
       &:hover {
-        color: $persian-blue-50 !important;
-        background: rgba($persian-blue-400, 0.15) !important;
+        color: white !important;
+        background: rgba(255, 255, 255, 0.15) !important;
       }
 
       mat-icon {
@@ -175,13 +172,9 @@
   flex-direction: column;
   gap: $spacing-4;
 
-  // Dark gradient background
-  background:
-    radial-gradient(ellipse at 20% 0%, rgba($persian-blue-700, 0.15), transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-600, 0.1), transparent 50%),
-    $persian-blue-950;
+  background: $bg-light;
 
-  // Custom scrollbar matching design system
+  // Custom scrollbar
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -191,11 +184,11 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba($persian-blue-400, 0.3);
+    background: $neutral-300;
     border-radius: $radius-full;
 
     &:hover {
-      background: rgba($persian-blue-400, 0.5);
+      background: $neutral-400;
     }
   }
 }
@@ -217,21 +210,21 @@
     flex-direction: row-reverse;
 
     .message-content {
-      // User bubble - gradient style
-      background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600);
+      // User bubble - primary color
+      background: $brand-primary;
       color: white;
       border-radius: $radius-lg $radius-lg $radius-sm $radius-lg;
-      box-shadow: 0 4px 12px rgba($persian-blue-500, 0.3);
+      box-shadow: 0 4px 12px rgba($brand-primary, 0.25);
 
       .message-time {
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.7);
       }
     }
 
     .message-avatar {
-      background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600);
+      background: $brand-primary;
       color: white;
-      box-shadow: 0 2px 8px rgba($persian-blue-500, 0.3);
+      box-shadow: 0 2px 8px rgba($brand-primary, 0.25);
     }
   }
 
@@ -240,24 +233,22 @@
     align-self: flex-start;
 
     .message-content {
-      // Glass effect for bot messages
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: $persian-blue-100;
+      // Light card for bot messages
+      background: $surface-light;
+      border: 1px solid $border-light;
+      color: $text-main;
       border-radius: $radius-lg $radius-lg $radius-lg $radius-sm;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 
       .message-time {
-        color: $persian-blue-400;
+        color: $text-muted;
       }
     }
 
     .message-avatar {
-      background: rgba($persian-blue-500, 0.2);
-      color: $persian-blue-400;
-      border: 1px solid rgba($persian-blue-400, 0.2);
+      background: $brand-primary-10;
+      color: $brand-primary;
+      border: 1px solid rgba($brand-primary, 0.2);
     }
   }
 
@@ -294,7 +285,7 @@
 
     .message-time {
       display: block;
-      font-size: 0.625rem; // 10px
+      font-size: 0.625rem;
       margin-top: $spacing-2;
       text-align: right;
       font-weight: $font-weight-medium;
@@ -319,10 +310,9 @@
   span {
     width: 8px;
     height: 8px;
-    background: $persian-blue-400;
+    background: $brand-primary;
     border-radius: $radius-full;
     animation: typing 1.4s infinite ease-in-out both;
-    box-shadow: 0 0 8px rgba($persian-blue-400, 0.4);
 
     &:nth-child(1) {
       animation-delay: -0.32s;
@@ -335,10 +325,14 @@
 }
 
 @keyframes typing {
-  0%, 80%, 100% {
+
+  0%,
+  80%,
+  100% {
     transform: scale(0.6);
     opacity: 0.4;
   }
+
   40% {
     transform: scale(1);
     opacity: 1;
@@ -354,8 +348,8 @@
   align-items: center;
   gap: $spacing-3;
   padding: $spacing-4;
-  background: rgba($persian-blue-900, 0.8);
-  border-top: 1px solid rgba($persian-blue-400, 0.1);
+  background: $surface-light;
+  border-top: 1px solid $border-light;
 
   .message-input {
     flex: 1;
@@ -373,21 +367,19 @@
       .mat-mdc-form-field-flex {
         padding: 0 $spacing-4 !important;
         min-height: 44px !important;
-        background: rgba(255, 255, 255, 0.05) !important;
+        background: $bg-light !important;
         border-radius: $radius-lg !important;
-        border: 1px solid rgba($persian-blue-400, 0.2) !important;
+        border: 1px solid $border-light !important;
         transition: all $transition-fast $ease-out;
 
         &:hover {
-          background: rgba(255, 255, 255, 0.08) !important;
-          border-color: rgba($persian-blue-400, 0.3) !important;
+          border-color: $neutral-400 !important;
         }
       }
 
       .mat-mdc-form-field.mat-focused .mat-mdc-form-field-flex {
-        background: rgba(255, 255, 255, 0.1) !important;
-        border-color: $persian-blue-500 !important;
-        box-shadow: 0 0 0 3px rgba($persian-blue-500, 0.15) !important;
+        border-color: $brand-primary !important;
+        box-shadow: 0 0 0 3px rgba($brand-primary, 0.1) !important;
       }
 
       .mdc-notched-outline {
@@ -396,11 +388,11 @@
 
       input {
         font-size: $font-size-sm;
-        color: $persian-blue-100 !important;
-        caret-color: $persian-blue-400;
+        color: $text-main !important;
+        caret-color: $brand-primary;
 
         &::placeholder {
-          color: $persian-blue-500 !important;
+          color: $text-muted !important;
         }
       }
     }
@@ -411,20 +403,21 @@
     height: 44px;
     flex-shrink: 0;
 
-    // Gradient button matching hero style
-    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    // Primary button
+    background: $brand-primary !important;
     color: white !important;
-    box-shadow: 0 4px 12px rgba($persian-blue-500, 0.3);
+    box-shadow: 0 4px 12px rgba($brand-primary, 0.25);
     transition: all $transition-fast $ease-out;
 
     &:hover:not(:disabled) {
       transform: scale(1.05);
-      box-shadow: 0 6px 16px rgba($persian-blue-500, 0.4);
+      background: $brand-primary-dark !important;
+      box-shadow: 0 6px 16px rgba($brand-primary, 0.35);
     }
 
     &:disabled {
-      background: rgba($persian-blue-600, 0.3) !important;
-      color: $persian-blue-500 !important;
+      background: $neutral-300 !important;
+      color: $neutral-500 !important;
       box-shadow: none;
     }
 
@@ -445,6 +438,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

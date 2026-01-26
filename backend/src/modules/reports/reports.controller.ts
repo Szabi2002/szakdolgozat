@@ -22,6 +22,7 @@ import {
 } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { AdminGuard } from '@common/guards/admin.guard';
+import { RolesGuard } from '@common/guards/roles.guard';
 import { ReportsService } from './reports.service';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
@@ -39,7 +40,7 @@ import { Report, ReportStatus, ReportPriority } from './entities/report.entity';
 @Controller('reports')
 @ApiBearerAuth()
 export class ReportsController {
-  constructor(private readonly reportsService: ReportsService) {}
+  constructor(private readonly reportsService: ReportsService) { }
 
   /**
    * Create a new report
@@ -333,6 +334,7 @@ export class ReportsController {
   /**
    * Delete own pending report
    */
+  @UseGuards(RolesGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
@@ -366,7 +368,8 @@ export class ReportsController {
   })
   async delete(@Req() req: any, @Param('id') id: string): Promise<void> {
     const userId = req.user.id;
-    await this.reportsService.delete(id, userId);
+    const isAdmin = req.user.role === 'admin';
+    await this.reportsService.delete(id, userId, isAdmin);
   }
 
   /**

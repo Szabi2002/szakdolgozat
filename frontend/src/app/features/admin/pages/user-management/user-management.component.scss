@@ -1,270 +1,267 @@
-@import '../../../../../styles/variables';
-@import '../../../../../styles/colors';
-@import '../../../../../styles/typography';
-@import '../../../../../styles/mixins';
-@import '../../../../../styles/persian-blue';
-@import '../../../../../styles/glassmorphism';
-@import '../../../../../styles/animations';
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
 
-// ===========================
-// USER MANAGEMENT - DARK GLASSMORPHISM THEME
-// ===========================
+// ============================================================================
+// USER MANAGEMENT - LIGHT THEME
+// ============================================================================
 
-.user-management-container {
-  position: relative;
-  min-height: 100vh;
-  background: $persian-blue-950;
-  overflow-x: hidden;
-  @include dark-scrollbar;
+:host {
+  display: block;
 }
 
-// ===========================
-// BACKGROUND ORBS
-// ===========================
+.user-management-container {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-6;
+  position: relative;
+  // min-height: 100vh; // Let layout handle height
+  // overflow-x: hidden; // Let layout handle overflow
+}
 
+// Background Orbs (Preserved)
 .bg-orbs {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
-  z-index: 0;
   overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
 
   .orb {
     position: absolute;
     border-radius: 50%;
     filter: blur(80px);
-    opacity: 0.5;
+    opacity: 0.4;
 
     &.orb-1 {
-      width: 400px;
-      height: 400px;
-      background: $gradient-orb-blue;
       top: -100px;
       right: -100px;
-      @include float-animation(slow);
+      width: 400px;
+      height: 400px;
+      background: rgba($brand-primary, 0.2);
     }
 
     &.orb-2 {
+      bottom: 20%;
+      left: 10%;
       width: 300px;
       height: 300px;
-      background: $gradient-orb-purple;
-      bottom: 20%;
-      left: -50px;
-      @include float-animation(medium);
-      animation-delay: -2s;
+      background: rgba($brand-secondary, 0.15);
     }
 
     &.orb-3 {
+      top: 40%;
+      right: 30%;
       width: 200px;
       height: 200px;
-      background: radial-gradient(circle, rgba($persian-blue-400, 0.3) 0%, transparent 70%);
-      top: 50%;
-      right: 20%;
-      @include float-animation(fast);
-      animation-delay: -4s;
+      background: rgba($brand-primary-light, 0.1);
     }
   }
 }
 
-// ===========================
-// COMPACT HEADER
-// ===========================
+// ============================================================================
+// HEADER SECTION (Standardized)
+// ============================================================================
 
 .dashboard-header {
   width: 100%;
   padding: $spacing-8 $spacing-4;
   position: relative;
   overflow: hidden;
-  z-index: 1;
-  margin-bottom: $spacing-6;
+  background: linear-gradient(135deg, $brand-primary 0%, $brand-primary-dark 100%);
+  margin-bottom: $spacing-8;
 
-  // Dark gradient background with glow effects
-  background:
-    radial-gradient(ellipse at 20% 0%, rgba($persian-blue-600, 0.3), transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-500, 0.2), transparent 50%),
-    linear-gradient(180deg, $persian-blue-900 0%, $persian-blue-950 100%);
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $spacing-6;
+    position: relative;
+    z-index: 1;
 
-  @include mobile {
-    padding: $spacing-6 $spacing-3;
+    @include mobile {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-4;
+    }
   }
-}
 
-.header-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  @include flex-between;
-  align-items: center;
-  gap: $spacing-6;
-  position: relative;
-  z-index: 1;
-
-  @include tablet {
+  .header-left {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: $spacing-4;
+    gap: $spacing-3;
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-2;
+      padding: $spacing-1 $spacing-3;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: $radius-full;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      width: fit-content;
+      color: white;
+
+      mat-icon {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      span {
+        font-size: $font-size-xs;
+        font-weight: $font-weight-semibold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .greeting-section {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-1;
+
+      .greeting-heading {
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-bold;
+        color: white;
+        margin: 0;
+        line-height: 1.2;
+
+        .highlight {
+          color: rgba(255, 255, 255, 0.9);
+        }
+      }
+
+      .greeting-subtext {
+        font-size: $font-size-base;
+        color: rgba(255, 255, 255, 0.85);
+        margin: 0;
+      }
+    }
+  }
+
+  .header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: $spacing-3;
+
+    @include mobile {
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: $spacing-3;
+
+      .stat-badge {
+        display: flex;
+        align-items: center;
+        gap: $spacing-2;
+        padding: $spacing-2 $spacing-4;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: $radius-full;
+        color: white;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        backdrop-filter: blur(8px);
+
+        mat-icon {
+          font-size: 18px;
+          color: white;
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
   }
 }
 
-.header-left {
-  @include flex-column;
-  gap: $spacing-3;
-}
-
-.header-badge {
-  @include flex-start;
-  gap: $spacing-2;
-  padding: $spacing-1 $spacing-3;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: $radius-full;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  width: fit-content;
-  color: $persian-blue-200;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
-
-  mat-icon {
-    font-size: 14px;
-    width: 14px;
-    height: 14px;
-    color: $persian-blue-400;
-  }
-}
-
-.greeting-section {
-  @include flex-column;
-  gap: $spacing-1;
-}
-
-.greeting-heading {
-  font-size: $font-size-2xl;
-  font-weight: $font-weight-bold;
-  color: $persian-blue-50;
-  margin: 0;
-  line-height: 1.2;
-
-  .highlight {
-    color: $persian-blue-400;
-  }
-
-  @include mobile {
-    font-size: $font-size-xl;
-  }
-}
-
-.greeting-subtext {
-  font-size: $font-size-base;
-  color: $persian-blue-300;
-  margin: 0;
-
-  @include mobile {
-    font-size: $font-size-sm;
-  }
-}
-
-.header-right {
-  @include flex-column;
-  align-items: flex-end;
-  gap: $spacing-3;
-
-  @include tablet {
-    align-items: flex-start;
-    width: 100%;
-  }
-}
-
-.header-actions {
-  @include flex-start;
-  gap: $spacing-3;
-
-  @include mobile {
-    width: 100%;
-  }
-}
-
-.stat-badge {
-  @include flex-start;
-  gap: $spacing-2;
-  padding: $spacing-2 $spacing-4;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: $radius-full;
-  color: $persian-blue-200;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-
-  mat-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-    color: $persian-blue-400;
-  }
-}
-
-// ===========================
-// CONTROLS SECTION (SEARCH + FILTERS)
-// ===========================
+// ============================================================================
+// CONTROLS & TABLE
+// ============================================================================
 
 .controls-section {
-  position: relative;
-  z-index: 1;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   gap: $spacing-4;
   margin-bottom: $spacing-6;
-  @include slide-up(600ms, 30px, 100ms);
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto $spacing-6 auto; // Center it
+  position: relative;
+  z-index: 1;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 .search-container {
   position: relative;
-  @include glass-card;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
+  flex: 1;
+  max-width: 400px;
 
   .search-icon {
     position: absolute;
-    left: $spacing-4;
-    color: $dark-text-muted;
-    font-size: 22px;
-    width: 22px;
-    height: 22px;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $text-muted;
+    pointer-events: none;
   }
 
   .search-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    padding: $spacing-4 $spacing-4 $spacing-4 $spacing-12;
+    width: 100%;
+    height: 48px;
+    padding: 0 40px 0 48px;
+    border: 1px solid $border-light;
+    border-radius: $radius-lg;
+    background: white; // Solid white
     font-size: $font-size-base;
-    color: $dark-text-primary;
-    outline: none;
+    color: $text-main;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 
-    &::placeholder {
-      color: $dark-text-muted;
+    &:focus {
+      outline: none;
+      border-color: $brand-primary;
+      box-shadow: 0 0 0 4px rgba($brand-primary, 0.1);
     }
   }
 
   .clear-search {
-    @include flex-center;
-    width: 40px;
-    height: 40px;
-    margin-right: $spacing-2;
-    background: rgba(255, 255, 255, 0.1);
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
     border: none;
-    border-radius: 10px;
-    color: $dark-text-secondary;
+    color: $text-muted;
     cursor: pointer;
-    transition: all 0.2s ease;
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: $dark-text-primary;
+      background: $bg-light;
+      color: $text-main;
     }
 
     mat-icon {
@@ -277,299 +274,194 @@
 
 .filter-tabs {
   display: flex;
-  gap: $spacing-2;
-  flex-wrap: wrap;
+  background: white;
+  padding: 4px;
+  border-radius: $radius-lg;
+  border: 1px solid $border-light;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 
   @include mobile {
-    width: 100%;
     overflow-x: auto;
-    flex-wrap: nowrap;
-    padding-bottom: $spacing-2;
-    @include scrollbar-hidden;
-  }
-}
-
-.filter-tab {
-  @include flex-center;
-  gap: $spacing-2;
-  padding: $spacing-3 $spacing-5;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  color: $dark-text-secondary;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-
-  mat-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
   }
 
-  .count {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2px 8px;
-    border-radius: 100px;
-    font-size: $font-size-xs;
-    font-weight: $font-weight-semibold;
-  }
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
-    color: $dark-text-primary;
-  }
-
-  &.active {
-    background: rgba($persian-blue-500, 0.25);
-    border-color: rgba($persian-blue-400, 0.4);
-    color: $persian-blue-300;
-    box-shadow: 0 0 20px rgba($persian-blue-500, 0.2);
-
-    .count {
-      background: rgba($persian-blue-400, 0.3);
-      color: $persian-blue-200;
-    }
-  }
-}
-
-// ===========================
-// LOADING, ERROR, EMPTY STATES
-// ===========================
-
-.loading-state,
-.error-state,
-.empty-state {
-  position: relative;
-  z-index: 1;
-  @include glass-card-strong;
-  @include flex-column-center;
-  padding: $spacing-16;
-  text-align: center;
-  min-height: 400px;
-
-  @include mobile {
-    padding: $spacing-10;
-    min-height: 300px;
-  }
-}
-
-.loading-state {
-  .loading-spinner {
-    margin-bottom: $spacing-4;
-
-    ::ng-deep .mat-mdc-progress-spinner {
-      --mdc-circular-progress-active-indicator-color: #{$persian-blue-400};
-    }
-  }
-
-  p {
-    color: $dark-text-secondary;
-    font-size: $font-size-base;
-    margin: 0;
-  }
-}
-
-.error-state {
-  .error-icon-wrapper {
-    @include flex-center;
-    width: 80px;
-    height: 80px;
-    background: rgba(#F44336, 0.15);
-    border-radius: 20px;
-    margin-bottom: $spacing-4;
-
-    mat-icon {
-      font-size: 48px;
-      width: 48px;
-      height: 48px;
-      color: #E57373;
-    }
-  }
-
-  h3 {
-    margin: 0 0 $spacing-2 0;
-    font-size: $font-size-xl;
-    font-weight: $font-weight-bold;
-    color: $dark-text-primary;
-  }
-
-  p {
-    margin: 0 0 $spacing-6 0;
-    font-size: $font-size-base;
-    color: #E57373;
-    max-width: 400px;
-  }
-
-  .glass-button-primary {
-    @include glass-button-primary;
-    display: inline-flex;
-    align-items: center;
-    gap: $spacing-2;
-
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-    }
-  }
-}
-
-.empty-state {
-  .empty-icon-wrapper {
-    @include flex-center;
-    width: 80px;
-    height: 80px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    margin-bottom: $spacing-4;
-
-    mat-icon {
-      font-size: 48px;
-      width: 48px;
-      height: 48px;
-      color: $dark-text-muted;
-    }
-  }
-
-  h3 {
-    margin: 0 0 $spacing-2 0;
-    font-size: $font-size-xl;
-    font-weight: $font-weight-bold;
-    color: $dark-text-primary;
-  }
-
-  p {
-    margin: 0;
-    font-size: $font-size-base;
-    color: $dark-text-secondary;
-  }
-}
-
-// ===========================
-// USERS TABLE
-// ===========================
-
-.users-table-wrapper {
-  position: relative;
-  z-index: 1;
-  @include slide-up(600ms, 30px, 200ms);
-}
-
-.users-table-container {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: $shadow-glass-card;
-}
-
-.users-table {
-  width: 100%;
-  border-collapse: collapse;
-
-  thead {
-    tr {
-      background: rgba(255, 255, 255, 0.04);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    th {
-      padding: $spacing-4 $spacing-5;
-      text-align: left;
-      font-size: $font-size-xs;
-      font-weight: $font-weight-semibold;
-      color: $dark-text-muted;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-
-      &.th-actions {
-        text-align: center;
-        width: 80px;
-      }
-    }
-  }
-
-  tbody {
-    tr.user-row {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      transition: all 0.2s ease;
-
-      &:last-child {
-        border-bottom: none;
-      }
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.04);
-      }
-    }
-
-    td {
-      padding: $spacing-4 $spacing-5;
-      vertical-align: middle;
-    }
-  }
-}
-
-// User Info Cell
-.td-user {
-  .user-info {
+  .filter-tab {
     display: flex;
     align-items: center;
-    gap: $spacing-4;
+    gap: 8px;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: $text-secondary;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    .count {
+      background: $bg-light;
+      padding: 2px 6px;
+      border-radius: $radius-sm;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    &:hover {
+      background: $bg-light;
+      color: $text-main;
+    }
+
+    &.active {
+      background: rgba($brand-primary, 0.1);
+      color: $brand-primary;
+      font-weight: bold;
+
+      .count {
+        background: white;
+        color: $brand-primary;
+      }
+    }
+  }
+}
+
+// Table Wrapper
+.users-table-wrapper {
+  background: white;
+  border-radius: $radius-lg;
+  border: 1px solid $border-light;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); // Match Dashboard Card Shadow
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto; // Center it
+  position: relative;
+  z-index: 1;
+
+  .users-table-container {
+    overflow-x: auto;
   }
 
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+
+    thead {
+      background: $bg-light;
+
+      th {
+        text-align: left;
+        padding: $spacing-4 $spacing-6;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: $text-secondary;
+        border-bottom: 1px solid $border-light;
+        white-space: nowrap;
+
+        &.th-actions {
+          text-align: right;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        transition: background-color 0.15s ease;
+        border-bottom: 1px solid $border-light;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &:hover {
+          background-color: $bg-light;
+        }
+
+        td {
+          padding: $spacing-4 $spacing-6;
+          vertical-align: middle;
+          font-size: $font-size-sm;
+          color: $text-main;
+
+          &.td-actions {
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Cell Components
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: $spacing-4;
+
   .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: $bg-light;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
-    @include flex-center;
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
-    font-size: $font-size-sm;
-    font-weight: $font-weight-bold;
-    flex-shrink: 0;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 
-    &.admin {
-      background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
-      border: 2px solid rgba($persian-blue-400, 0.5);
-      color: $persian-blue-200;
-      box-shadow: 0 0 15px rgba($persian-blue-500, 0.2);
-    }
-
-    &.user {
-      background: linear-gradient(135deg, rgba(#4CAF50, 0.25), rgba(#2E7D32, 0.15));
-      border: 2px solid rgba(#81C784, 0.5);
-      color: #A5D6A7;
-    }
-
-    &.provider {
-      background: linear-gradient(135deg, rgba(#FF9800, 0.25), rgba(#F57C00, 0.15));
-      border: 2px solid rgba(#FFB74D, 0.5);
-      color: #FFCC80;
+    .initials {
+      font-weight: bold;
+      color: $text-secondary;
+      font-size: 14px;
     }
 
     .status-dot {
       position: absolute;
-      bottom: -2px;
-      right: -2px;
-      width: 14px;
-      height: 14px;
+      bottom: 0;
+      right: 0;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      border: 3px solid $persian-blue-950;
+      border: 2px solid white;
 
       &.active {
-        background: #4CAF50;
-        box-shadow: 0 0 8px rgba(#4CAF50, 0.6);
+        background: #10b981;
       }
 
       &.inactive {
-        background: #9E9E9E;
+        background: $text-muted;
+      }
+
+      &.banned {
+        background: #ef4444;
+      }
+    }
+
+    // Role Colors for Avatar Ring? Or Background?
+    &.admin {
+      background: rgba($brand-primary, 0.1);
+
+      .initials {
+        color: $brand-primary;
+      }
+    }
+
+    &.provider {
+      background: rgba(#3b82f6, 0.1);
+
+      .initials {
+        color: #3b82f6;
       }
     }
   }
@@ -577,311 +469,269 @@
   .user-details {
     display: flex;
     flex-direction: column;
-    gap: $spacing-1;
-    min-width: 0;
 
     .user-name {
-      font-size: $font-size-base;
       font-weight: $font-weight-semibold;
-      color: $dark-text-primary;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      color: $text-main;
     }
 
     .user-email {
-      font-size: $font-size-sm;
-      color: $dark-text-secondary;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: $font-size-xs;
+      color: $text-secondary;
     }
   }
 }
 
-// Role Badge
-.td-role {
-  .role-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border-radius: 100px;
-    font-size: $font-size-xs;
-    font-weight: $font-weight-semibold;
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: $radius-full;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 
-    mat-icon {
-      font-size: 16px;
-      width: 16px;
-      height: 16px;
-    }
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
 
-    &.admin {
-      background: rgba($persian-blue-500, 0.2);
-      color: $persian-blue-300;
-      border: 1px solid rgba($persian-blue-400, 0.3);
-    }
+  &.admin {
+    background: rgba($brand-primary, 0.1);
+    color: $brand-primary;
+  }
 
-    &.user {
-      background: rgba(#4CAF50, 0.2);
-      color: #81C784;
-      border: 1px solid rgba(#4CAF50, 0.3);
-    }
+  &.user {
+    background: $bg-light;
+    color: $text-secondary;
+  }
 
-    &.provider {
-      background: rgba(#FF9800, 0.2);
-      color: #FFB74D;
-      border: 1px solid rgba(#FF9800, 0.3);
-    }
+  &.provider {
+    background: rgba(#3b82f6, 0.1);
+    color: #3b82f6;
   }
 }
 
-// Status Badge
-.td-status {
-  .status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    border-radius: 100px;
-    font-size: $font-size-xs;
-    font-weight: $font-weight-medium;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+
+  .status-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  &.active {
+    color: #10b981;
 
     .status-indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
+      background: #10b981;
     }
+  }
 
-    &.active {
-      color: #81C784;
+  &.inactive {
+    color: $text-muted;
 
-      .status-indicator {
-        background: #4CAF50;
-        box-shadow: 0 0 8px rgba(#4CAF50, 0.6);
-      }
+    .status-indicator {
+      background: $text-muted;
     }
+  }
 
-    &.inactive {
-      color: $dark-text-muted;
+  &.banned {
+    color: #ef4444;
 
-      .status-indicator {
-        background: #9E9E9E;
-      }
+    .status-indicator {
+      background: #ef4444;
     }
   }
 }
 
-// Date Cell
-.td-date {
-  .date-info {
-    display: flex;
-    align-items: center;
-    gap: $spacing-2;
-    color: $dark-text-secondary;
-    font-size: $font-size-sm;
+.date-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: $text-secondary;
+  font-size: $font-size-xs;
 
-    mat-icon {
-      font-size: 16px;
-      width: 16px;
-      height: 16px;
-      color: $dark-text-muted;
-    }
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
   }
 }
 
-// Actions Cell
-.td-actions {
-  text-align: center;
+.action-btn {
+  color: $text-secondary;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 
-  .action-btn {
-    @include flex-center;
-    width: 40px;
-    height: 40px;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: $dark-text-secondary;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.2);
-      color: $dark-text-primary;
-    }
-
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-    }
+  &:hover {
+    background: rgba($brand-primary, 0.1);
+    color: $brand-primary;
   }
 }
 
-// ===========================
-// PAGINATION
-// ===========================
-
+// Pagination
 .pagination {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: $spacing-3;
-  margin-top: $spacing-6;
-  flex-wrap: wrap;
+  gap: $spacing-4;
+  padding: $spacing-6 0;
 
-  @include mobile {
-    gap: $spacing-2;
-  }
-}
+  .page-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid $border-light;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $text-secondary;
+    cursor: pointer;
+    transition: all 0.2s ease;
 
-.page-btn {
-  @include flex-center;
-  width: 44px;
-  height: 44px;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  color: $dark-text-secondary;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.2);
-    color: $dark-text-primary;
-  }
-
-  &:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
-  mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-  }
-}
-
-.page-numbers {
-  display: flex;
-  gap: $spacing-2;
-
-  @include mobile {
-    display: none;
-  }
-}
-
-.page-number {
-  @include flex-center;
-  min-width: 44px;
-  height: 44px;
-  padding: 0 $spacing-3;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  color: $dark-text-secondary;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover:not(.active) {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.2);
-    color: $dark-text-primary;
-  }
-
-  &.active {
-    background: rgba($persian-blue-500, 0.25);
-    border-color: rgba($persian-blue-400, 0.4);
-    color: $persian-blue-300;
-    box-shadow: 0 0 15px rgba($persian-blue-500, 0.2);
-  }
-}
-
-.page-info {
-  margin-left: $spacing-4;
-  font-size: $font-size-sm;
-  color: $dark-text-muted;
-
-  @include mobile {
-    margin-left: $spacing-2;
-    font-size: $font-size-xs;
-  }
-}
-
-// ===========================
-// RESPONSIVE TABLE
-// ===========================
-
-@include mobile {
-  .users-table-container {
-    overflow-x: auto;
-    @include dark-scrollbar;
-  }
-
-  .users-table {
-    min-width: 700px;
-  }
-}
-
-// ===========================
-// MATERIAL MENU OVERRIDES
-// ===========================
-
-::ng-deep .mat-mdc-menu-panel {
-  background: rgba($persian-blue-900, 0.95) !important;
-  backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-
-  .mat-mdc-menu-content {
-    padding: $spacing-2 !important;
-  }
-
-  .mat-mdc-menu-item {
-    border-radius: 8px !important;
-    color: $dark-text-secondary !important;
-    min-height: 40px !important;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.08) !important;
-      color: $dark-text-primary !important;
-    }
-
-    &.delete-action {
-      color: #E57373 !important;
-
-      &:hover {
-        background: rgba(#F44336, 0.15) !important;
-      }
+    &:hover:not(:disabled) {
+      border-color: $brand-primary;
+      color: $brand-primary;
     }
 
     &:disabled {
-      opacity: 0.4 !important;
-    }
-
-    .mat-icon {
-      color: inherit !important;
-      margin-right: $spacing-3 !important;
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
 
-  .mat-mdc-menu-item-text {
-    color: inherit !important;
+  .page-numbers {
+    display: flex;
+    gap: $spacing-2;
+
+    .page-number {
+      width: 36px;
+      height: 36px;
+      border-radius: $radius-md;
+      border: none;
+      background: transparent;
+      color: $text-secondary;
+      font-weight: $font-weight-medium;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: $bg-light;
+      }
+
+      &.active {
+        background: $brand-primary;
+        color: white;
+        font-weight: bold;
+      }
+    }
   }
 
-  mat-divider {
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    margin: $spacing-2 0 !important;
+  .page-info {
+    position: absolute;
+    right: 0;
+    font-size: $font-size-sm;
+    color: $text-muted;
+
+    @include mobile {
+      position: static;
+      margin-top: $spacing-2;
+    }
+  }
+}
+
+// Loading & Error States
+.loading-state,
+.error-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-12;
+  background: white;
+  border-radius: $radius-lg;
+  border: 1px solid $border-light;
+  text-align: center;
+  min-height: 400px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: $neutral-300;
+    margin-bottom: $spacing-4;
+  }
+
+  h3 {
+    margin: 0 0 $spacing-2 0;
+    font-weight: bold;
+    color: $text-main;
+  }
+
+  p {
+    color: $text-secondary;
+    margin: 0 0 $spacing-6 0;
+  }
+}
+
+.error-state {
+  color: #ef4444;
+
+  .error-icon-wrapper {
+    color: #ef4444;
+  }
+
+  .glass-button-primary {
+    margin-top: $spacing-4;
+  }
+}
+
+::ng-deep .glass-menu {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid white;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: $radius-lg !important;
+  overflow: hidden;
+
+  .mat-mdc-menu-item {
+    font-family: $font-body;
+    font-size: $font-size-sm;
+    color: $text-main;
+    min-height: 40px;
+
+    mat-icon {
+      color: $text-secondary;
+      margin-right: $spacing-3;
+    }
+
+    &:hover {
+      background: $bg-light;
+
+      mat-icon {
+        color: $brand-primary;
+      }
+    }
   }
 }

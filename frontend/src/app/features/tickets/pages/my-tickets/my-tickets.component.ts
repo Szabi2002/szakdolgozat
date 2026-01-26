@@ -44,7 +44,7 @@ export class MyTicketsComponent implements OnInit, OnDestroy {
     { value: 'active', label: 'Aktív', icon: 'check_circle' },
     { value: 'expired', label: 'Lejárt', icon: 'schedule' },
     { value: 'used', label: 'Használt', icon: 'done_all' },
-    { value: 'cancelled', label: 'Lemondva', icon: 'cancel' }
+    { value: 'refunded', label: 'Visszaváltva', icon: 'cancel' }
   ];
 
   private destroy$ = new Subject<void>();
@@ -56,7 +56,7 @@ export class MyTicketsComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initFilterForm();
@@ -228,9 +228,9 @@ export class MyTicketsComponent implements OnInit, OnDestroy {
   get hasActiveFilters(): boolean {
     const formValue = this.filterForm.value;
     return !!this.selectedStatus ||
-           !!formValue.from_date ||
-           !!formValue.to_date ||
-           !!formValue.ticket_type_id;
+      !!formValue.from_date ||
+      !!formValue.to_date ||
+      !!formValue.ticket_type_id;
   }
 
   get activeFilterCount(): number {
@@ -324,5 +324,5 @@ export class MyTicketsComponent implements OnInit, OnDestroy {
   `]
 })
 export class ConfirmCancelDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Ticket) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Ticket) { }
 }

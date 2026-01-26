@@ -2,8 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MaterialModule } from '@shared/material/material.module';
+import { MatDialog } from '@angular/material/dialog';
 import { TicketsService } from '@core/services/tickets.service';
 import { Ticket } from '@core/models/ticket.model';
+import { TicketDetailsComponent } from '@features/tickets/components/ticket-details/ticket-details.component';
 
 @Component({
   selector: 'app-active-tickets',
@@ -15,6 +17,7 @@ import { Ticket } from '@core/models/ticket.model';
 export class ActiveTicketsComponent implements OnInit {
   private ticketsService = inject(TicketsService);
   private router = inject(Router);
+  private dialog = inject(MatDialog);
 
   activeTickets: Ticket[] = [];
   isLoading = true;
@@ -31,14 +34,14 @@ export class ActiveTicketsComponent implements OnInit {
     this.isLoading = true;
 
     this.ticketsService.getMyTickets().subscribe({
-      next: (tickets) => {
+      next: (tickets: Ticket[]) => {
         // Filter only active tickets (not expired, not used)
         this.activeTickets = tickets
-          .filter((ticket) => ticket.status === 'active')
+          .filter((ticket: Ticket) => ticket.status === 'active')
           .slice(0, 3); // Show only the 3 most recent
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         this.errorMessage = 'Nem sikerült betölteni a jegyeket.';
         this.isLoading = false;
       },
@@ -46,17 +49,25 @@ export class ActiveTicketsComponent implements OnInit {
   }
 
   /**
-   * View ticket details
+   * View ticket details in dialog
    */
   viewTicket(ticketId: string): void {
-    this.router.navigate(['/tickets', ticketId]);
+    const ticket = this.activeTickets.find(t => t.id === ticketId);
+    if (ticket) {
+      this.dialog.open(TicketDetailsComponent, {
+        width: '800px',
+        maxWidth: '95vw',
+        data: ticket,
+        panelClass: 'glass-dialog-panel'
+      });
+    }
   }
 
   /**
    * Navigate to all tickets
    */
   viewAllTickets(): void {
-    this.router.navigate(['/tickets']);
+    this.router.navigate(['/tickets/my-tickets']);
   }
 
   /**

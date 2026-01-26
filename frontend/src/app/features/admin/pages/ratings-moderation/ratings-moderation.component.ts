@@ -128,6 +128,22 @@ export class RatingsModerationComponent implements OnInit {
     });
   }
 
+  deleteRating(id: string): void {
+    if (!confirm('Biztosan törölni szeretnéd ezt az értékelést? Ez a művelet nem vonható vissza.')) {
+      return;
+    }
+
+    this.ratingsService.deleteRating(id).subscribe({
+      next: () => {
+        this.loadRatings();
+        this.selectedRatings.set(new Set());
+      },
+      error: (error) => {
+        this.errorMessage.set(error?.message || 'Nem sikerült törölni az értékelést. Próbáld újra.');
+      }
+    });
+  }
+
   bulkModerate(status: 'approved' | 'rejected'): void {
     const selectedIds = Array.from(this.selectedRatings());
 

@@ -26,7 +26,7 @@ export class PaymentSimulationComponent implements OnInit {
   totalSteps = 3;
 
   paymentMethods = [
-    { value: 'card', label: 'Credit/Debit Card', icon: 'credit_card' },
+    { value: 'card', label: 'Bankkártya', icon: 'credit_card' },
     { value: 'paypal', label: 'PayPal', icon: 'account_balance_wallet' },
     { value: 'applepay', label: 'Apple Pay', icon: 'phone_iphone' },
     { value: 'googlepay', label: 'Google Pay', icon: 'phone_android' }
@@ -36,7 +36,7 @@ export class PaymentSimulationComponent implements OnInit {
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<PaymentSimulationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: PaymentData
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -156,18 +156,18 @@ export class PaymentSimulationComponent implements OnInit {
     if (!field) return '';
 
     if (field.hasError('required')) {
-      return 'This field is required';
+      return 'Kötelező mező';
     }
     if (field.hasError('pattern')) {
       switch (fieldName) {
         case 'cardNumber':
-          return 'Please enter a valid 16-digit card number';
+          return 'Kérlek adj meg egy érvényes 16 jegyű kártyaszámot';
         case 'expiryDate':
-          return 'Please enter a valid date (MM/YY)';
+          return 'Kérlek adj meg egy érvényes lejárati dátumot (HH/ÉÉ)';
         case 'cvv':
-          return 'Please enter a valid CVV (3-4 digits)';
+          return 'Kérlek adj meg egy érvényes CVV kódot (3-4 számjegy)';
         default:
-          return 'Invalid format';
+          return 'Érvénytelen formátum';
       }
     }
     return '';

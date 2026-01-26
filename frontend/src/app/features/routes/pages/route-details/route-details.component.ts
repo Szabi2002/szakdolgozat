@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Subject, takeUntil, forkJoin } from 'rxjs';
 import { RoutesService, RouteDetails } from '@core/services/routes.service';
 import { RatingsService } from '@core/services/ratings.service';
@@ -23,12 +25,15 @@ import { AuthService } from '@core/services/auth.service';
   standalone: true,
   imports: [
     CommonModule,
+    RouterLink,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
     MatProgressSpinnerModule,
     MatDialogModule,
     MatChipsModule,
+    MatExpansionModule,
+    MatProgressBarModule,
     RatingsListComponent
   ],
   templateUrl: './route-details.component.html',

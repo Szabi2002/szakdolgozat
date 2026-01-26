@@ -31,7 +31,7 @@ import { Ticket } from './entities/ticket.entity';
 @Controller('tickets')
 @ApiBearerAuth()
 export class TicketsController {
-  constructor(private readonly ticketsService: TicketsService) {}
+  constructor(private readonly ticketsService: TicketsService) { }
 
   @Post('purchase')
   @Throttle({ default: { ttl: 3600000, limit: 10 } }) // 10 requests per hour
@@ -185,11 +185,11 @@ export class TicketsController {
   })
   @ApiResponse({
     status: 204,
-    description: 'Ticket cancelled successfully',
+    description: 'Ticket refunded successfully',
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request - Only active tickets can be cancelled',
+    description: 'Bad request - Only active tickets can be refunded',
   })
   @ApiResponse({
     status: 401,

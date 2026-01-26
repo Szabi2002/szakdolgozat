@@ -1,13 +1,12 @@
 @import '../styles/variables';
 @import '../styles/colors';
 @import '../styles/mixins';
-@import '../styles/persian-blue';
 
 :host {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: $persian-blue-950; // Dark theme background
+  background: $bg-light; // Light theme background
 }
 
 .main-content {
@@ -18,7 +17,7 @@
   max-width: 100%;
   min-height: calc(100vh - 64px);
   overflow-x: hidden;
-  background: $persian-blue-950;
+  background: $bg-light;
   @include fade-in(300ms);
 
   // Desktop: Use CSS variable for dynamic sidebar width
@@ -28,8 +27,8 @@
     max-width: calc(100vw - var(--sidebar-width, 260px));
     padding: 0;
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   // Tablet

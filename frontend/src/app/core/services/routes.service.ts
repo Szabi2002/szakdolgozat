@@ -40,6 +40,7 @@ export interface StopWithOrder {
   is_accessible?: boolean;
   stop_order: number;
   arrival_offset?: string;
+  arrival_time?: string;
 }
 
 export interface Stop {

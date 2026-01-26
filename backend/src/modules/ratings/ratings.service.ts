@@ -19,7 +19,7 @@ import { Rating } from './entities/rating.entity';
 export class RatingsService {
   private readonly logger = new Logger(RatingsService.name);
 
-  constructor(private readonly supabaseService: SupabaseService) {}
+  constructor(private readonly supabaseService: SupabaseService) { }
 
   /**
    * Creates a new rating for a route
@@ -135,14 +135,20 @@ export class RatingsService {
       }
 
       // Fetch user data for all ratings in a single query
-      const userIds = [...new Set(ratings.map(r => r.user_id))];
-      const { data: usersData, error: usersError } = await supabase
-        .from('users')
-        .select('id, name, email, avatar_url')
-        .in('id', userIds);
+      const userIds = [...new Set(ratings.map(r => r.user_id).filter(Boolean))];
 
-      if (usersError) {
-        this.logger.warn(`Failed to fetch user details: ${usersError.message}`, usersError);
+      let usersData: any[] = [];
+      if (userIds.length > 0) {
+        const { data, error: usersError } = await supabase
+          .from('users')
+          .select('id, name, email')
+          .in('id', userIds);
+
+        if (usersError) {
+          this.logger.warn(`Failed to fetch user details: ${usersError.message}`, usersError);
+        } else {
+          usersData = data || [];
+        }
       }
 
       // Create a map of users by ID for quick lookup
@@ -540,34 +546,51 @@ export class RatingsService {
    * @throws ForbiddenException if user doesn't own the rating
    * @throws BadRequestException if rating is not pending
    */
-  async delete(id: string, userId: string): Promise<void> {
+  async delete(id: string, userId: string, isAdmin: boolean = false): Promise<void> {
     try {
-      // First check if rating exists and belongs to user
+      this.logger.debug(`[RatingsService] Attempting delete: id=${id}, userId=${userId}, isAdmin=${isAdmin}`);
+
+      // First check if rating exists
       const existing = await this.findOne(id);
 
-      if (existing.user_id !== userId) {
+      if (!isAdmin && existing.user_id !== userId) {
         throw new ForbiddenException('You can only delete your own ratings');
       }
 
-      if (existing.status !== 'pending') {
+      if (!isAdmin && existing.status !== 'pending') {
         throw new BadRequestException('Only pending ratings can be deleted');
       }
 
-      const supabase = this.supabaseService.getClient();
+      // Use admin client for admin operations to bypass potential RLS issues
+      const supabase = isAdmin
+        ? this.supabaseService.getAdminClient()
+        : this.supabaseService.getClient();
 
-      const { error } = await supabase
+      const query = supabase
         .from('ratings')
-        .delete()
-        .eq('id', id)
-        .eq('user_id', userId)
-        .eq('status', 'pending');
+        .delete({ count: 'exact' }) // Ask for exact count of deleted rows
+        .eq('id', id);
+
+      // Only restrict by user and status if not an admin
+      if (!isAdmin) {
+        query.eq('user_id', userId).eq('status', 'pending');
+      }
+
+      const { error, count } = await query;
 
       if (error) {
         this.logger.error(`Failed to delete rating: ${error.message}`, error);
         throw new InternalServerErrorException('Failed to delete rating');
       }
 
-      this.logger.log(`Rating deleted: ${id} by user ${userId}`);
+      this.logger.debug(`[RatingsService] Delete result: count=${count}`);
+
+      if (count === 0) {
+        this.logger.warn(`[RatingsService] Delete failed: 0 rows affected. id=${id}, userId=${userId}, isAdmin=${isAdmin}`);
+        throw new NotFoundException('Rating could not be deleted (it may not exist or criteria not met)');
+      }
+
+      this.logger.log(`Rating deleted: ${id} by user ${userId} (admin: ${isAdmin})`);
     } catch (error) {
       if (
         error instanceof NotFoundException ||
@@ -592,16 +615,16 @@ export class RatingsService {
    * @throws NotFoundException if rating doesn't exist
    * @throws BadRequestException if rating is not pending
    */
-  async moderate(id: string, moderateRatingDto: ModerateRatingDto, adminId?: string): Promise<Rating> {
+  async moderate(id: string, moderateRatingDto: ModerateRatingDto, adminId?: string, isAdmin: boolean = false): Promise<Rating> {
     try {
-      // Check if rating exists and is pending
+      // Check if rating exists
       const existing = await this.findOne(id);
 
-      if (existing.status !== 'pending') {
+      if (!isAdmin && existing.status !== 'pending') {
         throw new BadRequestException('Only pending ratings can be moderated');
       }
 
-      const supabase = this.supabaseService.getClient();
+      const supabase = this.supabaseService.getAdminClient();
 
       const { data, error } = await supabase
         .from('ratings')
@@ -711,15 +734,21 @@ export class RatingsService {
         return [];
       }
 
-      // Fetch user data for all ratings in a single query
-      const userIds = [...new Set(ratings.map(r => r.user_id))];
-      const { data: usersData, error: usersError } = await supabase
-        .from('users')
-        .select('id, name, email, avatar_url')
-        .in('id', userIds);
+      // Get unique user IDs
+      const userIds = [...new Set(ratings.map(r => r.user_id).filter(Boolean))];
 
-      if (usersError) {
-        this.logger.warn(`Failed to fetch user details: ${usersError.message}`, usersError);
+      let usersData: any[] = [];
+      if (userIds.length > 0) {
+        const { data, error: usersError } = await supabase
+          .from('users')
+          .select('id, name, email')
+          .in('id', userIds);
+
+        if (usersError) {
+          this.logger.warn(`Failed to fetch user details: ${usersError.message}`, usersError);
+        } else {
+          usersData = data || [];
+        }
       }
 
       // Create a map of users by ID for quick lookup

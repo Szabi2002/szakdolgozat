@@ -24,7 +24,7 @@ import { Report, ReportStatus, ReportPriority } from './entities/report.entity';
 export class ReportsService {
   private readonly logger = new Logger(ReportsService.name);
 
-  constructor(private readonly supabaseService: SupabaseService) {}
+  constructor(private readonly supabaseService: SupabaseService) { }
 
   /**
    * Creates a new report
@@ -519,27 +519,32 @@ export class ReportsService {
    * @throws ForbiddenException if user doesn't own the report
    * @throws BadRequestException if report is not pending
    */
-  async delete(id: string, userId: string): Promise<void> {
+  async delete(id: string, userId: string, isAdmin: boolean = false): Promise<void> {
     try {
       // First check if report exists and belongs to user
-      const existing = await this.findOne(id);
+      const existing = await this.findOne(id, isAdmin);
 
-      if (existing.user_id !== userId) {
+      if (!isAdmin && existing.user_id !== userId) {
         throw new ForbiddenException('You can only delete your own reports');
       }
 
-      if (existing.status !== 'pending') {
+      if (!isAdmin && existing.status !== 'pending') {
         throw new BadRequestException('Only pending reports can be deleted');
       }
 
       const supabase = this.supabaseService.getClient();
 
-      const { error } = await supabase
+      const query = supabase
         .from('reports')
         .delete()
-        .eq('id', id)
-        .eq('user_id', userId)
-        .eq('status', 'pending');
+        .eq('id', id);
+
+      // Only restrict by user and status if not an admin
+      if (!isAdmin) {
+        query.eq('user_id', userId).eq('status', 'pending');
+      }
+
+      const { error } = await query;
 
       if (error) {
         this.logger.error(`Failed to delete report: ${error.message}`, error);

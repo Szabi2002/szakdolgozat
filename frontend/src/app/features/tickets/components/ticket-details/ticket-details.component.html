@@ -178,20 +178,19 @@
 
   <!-- Actions -->
   <mat-dialog-actions>
-    <button
-      mat-stroked-button
-      (click)="onClose()"
-      class="close-action-button"
-    >
+    <button mat-stroked-button (click)="onClose()" class="close-action-button">
       <mat-icon>close</mat-icon>
       Bezárás
     </button>
-    <button
-      mat-raised-button
-      (click)="onResendEmail()"
-      [disabled]="isResendingEmail"
-      class="resend-button"
-    >
+    <button mat-button color="warn" (click)="onCancelTicket()" [disabled]="isCancelling || ticket.status !== 'active'"
+      class="cancel-button" *ngIf="ticket.status === 'active'">
+      <mat-spinner *ngIf="isCancelling" diameter="20"></mat-spinner>
+      <mat-icon *ngIf="!isCancelling">cancel</mat-icon>
+      {{ isCancelling ? 'Folyamatban...' : 'Jegy visszaváltása' }}
+    </button>
+
+    <button mat-raised-button (click)="onResendEmail()" [disabled]="isResendingEmail || ticket.status !== 'active'"
+      class="resend-button">
       <mat-spinner *ngIf="isResendingEmail" diameter="20"></mat-spinner>
       <mat-icon *ngIf="!isResendingEmail">email</mat-icon>
       {{ isResendingEmail ? 'Küldés...' : 'E-mail újraküldése' }}

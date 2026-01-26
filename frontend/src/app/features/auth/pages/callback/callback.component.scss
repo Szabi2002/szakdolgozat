@@ -1,14 +1,11 @@
 // ============================================================================
-// CALLBACK PAGE - DARK GLASSMORPHISM THEME
+// CALLBACK PAGE - LIGHT THEME (Mint/Teal)
 // ============================================================================
 
 @import 'variables';
 @import 'colors';
 @import 'typography';
 @import 'mixins';
-@import 'persian-blue';
-@import 'glassmorphism';
-@import 'animations';
 
 // ============================================================================
 // PAGE CONTAINER
@@ -20,7 +17,7 @@
   align-items: center;
   min-height: 100vh;
   width: 100%;
-  background: $persian-blue-950;
+  background: linear-gradient(135deg, $brand-primary 0%, $brand-primary-dark 100%);
   position: relative;
   overflow: hidden;
 
@@ -39,8 +36,7 @@
     left: -10%;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba($persian-blue-600, 0.15) 0%, transparent 70%);
-    animation: float-slow 20s ease-in-out infinite;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
   }
 
   &::after {
@@ -48,8 +44,7 @@
     right: -10%;
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba($persian-blue-500, 0.1) 0%, transparent 70%);
-    animation: float-medium 15s ease-in-out infinite;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
   }
 }
 
@@ -75,7 +70,6 @@
   max-width: 480px;
   @include flex-column;
   align-items: center;
-  animation: fadeInUp 0.6s ease-out forwards;
 }
 
 // ============================================================================
@@ -88,21 +82,13 @@
   width: 100px;
   height: 100px;
   margin-bottom: $spacing-8;
-  background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
-  border: 1px solid rgba($persian-blue-400, 0.3);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: $radius-full;
-  animation: pulse-glow-subtle 3s ease-in-out infinite;
 
   .icon-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 150%;
-    height: 150%;
-    background: radial-gradient(circle, rgba($persian-blue-400, 0.3) 0%, transparent 70%);
-    border-radius: 50%;
-    opacity: 0.5;
+    display: none;
   }
 
   .logo {
@@ -111,8 +97,7 @@
     font-size: 48px;
     width: 48px;
     height: 48px;
-    color: $persian-blue-400;
-    filter: drop-shadow(0 0 15px rgba($persian-blue-400, 0.5));
+    color: white;
   }
 }
 
@@ -126,38 +111,24 @@
   align-items: center;
   text-align: center;
   padding: $spacing-10;
-  border-radius: 24px;
-  animation: fadeInUp 0.5s ease 0.2s backwards;
+  border-radius: $radius-xl;
 
-  // Glassmorphism effect
-  background: rgba(255, 255, 255, 0.06);
+  // White card
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 
   .spinner-wrapper {
     position: relative;
     margin-bottom: $spacing-6;
 
     .spinner-glow {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 120px;
-      height: 120px;
-      background: radial-gradient(circle, rgba($persian-blue-500, 0.3) 0%, transparent 70%);
-      border-radius: 50%;
-      animation: pulse-glow 2s ease-in-out infinite;
+      display: none;
     }
 
     .loading-spinner {
-      position: relative;
-      z-index: 1;
-
       ::ng-deep circle {
-        stroke: $persian-blue-400;
+        stroke: $brand-primary;
       }
     }
   }
@@ -166,13 +137,13 @@
     margin: 0 0 $spacing-3 0;
     font-size: $font-size-xl;
     font-weight: $font-weight-bold;
-    color: $persian-blue-50;
+    color: $text-main;
   }
 
   .subtitle {
     margin: 0;
     font-size: $font-size-base;
-    color: $persian-blue-300;
+    color: $text-secondary;
     line-height: $line-height-relaxed;
     max-width: 360px;
   }
@@ -188,31 +159,25 @@
   align-items: center;
   text-align: center;
   padding: $spacing-10;
-  border-radius: 24px;
-  animation: fadeInUp 0.5s ease 0.2s backwards;
+  border-radius: $radius-xl;
 
-  // Glassmorphism effect
-  background: rgba(255, 255, 255, 0.06);
+  // White card with error accent
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba($error-500, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 
   .error-icon-wrapper {
     position: relative;
     @include flex-center;
     width: 100px;
     height: 100px;
-    background: rgba($error-500, 0.15);
+    background: rgba($error-500, 0.1);
     border-radius: 50%;
     margin-bottom: $spacing-6;
 
     .error-glow {
-      position: absolute;
-      width: 140%;
-      height: 140%;
-      background: radial-gradient(circle, rgba($error-500, 0.2) 0%, transparent 70%);
-      border-radius: 50%;
+      display: none;
     }
 
     .error-icon {
@@ -222,7 +187,6 @@
       width: 56px;
       height: 56px;
       color: $error-500;
-      animation: shake 0.5s ease-in-out;
     }
   }
 
@@ -230,7 +194,7 @@
     margin: 0 0 $spacing-4 0;
     font-size: $font-size-xl;
     font-weight: $font-weight-bold;
-    color: $persian-blue-50;
+    color: $text-main;
   }
 
   .error-message {
@@ -239,26 +203,26 @@
     gap: $spacing-3;
     padding: $spacing-4;
     margin-bottom: $spacing-4;
-    background: rgba($error-500, 0.1);
-    border: 1px solid rgba($error-500, 0.3);
+    background: rgba($error-500, 0.08);
+    border: 1px solid rgba($error-500, 0.2);
     border-radius: $radius-md;
     font-size: $font-size-sm;
     font-weight: $font-weight-medium;
-    color: $error-300;
+    color: $error-600;
 
     mat-icon {
       font-size: 20px;
       width: 20px;
       height: 20px;
       flex-shrink: 0;
-      color: $error-400;
+      color: $error-500;
     }
   }
 
   .error-text {
     margin: 0 0 $spacing-6 0;
     font-size: $font-size-base;
-    color: $persian-blue-300;
+    color: $text-secondary;
     line-height: $line-height-relaxed;
     max-width: 360px;
   }
@@ -269,12 +233,12 @@
     width: 100%;
     height: $button-height-lg;
     padding: $spacing-3 $spacing-6;
-    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    background: $brand-primary !important;
     color: white !important;
-    border-radius: $radius-md !important;
+    border-radius: $radius-lg !important;
     font-size: $font-size-base;
     font-weight: $font-weight-semibold;
-    box-shadow: 0 4px 20px rgba($persian-blue-500, 0.4);
+    box-shadow: 0 4px 20px rgba($brand-primary, 0.3);
     transition: all 0.3s ease;
 
     mat-icon {
@@ -285,7 +249,8 @@
 
     &:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba($persian-blue-500, 0.5);
+      background: $brand-primary-dark !important;
+      box-shadow: 0 8px 30px rgba($brand-primary, 0.4);
     }
 
     &:active:not(:disabled) {
@@ -301,69 +266,18 @@
 .footer-text {
   margin-top: $spacing-8;
   font-size: $font-size-sm;
-  color: $persian-blue-400;
+  color: rgba(255, 255, 255, 0.8);
   text-align: center;
 
   a {
-    color: $persian-blue-300;
+    color: white;
     text-decoration: none;
     font-weight: $font-weight-medium;
-    transition: color 0.2s ease;
+    transition: opacity 0.2s ease;
 
     &:hover {
-      color: $persian-blue-200;
+      opacity: 0.8;
       text-decoration: underline;
     }
   }
-}
-
-// ============================================================================
-// ANIMATIONS
-// ============================================================================
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-  20%, 40%, 60%, 80% { transform: translateX(5px); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.5;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: translate(-50%, -50%) scale(1.1);
-  }
-}
-
-@keyframes pulse-glow-subtle {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba($persian-blue-500, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba($persian-blue-500, 0.4);
-  }
-}
-
-@keyframes float-slow {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(30px, 30px); }
-}
-
-@keyframes float-medium {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(-20px, -20px); }
 }

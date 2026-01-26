@@ -19,30 +19,26 @@
 @import 'styles/mixins';
 @import 'styles/neumorphism';
 
-// Dark theme & Glassmorphism imports
-@import 'styles/persian-blue';
-@import 'styles/dark-theme';
-@import 'styles/glassmorphism';
 @import 'styles/animations';
 
 // ===========================
-// ÚJ BRAND SZÍNEKKEL - Material Theme
+// ÚJ BRAND SZÍNEKKEL - Material Theme (Mint/Teal)
 // ===========================
 
-// Custom palette a brand színekkel
+// Custom palette a brand színekkel - PRIMARY (Mint/Teal)
 $custom-primary: (
-  50: lighten(#252E8A, 40%),
-  100: lighten(#252E8A, 35%),
-  200: lighten(#252E8A, 30%),
-  300: lighten(#252E8A, 20%),
-  400: lighten(#252E8A, 10%),
-  500: #252E8A,
-  600: darken(#252E8A, 5%),
-  700: darken(#252E8A, 10%),
-  800: darken(#252E8A, 15%),
-  900: #0E0E34,
-  contrast: (
-    50: #000000,
+  50: #e6f7f4,
+  100: #ccf0e9,
+  200: #99e0d3,
+  300: #66d1bd,
+  400: #33c1a7,
+  500: #00a887,
+  // Primary brand color
+  600: #008f73,
+  700: #00765f,
+  800: #005c4b,
+  900: #004337,
+  contrast: (50: #000000,
     100: #000000,
     200: #000000,
     300: #000000,
@@ -55,23 +51,24 @@ $custom-primary: (
   )
 );
 
+// Custom palette - ACCENT (Emerald)
 $custom-accent: (
-  50: lighten(#9A4D87, 40%),
-  100: lighten(#9A4D87, 35%),
-  200: lighten(#9A4D87, 30%),
-  300: lighten(#9A4D87, 20%),
-  400: lighten(#9A4D87, 10%),
-  500: #9A4D87,
-  600: darken(#9A4D87, 5%),
-  700: darken(#9A4D87, 10%),
-  800: darken(#9A4D87, 15%),
-  900: darken(#9A4D87, 20%),
-  contrast: (
-    50: #000000,
+  50: #ecfdf5,
+  100: #d1fae5,
+  200: #a7f3d0,
+  300: #6ee7b7,
+  400: #34d399,
+  500: #10b981,
+  // Accent brand color
+  600: #059669,
+  700: #047857,
+  800: #065f46,
+  900: #064e3b,
+  contrast: (50: #000000,
     100: #000000,
     200: #000000,
     300: #000000,
-    400: #ffffff,
+    400: #000000,
     500: #ffffff,
     600: #ffffff,
     700: #ffffff,
@@ -84,19 +81,14 @@ $primary-palette: mat.define-palette($custom-primary, 500);
 $accent-palette: mat.define-palette($custom-accent, 500);
 $warn-palette: mat.define-palette(mat.$red-palette);
 
-$theme: mat.define-light-theme(
-  (
-    color: (
-      primary: $primary-palette,
-      accent: $accent-palette,
-      warn: $warn-palette,
-    ),
-    typography: mat.define-typography-config(
-      $font-family: 'Roboto, "Helvetica Neue", Arial, sans-serif',
-    ),
-    density: 0,
-  )
-);
+$theme: mat.define-light-theme((color: (primary: $primary-palette,
+        accent: $accent-palette,
+        warn: $warn-palette,
+      ),
+      typography: mat.define-typography-config($font-family: 'Lexend, "Noto Sans", Arial, sans-serif',
+      ),
+      density: 0,
+    ));
 
 @include mat.all-component-themes($theme);
 
@@ -119,7 +111,7 @@ body {
 }
 
 body {
-  background: $neu-bg;  // Neumorphism soft gray background
+  background: $neu-bg; // Neumorphism soft gray background
   color: $color-text-primary;
   font-size: $font-size-base;
   line-height: $line-height-normal;
@@ -281,10 +273,17 @@ body {
 .mat-mdc-raised-button.mat-primary,
 .mat-mdc-flat-button.mat-primary {
   background: $brand-primary !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 
   &:hover:not(:disabled) {
-    background: $brand-primary-light !important;
-    box-shadow: $shadow-md !important;
+    background: darken($brand-primary, 8%) !important; // Darker shade on hover
+    box-shadow: 0 8px 20px rgba($brand-primary, 0.35) !important; // Increased shadow
+    transform: translateY(-2px); // Slight lift
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba($brand-primary, 0.25) !important;
   }
 }
 
@@ -323,6 +322,7 @@ body {
   }
 
   &.mat-focused {
+
     .mdc-notched-outline__leading,
     .mdc-notched-outline__notch,
     .mdc-notched-outline__trailing {
@@ -365,29 +365,29 @@ body {
     overflow: visible;
 
     .mdc-dialog__surface {
-      background: rgba($persian-blue-900, 0.85) !important;
+      background: rgba(255, 255, 255, 0.95) !important;
       backdrop-filter: blur(20px) !important;
       -webkit-backdrop-filter: blur(20px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid rgba(255, 255, 255, 0.5) !important;
       border-radius: 24px !important;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5) !important;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1) !important;
       overflow: hidden;
     }
   }
 
   // Backdrop
-  & + .cdk-overlay-backdrop,
+  &+.cdk-overlay-backdrop,
   &.cdk-overlay-backdrop {
-    background: rgba($persian-blue-950, 0.75) !important;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.1) !important; // Lighter overlay
+    backdrop-filter: blur(8px); // Stronger blur
+    -webkit-backdrop-filter: blur(8px);
   }
 }
 
 .cdk-overlay-dark-backdrop.glass-backdrop {
-  background: rgba($persian-blue-950, 0.75) !important;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 // Material Snackbar
@@ -401,37 +401,37 @@ body {
 .cdk-overlay-pane .planner-autocomplete-panel,
 .planner-autocomplete-panel.mat-mdc-autocomplete-panel,
 .mat-mdc-autocomplete-panel.planner-autocomplete-panel {
-  background: $persian-blue-900 !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: white !important;
+  border: 1px solid $border-light !important;
   border-radius: $radius-lg !important;
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba($persian-blue-500, 0.1) !important;
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 0 20px rgba($brand-primary, 0.05) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
   .mat-mdc-option {
     background: transparent !important;
-    color: $persian-blue-100 !important;
+    color: $text-main !important;
     padding: $spacing-3 $spacing-4 !important;
     min-height: 52px !important;
     transition: all 0.2s ease;
 
     &:hover:not(.mat-mdc-option-disabled) {
-      background: rgba($persian-blue-500, 0.2) !important;
+      background: $bg-light !important;
     }
 
     &.mat-mdc-option-active {
-      background: rgba($persian-blue-500, 0.3) !important;
+      background: rgba($brand-primary, 0.1) !important;
     }
 
     &.mdc-list-item--selected:not(.mat-mdc-option-multiple) {
-      background: rgba($persian-blue-500, 0.25) !important;
-      color: $persian-blue-50 !important;
+      background: rgba($brand-primary, 0.15) !important;
+      color: $brand-primary !important;
     }
 
     &.mat-mdc-option-disabled {
-      color: $persian-blue-400 !important;
+      color: $text-muted !important;
       opacity: 0.8;
     }
 
@@ -455,7 +455,7 @@ body {
       flex-shrink: 0;
 
       &.metro {
-        color: $persian-blue-400;
+        color: $brand-primary;
       }
 
       &.tram {
@@ -467,14 +467,14 @@ body {
       }
 
       &.general {
-        color: $persian-blue-400;
+        color: $brand-primary;
       }
     }
 
     .stop-name {
       font-size: $font-size-base;
       font-weight: $font-weight-medium;
-      color: $persian-blue-50;
+      color: $text-main;
       flex: 1;
     }
   }
@@ -485,14 +485,112 @@ body {
     align-items: center;
     gap: $spacing-3;
     padding: $spacing-2;
-    color: $persian-blue-300;
+    color: $text-secondary;
     font-size: $font-size-sm;
 
     mat-icon {
       font-size: 20px;
       width: 20px;
       height: 20px;
-      color: $persian-blue-400;
+      color: $text-muted;
     }
   }
+}
+
+// ===========================
+// LIGHT THEME GLASS MENU (Admin)
+// ===========================
+.glass-menu {
+  &.mat-mdc-menu-panel {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid white;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 12px !important; // $radius-lg
+    overflow: hidden;
+    min-width: 180px;
+
+    .mat-mdc-menu-content {
+      padding: 8px 0; // $spacing-2
+    }
+
+    .mat-mdc-menu-item {
+      color: #1f2937; // $text-main
+      font-family: inherit;
+      min-height: 40px;
+      line-height: 40px;
+
+      mat-icon {
+        color: #6b7280; // $text-secondary
+        margin-right: 12px;
+      }
+
+      &:hover:not([disabled]) {
+        background: #f5f8f8; // $bg-light
+
+        mat-icon {
+          color: #00a887;
+        }
+
+        // $brand-primary
+      }
+
+      &.delete-action:hover:not([disabled]) {
+        background: rgba(239, 68, 68, 0.1); // $error-500
+        color: #ef4444;
+
+        mat-icon {
+          color: #ef4444;
+        }
+      }
+    }
+  }
+}
+
+// ===========================
+// NUCLEAR LIGHT THEME OVERRIDE
+// ===========================
+body,
+html,
+.admin-layout,
+app-admin-layout,
+.main-content,
+.dashboard-page,
+.page-container {
+  background-color: #f5f8f8 !important;
+  background: #f5f8f8 !important;
+  color: #1f2937 !important;
+}
+
+// Force white cards
+.card,
+.widget-card,
+.mat-mdc-card,
+.routes-table-wrapper {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+}
+
+// Fix header text visibility if it was white on dark
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.identifier,
+.value {
+  color: #1f2937;
+}
+
+// Force overlays (Dialogs, Tooltips, Snackbars) above everything
+.cdk-overlay-container {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 2000 !important;
+  pointer-events: none;
 }

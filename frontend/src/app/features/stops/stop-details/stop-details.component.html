@@ -1,126 +1,113 @@
-<div class="stop-details-container">
-  <!-- Breadcrumb Navigation -->
-  <div class="breadcrumb">
-    <button mat-button (click)="goBack()" class="back-button" aria-label="Vissza a megállókhoz">
-      <mat-icon>arrow_back</mat-icon>
-      <span>Vissza a Megállókhoz</span>
-    </button>
-  </div>
-
+<div class="stop-details-page">
   <!-- Loading State -->
   @if (isLoading) {
-    <div class="loading-container" role="status">
-      <div class="loading-spinner">
-        <mat-spinner diameter="60"></mat-spinner>
-      </div>
-      <p class="loading-text">Megálló részleteinek betöltése...</p>
-    </div>
+  <div class="loading-state">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Megálló adatainak betöltése...</p>
+  </div>
   }
 
-  <!-- Error/Not Found State -->
+  <!-- Error State -->
   @if (!isLoading && (hasError || !stop)) {
-    <div class="error-container" role="alert">
-      <div class="error-icon">
-        <mat-icon>location_off</mat-icon>
-      </div>
-      <p class="error-message">{{ errorMessage || 'Megálló nem található' }}</p>
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="goBack()"
-        class="back-to-list-button"
-        aria-label="Vissza a megállók listájához"
-      >
-        <mat-icon>arrow_back</mat-icon>
-        <span>Vissza a Listához</span>
-      </button>
-    </div>
+  <div class="error-state">
+    <mat-icon>location_off</mat-icon>
+    <h3>{{ errorMessage || 'Megálló nem található' }}</h3>
+    <button mat-stroked-button color="primary" (click)="goBack()">Vissza az előző oldalra</button>
+  </div>
   }
 
   <!-- Stop Details Content -->
   @if (!isLoading && stop) {
-    <div class="content-wrapper">
-      <!-- Stop Header -->
-      <div class="stop-header-card">
-        <div class="header-content">
-          <div class="header-left">
-            <mat-icon class="location-icon">location_on</mat-icon>
-            <div class="header-text">
-              <h1>{{ stop.name }}</h1>
-              @if (stop.description) {
-                <p class="description">{{ stop.description }}</p>
-              }
+  <!-- Compact Header -->
+  <section class="stop-header">
+    <div class="header-container">
+      <div class="header-left">
+        <div class="header-badge">
+          <mat-icon>location_on</mat-icon>
+          <span>Megálló részletek</span>
+        </div>
+
+        <div class="title-section">
+          <h1 class="page-title">{{ stop.name }}</h1>
+          @if (stop.description) {
+          <p class="description">{{ stop.description }}</p>
+          }
+        </div>
+      </div>
+
+      <div class="header-right">
+        <button mat-raised-button color="warn" class="action-button" (click)="reportIssue()">
+          <mat-icon>feedback</mat-icon>
+          Probléma bejelentése
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Grid -->
+  <section class="content-section">
+    <div class="content-container">
+      <div class="content-grid">
+        <!-- Left Column: Map & Info -->
+        <div class="info-column">
+          <!-- Map Card -->
+          <div class="card map-card">
+            <div class="card-header">
+              <div class="header-title">
+                <mat-icon>map</mat-icon>
+                <h3>Térkép</h3>
+              </div>
+            </div>
+            <div class="card-content map-wrapper">
+              <app-map [markers]="[{ lat: stop.latitude, lng: stop.longitude, title: stop.name }]" [zoom]="15">
+              </app-map>
             </div>
           </div>
-          <button
-            mat-raised-button
-            color="warn"
-            (click)="reportIssue()"
-            class="report-button"
-            aria-label="Probléma bejelentése"
-          >
-            <mat-icon>feedback</mat-icon>
-            <span>Probléma Bejelentése</span>
-          </button>
         </div>
-      </div>
 
-      <!-- Map Section -->
-      <div class="map-section-card">
-        <div class="card-header">
-          <mat-icon>map</mat-icon>
-          <h3>Megálló Helyzete</h3>
-        </div>
-        <div class="card-content">
-          <div class="map-wrapper">
-            <app-map
-              [markers]="[{ lat: stop.latitude, lng: stop.longitude, title: stop.name }]"
-              [zoom]="15">
-            </app-map>
-          </div>
-        </div>
-      </div>
+        <!-- Right Column: Connecting Routes -->
+        <div class="routes-column">
+          <div class="card routes-card">
+            <div class="card-header">
+              <div class="header-title">
+                <mat-icon>directions_bus</mat-icon>
+                <h3>Áthaladó járatok</h3>
+              </div>
+              <span class="badge">{{ routes.length }} járat</span>
+            </div>
 
-      <!-- Routes Section -->
-      <div class="routes-section-card">
-        <div class="card-header">
-          <mat-icon>directions_bus</mat-icon>
-          <h3>Áthaladó Járatok</h3>
-        </div>
-        <div class="card-content">
-          @if (routes.length > 0) {
-            <div class="routes-list">
-              @for (route of routes; track route.id) {
+            <div class="card-content">
+              @if (routes.length > 0) {
+              <div class="routes-list">
+                @for (route of routes; track route.id) {
                 <div class="route-item" (click)="goToRoute(route)">
-                  <div class="route-number-badge">{{ route.route_number }}</div>
                   <div class="route-info">
-                    <h4 class="route-name">{{ route.name }}</h4>
-                    @if (route.direction) {
-                      <p class="route-direction">
-                        <mat-icon>navigation</mat-icon>
-                        <span>Irány: {{ route.direction }}</span>
-                      </p>
-                    }
+                    <div class="route-number">{{ route.route_number }}</div>
+                    <div class="route-details">
+                      <h4>{{ route.name }}</h4>
+                      @if (route.direction) {
+                      <span class="direction">
+                        <mat-icon>arrow_forward</mat-icon>
+                        {{ route.direction }}
+                      </span>
+                      }
+                    </div>
                   </div>
-                  <button
-                    mat-icon-button
-                    class="route-arrow"
-                    [attr.aria-label]="'Útvonal részleteinek megtekintése: ' + route.route_number"
-                  >
-                    <mat-icon>arrow_forward</mat-icon>
-                  </button>
+                  <mat-icon class="arrow-icon">chevron_right</mat-icon>
                 </div>
+                }
+              </div>
+              } @else {
+              <div class="empty-state">
+                <mat-icon>info_outline</mat-icon>
+                <p>Nincs elérhető járat ezen a megállón.</p>
+              </div>
               }
             </div>
-          }
-          @if (routes.length === 0) {
-            <div class="no-routes">
-              <mat-icon>info</mat-icon>
-              <p>Nincs elérhető járat ezen a megállón.</p>
-            </div>
-          }
+          </div>
         </div>
       </div>
     </div>
+  </section>
   }
 </div>

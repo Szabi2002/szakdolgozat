@@ -2,478 +2,315 @@
 @import 'colors';
 @import 'typography';
 @import 'mixins';
-@import 'persian-blue';
-@import 'glassmorphism';
-@import 'animations';
 
 // ============================================================================
-// TICKET CARD - DARK THEME WITH GLASSMORPHISM
+// MODERN TICKET CARD
 // ============================================================================
 
 .ticket-card {
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  flex-direction: column;
   height: 100%;
+  display: block; // Flex item in parent list
+}
 
-  // Glassmorphism effect
-  background: rgba(255, 255, 255, 0.04);
+.modern-card {
+  position: relative;
+  background: rgba($white, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid $border-light;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: $shadow-sm;
 
-  // Glow line at top (hidden by default)
+  // Hover Effect
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+    border-color: rgba($brand-primary, 0.3);
+    background: rgba($white, 0.85);
+
+    .qr-btn {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba($brand-primary, 0.2);
+    }
+  }
+
+  // ==========================================================================
+  // STATUS INDICATORS (Left Border)
+  // ==========================================================================
   &::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, $persian-blue-500, $persian-blue-400);
-    opacity: 0;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: all 0.3s ease;
+    bottom: 0;
+    width: 4px;
+    background: $neutral-400; // Default (expired/unknown)
     z-index: 10;
   }
 
-  &:hover {
-    transform: translateY(-10px);
-    border-color: rgba($persian-blue-400, 0.3);
-    box-shadow:
-      0 20px 50px rgba(0, 0, 0, 0.4),
-      0 0 30px rgba($persian-blue-500, 0.15);
-
+  &.active {
     &::before {
-      opacity: 1;
-      transform: scaleX(1);
+      background: $brand-primary;
+    }
+
+    background: linear-gradient(135deg, rgba($white, 0.8) 0%, rgba($brand-primary, 0.05) 100%);
+  }
+
+  &.refunded {
+    &::before {
+      background: $error-500;
     }
   }
 
-  &.valid {
-    border-left: 4px solid $persian-blue-400;
+  &.used {
+    &::before {
+      background: #059669;
+    }
+
+    // Success Green
   }
 
-  &.loading-card {
-    min-height: 200px;
+  // ==========================================================================
+  // CARD STRUCTURE
+  // ==========================================================================
 
-    .loading-content {
-      @include flex-column-center;
-      justify-content: center;
-      padding: $spacing-12;
-
-      mat-spinner {
-        margin-bottom: $spacing-4;
-      }
-
-      p {
-        margin: 0;
-        color: $persian-blue-300;
-        font-size: $font-size-base;
-        font-weight: $font-weight-medium;
-      }
-    }
-
-    &:hover {
-      transform: none;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    }
-  }
-
-  .card-header {
-    position: relative;
-    padding: $spacing-6;
-    @include flex-between;
-    align-items: center;
-    gap: $spacing-4;
-    color: $white;
-
-    &.active {
-      background: linear-gradient(135deg, $persian-blue-600 0%, $persian-blue-700 100%);
-    }
-
-    &.expired {
-      background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
-    }
-
-    &.used {
-      background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    }
-
-    &.cancelled {
-      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path fill="%23ffffff" fill-opacity="0.05" d="M0,0 Q300,80 600,40 T1200,60 L1200,120 L0,120 Z"/></svg>') no-repeat bottom;
-      background-size: cover;
-      pointer-events: none;
-    }
-
-    .header-left {
-      @include flex-start;
-      gap: $spacing-4;
-      align-items: center;
-      position: relative;
-      z-index: 1;
-
-      .ticket-icon {
-        width: 56px;
-        height: 56px;
-        @include flex-center;
-        background: rgba($white, 0.2);
-        border-radius: $radius-full;
-        flex-shrink: 0;
-        border: 2px solid rgba($white, 0.3);
-
-        mat-icon {
-          font-size: 32px;
-          width: 32px;
-          height: 32px;
-          color: $white;
-        }
-      }
-
-      .ticket-info {
-        .ticket-title {
-          margin: 0;
-          font-size: $font-size-xl;
-          font-weight: $font-weight-bold;
-          color: $white;
-          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .ticket-subtitle {
-          margin: $spacing-1 0 0 0;
-          font-size: $font-size-sm;
-          color: rgba($white, 0.9);
-          font-weight: $font-weight-medium;
-        }
-      }
-    }
-
-    .status-badge {
-      @include flex-center;
-      gap: $spacing-2;
-      padding: $spacing-2 $spacing-4;
-      border-radius: $radius-md;
-      background: rgba($white, 0.25);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba($white, 0.3);
-      font-size: $font-size-sm;
-      font-weight: $font-weight-semibold;
-      color: $white;
-      position: relative;
-      z-index: 1;
-
-      mat-icon {
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
-      }
-    }
-  }
-
-  .card-content {
-    padding: $spacing-6;
-    flex: 1;
+  .card-main {
+    padding: $spacing-5;
     display: flex;
     flex-direction: column;
+    gap: $spacing-5;
+    height: 100%;
+  }
 
-    .price-section {
-      @include flex-center;
-      gap: $spacing-2;
-      padding: $spacing-4;
-      background: rgba($persian-blue-500, 0.15);
-      border-radius: $radius-md;
-      border: 1px solid rgba($persian-blue-400, 0.2);
-      margin-bottom: $spacing-5;
+  // 1. HEADER ROW
+  .card-header-row {
+    @include flex-between;
+    align-items: flex-start;
+    gap: $spacing-3;
 
-      mat-icon {
-        font-size: 28px;
-        width: 28px;
-        height: 28px;
-        color: $persian-blue-400;
+    .type-info {
+      display: flex;
+      gap: $spacing-3;
+      align-items: center;
+
+      .icon-badge {
+        width: 40px;
+        height: 40px;
+        border-radius: $radius-full;
+        background: rgba($brand-primary, 0.1);
+        color: $brand-primary;
+        @include flex-center;
+
+        mat-icon {
+          font-size: 24px;
+          width: 24px;
+          height: 24px;
+        }
       }
 
-      .price-value {
-        font-size: $font-size-2xl;
-        font-weight: $font-weight-bold;
-        color: $persian-blue-50;
+      .text-content {
+        display: flex;
+        flex-direction: column;
+
+        .ticket-name {
+          font-size: 1rem;
+          font-weight: 700;
+          color: $text-main;
+          margin: 0;
+        }
+
+        .ticket-type-label {
+          font-size: 0.75rem;
+          color: $text-secondary;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          font-weight: 600;
+        }
       }
     }
 
-    .details-section {
-      @include flex-column;
-      gap: $spacing-3;
-      margin-bottom: $spacing-5;
+    .status-chip {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
 
-      .detail-row {
-        display: grid;
-        grid-template-columns: 32px auto 1fr auto;
-        align-items: center;
-        gap: $spacing-3;
-        padding: $spacing-3 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      &.active {
+        background: rgba($brand-primary, 0.1);
+        color: $brand-primary;
+      }
 
-        &:last-child {
-          border-bottom: none;
+      &.expired {
+        background: $neutral-100;
+        color: $text-secondary;
+      }
+
+      &.refunded {
+        background: rgba($error-500, 0.1);
+        color: $error-600;
+      }
+
+      &.used {
+        background: rgba(#059669, 0.1);
+        color: #059669;
+      }
+    }
+  }
+
+  // 2. BODY ROW (Validity)
+  .card-body-row {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-3;
+    flex: 1; // Pushes footer down
+
+    .info-block {
+      .label {
+        display: block;
+        font-size: 0.75rem;
+        color: $text-secondary;
+        margin-bottom: 4px;
+      }
+
+      // Validity Dates
+      &.validity {
+        .date-range {
+          @include flex-start;
+          gap: $spacing-2;
+          font-size: 0.9375rem;
+          font-weight: 600;
+          color: $text-main;
+
+          mat-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            color: $neutral-400;
+          }
         }
+      }
 
-        mat-icon {
-          color: $persian-blue-400;
-          font-size: 20px;
-          width: 20px;
-          height: 20px;
-        }
-
-        .label {
-          font-size: $font-size-sm;
-          font-weight: $font-weight-semibold;
-          color: $persian-blue-300;
-          white-space: nowrap;
-        }
-
-        .value {
-          font-size: $font-size-sm;
-          font-weight: $font-weight-medium;
-          color: $persian-blue-50;
-          text-align: right;
-          word-break: break-word;
-        }
-
-        .link-button {
-          width: 32px;
-          height: 32px;
-          color: $persian-blue-400;
-          flex-shrink: 0;
+      // Route Info (Optional)
+      &.route {
+        .route-val {
+          @include flex-start;
+          gap: $spacing-2;
+          font-size: 0.875rem;
+          font-weight: 500;
+          color: $text-main;
 
           mat-icon {
             font-size: 18px;
             width: 18px;
             height: 18px;
-          }
-
-          &:hover {
-            background: rgba($persian-blue-400, 0.15);
+            color: $brand-primary;
           }
         }
       }
     }
+  }
 
-    .validity-badge {
-      @include flex-center;
+  // 3. FOOTER ROW (Price & Actions)
+  .card-footer-row {
+    @include flex-between;
+    align-items: center;
+    border-top: 1px solid rgba($border-light, 0.5);
+    padding-top: $spacing-4;
+    margin-top: auto;
+
+    .price-tag {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: $text-main;
+      letter-spacing: -0.5px;
+    }
+
+    .actions {
+      @include flex-end;
       gap: $spacing-2;
-      padding: $spacing-3;
-      border-radius: $radius-md;
-      font-size: $font-size-base;
-      font-weight: $font-weight-semibold;
-      margin-top: auto;
 
-      mat-icon {
-        font-size: 22px;
-        width: 22px;
-        height: 22px;
-      }
-
-      &.valid {
-        background: rgba(34, 197, 94, 0.15);
-        color: #4ade80;
-        border: 1px solid rgba(34, 197, 94, 0.3);
+      // QR Button (Primary)
+      .qr-btn {
+        background: $brand-primary;
+        color: $white;
+        border-radius: $radius-base;
+        padding: 0 $spacing-4;
+        height: 36px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: $spacing-2;
+        transition: all 0.2s ease;
 
         mat-icon {
-          color: #4ade80;
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+
+        &:hover {
+          background: darken($brand-primary, 5%);
         }
       }
 
-      &.invalid {
-        background: rgba(239, 68, 68, 0.15);
-        color: #f87171;
-        border: 1px solid rgba(239, 68, 68, 0.3);
+      // Cancel/Undo Button (Secondary)
+      .cancel-btn {
+        color: $text-secondary;
+        width: 36px;
+        height: 36px;
+        border-radius: $radius-base;
+
+        &:hover {
+          background: rgba($error-500, 0.1);
+          color: $error-600;
+        }
 
         mat-icon {
-          color: #f87171;
+          font-size: 20px;
         }
       }
     }
   }
+}
 
-  .card-actions {
-    @include flex-end;
-    gap: $spacing-2;
-    padding: $spacing-4 $spacing-6 $spacing-6 $spacing-6;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    flex-wrap: wrap;
+// LOADING STATE
+.loading-card {
+  min-height: 200px;
+  background: $white;
+  border-radius: $radius-xl;
+  border: 1px dashed $border-light;
 
-    .action-btn {
-      @include flex-center;
-      gap: $spacing-2;
-      padding: $spacing-2 $spacing-4;
-      font-size: $font-size-sm;
-      font-weight: $font-weight-semibold;
-      transition: all 0.3s ease;
-      border-radius: $radius-md;
+  .loading-content {
+    height: 100%;
+    @include flex-column-center;
+    gap: $spacing-3;
+    color: $text-secondary;
 
-      mat-icon {
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
-      }
-
-      &.qr-code {
-        color: $persian-blue-400 !important;
-        border-color: rgba($persian-blue-400, 0.3) !important;
-        background: transparent !important;
-
-        &:hover:not(:disabled) {
-          background: rgba($persian-blue-400, 0.15) !important;
-          border-color: $persian-blue-400 !important;
-        }
-      }
-
-      &.details {
-        color: #60a5fa !important;
-        border-color: rgba(96, 165, 250, 0.3) !important;
-        background: transparent !important;
-
-        &:hover:not(:disabled) {
-          background: rgba(96, 165, 250, 0.15) !important;
-          border-color: #60a5fa !important;
-        }
-      }
-
-      &.email {
-        color: $persian-blue-300 !important;
-        border-color: rgba(255, 255, 255, 0.15) !important;
-        background: transparent !important;
-
-        &:hover:not(:disabled) {
-          background: rgba(255, 255, 255, 0.05) !important;
-          border-color: rgba(255, 255, 255, 0.25) !important;
-        }
-      }
-
-      &.cancel {
-        color: #f87171 !important;
-        border-color: rgba(248, 113, 113, 0.3) !important;
-        background: transparent !important;
-
-        &:hover:not(:disabled) {
-          background: rgba(248, 113, 113, 0.15) !important;
-          border-color: #f87171 !important;
-        }
-      }
-
-      &:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-      }
+    p {
+      margin: 0;
+      font-size: 0.875rem;
     }
   }
+}
 
-  &.compact {
-    .card-header {
+// MOBILE ADJUSTMENTS
+@include mobile {
+  .modern-card {
+    .card-main {
       padding: $spacing-4;
-
-      .header-left {
-        .ticket-icon {
-          width: 44px;
-          height: 44px;
-
-          mat-icon {
-            font-size: 24px;
-            width: 24px;
-            height: 24px;
-          }
-        }
-
-        .ticket-info {
-          .ticket-title {
-            font-size: $font-size-lg;
-          }
-        }
-      }
+      gap: $spacing-4;
     }
 
-    .card-content {
-      padding: $spacing-4;
-
-      .details-section {
-        .detail-row {
-          grid-template-columns: 28px auto 1fr;
-          gap: $spacing-2;
-          padding: $spacing-2 0;
-
-          .label,
-          .value {
-            font-size: $font-size-xs;
-          }
-        }
-      }
-    }
-
-    .card-actions {
-      padding: $spacing-3 $spacing-4 $spacing-4 $spacing-4;
-    }
-  }
-
-  @include mobile {
-    .card-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: $spacing-3;
-
-      .header-left {
-        width: 100%;
-      }
-
-      .status-badge {
-        align-self: flex-start;
-      }
-    }
-
-    .card-content {
-      .details-section {
-        .detail-row {
-          grid-template-columns: 28px 1fr;
-          gap: $spacing-2;
-
-          .label {
-            grid-column: 2;
-            text-align: left;
-          }
-
-          .value {
-            grid-column: 2;
-            text-align: left;
-            margin-top: $spacing-1;
-          }
-
-          .link-button {
-            grid-column: 2;
-            justify-self: flex-start;
-          }
-        }
-      }
-    }
-
-    .card-actions {
-      @include flex-column;
-      gap: $spacing-2;
-
-      .action-btn {
-        width: 100%;
+    .card-footer-row {
+      .price-tag {
+        font-size: 1rem;
       }
     }
   }

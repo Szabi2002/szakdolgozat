@@ -68,9 +68,9 @@ export class Ticket {
   @ApiProperty({
     description: 'Ticket status',
     example: 'active',
-    enum: ['active', 'expired', 'used', 'cancelled'],
+    enum: ['active', 'expired', 'used', 'refunded'],
   })
-  status: 'active' | 'expired' | 'used' | 'cancelled';
+  status: 'active' | 'expired' | 'used' | 'refunded';
 
   @ApiProperty({
     description: 'Ticket price in HUF',

@@ -12,30 +12,30 @@
       <div class="header-left">
         <div class="header-badge">
           <mat-icon>report_problem</mat-icon>
-          <span>Bejelentes</span>
+          <span>Bejelentés</span>
         </div>
         <div class="greeting-section">
           <h1 class="greeting-heading">
-            Uj <span class="highlight">Bejelentes</span>
+            Új <span class="highlight">Bejelentés</span>
           </h1>
-          <p class="greeting-subtext">Segits javitani a szolgaltatast! Jelentsd be a problemakat.</p>
+          <p class="greeting-subtext">Segíts javítani a szolgáltatást! Jelentsd be a problémákat.</p>
         </div>
       </div>
       <div class="header-right">
         <div class="header-actions">
           <a routerLink="/reports/my" class="nav-badge">
             <mat-icon>list_alt</mat-icon>
-            <span>Bejelenteseim</span>
+            <span>Bejelentéseim</span>
           </a>
         </div>
         <div class="header-features">
           <div class="feature-chip">
             <mat-icon>flash_on</mat-icon>
-            <span>Gyors feldolgozas</span>
+            <span>Gyors feldolgozás</span>
           </div>
           <div class="feature-chip">
             <mat-icon>visibility</mat-icon>
-            <span>Atlathato statusz</span>
+            <span>Átlátható státusz</span>
           </div>
         </div>
       </div>
@@ -49,10 +49,10 @@
         <mat-icon>lightbulb</mat-icon>
       </div>
       <div class="info-content">
-        <span class="info-title">Tipp a hatekony bejelenteshez</span>
+        <span class="info-title">Tipp a hatékony bejelentéshez</span>
         <span class="info-text">
-          Legy pontos es reszletes! Minel tobb informaciot adsz meg a problemarol,
-          annal gyorsabban tudunk segiteni. Add meg a pontos helyszint es idopontot is.
+          Légy pontos és részletes! Minél több információt adsz meg a problémáról,
+          annál gyorsabban tudunk segíteni. Add meg a pontos helyszínt és időpontot is.
         </span>
       </div>
     </div>
@@ -68,8 +68,8 @@
             <mat-icon>edit_note</mat-icon>
           </div>
           <div class="form-header-text">
-            <h2>Bejelentes reszletei</h2>
-            <p>Toltsd ki az alabbi urlapot a bejelentes leadasahoz</p>
+            <h2>Bejelentés részletei</h2>
+            <p>Töltsd ki az alábbi űrlapot a bejelentés leadásához</p>
           </div>
         </div>
 
@@ -77,12 +77,8 @@
 
         <!-- Report Form Component -->
         <div class="form-content">
-          <app-report-form
-            [prefilledRouteId]="prefilledRouteId"
-            [prefilledStopId]="prefilledStopId"
-            (submitted)="onSubmitted($event)"
-            (cancelled)="onCancelled()"
-          ></app-report-form>
+          <app-report-form [prefilledRouteId]="prefilledRouteId" [prefilledStopId]="prefilledStopId"
+            (submitted)="onSubmitted($event)" (cancelled)="onCancelled()"></app-report-form>
         </div>
       </div>
     </div>
@@ -92,11 +88,11 @@
   <div class="bottom-stats">
     <div class="stat-badge">
       <mat-icon>schedule</mat-icon>
-      <span>24h valaszido</span>
+      <span>24ó válaszidő</span>
     </div>
     <div class="stat-badge">
       <mat-icon>verified</mat-icon>
-      <span>95% megoldasi arany</span>
+      <span>95% megoldási arány</span>
     </div>
     <div class="stat-badge">
       <mat-icon>check_circle</mat-icon>

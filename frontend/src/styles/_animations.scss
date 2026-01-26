@@ -1,9 +1,11 @@
 // ===========================
 // Animation System
-// Dark Theme + Glassmorphism Animations
+// Light Theme Animations
 // ===========================
 
-@import 'persian-blue';
+// Using brand colors from _colors.scss
+// $brand-primary: #00A887 (Mint/Teal)
+// $brand-primary-dark: #008F73
 
 // ===========================
 // FLOAT ANIMATIONS
@@ -11,33 +13,44 @@
 // ===========================
 
 @keyframes float-slow {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0) translateX(0);
   }
+
   25% {
     transform: translateY(-20px) translateX(10px);
   }
+
   50% {
     transform: translateY(-10px) translateX(-5px);
   }
+
   75% {
     transform: translateY(-25px) translateX(5px);
   }
 }
 
 @keyframes float-medium {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0) rotate(0deg);
   }
+
   50% {
     transform: translateY(-15px) rotate(3deg);
   }
 }
 
 @keyframes float-fast {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -45,14 +58,16 @@
 
 // ===========================
 // SHINE ANIMATIONS
-// For glass card hover effects
+// For card hover effects
 // ===========================
 
 @keyframes shine {
   0% {
     left: -100%;
   }
-  50%, 100% {
+
+  50%,
+  100% {
     left: 100%;
   }
 }
@@ -61,6 +76,7 @@
   0% {
     transform: translateX(-100%);
   }
+
   100% {
     transform: translateX(100%);
   }
@@ -68,36 +84,44 @@
 
 // ===========================
 // PULSE GLOW ANIMATIONS
-// For buttons and accent elements
+// For buttons and accent elements (using brand colors)
 // ===========================
 
 @keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba($persian-blue-500, 0.4);
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba($brand-primary, 0.3);
   }
+
   50% {
-    box-shadow: 0 0 35px rgba($persian-blue-500, 0.6), 0 0 50px rgba($persian-blue-600, 0.3);
+    box-shadow: 0 0 35px rgba($brand-primary, 0.5), 0 0 50px rgba($brand-primary-dark, 0.25);
   }
 }
 
 @keyframes pulse-glow-subtle {
-  0%, 100% {
-    box-shadow: 0 0 10px rgba($persian-blue-500, 0.2);
+
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba($brand-primary, 0.15);
   }
+
   50% {
-    box-shadow: 0 0 20px rgba($persian-blue-500, 0.4);
+    box-shadow: 0 0 20px rgba($brand-primary, 0.3);
   }
 }
 
 @keyframes glow-ring {
   0% {
-    box-shadow: 0 0 0 0 rgba($persian-blue-500, 0.4);
+    box-shadow: 0 0 0 0 rgba($brand-primary, 0.4);
   }
+
   70% {
-    box-shadow: 0 0 0 15px rgba($persian-blue-500, 0);
+    box-shadow: 0 0 0 15px rgba($brand-primary, 0);
   }
+
   100% {
-    box-shadow: 0 0 0 0 rgba($persian-blue-500, 0);
+    box-shadow: 0 0 0 0 rgba($brand-primary, 0);
   }
 }
 
@@ -107,11 +131,14 @@
 // ===========================
 
 @keyframes icon-glow {
-  0%, 100% {
-    filter: drop-shadow(0 0 8px rgba($persian-blue-400, 0.4));
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba($brand-primary, 0.3));
   }
+
   50% {
-    filter: drop-shadow(0 0 15px rgba($persian-blue-400, 0.6));
+    filter: drop-shadow(0 0 15px rgba($brand-primary, 0.5));
   }
 }
 
@@ -124,9 +151,11 @@
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -138,16 +167,19 @@
 // ===========================
 
 @keyframes border-glow {
-  0%, 100% {
-    border-color: rgba(255, 255, 255, 0.1);
+
+  0%,
+  100% {
+    border-color: rgba(0, 0, 0, 0.05);
   }
+
   50% {
-    border-color: rgba($persian-blue-400, 0.3);
+    border-color: rgba($brand-primary, 0.2);
   }
 }
 
 // ===========================
-// ORIGINAL NEUMORPHISM ANIMATIONS
+// STANDARD ANIMATIONS
 // ===========================
 
 // Fade in up animation
@@ -156,6 +188,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -164,8 +197,13 @@
 
 // Fade in animation
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 // Scale in animation
@@ -174,6 +212,7 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -186,6 +225,7 @@
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -198,6 +238,7 @@
     opacity: 0;
     transform: translateX(20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -206,9 +247,12 @@
 
 // Pulse animation
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.05);
   }
@@ -219,10 +263,15 @@
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
 }
+
+// ===========================
+// ANIMATION MIXINS
+// ===========================
 
 // Staggered card animation mixin
 @mixin staggered-cards($base-delay: 0.1s) {
@@ -256,12 +305,10 @@
 
 // Loading shimmer
 @mixin loading-shimmer {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.06) 25%,
-    rgba(0, 0, 0, 0.1) 50%,
-    rgba(0, 0, 0, 0.06) 75%
-  );
+  background: linear-gradient(90deg,
+      rgba(0, 0, 0, 0.06) 25%,
+      rgba(0, 0, 0, 0.1) 50%,
+      rgba(0, 0, 0, 0.06) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -285,26 +332,28 @@
   animation: slideInRight $duration ease-out $delay backwards;
 }
 
-// ===========================
-// DARK THEME ANIMATION MIXINS
-// ===========================
-
 // Float animation mixin
 @mixin float-animation($speed: slow) {
-  @if $speed == slow {
+  @if $speed ==slow {
     animation: float-slow 8s ease-in-out infinite;
-  } @else if $speed == medium {
+  }
+
+  @else if $speed ==medium {
     animation: float-medium 5s ease-in-out infinite;
-  } @else if $speed == fast {
+  }
+
+  @else if $speed ==fast {
     animation: float-fast 3s ease-in-out infinite;
   }
 }
 
 // Pulse glow mixin
 @mixin pulse-glow-animation($intensity: normal) {
-  @if $intensity == subtle {
+  @if $intensity ==subtle {
     animation: pulse-glow-subtle 3s ease-in-out infinite;
-  } @else if $intensity == normal {
+  }
+
+  @else if $intensity ==normal {
     animation: pulse-glow 2s ease-in-out infinite;
   }
 }
@@ -325,8 +374,8 @@
   animation: gradient-shift $duration ease infinite;
 }
 
-// Hover glow effect
-@mixin hover-glow($color: $persian-blue-500, $intensity: 0.4) {
+// Hover glow effect (using brand colors)
+@mixin hover-glow($color: $brand-primary, $intensity: 0.3) {
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 
   &:hover {
@@ -335,15 +384,13 @@
   }
 }
 
-// Glass card hover effect
-@mixin glass-hover-effect {
+// Card hover effect (light theme)
+@mixin card-hover-effect {
   transition: all 0.3s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
   }
 }
 

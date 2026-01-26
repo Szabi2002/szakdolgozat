@@ -96,7 +96,7 @@ export class TicketResponseDto {
   to_stop?: StopDto | null;
 
   @ApiProperty({ description: 'Ticket status', example: 'active' })
-  status: 'active' | 'expired' | 'used' | 'cancelled';
+  status: 'active' | 'expired' | 'used' | 'refunded';
 
   @ApiProperty({ description: 'Ticket price in HUF', example: 450 })
   price: number;

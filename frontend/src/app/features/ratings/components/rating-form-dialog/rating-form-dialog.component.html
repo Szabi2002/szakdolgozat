@@ -11,7 +11,8 @@
           <h2 mat-dialog-title>
             {{ data.existingRating ? 'Értékelés Szerkesztése' : 'Járat Értékelése' }}
           </h2>
-          <p class="header-subtitle">{{ data.existingRating ? 'Módosítsd az értékelésedet' : 'Oszd meg tapasztalataidat' }}</p>
+          <p class="header-subtitle">{{ data.existingRating ? 'Módosítsd az értékelésedet' : 'Oszd meg tapasztalataidat'
+            }}</p>
         </div>
       </div>
       <button mat-icon-button mat-dialog-close class="close-button" aria-label="Bezárás">
@@ -37,11 +38,8 @@
     </div>
 
     <!-- Rating Form -->
-    <app-rating-form
-      [routeId]="data.routeId"
-      [existingRating]="data.existingRating"
-      (success)="onSuccess($event)"
-      (cancel)="onCancel()">
+    <app-rating-form [routeId]="data.routeId" [existingRating]="data.existingRating" [showHeader]="false"
+      (success)="onSuccess($event)" (cancel)="onCancel()">
     </app-rating-form>
   </mat-dialog-content>
 </div>

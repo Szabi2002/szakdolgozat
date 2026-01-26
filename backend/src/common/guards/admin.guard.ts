@@ -12,7 +12,7 @@ import { SupabaseService } from '@common/supabase/supabase.service';
  */
 @Injectable()
 export class AdminGuard implements CanActivate {
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(private supabaseService: SupabaseService) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -42,6 +42,9 @@ export class AdminGuard implements CanActivate {
       if (data.role !== 'admin') {
         throw new ForbiddenException('Admin access required');
       }
+
+      // Attach role to request user object so controllers can use it
+      request.user.role = data.role;
 
       return true;
     } catch (error) {

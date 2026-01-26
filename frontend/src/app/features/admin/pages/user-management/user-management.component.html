@@ -12,20 +12,20 @@
       <div class="header-left">
         <div class="header-badge">
           <mat-icon>people</mat-icon>
-          <span>Felhasznalok</span>
+          <span>Felhasználók</span>
         </div>
         <div class="greeting-section">
           <h1 class="greeting-heading">
-            Felhasznalok <span class="highlight">Kezelese</span>
+            Felhasználók <span class="highlight">Kezelése</span>
           </h1>
-          <p class="greeting-subtext">Felhasznaloi szerepkorok es fiok adminisztracio</p>
+          <p class="greeting-subtext">Felhasználói szerepkörök és fiók adminisztráció</p>
         </div>
       </div>
       <div class="header-right">
         <div class="header-actions">
           <div class="stat-badge">
             <mat-icon>groups</mat-icon>
-            <span>{{ users.length }} felhasznalo</span>
+            <span>{{ users.length }} felhasználó</span>
           </div>
         </div>
       </div>
@@ -37,13 +37,8 @@
     <!-- Search Bar -->
     <div class="search-container">
       <mat-icon class="search-icon">search</mat-icon>
-      <input
-        type="text"
-        class="search-input"
-        placeholder="Kereses nev vagy email alapjan..."
-        [(ngModel)]="searchQuery"
-        (input)="onSearchChange()"
-      />
+      <input type="text" class="search-input" placeholder="Keresés név vagy email alapján..." [(ngModel)]="searchQuery"
+        (input)="onSearchChange()" />
       <button *ngIf="searchQuery" class="clear-search" (click)="searchQuery = ''; onSearchChange()">
         <mat-icon>close</mat-icon>
       </button>
@@ -51,40 +46,24 @@
 
     <!-- Filter Tabs -->
     <div class="filter-tabs">
-      <button
-        class="filter-tab"
-        [class.active]="selectedFilter === 'all'"
-        (click)="onFilterChange('all')"
-      >
+      <button class="filter-tab" [class.active]="selectedFilter === 'all'" (click)="onFilterChange('all')">
         <mat-icon>people</mat-icon>
         <span>Mind</span>
         <span class="count">{{ getFilterCount('all') }}</span>
       </button>
-      <button
-        class="filter-tab"
-        [class.active]="selectedFilter === 'admin'"
-        (click)="onFilterChange('admin')"
-      >
+      <button class="filter-tab" [class.active]="selectedFilter === 'admin'" (click)="onFilterChange('admin')">
         <mat-icon>shield</mat-icon>
         <span>Adminok</span>
         <span class="count">{{ getFilterCount('admin') }}</span>
       </button>
-      <button
-        class="filter-tab"
-        [class.active]="selectedFilter === 'user'"
-        (click)="onFilterChange('user')"
-      >
+      <button class="filter-tab" [class.active]="selectedFilter === 'user'" (click)="onFilterChange('user')">
         <mat-icon>person</mat-icon>
-        <span>Felhasznalok</span>
+        <span>Felhasználók</span>
         <span class="count">{{ getFilterCount('user') }}</span>
       </button>
-      <button
-        class="filter-tab"
-        [class.active]="selectedFilter === 'provider'"
-        (click)="onFilterChange('provider')"
-      >
+      <button class="filter-tab" [class.active]="selectedFilter === 'provider'" (click)="onFilterChange('provider')">
         <mat-icon>business</mat-icon>
-        <span>Szolgaltatok</span>
+        <span>Szolgáltatók</span>
         <span class="count">{{ getFilterCount('provider') }}</span>
       </button>
     </div>
@@ -95,7 +74,7 @@
     <div class="loading-spinner">
       <mat-spinner diameter="48"></mat-spinner>
     </div>
-    <p>Felhasznalok betoltese...</p>
+    <p>Felhasználók betöltése...</p>
   </div>
 
   <!-- Error State -->
@@ -103,11 +82,11 @@
     <div class="error-icon-wrapper">
       <mat-icon>error_outline</mat-icon>
     </div>
-    <h3>Hiba tortent</h3>
+    <h3>Hiba történt</h3>
     <p>{{ errorMessage }}</p>
     <button class="glass-button-primary" (click)="loadUsers()">
       <mat-icon>refresh</mat-icon>
-      Ujraprobalas
+      Újrapróbálás
     </button>
   </div>
 
@@ -116,8 +95,9 @@
     <div class="empty-icon-wrapper">
       <mat-icon>{{ searchQuery ? 'search_off' : 'people_outline' }}</mat-icon>
     </div>
-    <h3>{{ searchQuery ? 'Nincs talalat' : 'Nincsenek felhasznalok' }}</h3>
-    <p>{{ searchQuery ? 'Probald meg mas keresesi kifejezest' : 'A rendszerben meg nincsenek regisztralt felhasznalok.' }}</p>
+    <h3>{{ searchQuery ? 'Nincs találat' : 'Nincsenek felhasználók' }}</h3>
+    <p>{{ searchQuery ? 'Próbáld meg más keresési kifejezést' : 'A rendszerben még nincsenek regisztrált felhasználók.'
+      }}</p>
   </div>
 
   <!-- Users Table -->
@@ -126,11 +106,11 @@
       <table class="users-table">
         <thead>
           <tr>
-            <th class="th-user">Felhasznalo</th>
-            <th class="th-role">Szerepkor</th>
-            <th class="th-status">Statusz</th>
-            <th class="th-date">Regisztracio</th>
-            <th class="th-actions">Muveletek</th>
+            <th class="th-user">Felhasználó</th>
+            <th class="th-role">Szerepkör</th>
+            <th class="th-status">Státusz</th>
+            <th class="th-date">Regisztráció</th>
+            <th class="th-actions">Műveletek</th>
           </tr>
         </thead>
         <tbody>
@@ -143,7 +123,7 @@
                   <div class="status-dot" [class]="getStatusClass(user)"></div>
                 </div>
                 <div class="user-details">
-                  <span class="user-name">{{ user.name || 'Nincs nev' }}</span>
+                  <span class="user-name">{{ user.name || 'Nincs név' }}</span>
                   <span class="user-email">{{ user.email }}</span>
                 </div>
               </div>
@@ -161,7 +141,7 @@
             <td class="td-status">
               <span class="status-badge" [class]="getStatusClass(user)">
                 <span class="status-indicator"></span>
-                {{ getStatusClass(user) === 'active' ? 'Aktiv' : 'Inaktiv' }}
+                {{ getStatusClass(user) === 'active' ? 'Aktív' : 'Inaktív' }}
               </span>
             </td>
 
@@ -175,47 +155,32 @@
 
             <!-- Actions -->
             <td class="td-actions">
-              <button
-                class="action-btn"
-                [matMenuTriggerFor]="userMenu"
-                matTooltip="Muveletek"
-              >
+              <button class="action-btn" [matMenuTriggerFor]="userMenu" matTooltip="Műveletek">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #userMenu="matMenu" class="glass-menu">
                 <button mat-menu-item disabled>
                   <mat-icon>visibility</mat-icon>
-                  <span>Reszletek</span>
+                  <span>Részletek</span>
                 </button>
                 <mat-divider></mat-divider>
-                <button
-                  mat-menu-item
-                  (click)="updateUserRole(user.id, 'user')"
-                  [disabled]="user.role === 'user'"
-                >
+                <button mat-menu-item (click)="updateUserRole(user.id, 'user')" [disabled]="user.role === 'user'">
                   <mat-icon>person</mat-icon>
-                  <span>Felhasznalo</span>
+                  <span>Felhasználó</span>
                 </button>
-                <button
-                  mat-menu-item
-                  (click)="updateUserRole(user.id, 'admin')"
-                  [disabled]="user.role === 'admin'"
-                >
+                <button mat-menu-item (click)="updateUserRole(user.id, 'admin')" [disabled]="user.role === 'admin'">
                   <mat-icon>shield</mat-icon>
                   <span>Admin</span>
                 </button>
-                <button
-                  mat-menu-item
-                  (click)="updateUserRole(user.id, 'provider')"
-                  [disabled]="user.role === 'provider'"
-                >
+                <button mat-menu-item (click)="updateUserRole(user.id, 'provider')"
+                  [disabled]="user.role === 'provider'">
                   <mat-icon>business</mat-icon>
-                  <span>Szolgaltato</span>
+                  <span>Szolgáltató</span>
                 </button>
                 <mat-divider></mat-divider>
                 <button mat-menu-item class="delete-action" (click)="confirmDeleteUser(user)">
                   <mat-icon>delete</mat-icon>
-                  <span>Torles</span>
+                  <span>Törlés</span>
                 </button>
               </mat-menu>
             </td>
@@ -226,30 +191,18 @@
 
     <!-- Pagination -->
     <div *ngIf="totalPages > 1" class="pagination">
-      <button
-        class="page-btn"
-        [disabled]="currentPage === 1"
-        (click)="goToPage(currentPage - 1)"
-      >
+      <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
         <mat-icon>chevron_left</mat-icon>
       </button>
 
       <div class="page-numbers">
-        <button
-          *ngFor="let page of [].constructor(totalPages); let i = index"
-          class="page-number"
-          [class.active]="currentPage === i + 1"
-          (click)="goToPage(i + 1)"
-        >
+        <button *ngFor="let page of [].constructor(totalPages); let i = index" class="page-number"
+          [class.active]="currentPage === i + 1" (click)="goToPage(i + 1)">
           {{ i + 1 }}
         </button>
       </div>
 
-      <button
-        class="page-btn"
-        [disabled]="currentPage === totalPages"
-        (click)="goToPage(currentPage + 1)"
-      >
+      <button class="page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
         <mat-icon>chevron_right</mat-icon>
       </button>
 

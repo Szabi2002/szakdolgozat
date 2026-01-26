@@ -1,53 +1,54 @@
 <div class="ticket-type-selector">
-  <h3 class="selector-title">
-    <mat-icon>local_activity</mat-icon>
-    Válasszon jegytípust
-  </h3>
-
   <div class="ticket-types-grid">
-    <mat-card
-      *ngFor="let ticketType of ticketTypes"
-      class="ticket-type-card"
-      [class.selected]="selectedType?.id === ticketType.id"
-      (click)="onSelectionChange(ticketType)"
-    >
-      <div class="card-header" [style.background]="getTypeColor(ticketType.type)">
-        <mat-icon class="type-icon">{{ getTypeIcon(ticketType.type) }}</mat-icon>
-        <span class="type-badge">{{ getTypeBadge(ticketType.type) }}</span>
+    <div *ngFor="let ticketType of ticketTypes" class="ticket-type-card glass-card"
+      [class.selected]="selectedType?.id === ticketType.id" [class.emphasized]="ticketType.type === 'monthly'"
+      (click)="onSelectionChange(ticketType)">
+
+      <!-- Best Offer Badge -->
+      <div class="best-offer-tag" *ngIf="ticketType.type === 'monthly'">
+        <mat-icon>star</mat-icon>
+        <span>LEGJOBB AJÁNLAT</span>
       </div>
 
-      <mat-card-content>
-        <h4 class="ticket-name">{{ ticketType.name }}</h4>
-        <p class="ticket-description">{{ ticketType.description }}</p>
-
-        <div class="ticket-details">
-          <div class="detail-item">
-            <mat-icon>payments</mat-icon>
-            <div class="detail-content">
-              <span class="detail-label">Ár</span>
-              <span class="detail-value price">{{ formatPrice(ticketType.price) }}</span>
-            </div>
+      <div class="card-content">
+        <!-- Header: Icon & Name -->
+        <div class="card-header">
+          <div class="icon-wrapper">
+            <mat-icon>{{ getTypeIcon(ticketType.type) }}</mat-icon>
           </div>
-
-          <div class="detail-item">
-            <mat-icon>schedule</mat-icon>
-            <div class="detail-content">
-              <span class="detail-label">Érvényesség</span>
-              <span class="detail-value">{{ formatValidity(ticketType.validity_hours) }}</span>
-            </div>
+          <div class="header-text">
+            <h4 class="ticket-name">{{ ticketType.name }}</h4>
+            <span class="ticket-badge">{{ getTypeBadge(ticketType.type) }}</span>
           </div>
         </div>
-      </mat-card-content>
 
-      <div class="selection-indicator" *ngIf="selectedType?.id === ticketType.id">
-        <mat-icon>check_circle</mat-icon>
-        <span>Kiválasztva</span>
+        <!-- Body: Description -->
+        <p class="ticket-description">{{ ticketType.description }}</p>
+
+        <div class="divider"></div>
+
+        <!-- Footer: Validity & Price -->
+        <div class="card-footer">
+          <div class="info-group">
+            <mat-icon class="small-icon">schedule</mat-icon>
+            <span>{{ formatValidity(ticketType.validity_hours) }}</span>
+          </div>
+
+          <div class="price-tag">
+            {{ formatPrice(ticketType.price) }}
+          </div>
+        </div>
       </div>
-    </mat-card>
+
+      <!-- Selected Indicator Overlay -->
+      <div class="selected-indicator" *ngIf="selectedType?.id === ticketType.id">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+    </div>
   </div>
 
   <div class="no-tickets" *ngIf="ticketTypes.length === 0">
-    <mat-icon>info</mat-icon>
+    <mat-icon>confirmation_number</mat-icon>
     <p>Jelenleg nincs elérhető jegytípus.</p>
   </div>
 </div>

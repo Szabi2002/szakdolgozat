@@ -2,30 +2,25 @@
 @import 'colors';
 @import 'typography';
 @import 'mixins';
-@import 'persian-blue';
-@import 'glassmorphism';
-@import 'animations';
 
 // ============================================================================
-// ROUTE CARD - DARK THEME WITH GLASSMORPHISM
+// ROUTE CARD - LIGHT THEME
 // ============================================================================
 
 .route-card {
   position: relative;
   margin-bottom: $spacing-4;
   cursor: pointer;
-  border-radius: 20px;
+  border-radius: $radius-xl;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-  // Glassmorphism effect
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  // Light card
+  background: $surface-light;
+  border: 1px solid $border-light;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 
-  // Glow line at top (hidden by default)
+  // Glow line at top
   &::before {
     content: '';
     position: absolute;
@@ -33,17 +28,17 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, $persian-blue-500, $persian-blue-400);
+    background: $gradient-primary;
     opacity: 0;
     transition: opacity 0.3s ease;
   }
 
   &:hover {
-    transform: translateY(-10px);
-    border-color: rgba($persian-blue-400, 0.3);
+    transform: translateY(-8px);
+    border-color: rgba($brand-primary, 0.2);
     box-shadow:
-      0 20px 50px rgba(0, 0, 0, 0.4),
-      0 0 30px rgba($persian-blue-500, 0.15);
+      0 20px 40px rgba(0, 0, 0, 0.08),
+      0 0 20px rgba($brand-primary, 0.05);
 
     &::before {
       opacity: 1;
@@ -51,12 +46,12 @@
   }
 
   &.selected {
-    border-color: rgba($persian-blue-400, 0.5);
+    border-color: $brand-primary;
     border-width: 2px;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba($brand-primary, 0.02);
     box-shadow:
-      0 12px 40px rgba(0, 0, 0, 0.3),
-      0 0 20px rgba($persian-blue-500, 0.2);
+      0 12px 30px rgba(0, 0, 0, 0.06),
+      0 0 15px rgba($brand-primary, 0.08);
 
     &::before {
       opacity: 1;
@@ -68,7 +63,7 @@
   }
 
   &:active {
-    transform: translateY(-8px) scale(0.99);
+    transform: translateY(-6px) scale(0.99);
   }
 }
 
@@ -87,7 +82,7 @@
   font-size: $font-size-xs;
   font-weight: $font-weight-bold;
   z-index: 10;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
   .badge-icon {
     font-size: 16px;
@@ -106,7 +101,7 @@
   }
 
   &.low-walking {
-    background: linear-gradient(135deg, $persian-blue-400 0%, $persian-blue-600 100%);
+    background: $gradient-primary;
     color: $white;
   }
 }
@@ -119,7 +114,7 @@
   position: absolute;
   top: $spacing-3;
   left: $spacing-3;
-  color: $persian-blue-400;
+  color: $brand-primary;
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 10;
@@ -128,7 +123,6 @@
     font-size: 32px;
     width: 32px;
     height: 32px;
-    filter: drop-shadow(0 0 8px rgba($persian-blue-400, 0.5));
   }
 }
 
@@ -152,10 +146,8 @@
   border-radius: $radius-lg;
   flex-wrap: wrap;
   gap: $spacing-3;
-
-  // Glass background
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: $bg-light;
+  border: 1px solid $border-light;
 
   @include mobile {
     justify-content: center;
@@ -175,8 +167,8 @@
       width: 48px;
       height: 48px;
       border-radius: $radius-full;
-      background: linear-gradient(135deg, $persian-blue-500 0%, $persian-blue-600 100%);
-      box-shadow: 0 4px 16px rgba($persian-blue-500, 0.4);
+      background: $brand-primary;
+      box-shadow: 0 4px 12px rgba($brand-primary, 0.3);
 
       mat-icon {
         font-size: 24px;
@@ -193,13 +185,13 @@
       .value-large {
         font-size: $font-size-4xl;
         font-weight: $font-weight-bold;
-        color: $persian-blue-50;
+        color: $text-main;
         line-height: 1;
       }
 
       .unit {
         font-size: $font-size-sm;
-        color: $persian-blue-300;
+        color: $text-secondary;
         font-weight: $font-weight-medium;
       }
     }
@@ -209,7 +201,7 @@
     font-size: 20px;
     width: 20px;
     height: 20px;
-    color: $persian-blue-400;
+    color: $brand-primary;
   }
 
   .metric-content {
@@ -219,12 +211,12 @@
     .value {
       font-weight: $font-weight-bold;
       font-size: $font-size-lg;
-      color: $persian-blue-50;
+      color: $text-main;
     }
 
     .label {
       font-size: $font-size-xs;
-      color: $persian-blue-300;
+      color: $text-secondary;
     }
   }
 }
@@ -232,7 +224,7 @@
 .metric-divider {
   width: 2px;
   height: 40px;
-  background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%);
+  background: linear-gradient(to bottom, transparent 0%, $border-light 50%, transparent 100%);
 
   @include mobile {
     display: none;
@@ -251,21 +243,19 @@
   padding: $spacing-3;
   border-radius: $radius-lg;
   overflow-x: auto;
-
-  // Glass background
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: $bg-light;
+  border: 1px solid $border-light;
 
   &::-webkit-scrollbar {
     height: 4px;
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    background: $neutral-100;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba($persian-blue-400, 0.3);
+    background: $neutral-300;
     border-radius: $radius-full;
   }
 
@@ -286,22 +276,22 @@
     }
 
     &.walking mat-icon {
-      color: $persian-blue-400;
+      color: $brand-primary;
     }
 
     .route-number {
       font-size: $font-size-xs;
       font-weight: $font-weight-bold;
-      color: $persian-blue-50;
-      background: rgba(255, 255, 255, 0.1);
+      color: $text-main;
+      background: rgba($brand-primary, 0.1);
       padding: $spacing-1 $spacing-2;
       border-radius: $radius-md;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba($brand-primary, 0.2);
     }
   }
 
   .arrow {
-    color: $persian-blue-400;
+    color: $neutral-400;
     font-size: 18px;
     width: 18px;
     height: 18px;
@@ -318,13 +308,13 @@
   @include flex-center;
   gap: $spacing-1;
   padding: $spacing-2;
-  color: $persian-blue-400;
+  color: $brand-primary;
   font-weight: $font-weight-semibold;
   transition: all 0.3s ease;
   border-radius: $radius-md;
 
   &:hover {
-    background: rgba($persian-blue-400, 0.1);
+    background: rgba($brand-primary, 0.1);
   }
 
   mat-icon {
@@ -340,13 +330,11 @@
 
 .card-details {
   padding: $spacing-4 $spacing-5 $spacing-5 $spacing-5 !important;
-
-  // Glass background with gradient
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+  background: $bg-light;
 
   mat-divider {
     margin-bottom: $spacing-4;
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: $border-light;
   }
 }
 
@@ -375,7 +363,7 @@
       }
 
       &.walking {
-        color: $persian-blue-400;
+        color: $brand-primary;
       }
     }
 
@@ -387,12 +375,12 @@
       strong {
         font-size: $font-size-base;
         font-weight: $font-weight-bold;
-        color: $persian-blue-50;
+        color: $text-main;
       }
 
       .duration {
         font-size: $font-size-sm;
-        color: $persian-blue-300;
+        color: $text-secondary;
       }
     }
   }
@@ -402,7 +390,7 @@
     gap: $spacing-2;
     margin-left: 44px;
     padding-left: $spacing-3;
-    border-left: 2px dashed rgba($persian-blue-400, 0.3);
+    border-left: 2px dashed rgba($brand-primary, 0.2);
 
     .stop {
       @include flex-start;
@@ -413,12 +401,12 @@
         font-size: 16px;
         width: 16px;
         height: 16px;
-        color: $persian-blue-400;
+        color: $brand-primary;
       }
 
       span {
         font-size: $font-size-sm;
-        color: $persian-blue-200;
+        color: $text-secondary;
       }
     }
   }
@@ -431,13 +419,11 @@
   margin-left: 44px;
   padding: $spacing-2 $spacing-3;
   border-radius: $radius-md;
-  color: #fbbf24;
+  color: #d97706;
   font-size: $font-size-sm;
   font-weight: $font-weight-semibold;
-
-  // Glass background with warm tint
-  background: rgba(251, 191, 36, 0.1);
-  border: 1px solid rgba(251, 191, 36, 0.2);
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.15);
   border-left: 3px solid #fbbf24;
 
   mat-icon {
@@ -456,7 +442,7 @@
   gap: $spacing-3;
   margin-top: $spacing-5;
   padding-top: $spacing-4;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid $border-light;
   flex-wrap: wrap;
 
   @include mobile {
@@ -479,12 +465,6 @@
       height: 20px;
     }
 
-    span {
-      @include mobile {
-        font-size: $font-size-sm;
-      }
-    }
-
     @include mobile {
       width: 100%;
       flex: none;
@@ -492,51 +472,47 @@
   }
 
   .view-route-btn {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: $persian-blue-200;
+    background: $bg-light;
+    border: 1px solid $border-light;
+    color: $text-secondary;
 
     &:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba($persian-blue-400, 0.3);
-      color: $persian-blue-50;
+      background: $neutral-100;
+      border-color: $neutral-300;
+      color: $text-main;
     }
   }
 
   .save-favorite-btn {
-    background: rgba($persian-blue-400, 0.1);
-    border: 1px solid rgba($persian-blue-400, 0.3);
-    color: $persian-blue-400;
+    background: rgba($brand-primary, 0.08);
+    border: 1px solid rgba($brand-primary, 0.2);
+    color: $brand-primary;
 
     &:hover:not(:disabled) {
-      background: rgba($persian-blue-400, 0.2);
-      border-color: rgba($persian-blue-400, 0.5);
-      color: $persian-blue-300;
+      background: rgba($brand-primary, 0.15);
+      border-color: rgba($brand-primary, 0.3);
     }
 
     &:disabled {
       opacity: 0.4;
       cursor: not-allowed;
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(255, 255, 255, 0.1);
-      color: $persian-blue-400;
     }
   }
 
   .buy-ticket-btn {
-    background: linear-gradient(135deg, $persian-blue-500 0%, $persian-blue-600 100%) !important;
+    background: $brand-primary !important;
     color: white !important;
-    box-shadow: 0 4px 16px rgba($persian-blue-500, 0.3);
+    box-shadow: 0 4px 12px rgba($brand-primary, 0.25);
     border: none;
 
     &:hover:not(:disabled) {
-      box-shadow: 0 8px 24px rgba($persian-blue-500, 0.4);
+      background: $brand-primary-dark !important;
+      box-shadow: 0 8px 20px rgba($brand-primary, 0.35);
       transform: translateY(-2px);
     }
 
     &:active:not(:disabled) {
       transform: translateY(0);
-      box-shadow: 0 2px 8px rgba($persian-blue-500, 0.3);
     }
   }
 }

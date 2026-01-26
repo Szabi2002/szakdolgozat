@@ -51,13 +51,20 @@ export class DashboardOverviewComponent {
    * Navigate to tickets page
    */
   navigateToTickets(): void {
-    this.router.navigate(['/tickets']);
+    this.router.navigate(['/tickets/my-tickets']);
   }
 
   /**
-   * Navigate to routes page
+   * Navigate to planner page (route planning)
    */
   navigateToRoutes(): void {
-    this.router.navigate(['/routes']);
+    this.router.navigate(['/planner']);
+  }
+
+  /**
+   * Navigate to favorites page
+   */
+  navigateToFavorites(): void {
+    this.router.navigate(['/favorites']);
   }
 }

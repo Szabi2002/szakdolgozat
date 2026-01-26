@@ -2,12 +2,9 @@
 @import 'colors';
 @import 'typography';
 @import 'mixins';
-@import 'persian-blue';
-@import 'glassmorphism';
-@import 'animations';
 
 // ============================================================================
-// STAR RATING - PERSIAN BLUE THEME (NO YELLOW)
+// STAR RATING - MINT/TEAL THEME (arany csillagokkal)
 // ============================================================================
 
 .star-rating {
@@ -30,7 +27,7 @@
     }
 
     &:not(.readonly):focus {
-      outline: 2px solid $persian-blue-400;
+      outline: 2px solid $brand-primary;
       outline-offset: 2px;
       border-radius: $radius-sm;
     }
@@ -41,14 +38,14 @@
     }
 
     mat-icon {
-      // Inactive star - muted Persian Blue
-      color: rgba($persian-blue-400, 0.3);
+      // Inactive star - muted gray
+      color: $neutral-300;
       transition: color 0.2s ease;
 
-      // Active star - bright Persian Blue
+      // Active star - brand primary (mint)
       &.filled {
-        color: $persian-blue-400;
-        filter: drop-shadow(0 0 4px rgba($persian-blue-400, 0.5));
+        color: $brand-primary;
+        filter: drop-shadow(0 0 4px rgba($brand-primary, 0.4));
       }
     }
   }

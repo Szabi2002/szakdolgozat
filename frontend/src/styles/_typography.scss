@@ -1,47 +1,60 @@
 // ===========================
 // TYPOGRAPHY
-// Közlekedési Jegykezelő Alkalmazás
+// TransitHub Közlekedési Alkalmazás
+// Új dizájn rendszer - 2026
 // ===========================
 
 // ===========================
 // FONT FAMILIES
 // ===========================
 
-$font-primary: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-$font-monospace: 'Roboto Mono', 'Courier New', monospace;
+// Display font - címsorokhoz, navigációhoz
+$font-display: 'Lexend', 'Helvetica Neue', Arial, sans-serif;
+
+// Body font - szövegtörzshez
+$font-body: 'Noto Sans', 'Helvetica Neue', Arial, sans-serif;
+
+// Primary alias (visszafelé kompatibilitás)
+$font-primary: $font-display;
+
+// Monospace
+$font-monospace: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+
+// Font weight extra
+$font-weight-black: 900; // Hero címsorokhoz
 
 // ===========================
 // FONT SIZES (Mobile-First)
 // ===========================
 
-$font-size-xs:   0.75rem;   // 12px - Caption, helper text
-$font-size-sm:   0.875rem;  // 14px - Small body, secondary text
-$font-size-base: 1rem;      // 16px - Body text
-$font-size-md:   1.125rem;  // 18px - Large body, lead text
-$font-size-lg:   1.25rem;   // 20px - H5
-$font-size-xl:   1.5rem;    // 24px - H4
-$font-size-2xl:  1.875rem;  // 30px - H3
-$font-size-3xl:  2.25rem;   // 36px - H2
-$font-size-4xl:  3rem;      // 48px - H1
+$font-size-xs: 0.75rem; // 12px - Caption, helper text
+$font-size-sm: 0.875rem; // 14px - Small body, secondary text
+$font-size-base: 1rem; // 16px - Body text
+$font-size-md: 1.125rem; // 18px - Large body, lead text
+$font-size-lg: 1.25rem; // 20px - H5
+$font-size-xl: 1.5rem; // 24px - H4
+$font-size-2xl: 1.875rem; // 30px - H3
+$font-size-3xl: 2.25rem; // 36px - H2
+$font-size-4xl: 3rem; // 48px - H1
 
 // ===========================
 // FONT WEIGHTS
 // ===========================
 
-$font-weight-light:     300;  // Nem használt alapértelmezetten
-$font-weight-regular:   400;  // Body text
-$font-weight-medium:    500;  // Emphasis, buttons
-$font-weight-semibold:  600;  // Semi-bold headings
-$font-weight-bold:      700;  // Headings
-$font-weight-extrabold: 800;  // Extra bold headings
+$font-weight-light: 300; // Nem használt alapértelmezetten
+$font-weight-regular: 400; // Body text
+$font-weight-medium: 500; // Emphasis, buttons
+$font-weight-semibold: 600; // Semi-bold headings
+$font-weight-bold: 700; // Headings
+$font-weight-extrabold: 800; // Extra bold headings
 
 // ===========================
 // LINE HEIGHTS
 // ===========================
 
-$line-height-tight:   1.2;   // Headings
-$line-height-normal:  1.5;   // Body text (default)
-$line-height-relaxed: 1.75;  // Large paragraphs, lead text
+$line-height-tight: 1.2; // Headings
+$line-height-normal: 1.5; // Body text (default)
+$line-height-relaxed: 1.75; // Large paragraphs, lead text
 
 // ===========================
 // TYPOGRAPHY MIXINS
@@ -50,7 +63,7 @@ $line-height-relaxed: 1.75;  // Large paragraphs, lead text
 // H1 - Landing page hero
 @mixin heading-1 {
   font-family: $font-primary;
-  font-size: $font-size-3xl;  // 36px mobile
+  font-size: $font-size-3xl; // 36px mobile
   font-weight: $font-weight-bold;
   line-height: $line-height-tight;
   color: $neutral-900;
@@ -64,7 +77,7 @@ $line-height-relaxed: 1.75;  // Large paragraphs, lead text
 // H2 - Section headings
 @mixin heading-2 {
   font-family: $font-primary;
-  font-size: $font-size-2xl;  // 30px mobile
+  font-size: $font-size-2xl; // 30px mobile
   font-weight: $font-weight-bold;
   line-height: $line-height-tight;
   color: $neutral-900;
@@ -78,7 +91,7 @@ $line-height-relaxed: 1.75;  // Large paragraphs, lead text
 // H3 - Card titles, subsection headers
 @mixin heading-3 {
   font-family: $font-primary;
-  font-size: $font-size-xl;   // 24px mobile
+  font-size: $font-size-xl; // 24px mobile
   font-weight: $font-weight-bold;
   line-height: $line-height-tight;
   color: $neutral-800;
@@ -92,7 +105,7 @@ $line-height-relaxed: 1.75;  // Large paragraphs, lead text
 // H4 - Component headers
 @mixin heading-4 {
   font-family: $font-primary;
-  font-size: $font-size-lg;   // 20px mobile
+  font-size: $font-size-lg; // 20px mobile
   font-weight: $font-weight-medium;
   line-height: $line-height-tight;
   color: $neutral-800;

@@ -1,134 +1,76 @@
 <!-- Loading state -->
 <div *ngIf="!ticket || !ticket.id" class="ticket-card loading-card">
   <div class="loading-content">
-    <mat-spinner diameter="40"></mat-spinner>
-    <p>Jegy betöltése...</p>
+    <mat-spinner diameter="32"></mat-spinner>
+    <p>Betöltés...</p>
   </div>
 </div>
 
-<!-- Main ticket card -->
-<div *ngIf="ticket && ticket.id" class="ticket-card" [class.valid]="isValid" [class.compact]="compact">
-  <!-- Card Header with Gradient -->
-  <div class="card-header" [class.active]="ticket.status === 'active'"
-                           [class.expired]="ticket.status === 'expired'"
-                           [class.used]="ticket.status === 'used'"
-                           [class.cancelled]="ticket.status === 'cancelled'">
-    <div class="header-left">
-      <div class="ticket-icon">
-        <mat-icon>{{ getStatusIcon() }}</mat-icon>
+<!-- Modern Minimalist Ticket Card -->
+<div *ngIf="ticket && ticket.id" class="ticket-card modern-card" [class.active]="ticket.status === 'active'"
+  [class.expired]="ticket.status === 'expired'" [class.refunded]="ticket.status === 'refunded'"
+  [class.used]="ticket.status === 'used'">
+
+  <!-- Visual Status Strip (Left Border) handled by SCSS -->
+
+  <div class="card-main">
+    <!-- Header: Icon & Type -->
+    <div class="card-header-row">
+      <div class="type-info">
+        <div class="icon-badge">
+          <mat-icon>{{ getStatusIcon() }}</mat-icon>
+        </div>
+        <div class="text-content">
+          <h3 class="ticket-name">{{ ticketTypeName }}</h3>
+          <span class="ticket-type-label">{{ ticketTypeDisplayName }}</span>
+        </div>
       </div>
-      <div class="ticket-info">
-        <h3 class="ticket-title">{{ ticketTypeName }}</h3>
-        <p class="ticket-subtitle">{{ ticketTypeDisplayName }}</p>
+      <div class="status-chip" [class]="ticket.status">
+        <span>{{ getStatusLabel() }}</span>
       </div>
     </div>
-    <div class="status-badge" [class.active]="ticket.status === 'active'"
-                              [class.expired]="ticket.status === 'expired'"
-                              [class.used]="ticket.status === 'used'"
-                              [class.cancelled]="ticket.status === 'cancelled'">
-      <mat-icon>{{ getStatusIcon() }}</mat-icon>
-      <span>{{ getStatusLabel() }}</span>
-    </div>
-  </div>
 
-  <!-- Card Content -->
-  <div class="card-content">
-    <!-- Price highlight -->
-    <div class="price-section">
-      <mat-icon>payments</mat-icon>
-      <span class="price-value">{{ formatPrice(ticket.price) }}</span>
-    </div>
-
-    <!-- Ticket Details -->
-    <div class="details-section">
-      <div class="detail-row">
-        <mat-icon>confirmation_number</mat-icon>
-        <span class="label">Jegy azonosító</span>
-        <span class="value">{{ ticket.id.substring(0, 8) }}...</span>
-      </div>
-
-      <div class="detail-row">
-        <mat-icon>schedule</mat-icon>
-        <span class="label">Érvényes</span>
-        <span class="value">{{ formatDate(ticket.valid_from) }}</span>
-      </div>
-
-      <div class="detail-row" *ngIf="ticket.valid_until">
-        <mat-icon>event</mat-icon>
-        <span class="label">Lejárat</span>
-        <span class="value">{{ formatDate(ticket.valid_until) }}</span>
-      </div>
-
-      <div class="detail-row" *ngIf="!compact">
-        <mat-icon>timeline</mat-icon>
+    <!-- Body: Validity & Route -->
+    <div class="card-body-row">
+      <!-- Validity Range -->
+      <div class="info-block validity">
         <span class="label">Érvényesség</span>
-        <span class="value">{{ validityPeriod }}</span>
+        <div class="date-range">
+          <span class="date">{{ formatDate(ticket.valid_from) }}</span>
+          <mat-icon class="arrow">arrow_forward</mat-icon>
+          <span class="date">{{ ticket.valid_until ? formatDate(ticket.valid_until) : 'Visszavonásig' }}</span>
+        </div>
       </div>
 
-      <div class="detail-row" *ngIf="ticket.route && !compact">
-        <mat-icon>directions_bus</mat-icon>
+      <!-- Route (if exists) -->
+      <div class="info-block route" *ngIf="ticket.route">
         <span class="label">Járat</span>
-        <span class="value">{{ getRouteInfo() }}</span>
-        <button
-          *ngIf="hasRouteId()"
-          mat-icon-button
-          (click)="viewRouteDetails(); $event.stopPropagation()"
-          matTooltip="Járat részletei"
-          class="link-button"
-        >
-          <mat-icon>launch</mat-icon>
+        <div class="route-val">
+          <mat-icon>directions_bus</mat-icon>
+          <span>{{ ticket.route.route_number }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer: Price & Actions -->
+    <div class="card-footer-row">
+      <div class="price-tag">
+        {{ formatPrice(ticket.price) }}
+      </div>
+
+      <div class="actions">
+        <!-- Refund Button (Icon only, subtle) -->
+        <button mat-icon-button *ngIf="ticket.status === 'active'" (click)="onCancel()" class="action-btn cancel-btn"
+          matTooltip="Jegy visszaváltása">
+          <mat-icon>undo</mat-icon>
+        </button>
+
+        <!-- QR Code Button (Prominent) -->
+        <button mat-flat-button (click)="onViewQRCode()" class="action-btn qr-btn">
+          <mat-icon>qr_code_2</mat-icon>
+          <span>QR Kód</span>
         </button>
       </div>
-
-      <div class="detail-row" *ngIf="ticket.from_stop && ticket.to_stop && !compact">
-        <mat-icon>location_on</mat-icon>
-        <span class="label">Útvonal</span>
-        <span class="value">{{ getStopsInfo() }}</span>
-      </div>
-
-      <div class="detail-row">
-        <mat-icon>shopping_cart</mat-icon>
-        <span class="label">Vásárlás</span>
-        <span class="value">{{ formatDate(ticket.purchase_date) }}</span>
-      </div>
     </div>
-
-    <!-- Validity Indicator -->
-    <div class="validity-badge" [class.valid]="isValid" [class.invalid]="!isValid">
-      <mat-icon>{{ isValid ? 'verified' : 'error' }}</mat-icon>
-      <span>{{ isValid ? 'Jelenleg érvényes' : 'Nem érvényes' }}</span>
-    </div>
-  </div>
-
-  <!-- Card Actions -->
-  <div class="card-actions">
-    <button
-      mat-stroked-button
-      (click)="onViewQRCode()"
-      class="action-btn qr-code"
-      matTooltip="QR kód megtekintése"
-    >
-      <mat-icon>qr_code_2</mat-icon>
-      <span>QR Kód</span>
-    </button>
-    <button
-      mat-stroked-button
-      (click)="onViewDetails()"
-      class="action-btn details"
-      matTooltip="Részletek megtekintése"
-    >
-      <mat-icon>visibility</mat-icon>
-      <span>Részletek</span>
-    </button>
-    <button
-      mat-stroked-button
-      (click)="onCancel()"
-      [disabled]="ticket.status !== 'active'"
-      class="action-btn cancel"
-      matTooltip="Jegy lemondása"
-    >
-      <mat-icon>cancel</mat-icon>
-      <span>Lemondás</span>
-    </button>
   </div>
 </div>

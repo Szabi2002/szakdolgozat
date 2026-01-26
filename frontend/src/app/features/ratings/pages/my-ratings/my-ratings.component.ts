@@ -12,7 +12,7 @@ import { Rating } from '../../../../core/models/rating.model';
 import { RatingsService } from '../../../../core/services/ratings.service';
 import { SupabaseService } from '../../../../core/services/supabase.service';
 import { RatingsListComponent } from '../../components/ratings-list/ratings-list.component';
-import { RatingFormComponent } from '../../components/rating-form/rating-form.component';
+import { RatingFormDialogComponent } from '../../components/rating-form-dialog/rating-form-dialog.component';
 import { RatingCardComponent } from '../../../../shared/components/rating-card/rating-card.component';
 
 /**
@@ -51,7 +51,7 @@ export class MyRatingsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Defensive initialization to prevent array/pagination errors
@@ -127,28 +127,22 @@ export class MyRatingsComponent implements OnInit, OnDestroy {
    * @param rating Rating to edit
    */
   onEditRating(rating: Rating): void {
-    const dialogRef = this.dialog.open(RatingFormComponent, {
-      width: '800px',
+    const dialogRef = this.dialog.open(RatingFormDialogComponent, {
+      width: '600px',
       maxWidth: '95vw',
       panelClass: 'glass-dialog-panel',
-      data: { existingRating: rating },
+      data: {
+        existingRating: rating,
+        routeId: rating.route_id,
+        routeName: rating.route?.name ? `${rating.route?.route_number} - ${rating.route?.name}` : 'Ismeretlen járat'
+      },
       disableClose: true
     });
 
-    const instance = dialogRef.componentInstance;
-    instance.existingRating = rating;
-
-    instance.success.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      dialogRef.close();
-      this.loadRatings();
-      this.snackBar.open('Értékelés sikeresen frissítve', 'Bezár', {
-        duration: 3000,
-        panelClass: ['success-snackbar']
-      });
-    });
-
-    instance.cancel.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      dialogRef.close();
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
+      if (result) {
+        this.loadRatings();
+      }
     });
   }
 

@@ -23,7 +23,7 @@ export class TicketsService {
     private readonly qrCodeService: QrCodeService,
     private readonly transactionsService: TransactionsService,
     private readonly ticketTypesService: TicketTypesService,
-  ) {}
+  ) { }
 
   /**
    * Purchases a ticket for a user
@@ -285,7 +285,7 @@ export class TicketsService {
 
       const { error } = await supabase
         .from('tickets')
-        .update({ status: 'cancelled' })
+        .update({ status: 'refunded' })
         .eq('id', id)
         .eq('user_id', userId);
 

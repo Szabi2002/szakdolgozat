@@ -2,35 +2,31 @@
 @import 'colors';
 @import 'typography';
 @import 'mixins';
-@import 'persian-blue';
-@import 'glassmorphism';
-@import 'animations';
 
 // ============================================================================
-// QUICK TRIP PLANNER COMPONENT - DARK THEME
+// QUICK TRIP PLANNER COMPONENT - MATCHES /PLANNER PAGE DESIGN
 // ============================================================================
 
 .trip-planner-form {
   @include flex-column;
-  gap: $spacing-5;
+  gap: $spacing-4;
 
   // ============================================================================
-  // LOCATION FIELDS
+  // STOPS ROW (matches planner .stops-row)
   // ============================================================================
 
-  .location-fields {
-    @include flex-column;
-    gap: $spacing-4;
-    position: relative;
+  .stops-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: $spacing-3;
+    align-items: start;
 
-    @include desktop {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: $spacing-3;
-      align-items: start;
+    @include mobile {
+      grid-template-columns: 1fr;
+      gap: $spacing-2;
     }
 
-    .location-field {
+    .stop-field {
       width: 100%;
 
       ::ng-deep {
@@ -38,59 +34,70 @@
           width: 100%;
         }
 
-        .mat-mdc-text-field-wrapper {
-          background: rgba(255, 255, 255, 0.06);
-          border-radius: $radius-md;
-          transition: all 0.3s ease;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+        .mdc-text-field--outlined {
+
+          .mdc-notched-outline__leading,
+          .mdc-notched-outline__notch,
+          .mdc-notched-outline__trailing {
+            border-color: $border-light !important;
+          }
 
           &:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba($persian-blue-400, 0.3);
+
+            .mdc-notched-outline__leading,
+            .mdc-notched-outline__notch,
+            .mdc-notched-outline__trailing {
+              border-color: rgba($brand-primary, 0.4) !important;
+            }
+          }
+
+          &.mdc-text-field--focused {
+
+            .mdc-notched-outline__leading,
+            .mdc-notched-outline__notch,
+            .mdc-notched-outline__trailing {
+              border-color: $brand-primary !important;
+              border-width: 2px !important;
+            }
           }
         }
 
-        .mat-mdc-form-field-focus-overlay {
-          background-color: transparent;
-        }
-
-        .mdc-text-field--focused {
-          .mat-mdc-text-field-wrapper {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba($persian-blue-400, 0.5);
-            box-shadow: 0 0 0 3px rgba($persian-blue-400, 0.15);
-          }
+        .mat-mdc-text-field-wrapper {
+          background: $bg-light;
+          border-radius: $radius-md;
         }
 
         .mat-mdc-form-field-icon-prefix {
+          padding: 0 $spacing-2 0 $spacing-3;
+
           mat-icon {
-            color: $persian-blue-400;
+            color: $brand-primary;
             font-size: 22px;
             width: 22px;
             height: 22px;
           }
         }
 
-        .mdc-text-field--filled {
-          background-color: transparent !important;
-        }
-
-        .mdc-floating-label,
-        .mat-mdc-input-element {
-          color: $persian-blue-100 !important;
+        .mdc-floating-label {
+          color: $text-secondary !important;
         }
 
         .mdc-floating-label--float-above {
-          color: $persian-blue-400 !important;
+          color: $brand-primary !important;
+        }
+
+        .mat-mdc-input-element {
+          color: $text-main !important;
+          caret-color: $brand-primary;
+
+          &::placeholder {
+            color: $text-muted !important;
+            opacity: 0.8;
+          }
         }
 
         .mat-mdc-form-field-subscript-wrapper {
           display: none;
-        }
-
-        input::placeholder {
-          color: $persian-blue-400 !important;
-          opacity: 0.6;
         }
       }
     }
@@ -100,21 +107,18 @@
       width: 44px;
       height: 44px;
       border-radius: $radius-full;
-      background: rgba(255, 255, 255, 0.08);
-      color: $persian-blue-400;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      background: $surface-light !important;
+      color: $brand-primary !important;
+      border: 1px solid $border-light;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
       transition: all 0.3s ease;
-      align-self: center;
       flex-shrink: 0;
+      align-self: center;
+      margin-top: $spacing-2;
 
       @include mobile {
-        margin: $spacing-2 0;
-        transform: rotate(0deg) !important;
-      }
-
-      @include desktop {
-        margin-top: $spacing-3;
+        margin: $spacing-2 auto;
+        transform: rotate(90deg);
       }
 
       mat-icon {
@@ -125,43 +129,36 @@
       }
 
       &:hover {
-        background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600);
-        color: white;
+        background: $brand-primary !important;
+        color: white !important;
         border-color: transparent;
-        box-shadow: 0 8px 24px rgba($persian-blue-500, 0.4);
+        box-shadow: 0 8px 20px rgba($brand-primary, 0.3);
         transform: scale(1.1);
 
-        @include desktop {
-          mat-icon {
-            transform: rotate(180deg);
-          }
-        }
-
         @include mobile {
-          mat-icon {
-            transform: rotate(180deg);
-          }
+          transform: rotate(90deg) scale(1.1);
         }
-      }
 
-      &:active {
-        transform: scale(0.95);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        mat-icon {
+          transform: rotate(180deg);
+        }
       }
     }
   }
 
   // ============================================================================
-  // DATETIME FIELDS
+  // DATE TIME ROW (matches planner .date-time-row - 3 column grid)
   // ============================================================================
 
-  .datetime-fields {
+  .date-time-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: $spacing-4;
+    grid-template-columns: 1fr 1fr auto;
+    gap: $spacing-3;
+    align-items: start;
 
     @include mobile {
       grid-template-columns: 1fr;
+      gap: $spacing-2;
     }
 
     .date-field,
@@ -173,112 +170,131 @@
           width: 100%;
         }
 
-        .mat-mdc-text-field-wrapper {
-          background: rgba(255, 255, 255, 0.06);
-          border-radius: $radius-md;
-          transition: all 0.3s ease;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+        .mdc-text-field--outlined {
+
+          .mdc-notched-outline__leading,
+          .mdc-notched-outline__notch,
+          .mdc-notched-outline__trailing {
+            border-color: $border-light !important;
+          }
 
           &:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba($persian-blue-400, 0.3);
+
+            .mdc-notched-outline__leading,
+            .mdc-notched-outline__notch,
+            .mdc-notched-outline__trailing {
+              border-color: rgba($brand-primary, 0.4) !important;
+            }
+          }
+
+          &.mdc-text-field--focused {
+
+            .mdc-notched-outline__leading,
+            .mdc-notched-outline__notch,
+            .mdc-notched-outline__trailing {
+              border-color: $brand-primary !important;
+              border-width: 2px !important;
+            }
           }
         }
 
-        .mat-mdc-form-field-focus-overlay {
-          background-color: transparent;
-        }
-
-        .mdc-text-field--focused {
-          .mat-mdc-text-field-wrapper {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba($persian-blue-400, 0.5);
-            box-shadow: 0 0 0 3px rgba($persian-blue-400, 0.15);
-          }
+        .mat-mdc-text-field-wrapper {
+          background: $bg-light;
+          border-radius: $radius-md;
         }
 
         .mat-mdc-form-field-icon-prefix {
+          padding: 0 $spacing-2 0 $spacing-3;
+
           mat-icon {
-            color: $persian-blue-400;
+            color: $brand-primary;
             font-size: 20px;
             width: 20px;
             height: 20px;
           }
         }
 
-        .mat-datepicker-toggle {
-          button {
-            color: $persian-blue-400;
-          }
+        .mat-datepicker-toggle button {
+          color: $brand-primary;
         }
 
-        .mdc-text-field--filled {
-          background-color: transparent !important;
-        }
-
-        .mdc-floating-label,
-        .mat-mdc-input-element {
-          color: $persian-blue-100 !important;
+        .mdc-floating-label {
+          color: $text-secondary !important;
         }
 
         .mdc-floating-label--float-above {
-          color: $persian-blue-400 !important;
+          color: $brand-primary !important;
+        }
+
+        .mat-mdc-input-element {
+          color: $text-main !important;
+          caret-color: $brand-primary;
+
+          &::placeholder {
+            color: $text-muted !important;
+            opacity: 0.8;
+          }
         }
 
         .mat-mdc-form-field-subscript-wrapper {
           display: none;
         }
-
-        input::placeholder {
-          color: $persian-blue-400 !important;
-          opacity: 0.6;
-        }
       }
     }
-  }
 
-  // ============================================================================
-  // SEARCH BUTTON
-  // ============================================================================
+    // Search button in same row as date/time (matches planner)
+    .search-button {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: $spacing-2;
+      min-width: 140px;
+      height: 56px;
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      font-family: inherit;
+      background: $brand-primary;
+      color: white;
+      border-radius: $radius-lg;
+      box-shadow: 0 8px 20px rgba($brand-primary, 0.3);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: none;
+      cursor: pointer;
+      align-self: start;
+      margin-top: 4px;
 
-  .search-button {
-    width: 100%;
-    height: 52px;
-    font-size: $font-size-base;
-    font-weight: $font-weight-semibold;
-    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
-    color: $white !important;
-    box-shadow: 0 8px 24px rgba($persian-blue-500, 0.4);
-    transition: all 0.3s ease;
-    @include flex-center;
-    gap: $spacing-2;
-    border-radius: $radius-md;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border: none;
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        color: white;
+      }
 
-    mat-icon {
-      font-size: 22px;
-      width: 22px;
-      height: 22px;
-    }
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba($brand-primary, 0.4);
+        background: $brand-primary-dark;
+      }
 
-    &:hover:not(:disabled) {
-      box-shadow: 0 12px 32px rgba($persian-blue-500, 0.5);
-      transform: translateY(-2px);
-      background: linear-gradient(135deg, $persian-blue-400, $persian-blue-500) !important;
-    }
+      &:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 4px 12px rgba($brand-primary, 0.3);
+      }
 
-    &:active:not(:disabled) {
-      transform: translateY(0);
-      box-shadow: 0 4px 16px rgba($persian-blue-500, 0.4);
-    }
+      &:disabled {
+        cursor: not-allowed;
+        background: $neutral-400;
+        box-shadow: none;
+        color: rgba(255, 255, 255, 0.8);
+      }
 
-    &:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      background: rgba($persian-blue-700, 0.5) !important;
-      box-shadow: none;
+      @include mobile {
+        width: 100%;
+        margin-top: $spacing-2;
+      }
     }
   }
 }

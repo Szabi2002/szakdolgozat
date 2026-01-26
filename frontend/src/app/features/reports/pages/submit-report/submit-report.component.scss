@@ -2,91 +2,29 @@
 @import 'colors';
 @import 'typography';
 @import 'mixins';
-@import 'persian-blue';
-@import 'glassmorphism';
-@import 'animations';
 
-// ===========================
-// SUBMIT REPORT - DARK GLASSMORPHISM THEME
-// (Following Admin Pages Structure)
-// ===========================
+// ============================================================================
+// SUBMIT REPORT - LIGHT THEME
+// ============================================================================
 
 .submit-report-container {
-  position: relative;
   min-height: 100vh;
-  background: $persian-blue-950;
-  overflow-x: hidden;
-  @include dark-scrollbar;
-}
-
-// ===========================
-// BACKGROUND ORBS
-// ===========================
-
-.bg-orbs {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-
-  .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.5;
-
-    &.orb-1 {
-      width: 400px;
-      height: 400px;
-      background: $gradient-orb-blue;
-      top: -100px;
-      right: -100px;
-      @include float-animation(slow);
-    }
-
-    &.orb-2 {
-      width: 300px;
-      height: 300px;
-      background: $gradient-orb-purple;
-      bottom: 20%;
-      left: -50px;
-      @include float-animation(medium);
-      animation-delay: -2s;
-    }
-
-    &.orb-3 {
-      width: 200px;
-      height: 200px;
-      background: radial-gradient(circle, rgba($persian-blue-400, 0.3) 0%, transparent 70%);
-      top: 50%;
-      right: 20%;
-      @include float-animation(fast);
-      animation-delay: -4s;
-    }
-  }
+  background: $bg-light;
+  overflow-x: hidden;
 }
 
-// ===========================
-// COMPACT HEADER (Same as Admin)
-// ===========================
+// ============================================================================
+// COMPACT HEADER
+// ============================================================================
 
 .dashboard-header {
   width: 100%;
   padding: $spacing-8 $spacing-4;
   position: relative;
   overflow: hidden;
-  z-index: 1;
+  background: linear-gradient(135deg, $brand-primary 0%, $brand-primary-dark 100%);
   margin-bottom: $spacing-6;
-
-  // Dark gradient background with glow effects
-  background:
-    radial-gradient(ellipse at 20% 0%, rgba($persian-blue-600, 0.3), transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-500, 0.2), transparent 50%),
-    linear-gradient(180deg, $persian-blue-900 0%, $persian-blue-950 100%);
 
   @include mobile {
     padding: $spacing-6 $spacing-3;
@@ -118,12 +56,12 @@
   @include flex-start;
   gap: $spacing-2;
   padding: $spacing-1 $spacing-3;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   border-radius: $radius-full;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   width: fit-content;
-  color: $persian-blue-200;
+  color: white;
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
 
@@ -131,7 +69,7 @@
     font-size: 14px;
     width: 14px;
     height: 14px;
-    color: $persian-blue-400;
+    color: rgba(255, 255, 255, 0.9);
   }
 }
 
@@ -143,12 +81,12 @@
 .greeting-heading {
   font-size: $font-size-2xl;
   font-weight: $font-weight-bold;
-  color: $persian-blue-50;
+  color: white;
   margin: 0;
   line-height: 1.2;
 
   .highlight {
-    color: $persian-blue-400;
+    color: rgba(255, 255, 255, 0.9);
   }
 
   @include mobile {
@@ -158,7 +96,7 @@
 
 .greeting-subtext {
   font-size: $font-size-base;
-  color: $persian-blue-300;
+  color: rgba(255, 255, 255, 0.85);
   margin: 0;
 
   @include mobile {
@@ -190,11 +128,11 @@
   @include flex-start;
   gap: $spacing-2;
   padding: $spacing-2 $spacing-4;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: $radius-full;
-  color: $persian-blue-200;
+  color: white;
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
   text-decoration: none;
@@ -204,13 +142,12 @@
     font-size: 18px;
     width: 18px;
     height: 18px;
-    color: $persian-blue-400;
+    color: white;
   }
 
   &:hover {
-    background: rgba($persian-blue-500, 0.2);
-    border-color: rgba($persian-blue-400, 0.4);
-    color: $persian-blue-100;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
   }
 }
 
@@ -226,7 +163,7 @@
   .feature-chip {
     @include flex-start;
     gap: $spacing-1;
-    color: $persian-blue-300;
+    color: rgba(255, 255, 255, 0.8);
     font-size: $font-size-xs;
     font-weight: $font-weight-medium;
 
@@ -234,14 +171,14 @@
       font-size: 14px;
       width: 14px;
       height: 14px;
-      color: $persian-blue-400;
+      color: white;
     }
   }
 }
 
-// ===========================
+// ============================================================================
 // INFO SECTION
-// ===========================
+// ============================================================================
 
 .info-section {
   position: relative;
@@ -260,14 +197,11 @@
   align-items: flex-start;
   gap: $spacing-4;
   padding: $spacing-4;
-  border-radius: 16px;
-
-  // Glassmorphism with accent
-  background: rgba($persian-blue-500, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba($persian-blue-400, 0.15);
-  border-left: 3px solid $persian-blue-400;
+  border-radius: $radius-lg;
+  background: white;
+  border: 1px solid $border-light;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border-left: 4px solid $brand-primary;
 
   .info-icon-wrapper {
     display: flex;
@@ -275,8 +209,7 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
-    border: 1px solid rgba($persian-blue-400, 0.2);
+    background: rgba($brand-primary, 0.1);
     border-radius: $radius-md;
     flex-shrink: 0;
 
@@ -284,7 +217,7 @@
       font-size: 22px;
       width: 22px;
       height: 22px;
-      color: $persian-blue-300;
+      color: $brand-primary;
     }
   }
 
@@ -296,13 +229,13 @@
     .info-title {
       font-size: $font-size-sm;
       font-weight: $font-weight-bold;
-      color: $persian-blue-100;
+      color: $text-main;
     }
 
     .info-text {
       font-size: $font-size-xs;
       font-weight: $font-weight-medium;
-      color: $persian-blue-300;
+      color: $text-secondary;
       line-height: 1.5;
     }
   }
@@ -314,9 +247,9 @@
   }
 }
 
-// ===========================
+// ============================================================================
 // FORM SECTION
-// ===========================
+// ============================================================================
 
 .form-section {
   position: relative;
@@ -337,20 +270,15 @@
 
 .form-card {
   position: relative;
-  border-radius: 20px;
+  border-radius: $radius-xl;
   padding: $spacing-6;
-  overflow: hidden;
-
-  // Glassmorphism effect
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: white;
+  border: 1px solid $border-light;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 
   @include mobile {
     padding: $spacing-5;
-    border-radius: 16px;
+    border-radius: $radius-lg;
   }
 }
 
@@ -373,16 +301,16 @@
   justify-content: center;
   width: 52px;
   height: 52px;
-  background: linear-gradient(135deg, rgba($persian-blue-500, 0.25), rgba($persian-blue-600, 0.15));
-  border: 1px solid rgba($persian-blue-400, 0.25);
+  background: linear-gradient(135deg, $brand-primary 0%, $brand-primary-dark 100%);
   border-radius: $radius-lg;
   flex-shrink: 0;
+  color: white;
+  box-shadow: 0 4px 12px rgba($brand-primary, 0.25);
 
   mat-icon {
     font-size: 26px;
     width: 26px;
     height: 26px;
-    color: $persian-blue-400;
   }
 
   @include mobile {
@@ -406,7 +334,7 @@
     margin: 0;
     font-size: $font-size-xl;
     font-weight: $font-weight-bold;
-    color: $persian-blue-50;
+    color: $text-main;
 
     @include mobile {
       font-size: $font-size-lg;
@@ -416,18 +344,13 @@
   p {
     margin: 0;
     font-size: $font-size-sm;
-    color: $persian-blue-300;
+    color: $text-secondary;
   }
 }
 
 .form-divider {
   height: 1px;
-  background: linear-gradient(90deg,
-    transparent,
-    rgba($persian-blue-400, 0.25),
-    rgba($persian-blue-400, 0.25),
-    transparent
-  );
+  background: $border-light;
   margin-bottom: $spacing-5;
 }
 
@@ -435,99 +358,103 @@
   position: relative;
 }
 
-// ===========================
-// FORM FIELD STYLING (Dark Theme Override)
-// ===========================
+// ============================================================================
+// FORM FIELD STYLING (Light Theme Override)
+// ============================================================================
 
 .form-card ::ng-deep {
+
   // Text fields
   .mat-mdc-form-field {
     .mdc-text-field--outlined {
+
       .mdc-notched-outline__leading,
       .mdc-notched-outline__notch,
       .mdc-notched-outline__trailing {
-        border-color: rgba(255, 255, 255, 0.12) !important;
+        border-color: $border-light !important;
       }
 
       &:hover {
+
         .mdc-notched-outline__leading,
         .mdc-notched-outline__notch,
         .mdc-notched-outline__trailing {
-          border-color: rgba($persian-blue-400, 0.4) !important;
+          border-color: $neutral-400 !important;
         }
       }
 
       &.mdc-text-field--focused {
+
         .mdc-notched-outline__leading,
         .mdc-notched-outline__notch,
         .mdc-notched-outline__trailing {
-          border-color: $persian-blue-400 !important;
+          border-color: $brand-primary !important;
           border-width: 2px !important;
         }
       }
     }
 
     .mat-mdc-text-field-wrapper {
-      background: rgba(255, 255, 255, 0.03);
+      background: $bg-light;
       border-radius: $radius-lg;
     }
 
     .mdc-floating-label {
-      color: $persian-blue-300 !important;
+      color: $text-secondary !important;
     }
 
     .mat-mdc-input-element {
-      color: $persian-blue-50 !important;
-      caret-color: $persian-blue-400;
+      color: $text-main !important;
+      caret-color: $brand-primary;
     }
 
     .mat-mdc-select-value {
-      color: $persian-blue-50 !important;
+      color: $text-main !important;
     }
 
     mat-hint {
-      color: $persian-blue-400;
+      color: $text-secondary;
     }
 
     .mat-mdc-form-field-error {
-      color: #ff6b6b;
+      color: $error-600;
     }
   }
 
   // Primary button (submit)
   button[type="submit"],
   .mat-mdc-raised-button.mat-primary {
-    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    background: $brand-primary !important;
     color: white !important;
     font-weight: $font-weight-semibold;
     border-radius: 12px !important;
     padding: 10px 24px !important;
-    box-shadow: 0 4px 20px rgba($persian-blue-500, 0.4);
+    box-shadow: 0 4px 12px rgba($brand-primary, 0.25);
     transition: all 0.3s ease;
 
     &:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba($persian-blue-500, 0.5);
+      box-shadow: 0 8px 20px rgba($brand-primary, 0.35);
     }
 
     &:disabled {
-      background: rgba($persian-blue-500, 0.3) !important;
+      background: $neutral-200 !important;
+      color: $neutral-400 !important;
       box-shadow: none;
     }
   }
 
   // Secondary button (cancel)
   .mat-mdc-stroked-button {
-    color: $persian-blue-300 !important;
-    border: 1px solid rgba($persian-blue-400, 0.3) !important;
+    color: $text-main !important;
+    border: 1px solid $border-light !important;
     border-radius: 12px !important;
-    background: rgba(255, 255, 255, 0.04) !important;
+    background: white !important;
     transition: all 0.3s ease;
 
     &:hover {
-      background: rgba($persian-blue-400, 0.12) !important;
-      border-color: rgba($persian-blue-400, 0.5) !important;
-      color: $persian-blue-100 !important;
+      background: $bg-light !important;
+      border-color: $neutral-300 !important;
       transform: translateY(-2px);
     }
   }
@@ -535,38 +462,42 @@
   // Radio buttons
   .mat-mdc-radio-button {
     .mdc-radio__outer-circle {
-      border-color: $persian-blue-400 !important;
+      border-color: $text-secondary !important;
     }
 
     .mdc-radio__inner-circle {
-      background-color: $persian-blue-400 !important;
+      background-color: $brand-primary !important;
+    }
+
+    &.mat-mdc-radio-checked .mdc-radio__outer-circle {
+      border-color: $brand-primary !important;
     }
 
     .mdc-label {
-      color: $persian-blue-200;
+      color: $text-main;
     }
   }
 
   // Checkbox
   .mat-mdc-checkbox {
     .mdc-checkbox__background {
-      border-color: $persian-blue-400 !important;
+      border-color: $text-secondary !important;
     }
 
     .mdc-checkbox--selected .mdc-checkbox__background {
-      background-color: $persian-blue-500 !important;
-      border-color: $persian-blue-500 !important;
+      background-color: $brand-primary !important;
+      border-color: $brand-primary !important;
     }
 
     .mdc-label {
-      color: $persian-blue-200;
+      color: $text-main;
     }
   }
 }
 
-// ===========================
+// ============================================================================
 // BOTTOM STATS
-// ===========================
+// ============================================================================
 
 .bottom-stats {
   position: relative;
@@ -593,14 +524,11 @@
     padding: $spacing-2 $spacing-4;
     border-radius: $radius-full;
     transition: all 0.3s ease;
+    background: white;
+    border: 1px solid $border-light;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
-    // Glass effect
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-
-    color: $persian-blue-200;
+    color: $text-secondary;
     font-size: 0.875rem;
     font-weight: 500;
 
@@ -608,13 +536,13 @@
       font-size: 18px;
       width: 18px;
       height: 18px;
-      color: $persian-blue-400;
+      color: $brand-primary;
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba($persian-blue-400, 0.25);
       transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-color: $brand-primary;
     }
 
     @include mobile {

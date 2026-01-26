@@ -1,437 +1,195 @@
-@import '../../../styles/variables';
-@import '../../../styles/colors';
-@import '../../../styles/typography';
-@import '../../../styles/mixins';
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+
+// ============================================================================
+// HOME PAGE (DASHBOARD REDIRECTOR / LANDING)
+// ============================================================================
+// Note: This often acts as a wrapper or simple landing for logged-in users
+// if not redirected to dashboard. We'll style it consistently.
+
+:host {
+  display: block;
+}
 
 .home-container {
-  min-height: calc(100vh - 120px);
+  min-height: 100vh;
+  background: $bg-light;
   padding: $spacing-8 $spacing-4;
-  background: linear-gradient(180deg,
-    $white 0%,
-    rgba($brand-primary, 0.02) 50%,
-    $white 100%
-  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 
   @include mobile {
     padding: $spacing-6 $spacing-3;
   }
 }
 
-// Hero Section
-.hero-section {
-  @include flex-column;
+.welcome-card {
+  background: white;
+  border-radius: $radius-xl;
+  padding: $spacing-8;
+  max-width: 600px;
+  width: 100%;
+  border: 1px solid $border-light;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: $spacing-8;
-  margin-bottom: $spacing-12;
-  animation: fade-in 800ms $ease-out forwards;
+  gap: $spacing-6;
 
-  @include mobile {
-    margin-bottom: $spacing-8;
-    gap: $spacing-6;
-  }
-}
-
-.hero-content {
-  @include flex-column;
-  align-items: center;
-  text-align: center;
-  gap: $spacing-4;
-  max-width: 800px;
-}
-
-.hero-badge {
-  @include flex-center;
-  gap: $spacing-2;
-  padding: $spacing-2 $spacing-4;
-  background: linear-gradient(135deg,
-    rgba($brand-primary, 0.1) 0%,
-    rgba($brand-primary, 0.05) 100%
-  );
-  border-radius: $radius-full;
-  border: 2px solid rgba($brand-primary, 0.2);
-  color: $brand-primary;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-
-  mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-  }
-
-  @include mobile {
-    padding: $spacing-1 $spacing-3;
-    font-size: $font-size-xs;
+  .illustration {
+    width: 200px;
+    height: 150px;
+    background: rgba($brand-primary, 0.05);
+    border-radius: $radius-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $brand-primary;
 
     mat-icon {
-      font-size: 16px;
-      width: 16px;
-      height: 16px;
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
     }
   }
-}
 
-.hero-title {
-  font-size: $font-size-4xl;
-  font-weight: $font-weight-extrabold;
-  color: $brand-dark;
-  margin: 0;
-  line-height: 1.2;
-
-  .highlight {
-    color: $brand-primary;
-    position: relative;
-    display: inline-block;
-  }
-
-  @include tablet {
-    font-size: $font-size-3xl;
-  }
-
-  @include mobile {
+  h1 {
     font-size: $font-size-2xl;
-
-    br {
-      display: none;
-    }
-  }
-}
-
-.hero-description {
-  font-size: $font-size-lg;
-  line-height: 1.6;
-  color: $neutral-600;
-  margin: 0;
-
-  br {
-    @include mobile {
-      display: none;
-    }
-  }
-
-  @include mobile {
-    font-size: $font-size-base;
-  }
-}
-
-// Health Card
-.health-card {
-  width: 100%;
-  max-width: 600px;
-  background: $white;
-  border: 2px solid $neutral-200;
-  border-radius: $radius-xl;
-  box-shadow: $shadow-md;
-  transition: all $transition-base $ease-out;
-
-  &:hover {
-    border-color: $brand-primary;
-    box-shadow: $shadow-lg;
-    transform: translateY(-2px);
-  }
-
-  ::ng-deep mat-card-header {
-    background: linear-gradient(135deg,
-      rgba($brand-primary, 0.05) 0%,
-      rgba($brand-primary, 0.02) 100%
-    );
-    padding: $spacing-5;
-    border-bottom: 2px solid $neutral-200;
-  }
-
-  ::ng-deep mat-card-content {
-    padding: $spacing-6 !important;
-  }
-}
-
-.health-header {
-  @include flex-start;
-  gap: $spacing-3;
-  align-items: center;
-  width: 100%;
-
-  .health-icon {
-    font-size: 32px;
-    width: 32px;
-    height: 32px;
-    color: $success-500;
-  }
-
-  mat-card-title {
-    font-size: $font-size-xl;
     font-weight: $font-weight-bold;
-    color: $brand-dark;
+    color: $text-main;
     margin: 0;
   }
+
+  p {
+    font-size: $font-size-base;
+    color: $text-secondary;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: $spacing-4;
+    width: 100%;
+    justify-content: center;
+
+    @include mobile {
+      flex-direction: column;
+    }
+
+    button {
+      min-width: 140px;
+      padding: $spacing-3 $spacing-6;
+    }
+  }
 }
 
-.health-status {
-  @include flex-column;
-  gap: $spacing-4;
+// ============================================================================
+// FEATURES SECTION
+// ============================================================================
 
-  .status-item {
-    @include flex-between;
-    align-items: center;
-    padding: $spacing-3;
-    background: $neutral-50;
-    border-radius: $radius-lg;
-    border: 1px solid $neutral-200;
+.features-section {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: $spacing-12;
+  padding: 0 $spacing-4;
 
-    .status-label {
-      font-size: $font-size-sm;
-      font-weight: $font-weight-semibold;
-      color: $neutral-600;
-    }
+  .section-header {
+    text-align: center;
+    margin-bottom: $spacing-8;
 
-    .status-value {
-      font-size: $font-size-base;
-      font-weight: $font-weight-medium;
-      color: $brand-dark;
-      font-family: $font-family-mono;
-      background: $neutral-100;
-      padding: $spacing-1 $spacing-2;
-      border-radius: $radius-sm;
-    }
+    .section-title {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+      color: $text-main;
+      margin-bottom: $spacing-2;
 
-    .status-chip {
-      &.success {
-        background: linear-gradient(135deg, $success-500 0%, darken($success-500, 10%) 100%) !important;
-        color: $white !important;
-        @include flex-center;
-        gap: $spacing-1;
-
-        mat-icon {
-          font-size: 18px;
-          width: 18px;
-          height: 18px;
-        }
+      .highlight {
+        color: $brand-primary;
       }
     }
-  }
-}
 
-.error-state {
-  @include flex-column-center;
-  gap: $spacing-4;
-  padding: $spacing-8;
-  text-align: center;
-
-  mat-icon {
-    font-size: 64px;
-    width: 64px;
-    height: 64px;
-    color: $danger-500;
-  }
-
-  .error-text {
-    font-size: $font-size-lg;
-    font-weight: $font-weight-semibold;
-    color: $danger-600;
-    margin: 0;
-  }
-
-  button {
-    @include flex-center;
-    gap: $spacing-2;
-
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
+    .section-description {
+      color: $text-secondary;
     }
-  }
-}
-
-// Features Section
-.features-section {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: $spacing-10;
-
-  @include mobile {
-    margin-bottom: $spacing-6;
-  }
-}
-
-.section-title {
-  font-size: $font-size-3xl;
-  font-weight: $font-weight-extrabold;
-  color: $brand-dark;
-  margin: 0 0 $spacing-3 0;
-
-  .highlight {
-    color: $brand-primary;
-  }
-
-  @include tablet {
-    font-size: $font-size-2xl;
-  }
-
-  @include mobile {
-    font-size: $font-size-xl;
-  }
-}
-
-.section-description {
-  font-size: $font-size-lg;
-  color: $neutral-600;
-  margin: 0;
-
-  @include mobile {
-    font-size: $font-size-base;
   }
 }
 
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: $spacing-6;
 
-  @include tablet {
+  @include tablet-up {
     grid-template-columns: repeat(2, 1fr);
-    gap: $spacing-5;
   }
 
-  @include mobile {
-    grid-template-columns: 1fr;
-    gap: $spacing-4;
+  @include desktop {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
 .feature-card {
-  background: $white;
-  border: 2px solid $neutral-200;
-  border-radius: $radius-xl;
-  box-shadow: $shadow-sm;
-  transition: all $transition-base $ease-out;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg,
-      $brand-primary 0%,
-      $brand-secondary 100%
-    );
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform $transition-base $ease-out;
-  }
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
 
   &:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     box-shadow: $shadow-lg;
-    border-color: $brand-primary;
+  }
 
-    &::before {
-      transform: scaleX(1);
-    }
+  .feature-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-4;
+    padding-top: $spacing-2;
+  }
 
-    .feature-icon-wrapper {
-      transform: scale(1.1) rotate(5deg);
-      background: linear-gradient(135deg,
-        $brand-primary 0%,
-        $brand-secondary 100%
-      );
+  .feature-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba($brand-primary, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $brand-primary;
 
-      .feature-icon {
-        color: $white;
-      }
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
     }
   }
 
-  ::ng-deep mat-card-header {
-    padding: $spacing-5;
-    background: linear-gradient(135deg,
-      rgba($brand-primary, 0.03) 0%,
-      transparent 100%
-    );
-  }
-
-  ::ng-deep mat-card-content {
-    padding: $spacing-5 !important;
-    @include flex-column;
-    gap: $spacing-3;
+  mat-card-content {
+    flex-grow: 1;
+    text-align: center;
+    padding: $spacing-4;
 
     p {
-      margin: 0;
-      color: $neutral-600;
-      line-height: 1.6;
+      margin-bottom: $spacing-4;
+      color: $text-secondary;
+    }
+
+    .feature-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: $spacing-2;
     }
   }
 
-  ::ng-deep mat-card-actions {
-    padding: 0 $spacing-5 $spacing-5 !important;
-
-    button {
-      @include flex-center;
-      gap: $spacing-1;
-
-      mat-icon {
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
-      }
-    }
-  }
-
-  // Stagger animation
-  @for $i from 1 through 4 {
-    &:nth-child(#{$i}) {
-      animation: slide-up 600ms $ease-out #{$i * 100}ms backwards;
-    }
-  }
-}
-
-.feature-header {
-  @include flex-start;
-  gap: $spacing-3;
-  align-items: center;
-  width: 100%;
-}
-
-.feature-icon-wrapper {
-  @include flex-center;
-  width: 56px;
-  height: 56px;
-  background: linear-gradient(135deg,
-    rgba($brand-primary, 0.1) 0%,
-    rgba($brand-primary, 0.05) 100%
-  );
-  border-radius: $radius-full;
-  flex-shrink: 0;
-  transition: all $transition-base $ease-out;
-}
-
-.feature-icon {
-  font-size: 32px;
-  width: 32px;
-  height: 32px;
-  color: $brand-primary;
-  transition: all $transition-base $ease-out;
-}
-
-.feature-tags {
-  @include flex-start;
-  gap: $spacing-2;
-  flex-wrap: wrap;
-
-  mat-chip {
-    background: rgba($brand-primary, 0.1) !important;
-    color: $brand-primary !important;
-    font-size: $font-size-xs !important;
-    font-weight: $font-weight-semibold !important;
-    border: 1px solid rgba($brand-primary, 0.2);
-    height: 28px;
+  mat-card-actions {
+    justify-content: center;
+    padding-bottom: $spacing-4;
   }
 }

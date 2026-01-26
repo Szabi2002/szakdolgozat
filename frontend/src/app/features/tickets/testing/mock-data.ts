@@ -6,8 +6,8 @@ import { Ticket, TicketType, Route, Stop } from '@core/services/tickets.service'
 export const mockTicketTypes: TicketType[] = [
   {
     id: 'type-single-1',
-    name: 'Single Ticket',
-    description: 'Valid for one journey',
+    name: 'Vonaljegy',
+    description: 'Érvényes egy utazásra átszállás nélkül',
     type: 'single',
     price: 350,
     validity_hours: 1,
@@ -17,8 +17,8 @@ export const mockTicketTypes: TicketType[] = [
   },
   {
     id: 'type-return-1',
-    name: 'Return Ticket',
-    description: 'Valid for return journey',
+    name: 'Menettérti jegy',
+    description: 'Érvényes oda-vissza utazásra',
     type: 'return',
     price: 600,
     validity_hours: 24,
@@ -28,8 +28,8 @@ export const mockTicketTypes: TicketType[] = [
   },
   {
     id: 'type-day-1',
-    name: 'Day Pass',
-    description: 'Unlimited journeys for 24 hours',
+    name: 'Napijegy',
+    description: 'Korlátlan utazás 24 órán keresztül',
     type: 'day',
     price: 1650,
     validity_hours: 24,
@@ -39,8 +39,8 @@ export const mockTicketTypes: TicketType[] = [
   },
   {
     id: 'type-monthly-1',
-    name: 'Monthly Pass',
-    description: 'Unlimited journeys for 30 days',
+    name: 'Havi bérlet',
+    description: 'Korlátlan utazás 30 napig',
     type: 'monthly',
     price: 9500,
     validity_hours: 720,
@@ -50,8 +50,8 @@ export const mockTicketTypes: TicketType[] = [
   },
   {
     id: 'type-yearly-1',
-    name: 'Yearly Pass',
-    description: 'Unlimited journeys for 365 days',
+    name: 'Éves bérlet',
+    description: 'Korlátlan utazás 365 napig',
     type: 'yearly',
     price: 99000,
     validity_hours: 8760,
@@ -172,7 +172,7 @@ export const mockTickets: Ticket[] = [
     purchase_date: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
     valid_from: new Date(Date.now() - 172800000).toISOString(),
     valid_until: new Date(Date.now() - 86400000).toISOString(),
-    status: 'cancelled',
+    status: 'refunded',
     price: 1650,
     created_at: new Date(Date.now() - 172800000).toISOString(),
     updated_at: new Date(Date.now() - 172800000).toISOString()
@@ -220,8 +220,8 @@ export function createMockTicket(overrides: Partial<Ticket> = {}): Ticket {
 export function createMockTicketType(overrides: Partial<TicketType> = {}): TicketType {
   return {
     id: 'type-test-1',
-    name: 'Test Ticket',
-    description: 'Test ticket description',
+    name: 'Teszt jegy',
+    description: 'Teszt jegy leírása',
     type: 'single',
     price: 350,
     validity_hours: 1,

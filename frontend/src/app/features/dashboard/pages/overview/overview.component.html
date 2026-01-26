@@ -20,18 +20,11 @@
       <!-- Right Side: Actions -->
       <div class="header-right">
         <div class="header-actions">
-          <button
-            mat-raised-button
-            class="cta-primary"
-            (click)="navigateToTickets()"
-            aria-label="Jegyek megtekintése">
+          <button mat-raised-button class="cta-primary" (click)="navigateToTickets()" aria-label="Jegyek megtekintése">
             <mat-icon>confirmation_number</mat-icon>
             Jegyeim
           </button>
-          <button
-            mat-stroked-button
-            class="cta-secondary"
-            (click)="navigateToRoutes()"
+          <button mat-stroked-button class="cta-secondary" (click)="navigateToRoutes()"
             aria-label="Útvonalak megtekintése">
             <mat-icon>directions_bus</mat-icon>
             Útvonalak
@@ -115,7 +108,7 @@
           <div class="widget-content">
             <app-favorite-routes></app-favorite-routes>
           </div>
-          <button mat-icon-button class="view-all-button" (click)="navigateToRoutes()">
+          <button mat-icon-button class="view-all-button" (click)="navigateToFavorites()">
             <mat-icon>arrow_forward</mat-icon>
           </button>
         </div>

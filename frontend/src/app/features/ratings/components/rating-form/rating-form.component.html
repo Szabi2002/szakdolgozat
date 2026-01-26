@@ -1,14 +1,16 @@
 <form [formGroup]="ratingForm" (ngSubmit)="onSubmit()" class="rating-form">
   <!-- Form Header -->
+  @if (showHeader) {
   <div class="form-header">
     <mat-icon class="header-icon">{{ isEditMode ? 'edit' : 'star' }}</mat-icon>
     <h2 class="form-title">{{ isEditMode ? 'Értékelés Szerkesztése' : 'Útvonal Értékelése' }}</h2>
     <p class="form-subtitle">{{ isEditMode ? 'Módosítsd az értékelésedet' : 'Oszd meg tapasztalataidat az utazókkal' }}
     </p>
   </div>
+  }
 
   <!-- Overall Rating -->
-  <div class="form-section overall-section">
+  <div class="form-section overall-section" [class.no-header]="!showHeader">
     <label class="section-label">
       <mat-icon>stars</mat-icon>
       <span>Összesített Értékelés *</span>

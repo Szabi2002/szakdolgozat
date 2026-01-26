@@ -10,13 +10,13 @@
       <div class="header-left">
         <div class="header-badge">
           <mat-icon>report_problem</mat-icon>
-          <span>Bejelentesek</span>
+          <span>Bejelentések</span>
         </div>
         <div class="greeting-section">
           <h1 class="greeting-heading">
-            Bejelentesek <span class="highlight">Moderalasa</span>
+            Bejelentések <span class="highlight">Moderálása</span>
           </h1>
-          <p class="greeting-subtext">Felhasznaloi bejelentesek attekintese es kezelese</p>
+          <p class="greeting-subtext">Felhasználói bejelentések áttekintése és kezelése</p>
         </div>
       </div>
       <div class="header-right">
@@ -42,68 +42,50 @@
   <section class="filters-section">
     <!-- Status Filter -->
     <nav class="filter-tabs status-tabs">
-      <span class="filter-label">Statusz:</span>
-      <button class="filter-tab"
-              [class.active]="statusFilter() === 'pending'"
-              (click)="setStatusFilter('pending')">
+      <span class="filter-label">Státusz:</span>
+      <button class="filter-tab" [class.active]="statusFilter() === 'pending'" (click)="setStatusFilter('pending')">
         <mat-icon>schedule</mat-icon>
-        <span>Fuggoben</span>
+        <span>Függőben</span>
         <span class="count-badge" *ngIf="pendingCount() > 0">{{ pendingCount() }}</span>
       </button>
-      <button class="filter-tab"
-              [class.active]="statusFilter() === 'in_review'"
-              (click)="setStatusFilter('in_review')">
+      <button class="filter-tab" [class.active]="statusFilter() === 'in_review'" (click)="setStatusFilter('in_review')">
         <mat-icon>hourglass_empty</mat-icon>
-        <span>Vizsgalat</span>
+        <span>Vizsgálat</span>
       </button>
-      <button class="filter-tab"
-              [class.active]="statusFilter() === 'resolved'"
-              (click)="setStatusFilter('resolved')">
+      <button class="filter-tab" [class.active]="statusFilter() === 'resolved'" (click)="setStatusFilter('resolved')">
         <mat-icon>check_circle</mat-icon>
         <span>Megoldva</span>
       </button>
-      <button class="filter-tab"
-              [class.active]="statusFilter() === 'dismissed'"
-              (click)="setStatusFilter('dismissed')">
+      <button class="filter-tab" [class.active]="statusFilter() === 'dismissed'" (click)="setStatusFilter('dismissed')">
         <mat-icon>cancel</mat-icon>
-        <span>Elutasitva</span>
+        <span>Elutasítva</span>
       </button>
-      <button class="filter-tab"
-              [class.active]="statusFilter() === 'all'"
-              (click)="setStatusFilter('all')">
+      <button class="filter-tab" [class.active]="statusFilter() === 'all'" (click)="setStatusFilter('all')">
         <mat-icon>list</mat-icon>
-        <span>Osszes</span>
+        <span>Összes</span>
       </button>
     </nav>
 
     <!-- Priority Filter -->
     <nav class="filter-tabs priority-tabs">
-      <span class="filter-label">Prioritas:</span>
-      <button class="filter-chip"
-              [class.active]="priorityFilter() === 'all'"
-              (click)="setPriorityFilter('all')">
+      <span class="filter-label">Prioritás:</span>
+      <button class="filter-chip" [class.active]="priorityFilter() === 'all'" (click)="setPriorityFilter('all')">
         Mind
       </button>
-      <button class="filter-chip critical"
-              [class.active]="priorityFilter() === 'critical'"
-              (click)="setPriorityFilter('critical')">
+      <button class="filter-chip critical" [class.active]="priorityFilter() === 'critical'"
+        (click)="setPriorityFilter('critical')">
         <mat-icon>priority_high</mat-icon>
         Kritikus
       </button>
-      <button class="filter-chip high"
-              [class.active]="priorityFilter() === 'high'"
-              (click)="setPriorityFilter('high')">
+      <button class="filter-chip high" [class.active]="priorityFilter() === 'high'" (click)="setPriorityFilter('high')">
         <mat-icon>arrow_upward</mat-icon>
-        Surgos
+        Sürgős
       </button>
-      <button class="filter-chip medium"
-              [class.active]="priorityFilter() === 'medium'"
-              (click)="setPriorityFilter('medium')">
-        Kozepes
+      <button class="filter-chip medium" [class.active]="priorityFilter() === 'medium'"
+        (click)="setPriorityFilter('medium')">
+        Közepes
       </button>
-      <button class="filter-chip low"
-              [class.active]="priorityFilter() === 'low'"
-              (click)="setPriorityFilter('low')">
+      <button class="filter-chip low" [class.active]="priorityFilter() === 'low'" (click)="setPriorityFilter('low')">
         Alacsony
       </button>
     </nav>
@@ -113,7 +95,7 @@
   <div *ngIf="isLoading()" class="state-container loading-state">
     <div class="glass-card state-card">
       <mat-spinner diameter="56" color="accent"></mat-spinner>
-      <p>Bejelentesek betoltese...</p>
+      <p>Bejelentések betöltése...</p>
     </div>
   </div>
 
@@ -123,11 +105,11 @@
       <div class="state-icon error">
         <mat-icon>error_outline</mat-icon>
       </div>
-      <h3>Hiba tortent</h3>
+      <h3>Hiba történt</h3>
       <p>{{ errorMessage() }}</p>
       <button class="glass-btn primary" (click)="loadReports()">
         <mat-icon>refresh</mat-icon>
-        <span>Ujraprobalas</span>
+        <span>Újrapróbálás</span>
       </button>
     </div>
   </div>
@@ -138,8 +120,9 @@
       <div class="state-icon success">
         <mat-icon>task_alt</mat-icon>
       </div>
-      <h3>Nincs megjelenitendo bejelentes</h3>
-      <p>{{ statusFilter() === 'pending' ? 'Minden bejelentes feldolgozasra kerult!' : 'Nincs a szuroknek megfelelo bejelentes.' }}</p>
+      <h3>Nincs megjeleníthető bejelentés</h3>
+      <p>{{ statusFilter() === 'pending' ? 'Minden bejelentés feldolgozásra került!' : 'Nincs a szűrőknek megfelelő
+        bejelentés.' }}</p>
     </div>
   </div>
 
@@ -149,18 +132,17 @@
       <table class="reports-table">
         <thead>
           <tr>
-            <th class="th-user">Felhasznalo</th>
-            <th class="th-date">Datum</th>
-            <th class="th-type">Tipus</th>
-            <th class="th-priority">Prioritas</th>
-            <th class="th-title">Cim</th>
-            <th class="th-status">Statusz</th>
-            <th class="th-actions">Muveletek</th>
+            <th class="th-user">Felhasználó</th>
+            <th class="th-date">Dátum</th>
+            <th class="th-type">Típus</th>
+            <th class="th-priority">Prioritás</th>
+            <th class="th-title">Cím</th>
+            <th class="th-status">Státusz</th>
+            <th class="th-actions">Műveletek</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let report of filteredReports(); let i = index"
-              class="report-row">
+          <tr *ngFor="let report of filteredReports(); let i = index" class="report-row">
 
             <!-- User -->
             <td class="td-user">
@@ -182,10 +164,9 @@
 
             <!-- Type -->
             <td class="td-type">
-              <div class="type-badge"
-                   [style.background]="getTypeColor(report.report_type).bg"
-                   [style.border-color]="getTypeColor(report.report_type).border"
-                   [style.color]="getTypeColor(report.report_type).text">
+              <div class="type-badge" [style.background]="getTypeColor(report.report_type).bg"
+                [style.border-color]="getTypeColor(report.report_type).border"
+                [style.color]="getTypeColor(report.report_type).text">
                 <mat-icon>{{ getTypeIcon(report.report_type) }}</mat-icon>
                 <span>{{ getTypeLabel(report.report_type) }}</span>
               </div>
@@ -215,30 +196,29 @@
 
             <!-- Actions -->
             <td class="td-actions">
-              <button class="action-btn"
-                      [matMenuTriggerFor]="reportMenu"
-                      matTooltip="Muveletek">
+              <button class="action-btn" [matMenuTriggerFor]="reportMenu" matTooltip="Műveletek">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #reportMenu="matMenu" class="glass-menu">
-                <button mat-menu-item
-                        *ngIf="report.status === 'pending'"
-                        (click)="updateReportStatus(report.id, 'in_review')">
+                <button mat-menu-item *ngIf="report.status !== 'in_review'"
+                  (click)="updateReportStatus(report.id, 'in_review')">
                   <mat-icon>hourglass_empty</mat-icon>
-                  <span>Vizsgalat</span>
+                  <span>Vizsgálat</span>
                 </button>
-                <button mat-menu-item
-                        *ngIf="report.status !== 'resolved' && report.status !== 'dismissed'"
-                        (click)="updateReportStatus(report.id, 'resolved')">
+                <button mat-menu-item *ngIf="report.status !== 'resolved'"
+                  (click)="updateReportStatus(report.id, 'resolved')">
                   <mat-icon>check_circle</mat-icon>
                   <span>Megoldva</span>
                 </button>
-                <mat-divider *ngIf="report.status === 'pending' || (report.status !== 'resolved' && report.status !== 'dismissed')"></mat-divider>
-                <button mat-menu-item
-                        *ngIf="report.status !== 'dismissed' && report.status !== 'resolved'"
-                        (click)="updateReportStatus(report.id, 'dismissed')">
+                <button mat-menu-item *ngIf="report.status !== 'dismissed'"
+                  (click)="updateReportStatus(report.id, 'dismissed')">
                   <mat-icon>cancel</mat-icon>
-                  <span>Elutasitas</span>
+                  <span>Elutasítás</span>
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item class="delete-action" (click)="deleteReport(report.id)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Törlés</span>
                 </button>
               </mat-menu>
             </td>

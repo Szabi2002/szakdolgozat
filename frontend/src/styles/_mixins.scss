@@ -62,7 +62,9 @@
     @media (min-width: $min-width) and (max-width: $max-width) {
       @content;
     }
-  } @else {
+  }
+
+  @else {
     @media (min-width: $min-width) {
       @content;
     }
@@ -165,17 +167,27 @@
 
 // Elevation (shadow) mixin
 @mixin elevation($level: 1) {
-  @if $level == 0 {
+  @if $level ==0 {
     box-shadow: $shadow-none;
-  } @else if $level == 1 {
+  }
+
+  @else if $level ==1 {
     box-shadow: $shadow-sm;
-  } @else if $level == 2 {
+  }
+
+  @else if $level ==2 {
     box-shadow: $shadow-base;
-  } @else if $level == 3 {
+  }
+
+  @else if $level ==3 {
     box-shadow: $shadow-md;
-  } @else if $level == 4 {
+  }
+
+  @else if $level ==4 {
     box-shadow: $shadow-lg;
-  } @else if $level == 5 {
+  }
+
+  @else if $level ==5 {
     box-shadow: $shadow-xl;
   }
 }
@@ -253,6 +265,7 @@
   &::-webkit-scrollbar {
     display: none;
   }
+
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -275,7 +288,7 @@
     padding-top: percentage(calc($height / $width));
   }
 
-  > * {
+  >* {
     position: absolute;
     top: 0;
     left: 0;
@@ -334,6 +347,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -349,6 +363,7 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -364,6 +379,7 @@
       opacity: 0;
       transform: translateY($distance);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -380,6 +396,7 @@
       opacity: 0;
       transform: translateY(-$distance);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -396,6 +413,7 @@
       opacity: 0;
       transform: translateX(-$distance);
     }
+
     to {
       opacity: 1;
       transform: translateX(0);
@@ -412,6 +430,7 @@
       opacity: 0;
       transform: translateX($distance);
     }
+
     to {
       opacity: 1;
       transform: translateX(0);
@@ -425,10 +444,13 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.8;
     transform: scale(1.05);
@@ -444,6 +466,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -455,9 +478,12 @@
 }
 
 @keyframes bounce {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -469,25 +495,34 @@
 }
 
 @keyframes shake {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
   }
-  10%, 30%, 50%, 70%, 90% {
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
     transform: translateX(-8px);
   }
-  20%, 40%, 60%, 80% {
+
+  20%,
+  40%,
+  60%,
+  80% {
     transform: translateX(8px);
   }
 }
 
 // Shimmer loading effect
 @mixin shimmer($duration: 1.5s) {
-  background: linear-gradient(
-    90deg,
-    $neutral-200 0%,
-    $neutral-100 50%,
-    $neutral-200 100%
-  );
+  background: linear-gradient(90deg,
+      $neutral-200 0%,
+      $neutral-100 50%,
+      $neutral-200 100%);
   background-size: 200% 100%;
   animation: shimmer $duration ease-in-out infinite;
 }
@@ -496,6 +531,7 @@
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
@@ -521,7 +557,9 @@
 
   @if $elevated {
     @include hover-elevation(1, 2);
-  } @else {
+  }
+
+  @else {
     box-shadow: $shadow-sm;
   }
 
@@ -581,63 +619,6 @@
 }
 
 // ===========================
-// ANGULAR MATERIAL FORM FIELD STYLING
-// ===========================
-
-// Dark theme form field styling (glassmorphism)
-@mixin form-field-dark-theme {
-  ::ng-deep {
-    .mat-mdc-form-field {
-      .mat-mdc-text-field-wrapper {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: $radius-md;
-      }
-
-      .mat-mdc-form-field-focus-indicator {
-        display: none;
-      }
-
-      .mdc-text-field--outlined .mdc-notched-outline {
-        .mdc-notched-outline__leading,
-        .mdc-notched-outline__notch,
-        .mdc-notched-outline__trailing {
-          border-color: rgba(255, 255, 255, 0.2);
-        }
-      }
-
-      &.mat-focused .mdc-notched-outline {
-        .mdc-notched-outline__leading,
-        .mdc-notched-outline__notch,
-        .mdc-notched-outline__trailing {
-          border-color: rgba(255, 255, 255, 0.4);
-        }
-      }
-
-      .mat-mdc-input-element {
-        color: $white;
-        caret-color: $white;
-
-        &::placeholder {
-          color: rgba(255, 255, 255, 0.5);
-        }
-      }
-
-      .mat-mdc-form-field-icon-suffix {
-        color: rgba(255, 255, 255, 0.7);
-      }
-
-      .mdc-floating-label {
-        color: rgba(255, 255, 255, 0.7);
-      }
-
-      &.mat-focused .mdc-floating-label {
-        color: $white;
-      }
-    }
-  }
-}
-
-// ===========================
 // GLOW EFFECT SHADOWS
 // ===========================
 
@@ -665,4 +646,155 @@
   font-size: 1.25rem; // 20px
   font-weight: 600;
   letter-spacing: 0.02em;
+}
+
+// ===========================
+// FLUID TYPOGRAPHY (clamp-based)
+// ===========================
+
+// Fluid font sizing using clamp() for smooth responsive scaling
+// Usage: @include fluid-text(1rem, 1.25rem) - scales from 16px to 20px
+@mixin fluid-text($min-size, $max-size, $min-vw: 375px, $max-vw: 1280px) {
+  $slope: calc((#{$max-size} - #{$min-size}) / (#{$max-vw} - #{$min-vw}));
+  $y-intercept: calc(#{$min-size} - #{$slope} * #{$min-vw});
+  font-size: clamp(#{$min-size}, #{$y-intercept} + #{$slope} * 100vw, #{$max-size});
+}
+
+// Predefined fluid heading sizes
+@mixin fluid-heading-hero {
+  font-size: clamp(2rem, 5vw + 1rem, 3.5rem); // 32px → 56px
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+@mixin fluid-heading-xl {
+  font-size: clamp(1.75rem, 4vw + 0.5rem, 2.5rem); // 28px → 40px
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+@mixin fluid-heading-lg {
+  font-size: clamp(1.5rem, 3vw + 0.5rem, 2rem); // 24px → 32px
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+@mixin fluid-heading-md {
+  font-size: clamp(1.25rem, 2vw + 0.5rem, 1.5rem); // 20px → 24px
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+@mixin fluid-body-lg {
+  font-size: clamp(1rem, 1.5vw + 0.25rem, 1.125rem); // 16px → 18px
+  line-height: 1.7;
+}
+
+// ===========================
+// RESPONSIVE PADDING UTILITIES
+// ===========================
+
+// Responsive section padding
+@mixin section-padding {
+  padding: $spacing-8 $spacing-4;
+
+  @include tablet-up {
+    padding: $spacing-10 $spacing-6;
+  }
+
+  @include desktop {
+    padding: $spacing-12 $spacing-8;
+  }
+}
+
+// Responsive card padding
+@mixin responsive-card-padding {
+  padding: $spacing-4;
+
+  @include tablet-up {
+    padding: $spacing-6;
+  }
+
+  @include desktop {
+    padding: $spacing-8;
+  }
+}
+
+// Responsive container with max-width and auto margins
+@mixin responsive-container($max: $container-lg) {
+  width: 100%;
+  max-width: $max;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $spacing-4;
+  padding-right: $spacing-4;
+
+  @include tablet-up {
+    padding-left: $spacing-6;
+    padding-right: $spacing-6;
+  }
+
+  @include desktop {
+    padding-left: $spacing-8;
+    padding-right: $spacing-8;
+  }
+}
+
+// ===========================
+// RESPONSIVE GRID UTILITIES
+// ===========================
+
+// Auto-fit grid that adapts column count based on content
+@mixin auto-grid($min-col-width: 280px, $gap: $spacing-4) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min($min-col-width, 100%), 1fr));
+  gap: $gap;
+}
+
+// Responsive 2-column grid (stacks on mobile)
+@mixin two-column-grid($gap: $spacing-6) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $gap;
+
+  @include tablet-up {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// Responsive 3-column grid (stacks on mobile, 2 cols on tablet)
+@mixin three-column-grid($gap: $spacing-6) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $gap;
+
+  @include tablet-up {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include desktop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// ===========================
+// DIALOG/MODAL RESPONSIVE
+// ===========================
+
+// Make dialogs responsive on mobile
+@mixin responsive-dialog {
+  width: 100%;
+  max-width: 90vw;
+  max-height: 90vh;
+
+  @include mobile {
+    max-width: 100vw;
+    max-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  @include tablet-up {
+    max-width: 560px;
+  }
 }

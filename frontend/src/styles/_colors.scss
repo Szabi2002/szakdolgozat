@@ -1,244 +1,270 @@
 // ===========================
 // SZÍN PALETTA
-// Közlekedési Jegykezelő Alkalmazás
-// Új dizájn rendszer - 2025
+// TransitHub Közlekedési Alkalmazás
+// Új dizájn rendszer - 2026 (Mint/Teal téma)
 // ===========================
 
 // ===========================
-// ÚJ BRAND SZÍNEK
+// ÚJ BRAND SZÍNEK (Mint/Teal téma)
 // ===========================
 
-// Sötét alapszín - #0E0E34 (header, footer, sidebar háttér)
-$brand-dark:       #0E0E34;
-$brand-dark-light: lighten(#0E0E34, 5%);  // #1A1A4A
-$brand-dark-lighter: lighten(#0E0E34, 10%); // #252660
+// Elsődleges szín - Mint/Teal (#00a887)
+$brand-primary:       #00a887;
+$brand-primary-light: #00c49a;  // Hover állapot
+$brand-primary-dark:  #008f73;  // Aktív/pressed állapot
+$brand-primary-10:    rgba(0, 168, 135, 0.1);  // Finom háttér
+$brand-primary-20:    rgba(0, 168, 135, 0.2);  // Selection, focus
 
-// Elsődleges akcentszín - #252E8A (gombok, linkek, aktív állapotok)
-$brand-primary:       #252E8A;
-$brand-primary-light: lighten(#252E8A, 10%); // #3A47A3
-$brand-primary-dark:  darken(#252E8A, 10%);  // #1A2061
+// Másodlagos szín (emerald gradient végpont)
+$brand-secondary:       #34d399;  // emerald-400
+$brand-secondary-light: #6ee7b7;  // emerald-300
+$brand-secondary-dark:  #10b981;  // emerald-500
 
-// Másodlagos akcentszín - #9A4D87 (hover állapotok, highlight-ok)
-$brand-secondary:       #9A4D87;
-$brand-secondary-light: lighten(#9A4D87, 10%); // #B166A0
-$brand-secondary-dark:  darken(#9A4D87, 10%);  // #7D3B6D
-
-// Info/segédszín - #5A7FC8 (értesítések, információs elemek)
-$brand-info:       #5A7FC8;
-$brand-info-light: lighten(#5A7FC8, 10%); // #7598D6
-$brand-info-dark:  darken(#5A7FC8, 10%);  // #4466AF
-
-// Világos háttér - #F7F6F7 (content area, kártyák)
-$brand-light:       #F7F6F7;
-$brand-light-dark:  darken(#F7F6F7, 5%);  // #E8E7E8
-$brand-light-darker: darken(#F7F6F7, 10%); // #D9D8D9
+// Info szín
+$brand-info:       #3b82f6;  // blue-500
+$brand-info-light: #60a5fa;  // blue-400
+$brand-info-dark:  #2563eb;  // blue-600
 
 // ===========================
-// EREDETI ANGULAR MATERIAL SZÍNEK (kompatibilitáshoz)
+// LIGHT MODE HÁTTÉRSZÍNEK
 // ===========================
 
-// Primary Colors - mostmár a brand-primary alapján
-$primary-50:  lighten($brand-primary, 40%);
-$primary-100: lighten($brand-primary, 35%);
-$primary-200: lighten($brand-primary, 30%);
-$primary-300: lighten($brand-primary, 20%);
-$primary-400: lighten($brand-primary, 10%);
-$primary-500: $brand-primary;  // #252E8A
-$primary-600: darken($brand-primary, 5%);
-$primary-700: darken($brand-primary, 10%);  // Fő brand szín
-$primary-800: darken($brand-primary, 15%);
-$primary-900: $brand-dark;  // #0E0E34
+$bg-light:          #f5f8f8;  // Oldal háttér
+$surface-light:     #ffffff;  // Kártyák háttere
+$border-light:      #e5e7eb;  // Szegélyek
+$border-light-soft: #f0f5f4;  // Finomabb szegélyek
 
-// Accent Colors - brand-secondary alapján
-$accent-50:  lighten($brand-secondary, 40%);
-$accent-100: lighten($brand-secondary, 35%);
-$accent-200: lighten($brand-secondary, 30%);
-$accent-300: lighten($brand-secondary, 20%);
-$accent-400: lighten($brand-secondary, 10%);
-$accent-500: $brand-secondary;  // #9A4D87
-$accent-600: darken($brand-secondary, 5%);
-$accent-700: darken($brand-secondary, 10%);
-$accent-800: darken($brand-secondary, 15%);
-$accent-900: darken($brand-secondary, 20%);
+// ===========================
+// DARK MODE HÁTTÉRSZÍNEK
+// ===========================
 
-// Neutral Colors - Szürke skála
-$neutral-50:  #FAFAFA;  // Lightest
-$neutral-100: $brand-light;  // #F7F6F7 - Háttér fő színe
-$neutral-200: #EEEEEE;  // Card border, divider
-$neutral-300: #E0E0E0;  // Input border
-$neutral-400: #BDBDBD;  // Placeholder text
-$neutral-500: #9E9E9E;  // Icon inactive
-$neutral-600: #757575;  // Secondary text
-$neutral-700: #616161;  // Body text
-$neutral-800: #424242;  // Heading text
-$neutral-900: #212121;  // Darkest text
+$bg-dark:             #0f231f;  // Oldal háttér (sötét)
+$surface-dark:        #18302b;  // Kártyák háttere
+$surface-dark-hover:  #1e3a34;  // Hover állapot
+$border-dark:         #273a36;  // Szegélyek (sötét)
+$input-bg-dark:       #0f231f;  // Input mezők háttere
+
+// ===========================
+// SZÖVEGSZÍNEK
+// ===========================
+
+$text-main:           #101817;  // Elsődleges szöveg (light)
+$text-secondary:      #4B5563;  // Másodlagos szöveg (light) - gray-600
+$text-muted:          #9ca3af;  // Halvány szöveg - gray-400
+$text-secondary-dark: #9abcb5;  // Másodlagos szöveg (dark)
+
+// ===========================
+// NEUTRAL (SZÜRKE) SKÁLA
+// ===========================
+
+$neutral-50:  #fafafa;
+$neutral-100: #f5f5f5;
+$neutral-200: #e5e5e5;
+$neutral-300: #d4d4d4;
+$neutral-400: #a3a3a3;
+$neutral-500: #737373;
+$neutral-600: #525252;
+$neutral-700: #404040;
+$neutral-800: #262626;
+$neutral-900: #171717;
 
 // ===========================
 // SZEMANTIKUS SZÍNEK
 // ===========================
 
 // Success - Zöld
-$success-50:  #E8F5E9;
-$success-100: #C8E6C9;  // Added for component compatibility
-$success-200: #A5D6A7;  // Added for component compatibility
-$success-300: #81C784;  // Added for component compatibility
-$success-400: #66BB6A;  // Added for component compatibility
-$success-500: #4CAF50;
-$success-600: #43A047;
-$success-700: #388E3C;
-$success-800: #2E7D32;  // Added for component compatibility
+$success-50:  #ecfdf5;
+$success-100: #d1fae5;
+$success-200: #a7f3d0;
+$success-300: #6ee7b7;
+$success-400: #34d399;
+$success-500: #10b981;
+$success-600: #059669;
+$success-700: #047857;
+$success-800: #065f46;
 
 // Error - Piros
-$error-50:  #FFEBEE;
-$error-100: #FFCDD2;  // Added for component compatibility
-$error-200: #EF9A9A;  // Added for component compatibility
-$error-300: #E57373;  // Added for component compatibility
-$error-400: #EF5350;  // Added for glassmorphism components
-$error-500: #F44336;
-$error-600: #E53935;
-$error-700: #D32F2F;
-$error-800: #C62828;  // Added for component compatibility
+$error-50:  #fef2f2;
+$error-100: #fee2e2;
+$error-200: #fecaca;
+$error-300: #fca5a5;
+$error-400: #f87171;
+$error-500: #ef4444;
+$error-600: #dc2626;
+$error-700: #b91c1c;
+$error-800: #991b1b;
 
-// Warning - Narancs
-$warning-50:  #FFF3E0;
-$warning-100: #FFE0B2;  // Added for component compatibility
-$warning-200: #FFCC80;  // Added for component compatibility
-$warning-300: #FFB74D;  // Added for component compatibility
-$warning-400: #FFA726;  // Added for component compatibility
-$warning-500: #FF9800;
-$warning-600: #FB8C00;
-$warning-700: #F57C00;
-$warning-800: #EF6C00;  // Added for component compatibility
+// Warning - Sárga/Narancs
+$warning-50:  #fffbeb;
+$warning-100: #fef3c7;
+$warning-200: #fde68a;
+$warning-300: #fcd34d;
+$warning-400: #fbbf24;
+$warning-500: #f59e0b;
+$warning-600: #d97706;
+$warning-700: #b45309;
+$warning-800: #92400e;
 
-// Info - brand-info alapján
-$info-50:  lighten($brand-info, 40%);
-$info-500: $brand-info;  // #5A7FC8
-$info-700: darken($brand-info, 10%);
-
-// ===========================
-// OVERLAY & SHADOW SZÍNEK
-// ===========================
-
-$overlay-dark: rgba($brand-dark, 0.7);    // Modal backdrop
-$overlay-medium: rgba($brand-dark, 0.5);  // Darker overlay
-$overlay-light: rgba($brand-dark, 0.3);   // Loading overlay
-$overlay-white: rgba(255, 255, 255, 0.9); // Light overlay
+// Info - Kék
+$info-50:  #eff6ff;
+$info-100: #dbeafe;
+$info-200: #bfdbfe;
+$info-300: #93c5fd;
+$info-400: #60a5fa;
+$info-500: #3b82f6;
+$info-600: #2563eb;
+$info-700: #1d4ed8;
+$info-800: #1e40af;
 
 // ===========================
 // ALAPVETŐ SZÍNEK
 // ===========================
 
-$white: #FFFFFF;
+$white: #ffffff;
 $black: #000000;
+
+// ===========================
+// PRIMARY PALETTA (Material kompatibilitáshoz)
+// ===========================
+
+$primary-50:  #e6f7f4;
+$primary-100: #ccf0e9;
+$primary-200: #99e0d3;
+$primary-300: #66d1bd;
+$primary-400: #33c1a7;
+$primary-500: $brand-primary;  // #00a887
+$primary-600: #008f73;
+$primary-700: #00765f;
+$primary-800: #005c4b;
+$primary-900: #004337;
+
+// ===========================
+// ACCENT PALETTA (emerald)
+// ===========================
+
+$accent-50:  #ecfdf5;
+$accent-100: #d1fae5;
+$accent-200: #a7f3d0;
+$accent-300: #6ee7b7;
+$accent-400: #34d399;
+$accent-500: $brand-secondary;  // #10b981
+$accent-600: #059669;
+$accent-700: #047857;
+$accent-800: #065f46;
+$accent-900: #064e3b;
+
+// ===========================
+// OVERLAY & SHADOW SZÍNEK
+// ===========================
+
+$overlay-dark:   rgba(0, 0, 0, 0.5);
+$overlay-medium: rgba(0, 0, 0, 0.3);
+$overlay-light:  rgba(0, 0, 0, 0.1);
+$overlay-white:  rgba(255, 255, 255, 0.9);
 
 // ===========================
 // SZÍNHASZNÁLAT ALIASZOK
 // ===========================
 
-// Background colors
-$color-background-body: $brand-light;  // #F7F6F7
-$color-background-surface: $white;
-$color-background-elevated: $white;
-$color-background-dark: $brand-dark;  // Sidebar, header, footer
+// Background
+$color-background-body:     $bg-light;
+$color-background-surface:  $surface-light;
+$color-background-elevated: $surface-light;
+$color-background-dark:     $bg-dark;
 
-// Text colors
-$color-text-primary: $neutral-700;
-$color-text-secondary: $neutral-600;
-$color-text-heading: $brand-dark;  // #0E0E34 - sötét fejlécek
-$color-text-disabled: $neutral-400;
-$color-text-inverse: $white;  // Világos szöveg sötét háttéren
+// Text
+$color-text-primary:   $text-main;
+$color-text-secondary: $text-secondary;
+$color-text-heading:   $text-main;
+$color-text-disabled:  $neutral-400;
+$color-text-inverse:   $white;
 
-// Border colors
-$color-border-default: $neutral-200;
-$color-border-input: $neutral-300;
-$color-border-focus: $brand-primary;  // #252E8A
+// Border
+$color-border-default: $border-light;
+$color-border-input:   $neutral-300;
+$color-border-focus:   $brand-primary;
 
-// Link colors
-$color-link-default: $brand-primary;  // #252E8A
-$color-link-hover: $brand-secondary;  // #9A4D87
+// Link
+$color-link-default: $brand-primary;
+$color-link-hover:   $brand-primary-dark;
 $color-link-visited: $brand-primary-dark;
 
-// Button colors - Primary
-$color-button-primary-bg: $brand-primary;  // #252E8A
-$color-button-primary-text: $white;
-$color-button-primary-hover: $brand-primary-light;
+// Button - Primary
+$color-button-primary-bg:    $brand-primary;
+$color-button-primary-text:  $white;
+$color-button-primary-hover: $brand-primary-dark;
 
-// Button colors - Secondary
-$color-button-secondary-bg: transparent;
-$color-button-secondary-text: $brand-primary;
+// Button - Secondary
+$color-button-secondary-bg:     transparent;
+$color-button-secondary-text:   $brand-primary;
 $color-button-secondary-border: $brand-primary;
-$color-button-secondary-hover: lighten($brand-primary, 45%);
+$color-button-secondary-hover:  $brand-primary-10;
 
-// Button colors - Accent (új)
-$color-button-accent-bg: $brand-secondary;  // #9A4D87
-$color-button-accent-text: $white;
-$color-button-accent-hover: $brand-secondary-light;
+// Button - Accent
+$color-button-accent-bg:    $brand-secondary;
+$color-button-accent-text:  $white;
+$color-button-accent-hover: $brand-secondary-dark;
 
-// Button colors - Disabled
-$color-button-disabled-bg: $neutral-300;
-$color-button-disabled-text: $neutral-500;
+// Button - Disabled
+$color-button-disabled-bg:   $neutral-200;
+$color-button-disabled-text: $neutral-400;
 
-// State colors
-$color-success: $success-500;
+// State
+$color-success:    $success-500;
 $color-success-bg: $success-50;
-$color-error: $error-500;
-$color-error-bg: $error-50;
-$color-warning: $warning-500;
+$color-error:      $error-500;
+$color-error-bg:   $error-50;
+$color-warning:    $warning-500;
 $color-warning-bg: $warning-50;
-$color-info: $info-500;  // #5A7FC8
-$color-info-bg: $info-50;
+$color-info:       $info-500;
+$color-info-bg:    $info-50;
 
 // ===========================
-// GRADIENS SZÍNEK (új)
+// GRADIENS SZÍNEK
 // ===========================
 
-// Alapvető gradiens sötét háttérhez
-$gradient-primary: linear-gradient(135deg, $brand-dark 0%, $brand-primary 100%);
-$gradient-secondary: linear-gradient(135deg, $brand-primary 0%, $brand-secondary 100%);
-$gradient-accent: linear-gradient(135deg, $brand-secondary 0%, $brand-info 100%);
-
-// Hero gradiens
-$gradient-hero: linear-gradient(135deg,
-  $brand-dark 0%,
-  $brand-primary 50%,
-  $brand-secondary 100%
-);
-
-// Overlay gradiens
-$gradient-overlay-dark: linear-gradient(180deg,
-  rgba($brand-dark, 0.9) 0%,
-  rgba($brand-dark, 0.7) 100%
-);
+$gradient-primary: linear-gradient(to right, $brand-primary, $brand-secondary);
+$gradient-hero: linear-gradient(135deg, $brand-primary 0%, $brand-secondary 100%);
 
 // ===========================
-// ALIAS FOR BACKWARDS COMPATIBILITY
+// DANGER ALIASZOK (kompatibilitás)
 // ===========================
 
-// Danger aliases (some components use $danger instead of $error)
 $danger-50:  $error-50;
 $danger-100: $error-100;
 $danger-200: $error-200;
 $danger-300: $error-300;
-$danger-400: $error-400;  // Added for glassmorphism components
+$danger-400: $error-400;
 $danger-500: $error-500;
 $danger-600: $error-600;
 $danger-700: $error-700;
-$danger-800: $error-800;  // Added for component compatibility
+$danger-800: $error-800;
 
 // ===========================
 // TRANSIT MODE SZÍNEK
 // ===========================
 
-// Közlekedési eszközök szemantikus színei
-$color-bus:     #34d399;  // Zöld a buszokhoz (emerald-400)
-$color-tram:    #fbbf24;  // Sárga a villamosokhoz (amber-400)
-$color-metro:   $brand-info;  // Kék a metróhoz (#5A7FC8)
-$color-trolley: lighten($brand-info, 10%);  // Világoskék a trolibuszokhoz
+$color-bus:     $brand-primary;   // Busz - primary mint
+$color-tram:    #fbbf24;          // Villamos - sárga
+$color-metro:   #3b82f6;          // Metró - kék
+$color-trolley: #8b5cf6;          // Troli - lila
+$color-train:   #8b5cf6;          // Vonat - lila
 
 // ===========================
 // ÉRTÉKELÉSI RENDSZER SZÍNEK
 // ===========================
 
-// Arany/sárga színek az értékelésekhez (csillagok)
-$color-rating-accent:      #facc15;  // Arany (yellow-400)
-$color-rating-accent-dark: #eab308;  // Sötétebb arany (yellow-500)
+$color-rating-accent:      #fbbf24;  // Arany (amber-400)
+$color-rating-accent-dark: #f59e0b;  // Sötétebb arany (amber-500)
+
+// ===========================
+// LEGACY ALIASZOK (visszafelé kompatibilitás)
+// ===========================
+
+// Régi brand változók aliaszai
+$brand-dark:         $bg-dark;
+$brand-dark-light:   $surface-dark;
+$brand-dark-lighter: $surface-dark-hover;
+$brand-light:        $bg-light;
+$brand-light-dark:   darken($bg-light, 5%);
+$brand-light-darker: darken($bg-light, 10%);

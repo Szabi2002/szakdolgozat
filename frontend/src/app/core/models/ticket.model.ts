@@ -13,7 +13,7 @@ export interface Ticket {
   purchase_date: string;
   valid_from: string;
   valid_until?: string;
-  status: 'active' | 'expired' | 'used' | 'cancelled';
+  status: 'active' | 'expired' | 'used' | 'refunded';
   price: number;
   created_at: string;
   updated_at: string;

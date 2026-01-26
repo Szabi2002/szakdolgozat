@@ -111,6 +111,21 @@ export class ReportsModerationComponent implements OnInit {
     });
   }
 
+  deleteReport(id: string): void {
+    if (!confirm('Biztosan törölni szeretnéd ezt a bejelentést? Ez a művelet nem vonható vissza.')) {
+      return;
+    }
+
+    this.reportsService.deleteReport(id).subscribe({
+      next: () => {
+        this.loadReports();
+      },
+      error: (error) => {
+        this.errorMessage.set(error?.message || 'Nem sikerült törölni a bejelentést. Próbáld újra.');
+      }
+    });
+  }
+
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleString('hu-HU', {

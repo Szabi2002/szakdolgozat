@@ -5,24 +5,24 @@
       <div class="header-left">
         <div class="header-badge">
           <mat-icon>directions_bus</mat-icon>
-          <span>Jaratok</span>
+          <span>Járatok</span>
         </div>
         <div class="greeting-section">
           <h1 class="greeting-heading">
-            Jaratok <span class="highlight">Kezelese</span>
+            Járatok <span class="highlight">Kezelése</span>
           </h1>
-          <p class="greeting-subtext">Buszjaratok adminisztracioja es megallok hozzarendelese</p>
+          <p class="greeting-subtext">Buszjáratok adminisztrációja és megállók hozzárendelése</p>
         </div>
       </div>
       <div class="header-right">
         <div class="header-actions">
           <div class="stat-badge">
             <mat-icon>directions_bus</mat-icon>
-            <span>{{ dataSource.data.length }} jarat</span>
+            <span>{{ dataSource.data.length }} járat</span>
           </div>
           <button mat-raised-button class="add-route-button" (click)="onAdd()">
             <mat-icon>add</mat-icon>
-            Uj Jarat Hozzaadasa
+            Új Járat Hozzáadása
           </button>
         </div>
       </div>
@@ -32,28 +32,24 @@
   <!-- Search Bar -->
   <div class="search-container">
     <mat-icon class="search-icon">search</mat-icon>
-    <input
-      type="text"
-      class="search-input"
-      placeholder="Kereses jarat szam vagy nev alapjan..."
-      (keyup)="onSearch($event)"
-    />
+    <input type="text" class="search-input" placeholder="Keresés járat szám vagy név alapján..."
+      (keyup)="onSearch($event)" />
   </div>
 
   <!-- Loading State -->
   <div *ngIf="isLoading" class="loading-state">
     <mat-spinner diameter="60"></mat-spinner>
-    <p>Jaratok betoltese...</p>
+    <p>Járatok betöltése...</p>
   </div>
 
   <!-- Empty State -->
   <div *ngIf="!isLoading && dataSource.data.length === 0" class="empty-state">
     <mat-icon>bus_alert</mat-icon>
-    <h3>Nincsenek jaratok</h3>
-    <p>Meg nem adtal hozza jaratokat a rendszerhez.</p>
+    <h3>Nincsenek járatok</h3>
+    <p>Még nem adtál hozzá járatokat a rendszerhez.</p>
     <button mat-raised-button color="primary" (click)="onAdd()">
       <mat-icon>add</mat-icon>
-      Elso Jarat Hozzaadasa
+      Első Járat Hozzáadása
     </button>
   </div>
 
@@ -63,11 +59,11 @@
       <table class="routes-table">
         <thead>
           <tr>
-            <th class="th-route">Jarat</th>
-            <th class="th-name">Nev</th>
-            <th class="th-stops">Megallok</th>
-            <th class="th-status">Statusz</th>
-            <th class="th-actions">Muveletek</th>
+            <th class="th-route">Járat</th>
+            <th class="th-name">Név</th>
+            <th class="th-stops">Megállók</th>
+            <th class="th-status">Státusz</th>
+            <th class="th-actions">Műveletek</th>
           </tr>
         </thead>
         <tbody>
@@ -100,33 +96,29 @@
             <td class="td-status">
               <span class="status-badge active">
                 <span class="status-indicator"></span>
-                Aktiv
+                Aktív
               </span>
             </td>
 
             <!-- Actions -->
             <td class="td-actions">
-              <button
-                class="action-btn"
-                [matMenuTriggerFor]="routeMenu"
-                matTooltip="Muveletek"
-              >
+              <button class="action-btn" [matMenuTriggerFor]="routeMenu" matTooltip="Műveletek">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #routeMenu="matMenu" class="glass-menu">
                 <button mat-menu-item (click)="viewRoute(route)">
                   <mat-icon>visibility</mat-icon>
-                  <span>Reszletek</span>
+                  <span>Részletek</span>
                 </button>
                 <mat-divider></mat-divider>
                 <button mat-menu-item (click)="onEdit(route)">
                   <mat-icon>edit</mat-icon>
-                  <span>Szerkesztes</span>
+                  <span>Szerkesztés</span>
                 </button>
                 <mat-divider></mat-divider>
                 <button mat-menu-item class="delete-action" (click)="onDelete(route)">
                   <mat-icon>delete</mat-icon>
-                  <span>Torles</span>
+                  <span>Törlés</span>
                 </button>
               </mat-menu>
             </td>
@@ -137,9 +129,6 @@
   </div>
 
   <!-- Pagination -->
-  <mat-paginator
-    *ngIf="!isLoading && dataSource.data.length > 0"
-    [pageSizeOptions]="[5, 10, 25]"
-    showFirstLastButtons>
+  <mat-paginator *ngIf="!isLoading && dataSource.data.length > 0" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons>
   </mat-paginator>
 </div>

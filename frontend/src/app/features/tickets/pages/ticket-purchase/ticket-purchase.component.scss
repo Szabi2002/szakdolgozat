@@ -2,21 +2,17 @@
 @import 'colors';
 @import 'typography';
 @import 'mixins';
-@import 'persian-blue';
-@import 'glassmorphism';
-@import 'animations';
 
 // ============================================================================
-// TICKET PURCHASE PAGE - DARK THEME WITH GLASSMORPHISM
+// TICKET PURCHASE PAGE - LIGHT THEME
 // ============================================================================
 
 .ticket-purchase-page {
   min-height: 100vh;
   width: 100%;
   max-width: 100%;
-  background: $persian-blue-950;
+  background: $bg-light;
   overflow-x: hidden;
-  @include fade-in(400ms);
 }
 
 // ============================================================================
@@ -27,9 +23,7 @@
   padding: $spacing-8 $spacing-4;
   min-height: 100vh;
   @include flex-center;
-  background:
-    radial-gradient(ellipse at 50% 30%, rgba($persian-blue-600, 0.2), transparent 50%),
-    $persian-blue-950;
+  background: $bg-light;
 }
 
 .success-card {
@@ -38,30 +32,25 @@
   @include flex-column-center;
   gap: $spacing-4;
   padding: $spacing-8;
-  border-radius: 24px;
+  border-radius: $radius-xl;
   text-align: center;
-  @include slide-up(600ms);
-
-  // Glassmorphism
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: $surface-light;
+  border: 1px solid $border-light;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
 
   .success-icon-wrapper {
     @include flex-center;
     width: 88px;
     height: 88px;
-    background: rgba(34, 197, 94, 0.15);
+    background: rgba($brand-primary, 0.1);
     border-radius: $radius-full;
-    border: 2px solid rgba(34, 197, 94, 0.3);
+    border: 2px solid rgba($brand-primary, 0.2);
 
     mat-icon {
       font-size: 52px;
       width: 52px;
       height: 52px;
-      color: #4ade80;
+      color: $brand-primary;
     }
   }
 
@@ -69,7 +58,7 @@
     margin: 0;
     font-size: $font-size-2xl;
     font-weight: $font-weight-bold;
-    color: $persian-blue-50;
+    color: $text-main;
   }
 
   .email-confirmation {
@@ -77,33 +66,33 @@
     gap: $spacing-2;
     margin: 0;
     font-size: $font-size-sm;
-    color: $persian-blue-200;
+    color: $text-secondary;
 
     mat-icon {
       font-size: 18px;
       width: 18px;
       height: 18px;
-      color: $persian-blue-400;
+      color: $brand-primary;
     }
 
     strong {
-      color: $persian-blue-50;
+      color: $text-main;
     }
   }
 
   .ticket-summary {
     width: 100%;
     padding: $spacing-4;
-    background: rgba($persian-blue-800, 0.4);
+    background: $bg-light;
     border-radius: $radius-lg;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid $border-light;
     text-align: left;
 
     h3 {
       margin: 0 0 $spacing-3 0;
       font-size: $font-size-base;
       font-weight: $font-weight-semibold;
-      color: $persian-blue-100;
+      color: $text-main;
     }
 
     .detail-row {
@@ -111,18 +100,18 @@
       justify-content: space-between;
       padding: $spacing-2 0;
       font-size: $font-size-sm;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid $border-light;
 
       &:last-child {
         border-bottom: none;
       }
 
       span {
-        color: $persian-blue-300;
+        color: $text-secondary;
       }
 
       strong {
-        color: $persian-blue-50;
+        color: $text-main;
       }
     }
   }
@@ -131,10 +120,10 @@
     @include flex-center;
     gap: $spacing-2;
     font-size: $font-size-sm;
-    color: $persian-blue-300;
+    color: $text-secondary;
 
     ::ng-deep .mat-mdc-progress-spinner circle {
-      stroke: $persian-blue-400;
+      stroke: $brand-primary;
     }
   }
 
@@ -142,21 +131,15 @@
     @include flex-center;
     gap: $spacing-2;
     padding: $spacing-3 $spacing-6;
-    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    background: $brand-primary !important;
     color: $white !important;
     font-weight: $font-weight-semibold;
     border-radius: $radius-lg;
     transition: all $transition-base $ease-out;
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba($persian-blue-500, 0.4);
-    }
-
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
+      background: $brand-primary-dark !important;
+      box-shadow: 0 8px 20px rgba($brand-primary, 0.3);
     }
   }
 }
@@ -168,11 +151,7 @@
 .purchase-header {
   width: 100%;
   padding: $spacing-8 $spacing-4;
-  background:
-    radial-gradient(ellipse at 20% 0%, rgba($persian-blue-600, 0.3), transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-500, 0.2), transparent 50%),
-    linear-gradient(180deg, $persian-blue-900 0%, $persian-blue-950 100%);
-  @include fade-in(400ms);
+  background: linear-gradient(135deg, $brand-primary 0%, $brand-primary-dark 100%);
 
   @include mobile {
     padding: $spacing-6 $spacing-3;
@@ -201,12 +180,12 @@
   @include flex-start;
   gap: $spacing-2;
   padding: $spacing-1 $spacing-3;
-  background: rgba($persian-blue-400, 0.15);
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   border-radius: $radius-full;
-  border: 1px solid rgba($persian-blue-400, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   width: fit-content;
-  color: $persian-blue-300;
+  color: white;
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
 
@@ -214,7 +193,7 @@
     font-size: 14px;
     width: 14px;
     height: 14px;
-    color: $persian-blue-400;
+    color: rgba(255, 255, 255, 0.9);
   }
 }
 
@@ -226,15 +205,12 @@
 .page-title {
   font-size: $font-size-3xl;
   font-weight: $font-weight-bold;
-  color: $persian-blue-50;
+  color: white;
   margin: 0;
   line-height: 1.2;
 
   .highlight {
-    background: linear-gradient(135deg, $persian-blue-400, $persian-blue-300);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: rgba(255, 255, 255, 0.9);
   }
 
   @include mobile {
@@ -244,7 +220,7 @@
 
 .page-subtitle {
   font-size: $font-size-base;
-  color: $persian-blue-300;
+  color: rgba(255, 255, 255, 0.85);
   margin: 0;
 
   @include mobile {
@@ -260,21 +236,14 @@
   .back-button {
     @include flex-center;
     gap: $spacing-2;
-    color: $persian-blue-300 !important;
-    border-color: rgba($persian-blue-400, 0.3) !important;
+    color: white !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
     font-weight: $font-weight-semibold;
     background: transparent !important;
 
     &:hover {
-      background: rgba($persian-blue-400, 0.15) !important;
-      border-color: $persian-blue-400 !important;
-      color: $persian-blue-100 !important;
-    }
-
-    mat-icon {
-      font-size: $icon-sm;
-      width: $icon-sm;
-      height: $icon-sm;
+      background: rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba(255, 255, 255, 0.5) !important;
     }
 
     @include mobile {
@@ -314,11 +283,11 @@
   p {
     margin: 0;
     font-size: $font-size-base;
-    color: $persian-blue-300;
+    color: $text-secondary;
   }
 
   ::ng-deep .mat-mdc-progress-spinner circle {
-    stroke: $persian-blue-400;
+    stroke: $brand-primary;
   }
 }
 
@@ -329,37 +298,33 @@
   padding: $spacing-12 $spacing-8;
   border-radius: $radius-xl;
   text-align: center;
-
-  // Glassmorphism
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  background: $surface-light;
+  border: 1px solid $border-light;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 
   .error-icon-wrapper,
   .empty-icon-wrapper {
     @include flex-center;
     width: 80px;
     height: 80px;
-    background: rgba($persian-blue-500, 0.15);
+    background: rgba($brand-primary, 0.08);
     border-radius: $radius-full;
-    border: 2px solid rgba($persian-blue-400, 0.3);
+    border: 2px solid rgba($brand-primary, 0.15);
 
     mat-icon {
       font-size: 40px;
       width: 40px;
       height: 40px;
-      color: $persian-blue-400;
+      color: $brand-primary;
     }
   }
 
   .error-icon-wrapper {
-    background: rgba($error-500, 0.15);
-    border-color: rgba($error-400, 0.3);
+    background: rgba($error-500, 0.08);
+    border-color: rgba($error-500, 0.15);
 
     mat-icon {
-      color: $error-400;
+      color: $error-500;
     }
   }
 
@@ -367,13 +332,13 @@
     margin: 0;
     font-size: $font-size-xl;
     font-weight: $font-weight-bold;
-    color: $persian-blue-50;
+    color: $text-main;
   }
 
   p {
     margin: 0;
     font-size: $font-size-sm;
-    color: $persian-blue-300;
+    color: $text-secondary;
     line-height: 1.6;
   }
 
@@ -381,16 +346,10 @@
     @include flex-center;
     gap: $spacing-2;
     padding: $spacing-3 $spacing-6;
-    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    background: $brand-primary !important;
     color: $white !important;
     font-weight: $font-weight-semibold;
     border-radius: $radius-lg;
-
-    mat-icon {
-      font-size: $icon-sm;
-      width: $icon-sm;
-      height: $icon-sm;
-    }
   }
 }
 
@@ -403,15 +362,10 @@
   border-radius: $radius-xl;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: $surface-light;
+  border: 1px solid $border-light;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 
-  // Glassmorphism
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-
-  // Glow line at top (hidden by default)
   &::before {
     content: '';
     position: absolute;
@@ -419,7 +373,7 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, $persian-blue-500, $persian-blue-400);
+    background: $gradient-primary;
     opacity: 0;
     transform: scaleX(0);
     transform-origin: left;
@@ -429,10 +383,8 @@
 
   &:hover {
     transform: translateY(-6px);
-    border-color: rgba($persian-blue-400, 0.3);
-    box-shadow:
-      0 16px 40px rgba(0, 0, 0, 0.3),
-      0 0 20px rgba($persian-blue-500, 0.1);
+    border-color: rgba($brand-primary, 0.2);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
 
     &::before {
       opacity: 1;
@@ -454,11 +406,11 @@
   @include flex-start;
   gap: $spacing-3;
 
-  > mat-icon {
+  >mat-icon {
     font-size: 22px;
     width: 22px;
     height: 22px;
-    color: $persian-blue-400;
+    color: $brand-primary;
     margin-top: 2px;
   }
 
@@ -468,7 +420,7 @@
 
     .label {
       font-size: $font-size-xs;
-      color: $persian-blue-400;
+      color: $text-secondary;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       font-weight: $font-weight-semibold;
@@ -477,7 +429,7 @@
     .value {
       font-size: $font-size-base;
       font-weight: $font-weight-semibold;
-      color: $persian-blue-50;
+      color: $text-main;
     }
   }
 }
@@ -494,20 +446,17 @@
 .section-heading {
   font-size: $font-size-2xl;
   font-weight: $font-weight-bold;
-  color: $persian-blue-50;
+  color: $text-main;
   margin: 0 0 $spacing-2 0;
 
   .highlight {
-    background: linear-gradient(135deg, $persian-blue-400, $persian-blue-300);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: $brand-primary;
   }
 }
 
 .section-subheading {
   font-size: $font-size-sm;
-  color: $persian-blue-300;
+  color: $text-secondary;
   margin: 0;
 }
 
@@ -520,14 +469,14 @@
   align-items: center;
   gap: $spacing-3;
   padding: $spacing-4 $spacing-5;
-  background: rgba($persian-blue-800, 0.5);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: $bg-light;
+  border-bottom: 1px solid $border-light;
 
   mat-icon {
     font-size: 24px;
     width: 24px;
     height: 24px;
-    color: $persian-blue-400;
+    color: $brand-primary;
   }
 
   h3 {
@@ -535,7 +484,7 @@
     margin: 0;
     font-size: $font-size-lg;
     font-weight: $font-weight-semibold;
-    color: $persian-blue-50;
+    color: $text-main;
   }
 }
 
@@ -545,19 +494,13 @@
 
 .purchase-summary {
   position: relative;
-  border-radius: 20px;
+  border-radius: $radius-xl;
   overflow: hidden;
-  @include slide-up(400ms);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: $surface-light;
+  border: 1px solid $border-light;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 
-  // Glassmorphism
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-
-  // Glow line at top
   &::before {
     content: '';
     position: absolute;
@@ -565,7 +508,7 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, $success-400, $success-600);
+    background: $gradient-primary;
     opacity: 0;
     transform: scaleX(0);
     transform-origin: left;
@@ -575,10 +518,8 @@
 
   &:hover {
     transform: translateY(-6px);
-    border-color: rgba($success-400, 0.3);
-    box-shadow:
-      0 16px 40px rgba(0, 0, 0, 0.3),
-      0 0 20px rgba($success-600, 0.15);
+    border-color: rgba($brand-primary, 0.2);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
 
     &::before {
       opacity: 1;
@@ -587,10 +528,10 @@
   }
 
   .summary-header {
-    border-left: 4px solid $success-400;
+    border-left: 4px solid $brand-primary;
 
     mat-icon {
-      color: $success-400;
+      color: $brand-primary;
     }
   }
 
@@ -613,21 +554,21 @@
   .item-label {
     @include flex-start;
     gap: $spacing-2;
-    color: $persian-blue-300;
+    color: $text-secondary;
     font-size: $font-size-sm;
 
     mat-icon {
       font-size: $icon-sm;
       width: $icon-sm;
       height: $icon-sm;
-      color: $persian-blue-400;
+      color: $brand-primary;
     }
   }
 
   .item-value {
     font-size: $font-size-sm;
     font-weight: $font-weight-semibold;
-    color: $persian-blue-100;
+    color: $text-main;
     text-align: right;
   }
 
@@ -636,24 +577,24 @@
 
     .item-label {
       font-weight: $font-weight-semibold;
-      color: $persian-blue-100;
+      color: $text-main;
 
       mat-icon {
-        color: $success-400;
+        color: $brand-primary;
       }
     }
 
     .item-value.price {
       font-size: $font-size-2xl;
       font-weight: $font-weight-bold;
-      color: $success-400;
+      color: $brand-primary;
     }
   }
 }
 
 .summary-divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: $border-light;
   margin: $spacing-2 0;
 }
 
@@ -661,8 +602,8 @@
   @include flex-between;
   gap: $spacing-3;
   padding: $spacing-4 $spacing-5;
-  background: rgba($persian-blue-900, 0.5);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: $bg-light;
+  border-top: 1px solid $border-light;
 
   @include mobile {
     flex-direction: column;
@@ -671,20 +612,14 @@
   .change-button {
     @include flex-center;
     gap: $spacing-2;
-    color: $persian-blue-300 !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: $text-secondary !important;
+    border-color: $border-light !important;
     font-weight: $font-weight-medium;
     background: transparent !important;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border-color: rgba(255, 255, 255, 0.25) !important;
-    }
-
-    mat-icon {
-      font-size: $icon-sm;
-      width: $icon-sm;
-      height: $icon-sm;
+      background: $neutral-100 !important;
+      border-color: $neutral-300 !important;
     }
 
     @include mobile {
@@ -696,25 +631,19 @@
     @include flex-center;
     gap: $spacing-2;
     padding: $spacing-3 $spacing-6;
-    background: linear-gradient(135deg, $success-600, $success-700) !important;
+    background: $brand-primary !important;
     color: $white !important;
     font-weight: $font-weight-bold;
     border-radius: $radius-lg;
-    transition: all $transition-base $ease-out;
+    box-shadow: 0 4px 12px rgba($brand-primary, 0.25);
 
     &:hover:not(:disabled) {
-      transform: translateY(-2px);
-      @include glow-shadow($success-600, 0.4, 24px);
+      background: $brand-primary-dark !important;
+      box-shadow: 0 8px 24px rgba($brand-primary, 0.35);
     }
 
     &:disabled {
       opacity: 0.6;
-    }
-
-    mat-icon {
-      font-size: $icon-sm;
-      width: $icon-sm;
-      height: $icon-sm;
     }
 
     ::ng-deep .mat-mdc-progress-spinner circle {
@@ -725,12 +654,4 @@
       width: 100%;
     }
   }
-}
-
-// ============================================================================
-// TICKET SELECTION SECTION
-// ============================================================================
-
-.ticket-selection-section {
-  @include fade-in(600ms);
 }

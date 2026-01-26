@@ -1,243 +1,231 @@
-@use 'sass:color';
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
 
-// Persian Blue color palette
-$persian-blue-50: #edf2ff;
-$persian-blue-100: #dee7ff;
-$persian-blue-200: #c4d2ff;
-$persian-blue-300: #a0b5ff;
-$persian-blue-400: #7a8bff;
-$persian-blue-500: #5b64f9;
-$persian-blue-600: #403dee;
-$persian-blue-700: #3c36d4;
-$persian-blue-800: #2c29aa;
-$persian-blue-900: #292986;
-$persian-blue-950: #1a184e;
+// ============================================================================
+// EDIT REPORT DIALOG - LIGHT THEME
+// ============================================================================
 
-.edit-report-dialog {
-  padding: 0;
-  max-height: 85vh;
-  overflow-y: auto;
+:host {
+  display: block;
 }
 
-.dialog-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 24px;
-  background: linear-gradient(135deg, rgba($persian-blue-600, 0.2), rgba($persian-blue-800, 0.3));
-  border-bottom: 1px solid rgba($persian-blue-400, 0.2);
+// ============================================================================
+// HEADER
+// ============================================================================
 
-  .header-content {
+.edit-header {
+  @include flex-between;
+  align-items: center;
+  padding: $spacing-5 $spacing-6;
+  background: white;
+  border-bottom: 1px solid $border-light;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  h2 {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $text-main;
+    margin: 0;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: $spacing-2;
 
-    .header-icon {
-      font-size: 32px;
-      width: 32px;
-      height: 32px;
-      color: $persian-blue-400;
-    }
-
-    .header-text {
-      h2 {
-        margin: 0;
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: $persian-blue-50;
-      }
-
-      .reference-number {
-        font-size: 0.875rem;
-        color: $persian-blue-300;
-        font-family: monospace;
-      }
+    mat-icon {
+      color: $brand-primary;
     }
   }
 
-  .close-button {
-    color: $persian-blue-300;
+  .close-btn {
+    color: $text-secondary;
 
     &:hover {
-      background: rgba($persian-blue-400, 0.1);
+      background: $bg-light;
+      color: $error-500;
     }
   }
 }
 
-.report-type-display {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 24px;
-  background: rgba($persian-blue-900, 0.3);
-  border-bottom: 1px solid rgba($persian-blue-400, 0.1);
+// ============================================================================
+// CONTENT
+// ============================================================================
 
-  mat-icon {
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
+.edit-content {
+  padding: $spacing-6;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: $bg-light;
+
+  form {
+    @include flex-column;
+    gap: $spacing-5;
   }
 
-  .type-label {
-    font-weight: 500;
-    color: $persian-blue-100;
-    flex: 1;
-  }
-
-  .status-chip {
-    background: rgba($persian-blue-500, 0.2) !important;
-    color: $persian-blue-200 !important;
-    font-size: 0.75rem;
-    height: 24px;
-    padding: 0 12px;
+  @include mobile {
+    padding: $spacing-4;
+    max-height: 60vh;
   }
 }
 
-.edit-form {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.edit-section {
+  background: white;
+  border-radius: $radius-lg;
+  padding: $spacing-5;
+  border: 1px solid $border-light;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+
+  h3 {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: $text-secondary;
+    margin-bottom: $spacing-4;
+    padding-bottom: $spacing-2;
+    border-bottom: 1px solid $border-light;
+  }
+
+  @include mobile {
+    padding: $spacing-4;
+  }
 }
 
-.full-width {
+// ============================================================================
+// FORM FIELDS
+// ============================================================================
+
+// Standard form field overrides for light theme
+::ng-deep .mat-mdc-form-field {
   width: 100%;
+
+  .mat-mdc-text-field-wrapper {
+    background: $bg-light;
+    border-radius: $radius-md;
+  }
 }
 
-// Form field styling
-::ng-deep {
-  .edit-report-dialog {
-    .mat-mdc-form-field {
-      .mat-mdc-text-field-wrapper {
-        background: rgba($persian-blue-900, 0.4) !important;
-        border-radius: 8px;
-      }
+textarea {
+  min-height: 120px;
+  line-height: 1.5;
 
-      .mat-mdc-form-field-flex {
-        background: transparent !important;
-      }
+  @include mobile {
+    min-height: 100px;
+  }
+}
 
-      .mdc-text-field--outlined .mdc-notched-outline__leading,
-      .mdc-text-field--outlined .mdc-notched-outline__notch,
-      .mdc-text-field--outlined .mdc-notched-outline__trailing {
-        border-color: rgba($persian-blue-400, 0.3) !important;
-      }
+// ============================================================================
+// FILE UPLOAD IN EDIT MODE
+// ============================================================================
 
-      &.mat-focused {
-        .mdc-notched-outline__leading,
-        .mdc-notched-outline__notch,
-        .mdc-notched-outline__trailing {
-          border-color: $persian-blue-500 !important;
-        }
-      }
+.upload-section {
+  margin-top: $spacing-2;
+}
 
-      .mat-mdc-form-field-label,
-      .mdc-floating-label {
-        color: $persian-blue-300 !important;
-      }
+.current-files {
+  margin-bottom: $spacing-4;
 
-      input, textarea {
-        color: $persian-blue-50 !important;
+  h4 {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $text-main;
+    margin-bottom: $spacing-2;
+  }
 
-        &::placeholder {
-          color: rgba($persian-blue-300, 0.5) !important;
-        }
-      }
+  .files-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-3;
 
-      .mat-mdc-form-field-hint {
-        color: $persian-blue-400;
-      }
-
-      .mat-icon {
-        color: $persian-blue-400;
-      }
+    @include mobile {
+      gap: $spacing-2;
     }
   }
-}
 
-.info-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px 16px;
-  background: rgba($persian-blue-500, 0.1);
-  border-radius: 8px;
-  border-left: 3px solid $persian-blue-500;
+  .file-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: $radius-md;
+    overflow: hidden;
 
-  mat-icon {
-    color: $persian-blue-400;
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  span {
-    color: $persian-blue-200;
-    font-size: 0.875rem;
-    line-height: 1.5;
-  }
-}
-
-.dialog-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 8px;
-  padding-top: 16px;
-  border-top: 1px solid rgba($persian-blue-400, 0.1);
-
-  button {
-    min-width: 120px;
-
-    &[mat-stroked-button] {
-      border-color: rgba($persian-blue-400, 0.3);
-      color: $persian-blue-200;
-
-      &:hover:not(:disabled) {
-        background: rgba($persian-blue-400, 0.1);
-      }
+    @include mobile {
+      width: 80px;
+      height: 80px;
     }
 
-    &[mat-flat-button] {
-      background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
-      color: white !important;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-      &:disabled {
-        background: rgba($persian-blue-500, 0.3) !important;
-        color: rgba(white, 0.5) !important;
-      }
+    .remove-file-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      min-width: 0;
+      border-radius: $radius-full;
 
       mat-icon {
-        margin-right: 8px;
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
       }
 
-      mat-spinner {
-        margin-right: 8px;
-
-        ::ng-deep circle {
-          stroke: white;
-        }
+      &:hover {
+        background: $error-500;
+        transform: scale(1.1);
       }
     }
   }
 }
 
-// Scrollbar styling
-.edit-report-dialog::-webkit-scrollbar {
-  width: 8px;
-}
+// ============================================================================
+// ACTIONS
+// ============================================================================
 
-.edit-report-dialog::-webkit-scrollbar-track {
-  background: rgba($persian-blue-900, 0.3);
-}
+.edit-actions {
+  padding: $spacing-4 $spacing-6;
+  background: white;
+  border-top: 1px solid $border-light;
+  @include flex-end;
+  gap: $spacing-3;
 
-.edit-report-dialog::-webkit-scrollbar-thumb {
-  background: rgba($persian-blue-500, 0.5);
-  border-radius: 4px;
+  @include mobile {
+    flex-direction: column-reverse;
+    padding: $spacing-4;
+    gap: $spacing-2;
 
-  &:hover {
-    background: rgba($persian-blue-500, 0.7);
+    button {
+      width: 100%;
+    }
+  }
+
+  .save-btn {
+    background: $brand-primary !important;
+    color: white !important;
+    font-weight: $font-weight-semibold;
+    padding: 0 24px;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba($brand-primary, 0.3);
+    }
+  }
+
+  .cancel-btn {
+    border: 1px solid $border-light;
+    color: $text-main;
+
+    &:hover {
+      background: $bg-light;
+    }
   }
 }

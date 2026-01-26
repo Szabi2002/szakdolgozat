@@ -1,674 +1,450 @@
-// ===========================
-// ROUTES MANAGEMENT - DARK GLASSMORPHISM DESIGN
-// Persian Blue Dark Theme with Glass Effects
-// ===========================
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
 
-@import '../../../../styles/variables';
-@import '../../../../styles/colors';
-@import '../../../../styles/typography';
-@import '../../../../styles/mixins';
-@import '../../../../styles/persian-blue';
-@import '../../../../styles/glassmorphism';
-@import '../../../../styles/animations';
+// ============================================================================
+// ROUTES MANAGEMENT - LIGHT THEME
+// ============================================================================
 
-// ===========================
-// MAIN CONTAINER
-// ===========================
-
-.routes-management-container {
-  min-height: 100vh;
-  background: $persian-blue-950;
-  position: relative;
-  overflow: hidden;
-  @include fade-in(400ms);
-
-  // Floating orbs for visual depth
-  &::before {
-    content: '';
-    position: absolute;
-    top: 10%;
-    left: 5%;
-    width: 400px;
-    height: 400px;
-    background: $gradient-orb-blue;
-    border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.4;
-    pointer-events: none;
-    @include float-animation(slow);
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 15%;
-    right: 10%;
-    width: 350px;
-    height: 350px;
-    background: $gradient-orb-purple;
-    border-radius: 50%;
-    filter: blur(50px);
-    opacity: 0.3;
-    pointer-events: none;
-    @include float-animation(medium);
-  }
+:host {
+  display: block;
 }
 
-// ===========================
-// COMPACT HEADER
-// ===========================
+.routes-management-container {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-6;
+}
+
+// ============================================================================
+// HEADER SECTION (Standardized)
+// ============================================================================
 
 .dashboard-header {
   width: 100%;
   padding: $spacing-8 $spacing-4;
   position: relative;
   overflow: hidden;
-  z-index: 1;
-  margin-bottom: $spacing-6;
+  background: linear-gradient(135deg, $brand-primary 0%, $brand-primary-dark 100%);
+  margin-bottom: $spacing-8;
 
-  // Dark gradient background with glow effects
-  background:
-    radial-gradient(ellipse at 20% 0%, rgba($persian-blue-600, 0.3), transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-500, 0.2), transparent 50%),
-    linear-gradient(180deg, $persian-blue-900 0%, $persian-blue-950 100%);
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $spacing-6;
+    position: relative;
+    z-index: 1;
 
-  @include mobile {
-    padding: $spacing-6 $spacing-3;
+    @include mobile {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-4;
+    }
   }
-}
 
-.header-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  @include flex-between;
-  align-items: center;
-  gap: $spacing-6;
-  position: relative;
-  z-index: 1;
-
-  @include tablet {
+  .header-left {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: $spacing-4;
+    gap: $spacing-3;
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-2;
+      padding: $spacing-1 $spacing-3;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: $radius-full;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      width: fit-content;
+      color: white;
+
+      mat-icon {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      span {
+        font-size: $font-size-xs;
+        font-weight: $font-weight-semibold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0;
+      }
+    }
+
+    .greeting-section {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-1;
+
+      .greeting-heading {
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-bold;
+        color: white;
+        margin: 0;
+        line-height: 1.2;
+
+        .highlight {
+          color: rgba(255, 255, 255, 0.9);
+        }
+      }
+
+      .greeting-subtext {
+        font-size: $font-size-base;
+        color: rgba(255, 255, 255, 0.85);
+        margin: 0;
+      }
+    }
   }
-}
 
-.header-left {
-  @include flex-column;
-  gap: $spacing-3;
-}
-
-.header-badge {
-  @include flex-start;
-  gap: $spacing-2;
-  padding: $spacing-1 $spacing-3;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: $radius-full;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  width: fit-content;
-  color: $persian-blue-200;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
-
-  mat-icon {
-    font-size: 14px;
-    width: 14px;
-    height: 14px;
-    color: $persian-blue-400;
-  }
-}
-
-.greeting-section {
-  @include flex-column;
-  gap: $spacing-1;
-}
-
-.greeting-heading {
-  font-size: $font-size-2xl;
-  font-weight: $font-weight-bold;
-  color: $persian-blue-50;
-  margin: 0;
-  line-height: 1.2;
-
-  .highlight {
-    color: $persian-blue-400;
-  }
-
-  @include mobile {
-    font-size: $font-size-xl;
-  }
-}
-
-.greeting-subtext {
-  font-size: $font-size-base;
-  color: $persian-blue-300;
-  margin: 0;
-
-  @include mobile {
-    font-size: $font-size-sm;
-  }
-}
-
-.header-right {
-  @include flex-column;
-  align-items: flex-end;
-  gap: $spacing-3;
-
-  @include tablet {
-    align-items: flex-start;
-    width: 100%;
-  }
-}
-
-.header-actions {
-  @include flex-start;
-  gap: $spacing-3;
-
-  @include mobile {
-    width: 100%;
+  .header-right {
+    display: flex;
     flex-direction: column;
-    gap: $spacing-2;
+    align-items: flex-end;
+    gap: $spacing-3;
+
+    @include mobile {
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: $spacing-3;
+
+      .stat-badge {
+        display: flex;
+        align-items: center;
+        gap: $spacing-2;
+        padding: $spacing-2 $spacing-4;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: $radius-full;
+        color: white;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        backdrop-filter: blur(8px);
+
+        mat-icon {
+          font-size: 18px;
+          color: white;
+          width: 18px;
+          height: 18px;
+        }
+      }
+
+      .add-route-button {
+        background: white !important;
+        color: $brand-primary !important;
+        border-radius: $radius-full !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+        
+        &:hover {
+           background: #f8fafc !important;
+           transform: translateY(-2px);
+        }
+
+        mat-icon {
+            margin-right: $spacing-2;
+        }
+      }
+    }
   }
 }
 
-.stat-badge {
-  @include flex-start;
-  gap: $spacing-2;
-  padding: $spacing-2 $spacing-4;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: $radius-full;
-  color: $persian-blue-200;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-
-  mat-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-    color: $persian-blue-400;
-  }
-
-  @include mobile {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-.add-route-button {
-  @include glass-button-primary;
-  @include flex-center;
-  gap: $spacing-2;
-  font-size: $font-size-base;
-  font-weight: $font-weight-semibold;
-  @include shine-effect;
-
-  @include mobile {
-    width: 100%;
-  }
-
-  mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-  }
-}
-
-// ===========================
-// SEARCH CONTAINER
-// ===========================
+// ============================================================================
+// SEARCH BAR
+// ============================================================================
 
 .search-container {
   position: relative;
-  z-index: 1;
-  @include glass-card;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  margin-bottom: $spacing-6;
-  @include slide-up(500ms, 20px, 200ms);
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto; // Center the search bar
 
   .search-icon {
     position: absolute;
-    left: $spacing-4;
-    color: $dark-text-muted;
-    font-size: 22px;
-    width: 22px;
-    height: 22px;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $text-muted;
+    pointer-events: none;
   }
 
   .search-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    padding: $spacing-4 $spacing-4 $spacing-4 $spacing-12;
+    width: 100%;
+    height: 48px;
+    padding: 0 $spacing-4 0 48px;
+    border: 1px solid $border-light;
+    border-radius: $radius-lg;
+    background: white;
     font-size: $font-size-base;
-    color: $dark-text-primary;
-    outline: none;
+    color: $text-main;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+
+    &:focus {
+      outline: none;
+      border-color: $brand-primary;
+      box-shadow: 0 0 0 4px rgba($brand-primary, 0.1);
+    }
 
     &::placeholder {
-      color: $dark-text-muted;
+      color: $text-muted;
     }
   }
 }
 
-// ===========================
-// LOADING STATE
-// ===========================
+// ============================================================================
+// STATES (Loading, Empty)
+// ============================================================================
 
-.loading-state {
-  position: relative;
-  z-index: 1;
-  @include flex-column-center;
-  justify-content: center;
-  padding: $spacing-12;
-  text-align: center;
-  min-height: 400px;
-
-  mat-spinner {
-    margin-bottom: $spacing-4;
-
-    ::ng-deep circle {
-      stroke: $persian-blue-400 !important;
-    }
-  }
-
-  p {
-    margin: $spacing-2 0;
-    font-size: $font-size-base;
-    color: $dark-text-secondary;
-  }
-
-  @include mobile {
-    padding: $spacing-8;
-  }
-}
-
-// ===========================
-// EMPTY STATE
-// ===========================
-
+.loading-state,
 .empty-state {
-  position: relative;
-  z-index: 1;
-  @include flex-column-center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   padding: $spacing-12;
+  background: white;
+  border-radius: $radius-lg;
+  border: 1px solid $border-light;
   text-align: center;
-  min-height: 400px;
-  @include glass-card;
-  @include slide-up(500ms, 20px, 300ms);
+  min-height: 300px;
+  max-width: 1200px; // Constrain width
+  width: 100%;
+  margin: 0 auto; // Center
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 
   mat-icon {
-    font-size: 80px;
-    width: 80px;
-    height: 80px;
-    color: $persian-blue-400;
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: $neutral-300;
     margin-bottom: $spacing-4;
-    opacity: 0.7;
-    filter: drop-shadow(0 0 15px rgba($persian-blue-400, 0.4));
   }
 
   h3 {
-    margin: 0 0 $spacing-2 0;
-    font-size: $font-size-xl;
+    font-size: $font-size-lg;
     font-weight: $font-weight-bold;
-    color: $dark-text-primary;
+    color: $text-main;
+    margin: 0 0 $spacing-2 0;
   }
 
   p {
-    color: $dark-text-secondary;
-    margin-bottom: $spacing-4;
-  }
-
-  button {
-    @include glass-button-primary;
-    @include flex-center;
-    gap: $spacing-2;
-  }
-
-  @include mobile {
-    padding: $spacing-8;
+    color: $text-secondary;
+    margin: 0 0 $spacing-6 0;
   }
 }
 
-// ===========================
+// ============================================================================
 // ROUTES TABLE
-// ===========================
+// ============================================================================
 
 .routes-table-wrapper {
-  position: relative;
-  z-index: 1;
-  @include slide-up(600ms, 30px, 300ms);
-}
-
-.routes-table-container {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
+  background: white;
+  border-radius: $radius-lg;
+  border: 1px solid $border-light;
   overflow: hidden;
-  box-shadow: $shadow-glass-card;
-}
-
-.routes-table {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  max-width: 1200px; // Constrain width
   width: 100%;
-  border-collapse: collapse;
+  margin: 0 auto; // Center
 
-  thead {
-    tr {
-      background: rgba(255, 255, 255, 0.04);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    th {
-      padding: $spacing-4 $spacing-5;
-      text-align: left;
-      font-size: $font-size-xs;
-      font-weight: $font-weight-semibold;
-      color: $dark-text-muted;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-
-      &.th-actions {
-        text-align: center;
-        width: 80px;
-      }
-    }
-  }
-
-  tbody {
-    tr.route-row {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      transition: all 0.2s ease;
-
-      &:last-child {
-        border-bottom: none;
-      }
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.04);
-      }
-    }
-
-    td {
-      padding: $spacing-4 $spacing-5;
-      vertical-align: middle;
-    }
-  }
-}
-
-// Route Number Cell
-.td-route {
-  .route-badge {
-    @include flex-center;
-    flex-direction: column;
-    gap: 4px;
-    min-width: 60px;
-    padding: $spacing-2;
-    background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
-    border: 1px solid rgba($persian-blue-400, 0.3);
-    border-radius: $radius-md;
-    flex-shrink: 0;
-
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-      color: $persian-blue-400;
-    }
-
-    .route-number {
-      font-size: $font-size-base;
-      font-weight: $font-weight-bold;
-      color: $persian-blue-200;
-      line-height: 1;
-    }
-  }
-}
-
-// Route Name Cell
-.td-name {
-  .route-info {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-1;
-    min-width: 0;
-
-    .route-name {
-      font-size: $font-size-base;
-      font-weight: $font-weight-semibold;
-      color: $dark-text-primary;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .route-desc {
-      font-size: $font-size-sm;
-      color: $dark-text-secondary;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
-}
-
-// Stops Count Cell
-.td-stops {
-  .stops-info {
-    display: flex;
-    align-items: center;
-    gap: $spacing-2;
-    color: $dark-text-secondary;
-    font-size: $font-size-sm;
-
-    mat-icon {
-      font-size: 16px;
-      width: 16px;
-      height: 16px;
-      color: $persian-blue-400;
-    }
-  }
-}
-
-// Status Cell
-.td-status {
-  .status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    border-radius: 100px;
-    font-size: $font-size-xs;
-    font-weight: $font-weight-medium;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-
-    .status-indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-    }
-
-    &.active {
-      color: #81C784;
-
-      .status-indicator {
-        background: #4CAF50;
-        box-shadow: 0 0 8px rgba(#4CAF50, 0.6);
-      }
-    }
-  }
-}
-
-// Actions Cell
-.td-actions {
-  text-align: center;
-
-  .action-btn {
-    @include flex-center;
-    width: 40px;
-    height: 40px;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: $dark-text-secondary;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.2);
-      color: $dark-text-primary;
-    }
-
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-    }
-  }
-}
-
-// ===========================
-// RESPONSIVE TABLE
-// ===========================
-
-@include mobile {
   .routes-table-container {
     overflow-x: auto;
-    @include dark-scrollbar;
-  }
 
-  .routes-table {
-    min-width: 700px;
-  }
-}
+    .routes-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
 
-// ===========================
-// PAGINATOR
-// ===========================
+      thead {
+        background: $bg-light;
 
-mat-paginator {
-  position: relative;
-  z-index: 1;
-  @include glass-card;
-  margin-top: $spacing-6;
-  @include slide-up(500ms, 20px, 400ms);
+        th {
+          text-align: left;
+          padding: $spacing-4 $spacing-6;
+          font-size: $font-size-xs;
+          font-weight: $font-weight-bold;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: $text-secondary;
+          border-bottom: 1px solid $border-light;
+          white-space: nowrap;
 
-  ::ng-deep {
-    .mat-mdc-paginator-container {
-      background: transparent;
-      color: $dark-text-primary;
-    }
-
-    .mat-mdc-paginator-page-size-label,
-    .mat-mdc-paginator-range-label {
-      color: $dark-text-secondary;
-    }
-
-    .mat-mdc-select-value {
-      color: $dark-text-primary;
-    }
-
-    .mat-mdc-paginator-navigation-previous,
-    .mat-mdc-paginator-navigation-next,
-    .mat-mdc-paginator-navigation-first,
-    .mat-mdc-paginator-navigation-last {
-      color: $persian-blue-300;
-
-      &:hover:not(:disabled) {
-        background: rgba($persian-blue-500, 0.2);
+          &.th-actions {
+            text-align: right;
+          }
+        }
       }
 
-      &:disabled {
-        color: rgba($persian-blue-300, 0.3);
-      }
-    }
+      tbody {
+        tr {
+          transition: background-color 0.15s ease;
+          border-bottom: 1px solid $border-light;
 
-    .mat-mdc-form-field {
-      .mdc-text-field--outlined {
-        background: rgba(255, 255, 255, 0.05);
+          &:last-child {
+            border-bottom: none;
+          }
 
-        .mdc-notched-outline {
-          .mdc-notched-outline__leading,
-          .mdc-notched-outline__notch,
-          .mdc-notched-outline__trailing {
-            border-color: rgba(255, 255, 255, 0.1) !important;
+          &:hover {
+            background-color: $bg-light;
+          }
+
+          td {
+            padding: $spacing-4 $spacing-6;
+            vertical-align: middle;
+            font-size: $font-size-sm;
+            color: $text-main;
+
+            &.td-actions {
+              text-align: right;
+            }
           }
         }
       }
     }
   }
+}
 
-  @include mobile {
-    margin-top: $spacing-4;
+// Table Cell Components
+
+.route-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+  padding: 4px 12px;
+  background: $brand-primary;
+  color: white;
+  border-radius: $radius-full;
+  font-weight: bold;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
   }
 }
 
-// ===========================
-// MATERIAL MENU OVERRIDES
-// ===========================
+.route-info {
+  display: flex;
+  flex-direction: column;
 
-::ng-deep .mat-mdc-menu-panel {
-  background: rgba($persian-blue-900, 0.95) !important;
-  backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-
-  .mat-mdc-menu-content {
-    padding: $spacing-2 !important;
+  .route-name {
+    font-weight: $font-weight-semibold;
+    color: $text-main;
   }
 
-  .mat-mdc-menu-item {
-    border-radius: 8px !important;
-    color: $dark-text-secondary !important;
-    min-height: 40px !important;
+  .route-desc {
+    font-size: $font-size-xs;
+    color: $text-secondary;
+  }
+}
 
-    &:hover {
-      background: rgba(255, 255, 255, 0.08) !important;
-      color: $dark-text-primary !important;
+.stops-info {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  color: $text-secondary;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: $text-muted;
+  }
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: $radius-full;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+
+  &.active {
+    background: rgba(#10b981, 0.1);
+    color: #10b981;
+
+    .status-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+  }
+}
+
+.action-btn {
+  color: $text-secondary;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba($brand-primary, 0.1);
+    color: $brand-primary;
+  }
+}
+
+// ============================================================================
+// DIALOGS & MENUS
+// ============================================================================
+
+::ng-deep .glass-menu {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid white;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: $radius-lg !important;
+  overflow: hidden;
+
+  .mat-mdc-menu-item {
+    font-family: $font-body;
+    font-size: $font-size-sm;
+    color: $text-main;
+    min-height: 40px;
+
+    mat-icon {
+      color: $text-secondary;
+      margin-right: $spacing-3;
     }
 
-    &.delete-action {
-      color: #E57373 !important;
+    &:hover {
+      background: $bg-light;
 
-      &:hover {
-        background: rgba(#F44336, 0.15) !important;
+      mat-icon {
+        color: $brand-primary;
       }
     }
 
-    &:disabled {
-      opacity: 0.4 !important;
+    &.delete-action:hover {
+      background: rgba($error-500, 0.1);
+      color: $error-500;
+
+      mat-icon {
+        color: $error-500;
+      }
     }
-
-    .mat-icon {
-      color: inherit !important;
-      margin-right: $spacing-3 !important;
-    }
   }
-
-  .mat-mdc-menu-item-text {
-    color: inherit !important;
-  }
-
-  mat-divider {
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    margin: $spacing-2 0 !important;
-  }
-}
-
-// ===========================
-// DARK SCROLLBAR
-// ===========================
-
-:host {
-  @include dark-scrollbar;
 }

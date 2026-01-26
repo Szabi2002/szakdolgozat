@@ -24,7 +24,7 @@ export class QrCodeDisplayComponent implements OnInit, OnDestroy {
   constructor(
     public ticketsService: TicketsService,
     private sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadQRCode();
@@ -102,8 +102,8 @@ export class QrCodeDisplayComponent implements OnInit, OnDestroy {
         return 'Lejárt';
       case 'used':
         return 'Használt';
-      case 'cancelled':
-        return 'Lemondva';
+      case 'refunded':
+        return 'Visszaváltva';
       default:
         return 'Ismeretlen';
     }

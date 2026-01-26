@@ -1,13 +1,10 @@
-@import '../../../../../styles/variables';
-@import '../../../../../styles/colors';
-@import '../../../../../styles/typography';
-@import '../../../../../styles/mixins';
-@import '../../../../../styles/persian-blue';
-@import '../../../../../styles/glassmorphism';
-@import '../../../../../styles/animations';
+@import 'variables';
+@import 'colors';
+@import 'typography';
+@import 'mixins';
 
 // ===========================
-// FEATURES SECTION - DARK THEME
+// FEATURES SECTION - LIGHT THEME (Mint/Teal)
 // ===========================
 
 .features-section {
@@ -18,11 +15,8 @@
   box-sizing: border-box;
   overflow: hidden;
 
-  // Dark gradient background
-  background:
-    radial-gradient(ellipse at 80% 20%, rgba($persian-blue-600, 0.15), transparent 50%),
-    radial-gradient(ellipse at 20% 80%, rgba($persian-blue-700, 0.12), transparent 50%),
-    linear-gradient(180deg, $persian-blue-950 0%, darken($persian-blue-950, 3%) 100%);
+  // Light background
+  background: $bg-light;
 
   @include tablet {
     padding: $spacing-12 $spacing-4;
@@ -33,7 +27,7 @@
   }
 }
 
-// Floating background shapes
+// Decorative shapes
 .features-section::before {
   content: '';
   position: absolute;
@@ -41,9 +35,8 @@
   right: -100px;
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba($persian-blue-500, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba($brand-primary, 0.05) 0%, transparent 70%);
   border-radius: 50%;
-  animation: float-slow 15s ease-in-out infinite;
   pointer-events: none;
 }
 
@@ -54,9 +47,8 @@
   left: -50px;
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba($persian-blue-600, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba($brand-primary, 0.03) 0%, transparent 70%);
   border-radius: 50%;
-  animation: float-medium 12s ease-in-out infinite reverse;
   pointer-events: none;
 }
 
@@ -87,7 +79,6 @@
   text-align: center;
   margin-bottom: $spacing-12;
   gap: $spacing-4;
-  animation: fadeInUp 0.8s ease-out forwards;
 
   @include mobile {
     margin-bottom: $spacing-8;
@@ -95,41 +86,40 @@
 }
 
 .header-badge {
-  @include glass-badge-accent;
-  animation: fadeIn 0.6s ease-out 0.2s backwards;
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+  padding: $spacing-2 $spacing-4;
+  background: rgba($brand-primary, 0.1);
+  border-radius: 100px;
+  border: 1px solid rgba($brand-primary, 0.2);
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $brand-primary;
 
   mat-icon {
     font-size: 18px;
     width: 18px;
     height: 18px;
-    color: $persian-blue-400;
+    color: $brand-primary;
   }
 
   @include mobile {
     padding: $spacing-1 $spacing-3;
     font-size: $font-size-xs;
-
-    mat-icon {
-      font-size: 16px;
-      width: 16px;
-      height: 16px;
-    }
   }
 }
 
 .features-heading {
   font-size: 2.75rem;
   font-weight: 800;
-  color: $persian-blue-50;
+  color: $text-main;
   margin: 0;
   line-height: 1.2;
   letter-spacing: -0.02em;
 
   .highlight {
-    background: linear-gradient(135deg, $persian-blue-400 0%, $persian-blue-300 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: $brand-primary;
     position: relative;
     display: inline-block;
   }
@@ -145,7 +135,7 @@
 
 .features-subheading {
   font-size: 1.125rem;
-  color: $persian-blue-200;
+  color: $text-secondary;
   max-width: 640px;
   margin: 0;
   line-height: 1.7;
@@ -177,22 +167,20 @@
 }
 
 // ===========================
-// FEATURE CARD - GLASSMORPHISM
+// FEATURE CARD - LIGHT THEME
 // ===========================
 
 .feature-card {
   position: relative;
-  border-radius: 20px;
+  border-radius: $radius-xl;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   cursor: pointer;
 
-  // Glass effect
-  @include glass-card;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  // Light card
+  background: $surface-light;
+  border: 1px solid $border-light !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 
   // Glow line at top
   &::before {
@@ -201,63 +189,31 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 2px;
-    background: linear-gradient(90deg,
-      transparent 0%,
-      rgba($persian-blue-400, 0.5) 50%,
-      transparent 100%
-    );
+    height: 3px;
+    background: $gradient-primary;
     opacity: 0;
     transition: opacity 0.3s ease;
   }
 
-  // Shine effect overlay
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
-    transition: left 0.6s ease;
-    pointer-events: none;
-  }
-
   &:hover {
-    transform: translateY(-10px);
-    border-color: rgba($persian-blue-400, 0.3) !important;
+    transform: translateY(-8px);
+    border-color: rgba($brand-primary, 0.2) !important;
     box-shadow:
-      0 20px 50px rgba(0, 0, 0, 0.4),
-      0 0 30px rgba($persian-blue-500, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      0 20px 50px rgba(0, 0, 0, 0.08),
+      0 0 30px rgba($brand-primary, 0.05);
 
     &::before {
       opacity: 1;
     }
 
-    &::after {
-      left: 100%;
-    }
-
     .feature-icon-wrapper {
       transform: scale(1.1);
-      background: linear-gradient(135deg,
-        rgba($persian-blue-500, 0.4) 0%,
-        rgba($persian-blue-600, 0.3) 100%
-      );
-      border-color: rgba($persian-blue-400, 0.5);
-      box-shadow: 0 0 30px rgba($persian-blue-500, 0.3);
+      background: $brand-primary;
+      border-color: $brand-primary;
 
       .feature-icon {
-        color: $persian-blue-300;
-        filter: drop-shadow(0 0 8px rgba($persian-blue-400, 0.5));
+        color: white;
       }
-    }
-
-    .icon-glow {
-      opacity: 1;
-      transform: scale(1.5);
     }
 
     .feature-arrow {
@@ -286,7 +242,7 @@
     }
   }
 
-  // Stagger animation for each card
+  // Stagger animation
   @for $i from 1 through 6 {
     &:nth-child(#{$i}) {
       animation: fadeInUp 0.6s ease-out #{$i * 100}ms backwards;
@@ -303,36 +259,20 @@
   @include flex-center;
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg,
-    rgba($persian-blue-500, 0.2) 0%,
-    rgba($persian-blue-600, 0.1) 100%
-  );
-  border: 1px solid rgba($persian-blue-400, 0.2);
-  border-radius: 20px;
+  background: rgba($brand-primary, 0.1);
+  border: 1px solid rgba($brand-primary, 0.2);
+  border-radius: $radius-xl;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
   @include mobile {
     width: 64px;
     height: 64px;
-    border-radius: 16px;
+    border-radius: $radius-lg;
   }
 }
 
 .icon-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(circle,
-    rgba($persian-blue-500, 0.4) 0%,
-    transparent 70%
-  );
-  border-radius: 50%;
-  opacity: 0;
-  transition: all 0.4s ease;
-  pointer-events: none;
+  display: none;
 }
 
 .feature-icon {
@@ -341,7 +281,7 @@
   font-size: 40px;
   width: 40px;
   height: 40px;
-  color: $persian-blue-400;
+  color: $brand-primary;
   transition: all 0.4s ease;
 
   @include mobile {
@@ -358,7 +298,7 @@
 .feature-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: $persian-blue-50;
+  color: $text-main;
   margin: 0;
   line-height: 1.3;
 
@@ -369,7 +309,7 @@
 
 .feature-description {
   font-size: 0.9375rem;
-  color: $persian-blue-300;
+  color: $text-secondary;
   line-height: 1.7;
   margin: 0;
 
@@ -390,7 +330,7 @@
     font-size: 20px;
     width: 20px;
     height: 20px;
-    color: $persian-blue-400;
+    color: $brand-primary;
   }
 }
 
@@ -403,7 +343,6 @@
   gap: $spacing-5;
   padding: $spacing-10 $spacing-4;
   text-align: center;
-  animation: fadeIn 0.8s ease-out 0.6s backwards;
 
   @include mobile {
     padding: $spacing-8 $spacing-3;
@@ -414,7 +353,7 @@
 .cta-text {
   font-size: 1.5rem;
   font-weight: 700;
-  color: $persian-blue-100;
+  color: $text-main;
   margin: 0;
 
   @include mobile {
@@ -428,14 +367,12 @@
   padding: 16px 32px;
   font-size: 1rem;
   font-weight: 600;
-  border-radius: 14px;
-  background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+  border-radius: $radius-lg;
+  background: $brand-primary !important;
   color: white !important;
   border: none !important;
-  box-shadow: 0 4px 20px rgba($persian-blue-500, 0.4);
+  box-shadow: 0 4px 20px rgba($brand-primary, 0.3);
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
 
   mat-icon {
     font-size: 22px;
@@ -443,25 +380,10 @@
     height: 22px;
   }
 
-  // Shine effect
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
-  }
-
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba($persian-blue-500, 0.5);
-
-    &::before {
-      left: 100%;
-    }
+    background: $brand-primary-dark !important;
+    box-shadow: 0 8px 30px rgba($brand-primary, 0.4);
   }
 
   &:active {
@@ -472,11 +394,21 @@
     width: 100%;
     padding: 14px 24px;
     font-size: 0.9375rem;
+  }
+}
 
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-    }
+// ===========================
+// ANIMATIONS
+// ===========================
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

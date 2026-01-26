@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ];
 
   private readonly ADMIN_MENU_ITEMS: MenuItem[] = [
-    { label: 'Áttekintő', icon: 'dashboard', route: '/admin', exactMatch: true, section: 'admin' },
+    { label: 'Áttekintő', icon: 'dashboard', route: '/admin/dashboard', exactMatch: true, section: 'admin' },
     { label: 'Értékelések moderálása', icon: 'rate_review', route: '/admin/ratings', section: 'admin' },
     { label: 'Jelentések moderálása', icon: 'assignment', route: '/admin/reports', section: 'admin' },
     { label: 'Útvonalak kezelése', icon: 'alt_route', route: '/admin/routes', section: 'admin' },

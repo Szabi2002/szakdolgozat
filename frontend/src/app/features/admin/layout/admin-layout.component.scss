@@ -1,205 +1,144 @@
-// ===========================
-// ADMIN LAYOUT - DARK GLASSMORPHISM
-// Persian Blue Design System
-// ===========================
-
 @import 'variables';
 @import 'colors';
 @import 'typography';
 @import 'mixins';
-@import 'persian-blue';
-@import 'glassmorphism';
-@import 'animations';
 
-// ===========================
-// LAYOUT VARIABLES
-// ===========================
-
-$sidebar-width: 280px;
-$sidebar-collapsed-width: 80px;
-$topbar-height: 70px;
-$transition-duration: 300ms;
-$transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
-
-// ===========================
-// MAIN LAYOUT CONTAINER
-// ===========================
+// ============================================================================
+// ADMIN LAYOUT - LIGHT THEME
+// ============================================================================
 
 .admin-layout {
   display: flex;
-  min-height: 100vh;
-  background: $gradient-dark-hero;
-  position: relative;
-  overflow-x: hidden;
-}
-
-// ===========================
-// MOBILE BACKDROP
-// ===========================
-
-.mobile-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba($persian-blue-950, 0.8);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: $z-index-modal-backdrop;
-}
-
-// ===========================
-// SIDEBAR
-// ===========================
-
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
   height: 100vh;
-  width: $sidebar-width;
-  z-index: $z-index-modal;
+  width: 100vw;
+  background-color: #f5f8f8 !important; // Force light theme background
+  color: $text-main;
+  overflow: hidden;
+}
+
+// ============================================================================
+// SIDEBAR NAVIGATION
+// ============================================================================
+
+// Main Sidebar (BEM: .sidebar)
+.sidebar {
+  width: 280px;
+  height: 100%;
+  background: white !important; // Force white sidebar
+  border-right: 1px solid #e5e7eb; // Explicit border color
   display: flex;
   flex-direction: column;
-  transition: all $transition-duration $transition-timing;
+  flex-shrink: 0;
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: 20;
+  position: relative;
   overflow: hidden;
 
-  // Glassmorphism effect
-  @include glass-sidebar;
-  @include dark-scrollbar;
-
-  // Fallback for older browsers
-  @include glass-fallback($persian-blue-900);
-
-  // Collapsed state (desktop only)
   &--collapsed {
-    width: $sidebar-collapsed-width;
-
-    .sidebar__logo-text,
-    .sidebar__nav-text,
-    .sidebar__user {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .sidebar__logo {
-      justify-content: center;
-    }
-
-    .sidebar__nav-link {
-      justify-content: center;
-      padding: 14px;
-    }
-
-    .sidebar__nav-icon {
-      margin-right: 0;
-    }
+    width: 72px;
   }
 
-  // Mobile state
+  &--open {
+    width: 280px;
+  }
+
   &--mobile {
     position: fixed;
-    z-index: $z-index-modal + 10;
+    left: 0;
+    top: 0;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+  }
 
-    &:not(.sidebar--open) {
-      transform: translateX(-100%);
+  @include mobile {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+    width: 280px;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    &.sidebar--open {
+      transform: translateX(0);
     }
   }
 
-  // Decorative orbs
+  // Decorative Orbs - Light theme colors (Mint/Teal, not blue)
   &__orb {
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 0;
+    z-index: -1;
 
     &--top {
       top: -50px;
       right: -50px;
-      width: 200px;
-      height: 200px;
-      background: $gradient-orb-blue;
-      @include float-animation(slow);
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, rgba($brand-primary, 0.08) 0%, transparent 70%);
     }
 
     &--bottom {
-      bottom: 50px;
-      left: -30px;
-      width: 150px;
-      height: 150px;
-      background: $gradient-orb-purple;
-      @include float-animation(medium);
-      animation-delay: 2s;
+      bottom: -50px;
+      left: -50px;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba($brand-primary, 0.06) 0%, transparent 70%);
     }
   }
 
-  // Header / Brand section
+  // Sidebar Header
   &__header {
-    position: relative;
-    z-index: 1;
-    padding: $spacing-6 $spacing-5;
-    border-bottom: 1px solid $dark-border-subtle;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    padding: 0 $spacing-6;
+    border-bottom: 1px solid $border-light;
   }
 
   &__logo {
     display: flex;
     align-items: center;
-    gap: $spacing-4;
-    transition: all $transition-duration $transition-timing;
+    gap: $spacing-3;
   }
 
   &__logo-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: $radius-lg;
-    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 20px rgba($persian-blue-500, 0.4);
-    flex-shrink: 0;
-    @include pulse-glow-animation(subtle);
+    width: 36px;
+    height: 36px;
+    background: $brand-primary;
+    color: white;
+    border-radius: $radius-md;
+    box-shadow: 0 4px 12px rgba($brand-primary, 0.3);
 
     mat-icon {
-      font-size: 28px;
-      width: 28px;
-      height: 28px;
-      color: $white;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
     }
   }
 
-  &__logo-text {
-    display: flex;
-    flex-direction: column;
-    transition: opacity $transition-duration $transition-timing,
-                visibility $transition-duration $transition-timing;
-  }
-
   &__logo-title {
-    font-size: $font-size-xl;
+    font-size: $font-size-lg;
     font-weight: $font-weight-bold;
-    color: $dark-text-primary;
-    line-height: 1.2;
+    color: $text-main;
     letter-spacing: -0.5px;
   }
 
   &__logo-subtitle {
     font-size: $font-size-sm;
-    color: $dark-text-muted;
     font-weight: $font-weight-medium;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    color: $text-secondary;
+    margin-left: 4px;
   }
 
-  // Navigation
+  // Sidebar Navigation
   &__nav {
     flex: 1;
-    padding: $spacing-5 $spacing-3;
+    padding: $spacing-6 $spacing-4;
     overflow-y: auto;
-    position: relative;
-    z-index: 1;
-    @include dark-scrollbar;
   }
 
   &__menu {
@@ -208,515 +147,324 @@ $transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: $spacing-2;
+    gap: $spacing-1;
   }
 
   &__menu-item {
-    animation: fadeInUp 0.4s ease-out backwards;
+    animation: fadeInUp 0.3s ease-out forwards;
   }
 
   &__nav-link {
-    @include glass-nav-item;
-    position: relative;
-    overflow: hidden;
-
-    // Shine effect on hover
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.1),
-        transparent
-      );
-      transition: left 0.5s ease;
-      pointer-events: none;
-    }
-
-    &:hover {
-      transform: translateX(4px);
-
-      &::before {
-        left: 100%;
-      }
-
-      .sidebar__nav-icon mat-icon {
-        color: $persian-blue-300;
-        filter: drop-shadow(0 0 8px rgba($persian-blue-400, 0.5));
-      }
-    }
-
-    // Active state
-    &--active {
-      background: rgba($persian-blue-500, 0.25);
-      color: $persian-blue-200;
-      border-left: 3px solid $persian-blue-400;
-
-      .sidebar__nav-icon mat-icon {
-        color: $persian-blue-300;
-        filter: drop-shadow(0 0 6px rgba($persian-blue-400, 0.4));
-      }
-
-      .sidebar__nav-indicator {
-        opacity: 1;
-        transform: scaleY(1);
-      }
-    }
-  }
-
-  &__nav-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: $radius-base;
-    background: rgba(255, 255, 255, 0.05);
-    margin-right: $spacing-3;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-
-    mat-icon {
-      font-size: 22px;
-      width: 22px;
-      height: 22px;
-      color: $dark-text-secondary;
-      transition: all 0.3s ease;
-    }
-  }
-
-  &__nav-text {
-    font-size: $font-size-base;
-    font-weight: $font-weight-medium;
-    white-space: nowrap;
-    transition: opacity $transition-duration $transition-timing,
-                visibility $transition-duration $transition-timing;
-  }
-
-  &__nav-indicator {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%) scaleY(0);
-    width: 3px;
-    height: 24px;
-    background: linear-gradient(180deg, $persian-blue-400, $persian-blue-600);
-    border-radius: 3px 0 0 3px;
-    opacity: 0;
-    transition: all 0.3s ease;
-  }
-
-  // Footer / User section
-  &__footer {
-    position: relative;
-    z-index: 1;
-    padding: $spacing-4 $spacing-3;
-    border-top: 1px solid $dark-border-subtle;
-    background: rgba($persian-blue-950, 0.3);
-  }
-
-  &__user {
     display: flex;
     align-items: center;
     gap: $spacing-3;
     padding: $spacing-3;
     border-radius: $radius-md;
-    background: rgba(255, 255, 255, 0.05);
-    transition: all 0.3s ease;
+    color: $text-secondary;
+    text-decoration: none;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    transition: all 0.2s ease;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: $text-muted;
+      transition: color 0.2s ease;
+    }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba($brand-primary, 0.05);
+      color: $text-main;
+
+      mat-icon {
+        color: $brand-primary;
+      }
+    }
+
+    &--active {
+      background: rgba($brand-primary, 0.1);
+      color: $brand-primary;
+      font-weight: $font-weight-semibold;
+
+      mat-icon {
+        color: $brand-primary;
+      }
     }
   }
 
-  &__user-avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: $radius-full;
-    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-700);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    box-shadow: 0 2px 10px rgba($persian-blue-500, 0.3);
-
-    span {
-      font-size: $font-size-base;
-      font-weight: $font-weight-bold;
-      color: $white;
-      text-transform: uppercase;
-    }
-  }
-
-  &__user-info {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  &__user-name {
-    font-size: $font-size-sm;
-    font-weight: $font-weight-semibold;
-    color: $dark-text-primary;
+  &__link-text {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  &__user-role {
-    font-size: $font-size-xs;
-    color: $dark-text-muted;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  // Sidebar Footer
+  &__footer {
+    padding: $spacing-4;
+    border-top: 1px solid $border-light;
+    background: rgba($bg-light, 0.5);
+  }
+}
+
+// Animation for menu items
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
 
-  &__logout-btn {
-    color: $dark-text-secondary;
-    transition: all 0.3s ease;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    &:hover {
-      color: $persian-blue-300;
-      background: rgba($persian-blue-500, 0.15);
+// Sidebar Header
+.sidebar-header {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: 0 $spacing-6;
+  border-bottom: 1px solid $border-light;
+
+  .logo-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: $brand-primary;
+    color: white;
+    border-radius: $radius-md;
+    box-shadow: 0 4px 12px rgba($brand-primary, 0.3);
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .logo-text {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $text-main;
+    letter-spacing: -0.5px;
+  }
+
+  .admin-badge {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    background: $text-main;
+    color: white;
+    padding: 2px 6px;
+    border-radius: $radius-sm;
+    letter-spacing: 0.5px;
+  }
+}
+
+// Sidebar Navigation Items
+.sidebar-nav {
+  flex: 1;
+  padding: $spacing-6 $spacing-4;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-1;
+
+  .nav-group-label {
+    font-size: 11px;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    color: $text-secondary;
+    margin: $spacing-4 $spacing-3 $spacing-2;
+    letter-spacing: 1px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+    padding: $spacing-3;
+    border-radius: $radius-md;
+    color: $text-secondary;
+    text-decoration: none;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    transition: all 0.2s ease;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: $text-muted;
+      transition: color 0.2s ease;
     }
 
-    &--collapsed {
-      margin: 0 auto;
+    &:hover {
+      background: rgba($brand-primary, 0.05);
+      color: $text-main;
+
+      mat-icon {
+        color: $brand-primary;
+      }
+    }
+
+    &.active {
+      background: rgba($brand-primary, 0.1);
+      color: $brand-primary;
+      font-weight: $font-weight-semibold;
+
+      mat-icon {
+        color: $brand-primary;
+      }
     }
   }
 }
 
-// ===========================
+// Sidebar Footer
+.sidebar-footer {
+  padding: $spacing-4;
+  border-top: 1px solid $border-light;
+  background: rgba($bg-light, 0.5);
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+    padding: $spacing-2;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    img {
+      width: 36px;
+      height: 36px;
+      border-radius: $radius-full;
+      object-fit: cover;
+      border: 2px solid white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-info {
+      flex: 1;
+      overflow: hidden;
+
+      .user-name {
+        display: block;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-semibold;
+        color: $text-main;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .user-role {
+        display: block;
+        font-size: $font-size-xs;
+        color: $text-secondary;
+      }
+    }
+
+    .logout-btn {
+      color: $text-secondary;
+      opacity: 0.7;
+
+      &:hover {
+        opacity: 1;
+        color: $error-500;
+      }
+    }
+  }
+}
+
+// ============================================================================
 // MAIN CONTENT AREA
-// ===========================
+// ============================================================================
 
 .main-content {
   flex: 1;
-  margin-left: $sidebar-width;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  transition: margin-left $transition-duration $transition-timing;
-
-  &--expanded {
-    margin-left: $sidebar-collapsed-width;
-  }
+  overflow: hidden;
+  position: relative;
 }
 
-// ===========================
-// TOP BAR
-// ===========================
-
-.topbar {
-  height: $topbar-height;
+// Top Bar (Mobile Only / Breadcrumbs)
+.top-bar {
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 $spacing-6;
-  background: rgba($persian-blue-900, 0.5);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid $dark-border-subtle;
-  position: sticky;
-  top: 0;
-  z-index: $z-index-sticky;
+  background: rgba($bg-light, 0.9);
+  backdrop-filter: blur(10px);
+  z-index: 10;
+  display: none; // Hidden on desktop by default as sidebar handles nav
 
-  &__left {
+  @include mobile {
     display: flex;
-    align-items: center;
-    gap: $spacing-4;
-  }
-
-  &__menu-btn {
-    color: $dark-text-secondary;
-    transition: all 0.3s ease;
-
-    &:hover {
-      color: $dark-text-primary;
-      background: rgba(255, 255, 255, 0.1);
-    }
-  }
-
-  &__breadcrumb {
-    display: flex;
-    align-items: center;
-  }
-
-  &__title {
-    font-size: $font-size-lg;
-    font-weight: $font-weight-semibold;
-    color: $dark-text-primary;
-    letter-spacing: -0.3px;
-  }
-
-  &__right {
-    display: flex;
-    align-items: center;
-    gap: $spacing-2;
-  }
-
-  &__action-btn {
-    position: relative;
-    color: $dark-text-secondary;
-    transition: all 0.3s ease;
-
-    &:hover {
-      color: $dark-text-primary;
-      background: rgba(255, 255, 255, 0.1);
-    }
-  }
-
-  &__badge {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    min-width: 18px;
-    height: 18px;
-    padding: 0 5px;
-    font-size: 11px;
-    font-weight: $font-weight-bold;
-    color: $white;
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    border-radius: $radius-full;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 6px rgba(#ef4444, 0.4);
-  }
-
-  &__user {
-    margin-left: $spacing-3;
-    padding-left: $spacing-3;
-    border-left: 1px solid $dark-border-subtle;
-  }
-
-  &__user-btn {
-    display: flex;
-    align-items: center;
-    gap: $spacing-3;
-    padding: $spacing-2 $spacing-3;
-    border: none;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: $radius-full;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-  }
-
-  &__user-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: $radius-full;
-    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-700);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    span {
-      font-size: $font-size-sm;
-      font-weight: $font-weight-bold;
-      color: $white;
-      text-transform: uppercase;
-    }
-  }
-
-  &__user-name {
-    font-size: $font-size-sm;
-    font-weight: $font-weight-medium;
-    color: $dark-text-primary;
-  }
-
-  &__user-chevron {
-    font-size: 20px;
-    color: $dark-text-muted;
-    transition: transform 0.3s ease;
-  }
-}
-
-// ===========================
-// CONTENT AREA
-// ===========================
-
-.content {
-  flex: 1;
-  padding: $spacing-6;
-  overflow-y: auto;
-  @include dark-scrollbar;
-
-  &__wrapper {
-    max-width: 1600px;
-    margin: 0 auto;
-    @include fade-in(300ms);
-  }
-}
-
-// ===========================
-// RESPONSIVE STYLES
-// ===========================
-
-// Tablet
-@include tablet {
-  .sidebar {
-    width: $sidebar-collapsed-width;
-
-    &__logo-text,
-    &__nav-text,
-    &__user {
-      display: none;
-    }
-
-    &__logo {
-      justify-content: center;
-    }
-
-    &__nav-link {
-      justify-content: center;
-      padding: 14px;
-    }
-
-    &__nav-icon {
-      margin-right: 0;
-    }
-
-    &--open {
-      width: $sidebar-width;
-
-      .sidebar__logo-text,
-      .sidebar__nav-text,
-      .sidebar__user {
-        display: flex;
-      }
-
-      .sidebar__logo {
-        justify-content: flex-start;
-      }
-
-      .sidebar__nav-link {
-        justify-content: flex-start;
-        padding: 12px 16px;
-      }
-
-      .sidebar__nav-icon {
-        margin-right: $spacing-3;
-      }
-    }
-  }
-
-  .main-content {
-    margin-left: $sidebar-collapsed-width;
-  }
-
-  .content {
-    padding: $spacing-5;
-  }
-}
-
-// Mobile
-@include mobile {
-  .sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100vh;
-    width: 85%;
-    max-width: 320px;
-    transform: translateX(-100%);
-    z-index: $z-index-modal + 10;
-
-    &--open {
-      transform: translateX(0);
-    }
-
-    &__logo-text,
-    &__nav-text,
-    &__user {
-      display: flex;
-    }
-
-    &__logo {
-      justify-content: flex-start;
-    }
-
-    &__nav-link {
-      justify-content: flex-start;
-      padding: 12px 16px;
-    }
-
-    &__nav-icon {
-      margin-right: $spacing-3;
-    }
-  }
-
-  .main-content {
-    margin-left: 0;
-    width: 100%;
-  }
-
-  .topbar {
+    border-bottom: 1px solid $border-light;
     padding: 0 $spacing-4;
-
-    &__title {
-      font-size: $font-size-base;
-    }
-
-    &__user {
-      display: none;
-    }
   }
 
-  .content {
+  .menu-toggle {
+    color: $text-main;
+  }
+
+  .page-title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $text-main;
+  }
+}
+
+// Scrollable Page Content
+.page-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: $spacing-8;
+
+  @include mobile {
     padding: $spacing-4;
   }
 }
 
-// ===========================
-// MATERIAL OVERRIDES
-// ===========================
+// ============================================================================
+// BACKDROP (Mobile Sidebar)
+// ============================================================================
 
-::ng-deep {
-  // Dropdown menu styling
-  .mat-mdc-menu-panel {
-    background: rgba($persian-blue-900, 0.95) !important;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid $dark-border-subtle;
-    border-radius: $radius-md !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-  }
+.sidebar-backdrop {
+  display: none;
 
-  .mat-mdc-menu-item {
-    color: $dark-text-secondary !important;
+  @include mobile {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 15;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
 
-    &:hover {
-      background: rgba(255, 255, 255, 0.08) !important;
-      color: $dark-text-primary !important;
+    &.open {
+      opacity: 1;
+      pointer-events: auto;
     }
-
-    .mat-icon {
-      color: $dark-text-muted;
-      margin-right: $spacing-3;
-    }
-  }
-
-  .mat-mdc-menu-divider {
-    border-color: $dark-border-subtle !important;
-  }
-
-  // Tooltip styling
-  .mat-mdc-tooltip {
-    background: rgba($persian-blue-800, 0.95) !important;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: $radius-base !important;
-    font-size: $font-size-sm !important;
-    padding: $spacing-2 $spacing-3 !important;
   }
 }

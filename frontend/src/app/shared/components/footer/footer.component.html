@@ -4,23 +4,19 @@
     <div class="footer-column logo-column">
       <div class="logo">
         <mat-icon class="logo-icon">directions_bus</mat-icon>
-        <span class="logo-text">Közlekedési Jegykezelő</span>
+        <span class="logo-text">TransitHub</span>
       </div>
-      <p class="tagline">Utazz okosan, fizess egyszerűen</p>
+      <p class="tagline">Utazz okosan, egyszerűen</p>
       <p class="description">
-        Modern jegykezelő alkalmazás a könnyebb közlekedésért.
-        Vásárolj jegyeket, tervezz utakat és kövesd nyomon utazásaidat egy helyen.
+        Modern közlekedési alkalmazás a mindennapokra.
+        Tervezz útvonalakat, vásárolj jegyeket és kövesd utazásaidat.
       </p>
     </div>
 
-    <!-- Column 2: Quick Links -->
+    <!-- Column 2: Travel Links -->
     <div class="footer-column links-column">
-      <h3 class="column-heading">Gyors linkek</h3>
+      <h3 class="column-heading">Utazás</h3>
       <nav class="footer-links">
-        <a (click)="scrollToSection('features-section')" class="footer-link">
-          <mat-icon>auto_awesome</mat-icon>
-          <span>Funkciók</span>
-        </a>
         <a routerLink="/planner" class="footer-link">
           <mat-icon>route</mat-icon>
           <span>Utazástervező</span>
@@ -29,28 +25,16 @@
           <mat-icon>confirmation_number</mat-icon>
           <span>Jegyvásárlás</span>
         </a>
-        <a routerLink="/about" class="footer-link">
-          <mat-icon>info</mat-icon>
-          <span>Rólunk</span>
-        </a>
       </nav>
     </div>
 
-    <!-- Column 3: Legal & Support -->
-    <div class="footer-column legal-column">
-      <h3 class="column-heading">Jogi információk</h3>
+    <!-- Column 3: App Links -->
+    <div class="footer-column links-column">
+      <h3 class="column-heading">Alkalmazás</h3>
       <nav class="footer-links">
-        <a routerLink="/terms" class="footer-link">
-          <mat-icon>gavel</mat-icon>
-          <span>Általános Szerződési Feltételek</span>
-        </a>
-        <a routerLink="/privacy" class="footer-link">
-          <mat-icon>shield</mat-icon>
-          <span>Adatvédelmi Nyilatkozat</span>
-        </a>
-        <a routerLink="/cookie-policy" class="footer-link">
-          <mat-icon>cookie</mat-icon>
-          <span>Cookie Szabályzat</span>
+        <a (click)="scrollToSection('features-section')" class="footer-link">
+          <mat-icon>auto_awesome</mat-icon>
+          <span>Funkciók</span>
         </a>
         <a routerLink="/reports/submit" class="footer-link">
           <mat-icon>report_problem</mat-icon>
@@ -59,30 +43,15 @@
       </nav>
     </div>
 
-    <!-- Column 4: Contact -->
-    <div class="footer-column contact-column">
-      <h3 class="column-heading">Kapcsolat</h3>
-      <div class="contact-info">
-        <div class="contact-item">
-          <mat-icon class="contact-icon">email</mat-icon>
-          <div class="contact-details">
-            <span class="contact-label">E-mail</span>
-            <a href="mailto:info&#64;kozlekedes.hu" class="contact-value">info&#64;kozlekedes.hu</a>
-          </div>
-        </div>
-        <div class="contact-item">
-          <mat-icon class="contact-icon">phone</mat-icon>
-          <div class="contact-details">
-            <span class="contact-label">Telefonos ügyfélszolgálat</span>
-            <a href="tel:+36301234567" class="contact-value">+36 30 123 4567</a>
-          </div>
-        </div>
-        <div class="contact-item">
-          <mat-icon class="contact-icon">schedule</mat-icon>
-          <div class="contact-details">
-            <span class="contact-label">Ügyfélszolgálat</span>
-            <span class="contact-value">H-P: 8:00 - 18:00</span>
-          </div>
+    <!-- Column 4: Author Info -->
+    <div class="footer-column author-column">
+      <h3 class="column-heading">Készítette</h3>
+      <div class="author-info">
+        <div class="author-name">Nagynemes Szabolcs</div>
+        <div class="thesis-info">Programtervező informatikus<br>szakdolgozat</div>
+        <div class="footer-link">
+          <mat-icon>email</mat-icon>
+          <span>sziba1231&#64;gmail.com</span>
         </div>
       </div>
     </div>
@@ -93,7 +62,7 @@
     <div class="footer-bottom-content">
       <p class="copyright">
         <mat-icon>copyright</mat-icon>
-        <span>2025 Közlekedési Jegykezelő. Minden jog fenntartva.</span>
+        <span>2026 TransitHub. Minden jog fenntartva.</span>
       </p>
       <div class="footer-meta">
         <span class="version">Verzió 1.0.0</span>

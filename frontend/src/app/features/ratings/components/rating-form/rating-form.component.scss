@@ -2,22 +2,14 @@
 @import 'colors';
 @import 'typography';
 @import 'mixins';
-@import 'persian-blue';
-@import 'glassmorphism';
-@import 'animations';
 
 // ============================================================================
-// RATING FORM - DARK THEME WITH GLASSMORPHISM
+// RATING FORM - LIGHT THEME
 // ============================================================================
 
 .rating-form {
   max-width: 800px;
   margin: 0 auto;
-  @include fade-in(400ms);
-
-  // ==========================================================================
-  // FORM HEADER - GRADIENT STYLE
-  // ==========================================================================
 
   .form-header {
     @include flex-column-center;
@@ -28,52 +20,31 @@
     overflow: hidden;
     text-align: center;
     border-radius: $radius-2xl $radius-2xl 0 0;
-    animation: fadeInUp 0.5s ease backwards;
-
-    // Dark gradient with yellow/gold accent for ratings
-    background:
-      radial-gradient(ellipse at 20% 0%, rgba($color-rating-accent, 0.3), transparent 50%),
-      radial-gradient(ellipse at 80% 100%, rgba($persian-blue-600, 0.2), transparent 50%),
-      linear-gradient(135deg, $persian-blue-800 0%, $persian-blue-900 100%);
-
-    // Decorative wave pattern
-    &::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 40px;
-      background: url('data:image/svg+xml,<svg width="100%" height="40" viewBox="0 0 1200 40" xmlns="http://www.w3.org/2000/svg"><path d="M0,20 Q300,0 600,20 T1200,20 L1200,40 L0,40 Z" fill="rgba(255,255,255,0.05)"/></svg>') no-repeat bottom;
-      background-size: 100% 40px;
-    }
+    background: linear-gradient(135deg, $brand-primary 0%, $brand-primary-dark 100%);
 
     .header-icon {
       @include flex-center;
       width: 56px;
       height: 56px;
       border-radius: $radius-full;
-      background: rgba($color-rating-accent, 0.2);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba($color-rating-accent, 0.3);
-      @include glow-shadow($color-rating-accent, 0.2, 16px);
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       font-size: 32px;
-      color: $color-rating-accent;
+      color: white;
     }
 
     .form-title {
       margin: 0;
       font-size: $font-size-2xl;
       font-weight: $font-weight-bold;
-      color: $persian-blue-50;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      color: white;
     }
 
     .form-subtitle {
       margin: 0;
       font-size: $font-size-base;
       font-weight: $font-weight-medium;
-      color: $persian-blue-200;
+      color: rgba(255, 255, 255, 0.85);
     }
 
     @include mobile {
@@ -88,33 +59,19 @@
       .form-title {
         font-size: $font-size-xl;
       }
-
-      .form-subtitle {
-        font-size: $font-size-sm;
-      }
     }
   }
-
-  // ==========================================================================
-  // FORM SECTIONS - GLASSMORPHISM
-  // ==========================================================================
 
   .form-section {
     padding: $spacing-6;
     margin-bottom: $spacing-2;
-    animation: fadeInUp 0.5s ease backwards;
     position: relative;
+    background: $surface-light;
+    border-left: 4px solid $brand-primary;
 
-    // Glassmorphism background
-    background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-left: 4px solid $color-rating-accent;
-
-    @for $i from 1 through 5 {
-      &:nth-child(#{$i + 1}) {
-        animation-delay: #{100 + $i * 50}ms;
-      }
+    &.no-header {
+      border-radius: $radius-2xl $radius-2xl 0 0;
+      margin-top: 0;
     }
 
     &:last-of-type {
@@ -127,14 +84,14 @@
       align-items: center;
       font-size: $font-size-lg;
       font-weight: $font-weight-bold;
-      color: $persian-blue-50;
+      color: $text-main;
       margin-bottom: $spacing-5;
 
       mat-icon {
         font-size: $icon-base;
         width: $icon-base;
         height: $icon-base;
-        color: $color-rating-accent;
+        color: $brand-primary;
       }
     }
 
@@ -143,50 +100,31 @@
 
       .section-label {
         font-size: $font-size-base;
-
-        mat-icon {
-          font-size: $icon-sm;
-          width: $icon-sm;
-          height: $icon-sm;
-        }
       }
     }
   }
 
-  // ==========================================================================
-  // OVERALL RATING SECTION
-  // ==========================================================================
-
   .overall-section {
-    border-left-color: $color-rating-accent;
-
     .rating-input {
       @include flex-start;
       align-items: center;
       gap: $spacing-4;
       padding: $spacing-4;
       border-radius: $radius-lg;
-
-      // Glassmorphism with gold accent
-      background: rgba($color-rating-accent, 0.1);
-      border: 1px solid rgba($color-rating-accent, 0.2);
+      background: rgba($brand-primary, 0.05);
+      border: 1px solid rgba($brand-primary, 0.15);
 
       .rating-value {
         font-size: $font-size-2xl;
         font-weight: $font-weight-bold;
-        color: $color-rating-accent;
+        color: $brand-primary;
         min-width: 60px;
-        text-shadow: 0 2px 8px rgba($color-rating-accent, 0.3);
       }
 
       @include mobile {
         flex-direction: column;
         align-items: flex-start;
         gap: $spacing-3;
-
-        .rating-value {
-          font-size: $font-size-xl;
-        }
       }
     }
 
@@ -195,28 +133,16 @@
       gap: $spacing-2;
       margin-top: $spacing-3;
       padding: $spacing-2 $spacing-3;
-      background: rgba($error-400, 0.1);
+      background: rgba($error-500, 0.08);
       border-radius: $radius-md;
-      border-left: 3px solid $error-400;
-      color: $error-400;
+      border-left: 3px solid $error-500;
+      color: $error-600;
       font-size: $font-size-sm;
       font-weight: $font-weight-medium;
-
-      &::before {
-        content: '!';
-        font-size: $font-size-base;
-        font-weight: $font-weight-bold;
-      }
     }
   }
 
-  // ==========================================================================
-  // CATEGORIES SECTION
-  // ==========================================================================
-
   .categories-section {
-    border-left-color: $persian-blue-400;
-
     .categories-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -234,16 +160,11 @@
       padding: $spacing-4;
       border-radius: $radius-lg;
       transition: all 0.3s ease;
-
-      // Glassmorphism card
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: $bg-light;
+      border: 1px solid $border-light;
 
       &:hover {
-        border-color: rgba($persian-blue-400, 0.3);
-        background: rgba(255, 255, 255, 0.06);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        border-color: rgba($brand-primary, 0.2);
       }
 
       .category-header {
@@ -255,198 +176,129 @@
           font-size: 20px;
           width: 20px;
           height: 20px;
-          color: $persian-blue-400;
+          color: $brand-primary;
         }
 
         .category-name {
           font-size: $font-size-base;
           font-weight: $font-weight-semibold;
-          color: $persian-blue-100;
+          color: $text-main;
         }
-      }
-
-      app-star-rating {
-        display: block;
       }
 
       .rating-value {
         font-size: $font-size-base;
         font-weight: $font-weight-bold;
-        color: $color-rating-accent;
+        color: $brand-primary;
         text-align: right;
       }
 
       .error-message {
         margin-top: 0;
         padding: $spacing-2;
-        background: rgba($error-400, 0.1);
+        background: rgba($error-500, 0.08);
         border-radius: $radius-sm;
-        border-left: 3px solid $error-400;
-        color: $error-400;
+        border-left: 3px solid $error-500;
+        color: $error-600;
         font-size: $font-size-xs;
         font-weight: $font-weight-medium;
-
-        &::before {
-          content: '! ';
-          font-weight: $font-weight-bold;
-        }
-      }
-
-      @include mobile {
-        padding: $spacing-3;
-
-        .category-header {
-          mat-icon {
-            font-size: 18px;
-            width: 18px;
-            height: 18px;
-          }
-
-          .category-name {
-            font-size: $font-size-sm;
-          }
-        }
       }
     }
   }
 
-  // ==========================================================================
-  // COMMENT SECTION
-  // ==========================================================================
-
   .comment-section {
-    border-left-color: $persian-blue-500;
-
     .full-width {
       width: 100%;
 
       ::ng-deep {
         .mat-mdc-text-field-wrapper {
-          background: rgba(255, 255, 255, 0.04);
+          background: $bg-light;
           border-radius: $radius-lg;
-        }
-
-        .mat-mdc-form-field-focus-overlay {
-          background-color: rgba($persian-blue-400, 0.1);
         }
 
         .mdc-notched-outline__leading,
         .mdc-notched-outline__notch,
         .mdc-notched-outline__trailing {
-          border-color: rgba(255, 255, 255, 0.15) !important;
+          border-color: $border-light !important;
         }
 
         .mdc-text-field--focused .mdc-notched-outline {
+
           .mdc-notched-outline__leading,
           .mdc-notched-outline__notch,
           .mdc-notched-outline__trailing {
-            border-color: $persian-blue-400 !important;
+            border-color: $brand-primary !important;
           }
         }
 
-        .mat-mdc-form-field-subscript-wrapper {
-          margin-top: $spacing-2;
-        }
-
         mat-label {
-          color: $persian-blue-200;
+          color: $text-secondary;
         }
 
         textarea {
           font-size: $font-size-sm;
           line-height: 1.6;
           font-family: $font-family-base;
-          color: $persian-blue-50;
+          color: $text-main;
 
           &::placeholder {
-            color: $persian-blue-400;
+            color: $text-muted;
           }
         }
 
         .mat-mdc-form-field-hint {
-          color: $persian-blue-300;
+          color: $text-secondary;
         }
 
         .mat-mdc-form-field-error {
-          color: $error-400;
+          color: $error-600;
         }
       }
     }
   }
-
-  // ==========================================================================
-  // PHOTO SECTION
-  // ==========================================================================
-
-  .photo-section {
-    border-left-color: $success-400;
-
-    app-photo-upload {
-      display: block;
-    }
-  }
-
-  // ==========================================================================
-  // PROGRESS BAR
-  // ==========================================================================
 
   .submit-progress {
     margin: 0;
     height: 4px;
-    background: rgba(255, 255, 255, 0.1);
+    background: $neutral-200;
 
     ::ng-deep {
       .mat-mdc-progress-bar-fill::after {
-        background-color: $color-rating-accent;
+        background-color: $brand-primary;
       }
 
       .mat-mdc-progress-bar-buffer {
-        background-color: rgba($color-rating-accent, 0.2);
+        background-color: rgba($brand-primary, 0.2);
       }
     }
   }
-
-  // ==========================================================================
-  // FORM ACTIONS
-  // ==========================================================================
 
   .form-actions {
     @include flex-end;
     gap: $spacing-3;
     padding: $spacing-6;
     border-radius: 0 0 $radius-2xl $radius-2xl;
-    animation: fadeInUp 0.5s ease 400ms backwards;
-
-    // Glassmorphism background
-    background: rgba(255, 255, 255, 0.03);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: $bg-light;
+    border-top: 1px solid $border-light;
 
     .cancel-button {
       @include flex-center;
       gap: $spacing-2;
       padding: $spacing-3 $spacing-5;
-      border: 1px solid rgba(255, 255, 255, 0.15) !important;
-      background: rgba(255, 255, 255, 0.05) !important;
-      color: $persian-blue-200 !important;
+      border: 1px solid $border-light !important;
+      background: $surface-light !important;
+      color: $text-secondary !important;
       font-weight: $font-weight-semibold;
       border-radius: $radius-lg;
       transition: all 0.3s ease;
 
-      mat-icon {
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
-      }
-
       &:hover:not([disabled]) {
-        border-color: rgba(255, 255, 255, 0.3) !important;
-        background: rgba(255, 255, 255, 0.1) !important;
-        transform: translateY(-2px);
+        border-color: $neutral-300 !important;
+        background: $bg-light !important;
       }
 
       &[disabled] {
         opacity: 0.5;
-        cursor: not-allowed;
       }
     }
 
@@ -454,33 +306,20 @@
       @include flex-center;
       gap: $spacing-2;
       padding: $spacing-3 $spacing-6;
-      background: linear-gradient(135deg, $color-rating-accent 0%, $color-rating-accent-dark 100%) !important;
-      color: $persian-blue-950 !important;
+      background: $brand-primary !important;
+      color: white !important;
       font-weight: $font-weight-bold;
       border-radius: $radius-lg;
-      @include glow-shadow($color-rating-accent, 0.3, 16px);
-      transition: all $transition-medium ease;
-
-      mat-icon {
-        font-size: $icon-sm;
-        width: $icon-sm;
-        height: $icon-sm;
-      }
+      box-shadow: 0 4px 12px rgba($brand-primary, 0.25);
+      transition: all 0.3s ease;
 
       &:hover:not([disabled]) {
-        @include glow-shadow($color-rating-accent, 0.4, 24px);
-        transform: translateY(-3px);
-      }
-
-      &:active:not([disabled]) {
-        transform: translateY(-1px);
-        @include glow-shadow($color-rating-accent, 0.3, 16px);
+        background: $brand-primary-dark !important;
+        box-shadow: 0 8px 20px rgba($brand-primary, 0.35);
       }
 
       &[disabled] {
         opacity: 0.6;
-        cursor: not-allowed;
-        transform: none !important;
       }
     }
 
@@ -496,21 +335,4 @@
       }
     }
   }
-}
-
-// ============================================================================
-// LOADING STATE ANIMATION
-// ============================================================================
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.submit-button[disabled] mat-icon {
-  animation: rotate 1.5s linear infinite;
 }

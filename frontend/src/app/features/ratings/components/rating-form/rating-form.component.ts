@@ -35,6 +35,7 @@ import { StarRatingComponent } from '../../../../shared/components/star-rating/s
 export class RatingFormComponent implements OnInit, OnDestroy {
   @Input() routeId?: string;
   @Input() existingRating?: Rating;
+  @Input() showHeader: boolean = true;
   @Output() success = new EventEmitter<Rating>();
   @Output() cancel = new EventEmitter<void>();
 
@@ -48,7 +49,7 @@ export class RatingFormComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private ratingsService: RatingsService,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.isEditMode = !!this.existingRating;

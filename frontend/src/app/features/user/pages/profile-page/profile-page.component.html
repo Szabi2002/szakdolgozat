@@ -1,66 +1,175 @@
-<section class="profile-section">
-  <!-- Floating Background Orbs -->
-  <div class="profile-background">
-    <div class="background-orb orb-1"></div>
-    <div class="background-orb orb-2"></div>
-    <div class="background-orb orb-3"></div>
-  </div>
-
-  <div class="profile-container">
-    @if (loading) {
-      <!-- Loading State -->
-      <div class="loading-state">
-        <mat-spinner diameter="48"></mat-spinner>
-        <p>Betoltes...</p>
-      </div>
-    } @else {
-      <!-- Profile Card -->
-      <div class="profile-card">
-        <div class="card-glow"></div>
-
-        <!-- Avatar Section -->
-        <div class="avatar-wrapper">
-          @if (currentUser?.profile_picture_url) {
-            <img
-              [src]="currentUser!.profile_picture_url"
-              [alt]="currentUser!.name"
-              class="avatar-image"
-            />
-          } @else {
-            <mat-icon class="avatar-icon">person</mat-icon>
-          }
+<div class="profile-page">
+  <!-- Gradient Header (Standardized) -->
+  <section class="dashboard-header">
+    <div class="header-container">
+      <div class="header-left">
+        <div class="header-badge">
+          <mat-icon>person</mat-icon>
+          <span>Profil</span>
         </div>
+        <div class="greeting-section">
+          <h1 class="greeting-heading">Profil Beállítások</h1>
+          <p class="greeting-subtext">Személyes adatok és fiók biztonság kezelése</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- User Name -->
-        <h1 class="user-name">{{ currentUser?.name || 'Felhasznalo' }}</h1>
-
-        <!-- User Email -->
-        <p class="user-email">{{ currentUser?.email }}</p>
-
-        <!-- User Info Stats -->
-        <div class="profile-stats">
-          <div class="stat-item">
-            <mat-icon>{{ getRoleIcon(currentUser?.role) }}</mat-icon>
-            <span class="stat-label">{{ getRoleLabel(currentUser?.role) }}</span>
+  <!-- Content Section -->
+  <section class="content-section">
+    <div class="content-container">
+      @if (loading) {
+      <div class="state-container">
+        <div class="state-card">
+          <mat-spinner diameter="48"></mat-spinner>
+          <p>Profil betöltése...</p>
+        </div>
+      </div>
+      } @else {
+      <div class="profile-grid">
+        <!-- Left: Identity & Info -->
+        <div class="main-column">
+          <!-- Identity Card -->
+          <div class="card profile-identity-card fade-in">
+            <div class="avatar-section">
+              <div class="avatar-wrapper">
+                @if (currentUser?.profile_picture_url) {
+                <img [src]="currentUser!.profile_picture_url" [alt]="currentUser!.name" class="avatar-image">
+                } @else {
+                <div class="avatar-placeholder">
+                  <mat-icon>person</mat-icon>
+                </div>
+                }
+                <div class="role-badge" [class]="currentUser?.role">
+                  {{ getRoleLabel(currentUser?.role) }}
+                </div>
+              </div>
+              <div class="user-identity">
+                <h2>{{ currentUser?.name }}</h2>
+                <p class="email">{{ currentUser?.email }}</p>
+              </div>
+            </div>
           </div>
 
-          @if (currentUser?.created_at) {
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <mat-icon>calendar_today</mat-icon>
-              <span class="stat-label">{{ currentUser!.created_at | date:'yyyy. MMM d.' }}</span>
+          <!-- Personal Info Card -->
+          <div class="card fade-in delay-100">
+            <h3 class="card-title">Személyes Adatok</h3>
+            <div class="info-list">
+              <!-- Name -->
+              <div class="info-item">
+                <div class="info-label">
+                  <mat-icon>badge</mat-icon>
+                  <span>Megjelenített Név</span>
+                </div>
+                @if (!isEditingName) {
+                <div class="display-value-row">
+                  <span class="value">{{ currentUser?.name }}</span>
+                  <button mat-icon-button class="edit-btn" (click)="toggleEditName()" matTooltip="Név szerkesztése">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </div>
+                } @else {
+                <form [formGroup]="nameForm" (ngSubmit)="saveName()" class="edit-form">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Név</mat-label>
+                    <input matInput formControlName="name" placeholder="Írd be az új neved">
+                    <mat-error *ngIf="nameForm.get('name')?.hasError('required')">A név megadása kötelező</mat-error>
+                    <mat-error *ngIf="nameForm.get('name')?.hasError('minlength')">Legalább 2 karakter</mat-error>
+                  </mat-form-field>
+                  <div class="form-actions">
+                    <button mat-stroked-button type="button" (click)="toggleEditName()"
+                      [disabled]="savingName">Mégse</button>
+                    <button mat-flat-button color="primary" type="submit" [disabled]="nameForm.invalid || savingName">
+                      @if (savingName) { <mat-spinner diameter="20"></mat-spinner> } @else { Mentés }
+                    </button>
+                  </div>
+                </form>
+                }
+              </div>
+              <!-- Email -->
+              <div class="info-item">
+                <div class="info-label">
+                  <mat-icon>email</mat-icon>
+                  <span>Email Cím</span>
+                </div>
+                <div class="display-value-row">
+                  <span class="value">{{ currentUser?.email }}</span>
+                  <span class="helper-text">(Nem módosítható)</span>
+                </div>
+              </div>
+              <!-- Registration Date -->
+              <div class="info-item">
+                <div class="info-label">
+                  <mat-icon>event</mat-icon>
+                  <span>Regisztráció Dátuma</span>
+                </div>
+                <div class="display-value-row">
+                  <span class="value">{{ currentUser?.created_at | date:'yyyy. MMM d.' }}</span>
+                </div>
+              </div>
             </div>
-          }
+          </div>
         </div>
 
-        <!-- Logout Button -->
-        <button
-          class="logout-btn"
-          (click)="logout()">
-          <mat-icon>logout</mat-icon>
-          <span>Kijelentkezes</span>
-        </button>
+        <!-- Right: Security & Actions -->
+        <div class="side-column">
+          <!-- Security Card -->
+          <div class="card fade-in delay-200">
+            <h3 class="card-title">Biztonság</h3>
+            <button mat-stroked-button (click)="togglePasswordChange()" color="primary"
+              class="full-width password-toggle-btn">
+              <mat-icon>{{ showPasswordChange ? 'close' : 'lock_reset' }}</mat-icon>
+              {{ showPasswordChange ? 'Mégse' : 'Jelszó csere' }}
+            </button>
+            @if (showPasswordChange) {
+            <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="password-form fade-in">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Jelenlegi jelszó</mat-label>
+                <input matInput type="password" formControlName="currentPassword">
+                <mat-error *ngIf="passwordForm.get('currentPassword')?.hasError('required')">Kötelező mező</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Új jelszó</mat-label>
+                <input matInput type="password" formControlName="newPassword">
+                <mat-error *ngIf="passwordForm.get('newPassword')?.hasError('required')">Kötelező</mat-error>
+                <mat-error *ngIf="passwordForm.get('newPassword')?.hasError('minlength')">Legalább 6
+                  karakter</mat-error>
+              </mat-form-field>
+
+              <app-password-strength-indicator [password]="newPasswordValue"
+                class="password-strength-indicator"></app-password-strength-indicator>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Új jelszó megerősítése</mat-label>
+                <input matInput type="password" formControlName="confirmPassword">
+                <mat-error *ngIf="passwordForm.hasError('mismatch')">Jelszavak nem egyeznek</mat-error>
+              </mat-form-field>
+              <div class="form-actions">
+                <button mat-flat-button color="primary" type="submit"
+                  [disabled]="passwordForm.invalid || changingPassword">
+                  @if (changingPassword) { <mat-spinner diameter="20"></mat-spinner> } @else { Jelszó Frissítése }
+                </button>
+              </div>
+            </form>
+            } @else {
+            <div class="security-placeholder">
+              <mat-icon class="shield-icon">security</mat-icon>
+              <p>A jelszó és fiókbiztonság kezeléséhez kattints a "Jelszó csere" gombra.</p>
+            </div>
+            }
+          </div>
+
+          <!-- Logout Card -->
+          <div class="card danger-zone fade-in delay-300">
+            <h3 class="card-title text-danger">Fiók Műveletek</h3>
+            <p class="card-description">Kijelentkezés az eszközről.</p>
+            <button mat-stroked-button color="warn" class="logout-btn full-width" (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              Kijelentkezés
+            </button>
+          </div>
+        </div>
       </div>
-    }
-  </div>
-</section>
+      }
+    </div>
+  </section>
+</div>

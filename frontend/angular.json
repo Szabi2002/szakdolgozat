@@ -57,14 +57,17 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1mb",
-                  "maximumError": "2mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "4mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "20kb",
                   "maximumError": "40kb"
                 }
+              ],
+              "allowedCommonJsDependencies": [
+                "mapbox-gl"
               ],
               "outputHashing": "all",
               "optimization": {

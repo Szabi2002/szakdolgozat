@@ -2,8 +2,6 @@
 @import 'colors';
 @import 'typography';
 @import 'mixins';
-@import 'persian-blue';
-@import 'glassmorphism';
 @import 'animations';
 
 // ===========================
@@ -15,7 +13,7 @@ $sidebar-collapsed-width: 70px;
 $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 
 // ===========================
-// GLASS SIDEBAR NAVIGATION
+// GLASS SIDEBAR NAVIGATION (Mint/Teal Theme)
 // ===========================
 
 .sidebar {
@@ -24,22 +22,25 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
   top: 0;
   width: $sidebar-width;
   height: 100vh;
-  z-index: $z-index-sticky;
+  z-index: $z-index-sticky; // Desktop default (1020)
   display: flex;
   flex-direction: column;
 
-  // Glassmorphism effect
-  background: rgba($persian-blue-900, 0.85);
+  // Light Glassmorphism effect
+  background: rgba($surface-light, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
+  border-right: 1px solid $border-light;
+  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.08);
 
   // Mobile: hidden by default
-  @include mobile {
+  // Mobile & Tablet: hidden by default
+  @media (max-width: #{$breakpoint-lg - 1px}) {
     transform: translateX(-100%);
     width: $sidebar-width;
-    overflow-y: auto; // Allow full scroll on mobile
+    overflow-y: auto;
+    // Boost z-index for mobile drawer to be above its own backdrop
+    z-index: $z-index-modal + 5;
 
     &.open {
       transform: translateX(0);
@@ -49,7 +50,7 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
   // Desktop: always visible, can be collapsed
   @include desktop {
     transform: translateX(0);
-    overflow: hidden; // Desktop handles scroll in nav section
+    overflow: hidden;
 
     &.collapsed {
       width: $sidebar-collapsed-width;
@@ -61,7 +62,7 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
         opacity: 0;
         visibility: hidden;
         width: 0;
-        display: none; // Completely remove from flow to prevent overflow
+        display: none;
       }
 
       .sidebar-header {
@@ -86,12 +87,12 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 
       .sidebar-nav {
         padding: $spacing-2;
-        align-items: center; // Center items horizontally
+        align-items: center;
 
         .sidebar-item {
           justify-content: center;
-          padding: $spacing-2; // Reduce padding to fit
-          width: 44px; // Fixed square size for icons
+          padding: $spacing-2;
+          width: 44px;
           height: 44px;
           border-radius: $radius-md;
 
@@ -125,7 +126,7 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
   align-items: center;
   justify-content: space-between;
   padding: $spacing-5 $spacing-4;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid $border-light;
   min-height: 72px;
 
   .logo {
@@ -133,7 +134,7 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
     align-items: center;
     gap: $spacing-3;
     text-decoration: none;
-    color: $persian-blue-50;
+    color: $text-main;
     transition: all 0.2s ease;
     overflow: hidden;
 
@@ -144,36 +145,37 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
       width: 40px;
       height: 40px;
       border-radius: 12px;
-      background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
-      border: 1px solid rgba($persian-blue-400, 0.3);
+      background: $brand-primary-10;
+      border: 1px solid rgba($brand-primary, 0.2);
       flex-shrink: 0;
 
       mat-icon {
         font-size: 24px;
         width: 24px;
         height: 24px;
-        color: $persian-blue-300;
+        color: $brand-primary;
       }
     }
 
     .logo-text {
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 1.125rem;
+      font-weight: 700;
       white-space: nowrap;
       transition: opacity 0.2s, visibility 0.2s, width 0.2s;
+      letter-spacing: -0.025em;
     }
 
     &:hover {
       .logo-icon {
-        background: linear-gradient(135deg, rgba($persian-blue-400, 0.4), rgba($persian-blue-500, 0.3));
-        border-color: rgba($persian-blue-300, 0.4);
+        background: $brand-primary-20;
+        border-color: rgba($brand-primary, 0.3);
       }
     }
   }
 
   .close-sidebar,
   .collapse-toggle {
-    color: $persian-blue-300;
+    color: $text-secondary;
     width: 36px;
     height: 36px;
     border-radius: 10px;
@@ -187,8 +189,8 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: $persian-blue-100;
+      background: rgba($brand-primary, 0.1);
+      color: $brand-primary;
     }
   }
 }
@@ -202,7 +204,7 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
   align-items: center;
   gap: $spacing-3;
   padding: $spacing-4 $spacing-4;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba($brand-primary, 0.03);
   transition: all 0.2s ease;
 
   .user-avatar-container {
@@ -213,15 +215,15 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
       height: 48px;
       border-radius: 14px;
       object-fit: cover;
-      border: 2px solid rgba($persian-blue-400, 0.4);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      border: 2px solid rgba($brand-primary, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .user-avatar-icon {
       font-size: 48px;
       width: 48px;
       height: 48px;
-      color: $persian-blue-400;
+      color: $brand-primary;
     }
 
     .user-avatar-small {
@@ -229,21 +231,20 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
       height: 36px;
       border-radius: 10px;
       object-fit: cover;
-      border: 2px solid rgba($persian-blue-400, 0.4);
+      border: 2px solid rgba($brand-primary, 0.3);
     }
 
     .user-avatar-compact {
       width: 36px;
       height: 36px;
       border-radius: 10px;
-      background: linear-gradient(135deg, $persian-blue-600, $persian-blue-700);
-      color: $persian-blue-100;
+      background: linear-gradient(135deg, $brand-primary, $brand-primary-dark);
+      color: white;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.875rem;
       font-weight: 600;
-      border: 2px solid rgba($persian-blue-400, 0.3);
     }
   }
 
@@ -253,8 +254,8 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 
     .user-name {
       font-size: 0.9375rem;
-      font-weight: 500;
-      color: $persian-blue-50;
+      font-weight: 600;
+      color: $text-main;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -263,7 +264,7 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 
     .user-email {
       font-size: 0.75rem;
-      color: $persian-blue-300;
+      color: $text-secondary;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -277,7 +278,7 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 
 .section-divider,
 .nav-divider {
-  background-color: rgba(255, 255, 255, 0.06) !important;
+  background-color: $border-light !important;
   margin: $spacing-2 $spacing-4 !important;
 }
 
@@ -286,25 +287,36 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 // ===========================
 
 .sidebar-nav {
-  flex: 1; // Take remaining space
+  flex: 1;
   padding: $spacing-3;
   display: flex;
   flex-direction: column;
-  gap: $spacing-2;
-  overflow-y: auto; // Scrollable area
+  gap: $spacing-1;
+  overflow-y: auto;
   overflow-x: hidden;
-  min-height: 0; // Fixes flex scrolling issue
+  min-height: 0;
 
-  // Move scrollbar here
-  @include dark-scrollbar;
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $neutral-300;
+    border-radius: 3px;
+  }
 
   .sidebar-item {
     display: flex;
     align-items: center;
     gap: $spacing-3;
     padding: $spacing-3 $spacing-4;
-    border-radius: 12px;
-    color: $persian-blue-200;
+    border-radius: $radius-lg;
+    color: $text-secondary;
     text-decoration: none;
     font-size: 0.9375rem;
     font-weight: 500;
@@ -316,13 +328,13 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
     text-align: left;
     position: relative;
     overflow: hidden;
-    flex-shrink: 0; // Prevent shrinking
+    flex-shrink: 0;
 
     mat-icon {
       font-size: 20px;
       width: 20px;
       height: 20px;
-      color: $persian-blue-400;
+      color: $neutral-500;
       transition: all 0.2s ease;
       flex-shrink: 0;
     }
@@ -335,53 +347,24 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
       transition: opacity 0.2s, visibility 0.2s;
     }
 
-    // Shine effect on hover
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-      transition: left 0.4s ease;
-    }
-
     &:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: $persian-blue-50;
-      transform: translateX(4px);
+      background: rgba($brand-primary, 0.08);
+      color: $text-main;
 
       mat-icon {
-        color: $persian-blue-300;
-      }
-
-      &::before {
-        left: 100%;
+        color: $brand-primary;
       }
     }
 
     &.active {
-      background: linear-gradient(135deg, rgba($persian-blue-500, 0.25), rgba($persian-blue-600, 0.15));
-      color: $persian-blue-50;
-      border: 1px solid rgba($persian-blue-400, 0.2);
+      background: $brand-primary;
+      color: white;
 
       mat-icon {
-        color: $persian-blue-300;
+        color: white;
       }
 
-      // Active indicator line
-      &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 3px;
-        height: 60%;
-        background: linear-gradient(180deg, $persian-blue-400, $persian-blue-500);
-        border-radius: 0 4px 4px 0;
-      }
+      // Active indicator removed - using filled background instead
     }
   }
 
@@ -390,7 +373,7 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    color: $persian-blue-400;
+    color: $text-secondary;
     padding: $spacing-4 $spacing-4 $spacing-2;
     transition: opacity 0.2s, visibility 0.2s;
   }
@@ -399,7 +382,7 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: $persian-blue-500;
+    background: $brand-primary;
     margin: $spacing-4 auto;
     opacity: 0.6;
   }
@@ -411,15 +394,15 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 
 .sidebar-footer {
   padding: $spacing-3;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid $border-light;
 
   .sidebar-action {
     display: flex;
     align-items: center;
     gap: $spacing-3;
     padding: $spacing-3 $spacing-4;
-    border-radius: 12px;
-    color: $persian-blue-200;
+    border-radius: $radius-lg;
+    color: $text-secondary;
     text-decoration: none;
     font-size: 0.9375rem;
     font-weight: 500;
@@ -435,17 +418,17 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
       font-size: 20px;
       width: 20px;
       height: 20px;
-      color: $persian-blue-400;
+      color: $neutral-500;
       transition: all 0.2s ease;
       flex-shrink: 0;
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: $persian-blue-50;
+      background: rgba($brand-primary, 0.08);
+      color: $text-main;
 
       mat-icon {
-        color: $persian-blue-300;
+        color: $brand-primary;
       }
     }
 
@@ -455,22 +438,31 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   .register-btn {
-    background: linear-gradient(135deg, rgba($persian-blue-500, 0.2), rgba($persian-blue-600, 0.1));
-    border: 1px solid rgba($persian-blue-400, 0.2);
+    background: $brand-primary;
+    color: white;
+    border: none;
+
+    mat-icon {
+      color: white;
+    }
 
     &:hover {
-      background: linear-gradient(135deg, rgba($persian-blue-500, 0.3), rgba($persian-blue-600, 0.2));
-      border-color: rgba($persian-blue-400, 0.3);
+      background: $brand-primary-dark;
+      color: white;
+
+      mat-icon {
+        color: white;
+      }
     }
   }
 
   .logout-btn {
     &:hover {
-      background: rgba($error-500, 0.15);
-      color: lighten($error-500, 15%);
+      background: rgba($error-500, 0.1);
+      color: $error-600;
 
       mat-icon {
-        color: lighten($error-500, 15%);
+        color: $error-600;
       }
     }
   }
@@ -486,9 +478,9 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba($persian-blue-950, 0.8);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: $z-index-modal-backdrop;
   animation: fadeIn 0.2s ease;
 }
@@ -508,15 +500,15 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
   align-items: center;
   padding: 0 $spacing-4;
 
-  // Glassmorphism
-  background: rgba($persian-blue-900, 0.9);
+  // Light glassmorphism
+  background: rgba($surface-light, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid $border-light;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 
   .hamburger-btn {
-    color: $persian-blue-200;
+    color: $text-secondary;
     margin-right: $spacing-3;
 
     mat-icon {
@@ -526,8 +518,8 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: $persian-blue-50;
+      background: rgba($brand-primary, 0.1);
+      color: $brand-primary;
     }
   }
 
@@ -536,15 +528,15 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
     align-items: center;
     gap: $spacing-2;
     text-decoration: none;
-    color: $persian-blue-50;
+    color: $text-main;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
 
     mat-icon {
       font-size: 24px;
       width: 24px;
       height: 24px;
-      color: $persian-blue-400;
+      color: $brand-primary;
     }
   }
 
@@ -592,4 +584,9 @@ $sidebar-transition: 0.35s cubic-bezier(0.25, 1, 0.5, 1);
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+// Hidden utility class
+.hidden {
+  display: none !important;
 }

@@ -2,21 +2,17 @@
 @import 'colors';
 @import 'typography';
 @import 'mixins';
-@import 'persian-blue';
-@import 'glassmorphism';
-@import 'animations';
 
 // ============================================================================
-// FAVORITES PAGE - DARK THEME WITH GLASSMORPHISM
+// FAVORITES PAGE - LIGHT THEME
 // ============================================================================
 
 .favorites-page {
   min-height: 100vh;
   width: 100%;
   max-width: 100%;
-  background: $persian-blue-950;
+  background: $bg-light;
   overflow-x: hidden;
-  @include fade-in(400ms);
 }
 
 // ============================================================================
@@ -26,11 +22,7 @@
 .favorites-header {
   width: 100%;
   padding: $spacing-8 $spacing-4;
-  background:
-    radial-gradient(ellipse at 20% 0%, rgba($persian-blue-600, 0.3), transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba($persian-blue-500, 0.2), transparent 50%),
-    linear-gradient(180deg, $persian-blue-900 0%, $persian-blue-950 100%);
-  @include fade-in(400ms);
+  background: linear-gradient(135deg, $brand-primary 0%, $brand-primary-dark 100%);
 
   @include mobile {
     padding: $spacing-6 $spacing-3;
@@ -59,12 +51,12 @@
   @include flex-start;
   gap: $spacing-2;
   padding: $spacing-1 $spacing-3;
-  background: rgba($persian-blue-400, 0.15);
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   border-radius: $radius-full;
-  border: 1px solid rgba($persian-blue-400, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   width: fit-content;
-  color: $persian-blue-300;
+  color: white;
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
 
@@ -72,7 +64,7 @@
     font-size: 14px;
     width: 14px;
     height: 14px;
-    color: $persian-blue-400;
+    color: rgba(255, 255, 255, 0.9);
   }
 }
 
@@ -84,15 +76,12 @@
 .page-title {
   font-size: $font-size-3xl;
   font-weight: $font-weight-bold;
-  color: $persian-blue-50;
+  color: white;
   margin: 0;
   line-height: 1.2;
 
   .highlight {
-    background: linear-gradient(135deg, $persian-blue-400, $persian-blue-300);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: rgba(255, 255, 255, 0.9);
   }
 
   @include mobile {
@@ -102,7 +91,7 @@
 
 .page-subtitle {
   font-size: $font-size-base;
-  color: $persian-blue-300;
+  color: rgba(255, 255, 255, 0.85);
   margin: 0;
 
   @include mobile {
@@ -119,21 +108,16 @@
     @include flex-center;
     gap: $spacing-2;
     padding: $spacing-3 $spacing-6;
-    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
-    color: $white !important;
+    background: white !important;
+    color: $brand-primary !important;
     font-weight: $font-weight-bold;
     border-radius: $radius-lg;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     transition: all $transition-base $ease-out;
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba($persian-blue-500, 0.4);
-    }
-
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
 
     @include mobile {
@@ -171,18 +155,12 @@
   @include flex-center;
   gap: $spacing-6;
   padding: $spacing-5 $spacing-6;
-  border-radius: 20px;
-  @include slide-up(400ms);
+  border-radius: $radius-xl;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: $surface-light;
+  border: 1px solid $border-light;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 
-  // Glassmorphism
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-
-  // Glow line at top (hidden by default)
   &::before {
     content: '';
     position: absolute;
@@ -190,21 +168,19 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, $persian-blue-500, $persian-blue-400);
+    background: $gradient-primary;
     opacity: 0;
     transform: scaleX(0);
     transform-origin: left;
     transition: all 0.3s ease;
     z-index: 10;
-    border-radius: 20px 20px 0 0;
+    border-radius: $radius-xl $radius-xl 0 0;
   }
 
   &:hover {
     transform: translateY(-6px);
-    border-color: rgba($persian-blue-400, 0.3);
-    box-shadow:
-      0 16px 40px rgba(0, 0, 0, 0.3),
-      0 0 20px rgba($persian-blue-500, 0.1);
+    border-color: rgba($brand-primary, 0.2);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
 
     &::before {
       opacity: 1;
@@ -227,7 +203,7 @@
     font-size: 28px;
     width: 28px;
     height: 28px;
-    color: $persian-blue-400;
+    color: $brand-primary;
   }
 
   .stat-content {
@@ -237,12 +213,12 @@
     .stat-value {
       font-size: $font-size-2xl;
       font-weight: $font-weight-bold;
-      color: $persian-blue-50;
+      color: $text-main;
     }
 
     .stat-label {
       font-size: $font-size-xs;
-      color: $persian-blue-400;
+      color: $text-secondary;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       font-weight: $font-weight-semibold;
@@ -253,7 +229,7 @@
 .stat-divider {
   width: 1px;
   height: 50px;
-  background: rgba(255, 255, 255, 0.1);
+  background: $border-light;
 
   @include mobile {
     width: 100%;
@@ -269,23 +245,18 @@
   @include flex-column-center;
   gap: $spacing-4;
   padding: $spacing-12;
-  border-radius: 20px;
-
-  // Glassmorphism
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border-radius: $radius-xl;
+  background: $surface-light;
+  border: 1px solid $border-light;
 
   p {
     margin: 0;
     font-size: $font-size-base;
-    color: $persian-blue-300;
+    color: $text-secondary;
   }
 
   ::ng-deep .mat-mdc-progress-spinner circle {
-    stroke: $persian-blue-400;
+    stroke: $brand-primary;
   }
 }
 
@@ -294,39 +265,35 @@
   @include flex-column-center;
   gap: $spacing-4;
   padding: $spacing-12 $spacing-8;
-  border-radius: 20px;
+  border-radius: $radius-xl;
   text-align: center;
-
-  // Glassmorphism
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  background: $surface-light;
+  border: 1px solid $border-light;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 
   .error-icon-wrapper,
   .empty-icon-wrapper {
     @include flex-center;
     width: 80px;
     height: 80px;
-    background: rgba($persian-blue-500, 0.15);
+    background: rgba($brand-primary, 0.08);
     border-radius: $radius-full;
-    border: 2px solid rgba($persian-blue-400, 0.3);
+    border: 2px solid rgba($brand-primary, 0.15);
 
     mat-icon {
       font-size: 40px;
       width: 40px;
       height: 40px;
-      color: $persian-blue-400;
+      color: $brand-primary;
     }
   }
 
   .error-icon-wrapper {
-    background: rgba(239, 68, 68, 0.15);
-    border-color: rgba(248, 113, 113, 0.3);
+    background: rgba($error-500, 0.08);
+    border-color: rgba($error-500, 0.15);
 
     mat-icon {
-      color: #f87171;
+      color: $error-500;
     }
   }
 
@@ -334,13 +301,13 @@
     margin: 0;
     font-size: $font-size-xl;
     font-weight: $font-weight-bold;
-    color: $persian-blue-50;
+    color: $text-main;
   }
 
   p {
     margin: 0;
     font-size: $font-size-sm;
-    color: $persian-blue-300;
+    color: $text-secondary;
     line-height: 1.6;
     max-width: 400px;
   }
@@ -350,21 +317,15 @@
     @include flex-center;
     gap: $spacing-2;
     padding: $spacing-3 $spacing-6;
-    background: linear-gradient(135deg, $persian-blue-500, $persian-blue-600) !important;
+    background: $brand-primary !important;
     color: $white !important;
     font-weight: $font-weight-semibold;
     border-radius: $radius-lg;
     transition: all $transition-base $ease-out;
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba($persian-blue-500, 0.4);
-    }
-
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
+      background: $brand-primary-dark !important;
+      box-shadow: 0 8px 20px rgba($brand-primary, 0.3);
     }
   }
 }
@@ -381,15 +342,5 @@
   @include mobile {
     grid-template-columns: 1fr;
     gap: $spacing-4;
-  }
-
-  app-favorite-card {
-    @include slide-up(400ms);
-
-    @for $i from 1 through 20 {
-      &:nth-child(#{$i}) {
-        animation-delay: #{$i * 50}ms;
-      }
-    }
   }
 }
