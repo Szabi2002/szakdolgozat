@@ -45,6 +45,14 @@ export class SupabaseService {
   }
 
   /**
+   * Get anon client - respects RLS, used for user authentication
+   * Use for client-side operations like signInWithPassword
+   */
+  getAnonClient(): SupabaseClient {
+    return this.anonClient;
+  }
+
+  /**
    * Get user-scoped client with JWT token - respects RLS
    * This creates a client with the user's JWT token set
    * @param token - User's JWT token

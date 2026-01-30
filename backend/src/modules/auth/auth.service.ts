@@ -327,7 +327,7 @@ export class AuthService {
             email: dto.email,
             password: dto.password, // Required for signup type
             options: {
-              redirectTo: `${process.env.FRONTEND_URL || 'http://localhost:4200'}/auth/verify-email`,
+              ...(process.env.FRONTEND_URL ? { redirectTo: `${process.env.FRONTEND_URL}/auth/verify-email` } : {}),
             },
           });
 
@@ -449,7 +449,7 @@ export class AuthService {
 
       // Sign in with Supabase to get JWT token
       const { data: authData, error: authError } = await this.supabaseService
-        .getAdminClient()
+        .getAnonClient()
         .auth.signInWithPassword({
           email: dto.email,
           password: dto.password,
