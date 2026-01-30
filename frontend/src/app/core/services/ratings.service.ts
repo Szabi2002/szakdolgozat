@@ -146,7 +146,9 @@ export class RatingsService {
    * @returns Array of pending ratings
    */
   getPendingRatings(): Observable<Rating[]> {
-    return this.http.get<Rating[]>(`${this.apiUrl}/admin/pending`).pipe(
+    return this.http.get<Rating[]>(`${this.apiUrl}/admin/pending`, {
+      headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+    }).pipe(
       catchError(this.handleError)
     );
   }
@@ -157,7 +159,9 @@ export class RatingsService {
    * @returns Array of all ratings
    */
   getAllRatingsForAdmin(): Observable<Rating[]> {
-    return this.http.get<Rating[]>(`${this.apiUrl}/admin/all`).pipe(
+    return this.http.get<Rating[]>(`${this.apiUrl}/admin/all`, {
+      headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+    }).pipe(
       catchError(this.handleError)
     );
   }

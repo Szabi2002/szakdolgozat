@@ -401,7 +401,10 @@ export class RatingsController {
   })
   async delete(@Req() req: any, @Param('id') id: string): Promise<void> {
     const userId = req.user.id;
-    const isAdmin = req.user.role === 'admin';
+    // Robust check for admin role (handles mixed case or missing role)
+    const userRole = req.user.role || '';
+    const isAdmin = userRole.toLowerCase() === 'admin';
+
     await this.ratingsService.delete(id, userId, isAdmin);
   }
 }

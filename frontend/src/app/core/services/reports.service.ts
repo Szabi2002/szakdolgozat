@@ -155,7 +155,10 @@ export class ReportsService {
       }
     }
 
-    return this.http.get<{ data: Report[], total: number, page: number, limit: number }>(`${this.apiUrl}/admin/queue`, { params }).pipe(
+    return this.http.get<{ data: Report[], total: number, page: number, limit: number }>(`${this.apiUrl}/admin/queue`, {
+      params,
+      headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+    }).pipe(
       map(response => response.data)
     );
   }
