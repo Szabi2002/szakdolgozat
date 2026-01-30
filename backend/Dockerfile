@@ -26,16 +26,19 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy built assets from builder (adjust path for monorepo structure)
+# Copy components needed for npm ci
+COPY package*.json ./
+COPY backend/package*.json ./backend/
+COPY frontend/package*.json ./frontend/
+
+# Install production dependencies for backend only
+RUN npm ci --omit=dev --workspace=backend
+
+# Copy built application
 COPY --from=builder /app/backend/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/backend/package*.json ./
 
-# Set environment to production
+# Environment setup
 ENV NODE_ENV=production
-
-# Expose port
 EXPOSE 3000
 
-# Start command
 CMD ["node", "dist/main"]
