@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Közlekedési Jegykezelő Backend API",
   "author": "Szakdolgozat",
+  "engines": {
+    "node": ">=18"
+  },
   "private": true,
   "license": "MIT",
   "scripts": {

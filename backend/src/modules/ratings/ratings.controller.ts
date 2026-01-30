@@ -7,6 +7,7 @@ import {
   Delete,
   Body,
   Param,
+  Query,
   Req,
   HttpCode,
   HttpStatus,
@@ -18,6 +19,7 @@ import {
   ApiResponse,
   ApiBearerAuth,
   ApiParam,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { AdminGuard } from '@common/guards/admin.guard';
@@ -204,6 +206,12 @@ export class RatingsController {
     summary: 'Get my ratings',
     description: 'Get all ratings created by the authenticated user (all statuses)',
   })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    enum: ['pending', 'approved', 'rejected'],
+    description: 'Filter by rating status',
+  })
   @ApiResponse({
     status: 200,
     description: 'List of user ratings',
@@ -213,9 +221,33 @@ export class RatingsController {
     status: 401,
     description: 'Unauthorized',
   })
-  async getMyRatings(@Req() req: any): Promise<RatingResponseDto[]> {
+  async getMyRatings(
+    @Req() req: any,
+    @Query('status') status?: 'pending' | 'approved' | 'rejected',
+  ): Promise<RatingResponseDto[]> {
     const userId = req.user.id;
-    return this.ratingsService.findMyRatings(userId);
+    return this.ratingsService.findMyRatings(userId, status);
+  }
+
+  /**
+   * Get my rating statistics
+   */
+  @Get('my-stats')
+  @ApiOperation({
+    summary: 'Get my rating statistics',
+    description: 'Get counts of user ratings by status',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'User rating statistics',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  async getMyRatingStats(@Req() req: any): Promise<{ total: number; pending: number; approved: number; rejected: number }> {
+    const userId = req.user.id;
+    return this.ratingsService.findMyRatingStats(userId);
   }
   /**
    * Get a specific rating by ID

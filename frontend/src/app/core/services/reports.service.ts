@@ -12,7 +12,8 @@ import {
   ReportFilters,
   AdminQueueFilters,
   PaginatedReports,
-  ReportStatistics
+  ReportStatistics,
+  ReportStatus
 } from '@core/models/report.model';
 
 /**
@@ -79,8 +80,23 @@ export class ReportsService {
    * Get user's own reports
    * @returns Observable of paginated user reports
    */
-  getMyReports(): Observable<PaginatedReports> {
-    return this.http.get<PaginatedReports>(`${this.apiUrl}/my-reports`);
+  getMyReports(page?: number, limit?: number, status?: ReportStatus): Observable<PaginatedReports> {
+    let params = new HttpParams();
+    if (page) params = params.set('page', page.toString());
+    if (limit) params = params.set('limit', limit.toString());
+    if (status) params = params.set('status', status);
+
+    return this.http.get<PaginatedReports>(`${this.apiUrl}/my-reports`, { params });
+  }
+
+  /**
+   * Get my report statistics
+   * @returns Report statistics
+   */
+  getMyReportStats(): Observable<{ total: number; pending: number; in_review: number; resolved: number; dismissed: number }> {
+    return this.http.get<{ total: number; pending: number; in_review: number; resolved: number; dismissed: number }>(
+      `${this.apiUrl}/my-stats`
+    );
   }
 
   /**

@@ -4,7 +4,7 @@
     <div class="header-container">
       <div class="header-left">
         <div class="header-badge">
-          <mat-icon>report_problem</mat-icon>
+          <mat-icon>assignment</mat-icon>
           <span>Bejelentések</span>
         </div>
 
@@ -12,7 +12,7 @@
           <h1 class="page-title">
             Saját <span class="highlight">bejelentéseim</span>
           </h1>
-          <p class="page-subtitle">Összes bejelentésed és azok állapotai</p>
+          <p class="page-subtitle">Akkor is láthatod a bejelentésed státuszát, ha már lezártuk.</p>
         </div>
       </div>
 
@@ -29,233 +29,196 @@
   <section class="content-section">
     <div class="content-container">
       <!-- Stats Card -->
-      @if (!isLoading && allReports.length > 0) {
-        <div class="stats-card">
-          <div class="stat-item">
-            <mat-icon>assignment</mat-icon>
-            <div class="stat-content">
-              <span class="stat-value">{{ stats.total }}</span>
-              <span class="stat-label">Összes</span>
-            </div>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <mat-icon>schedule</mat-icon>
-            <div class="stat-content">
-              <span class="stat-value">{{ stats.pending }}</span>
-              <span class="stat-label">Függőben</span>
-            </div>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <mat-icon>visibility</mat-icon>
-            <div class="stat-content">
-              <span class="stat-value">{{ stats.in_review }}</span>
-              <span class="stat-label">Vizsgálat</span>
-            </div>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <mat-icon>check_circle</mat-icon>
-            <div class="stat-content">
-              <span class="stat-value">{{ stats.resolved }}</span>
-              <span class="stat-label">Megoldva</span>
-            </div>
+      <div class="stats-card">
+        <div class="stat-item">
+          <mat-icon>assignment</mat-icon>
+          <div class="stat-content">
+            <span class="stat-value">{{ stats.total }}</span>
+            <span class="stat-label">Összes</span>
           </div>
         </div>
-      }
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <mat-icon>schedule</mat-icon>
+          <div class="stat-content">
+            <span class="stat-value">{{ stats.pending }}</span>
+            <span class="stat-label">Függőben</span>
+          </div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <mat-icon>sync</mat-icon>
+          <div class="stat-content">
+            <span class="stat-value">{{ stats.in_review }}</span>
+            <span class="stat-label">Folyamatban</span>
+          </div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <mat-icon>check_circle</mat-icon>
+          <div class="stat-content">
+            <span class="stat-value">{{ stats.resolved }}</span>
+            <span class="stat-label">Megoldva</span>
+          </div>
+        </div>
+      </div>
 
       <!-- Loading State -->
       @if (isLoading) {
-        <div class="loading-card">
-          <mat-spinner diameter="60"></mat-spinner>
-          <p>Bejelentések betöltése...</p>
-        </div>
-      }
-
-      <!-- Empty State -->
-      @if (!isLoading && allReports.length === 0) {
-        <div class="empty-card">
-          <div class="empty-icon-wrapper">
-            <mat-icon>report</mat-icon>
-          </div>
-          <h3>Még nincs bejelentésed</h3>
-          <p>Jelentsd be a problémákat és segíts javítani a szolgáltatást!</p>
-          <button mat-raised-button class="submit-btn" (click)="navigateToSubmit()">
-            <mat-icon>add</mat-icon>
-            Első bejelentés írása
-          </button>
-        </div>
+      <div class="loading-card">
+        <mat-spinner diameter="60"></mat-spinner>
+        <p>Bejelentések betöltése...</p>
+      </div>
       }
 
       <!-- Tabs -->
-      @if (!isLoading && allReports.length > 0) {
-        <div class="tabs-card">
-          <mat-tab-group class="reports-tabs" [(selectedIndex)]="selectedTabIndex" animationDuration="300ms">
-            <!-- All Reports Tab -->
-            <mat-tab>
-              <ng-template mat-tab-label>
-                <div class="tab-label">
-                  <mat-icon>list</mat-icon>
-                  <span>Összes</span>
-                  <span class="tab-count">{{ stats.total }}</span>
-                </div>
-              </ng-template>
-              <div class="tab-content">
-                <div class="reports-grid">
-                  @for (report of allReports; track trackByReportId($index, report)) {
-                    <app-report-card
-                      [report]="report"
-                      [showActions]="true"
-                      (view)="onViewReport($event)"
-                      (edit)="onEditReport($event)"
-                      (delete)="onDeleteReport($event)"
-                      (viewRoute)="onViewRoute($event)"
-                    ></app-report-card>
-                  }
-                </div>
+      @if (!isLoading) {
+      <div class="tabs-card">
+        <mat-tab-group class="reports-tabs" animationDuration="300ms" (selectedIndexChange)="onTabChange($event)">
+          <!-- All Reports Tab -->
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div class="tab-label">
+                <mat-icon>list</mat-icon>
+                <span>Összes</span>
+                <span class="tab-count">{{ stats.total }}</span>
               </div>
-            </mat-tab>
-
-            <!-- Pending Tab -->
-            <mat-tab>
-              <ng-template mat-tab-label>
-                <div class="tab-label">
-                  <mat-icon>schedule</mat-icon>
-                  <span>Függőben</span>
-                  <span class="tab-count pending">{{ stats.pending }}</span>
-                </div>
-              </ng-template>
-              <div class="tab-content">
-                <div class="info-banner pending">
-                  <mat-icon>info</mat-icon>
-                  <span>Ezeket a bejelentéseket még nem vizsgálta meg a csapatunk.</span>
-                </div>
-                @if (getReportsByStatus('pending').length > 0) {
-                  <div class="reports-grid">
-                    @for (report of getReportsByStatus('pending'); track trackByReportId($index, report)) {
-                      <app-report-card
-                        [report]="report"
-                        [showActions]="true"
-                        (view)="onViewReport($event)"
-                        (edit)="onEditReport($event)"
-                        (delete)="onDeleteReport($event)"
-                        (viewRoute)="onViewRoute($event)"
-                      ></app-report-card>
-                    }
-                  </div>
-                } @else {
-                  <div class="tab-empty-state">
-                    <mat-icon>check_circle</mat-icon>
-                    <p>Nincs függőben lévő bejelentésed</p>
-                  </div>
+            </ng-template>
+            <ng-template matTabContent>
+              @if (reports.length > 0) {
+              <div class="reports-grid">
+                @for (report of reports; track trackByReportId($index, report)) {
+                <app-report-card [report]="report" (click)="onViewReport(report)"></app-report-card>
                 }
               </div>
-            </mat-tab>
+              } @else {
+              <div class="empty-state">
+                <mat-icon>assignment_late</mat-icon>
+                <h3>Nincs megjeleníthető bejelentés</h3>
+                <p>Még nem küldtél be hibabejelentést, vagy a keresési feltételeknek nem felel meg egy sem.</p>
+                <button mat-stroked-button (click)="navigateToSubmit()">Bejelentés tétele</button>
+              </div>
+              }
+            </ng-template>
+          </mat-tab>
 
-            <!-- In Review Tab -->
-            <mat-tab>
-              <ng-template mat-tab-label>
-                <div class="tab-label">
-                  <mat-icon>visibility</mat-icon>
-                  <span>Vizsgálat</span>
-                  <span class="tab-count in-review">{{ stats.in_review }}</span>
-                </div>
-              </ng-template>
-              <div class="tab-content">
-                <div class="info-banner in-review">
-                  <mat-icon>info</mat-icon>
-                  <span>Ezeket a bejelentéseket jelenleg vizsgálja a csapatunk.</span>
-                </div>
-                @if (getReportsByStatus('in_review').length > 0) {
-                  <div class="reports-grid">
-                    @for (report of getReportsByStatus('in_review'); track trackByReportId($index, report)) {
-                      <app-report-card
-                        [report]="report"
-                        [showActions]="false"
-                        (view)="onViewReport($event)"
-                        (viewRoute)="onViewRoute($event)"
-                      ></app-report-card>
-                    }
-                  </div>
-                } @else {
-                  <div class="tab-empty-state">
-                    <mat-icon>visibility</mat-icon>
-                    <p>Nincs vizsgálat alatt álló bejelentésed</p>
-                  </div>
+          <!-- Pending Reports Tab -->
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div class="tab-label">
+                <mat-icon>schedule</mat-icon>
+                <span>Függőben</span>
+                <span class="tab-count pending">{{ stats.pending }}</span>
+              </div>
+            </ng-template>
+            <ng-template matTabContent>
+              <div class="info-banner pending">
+                <mat-icon>info</mat-icon>
+                <span>Ezek a bejelentések még nem kerültek feldolgozásra.</span>
+              </div>
+              @if (reports.length > 0) {
+              <div class="reports-grid">
+                @for (report of reports; track trackByReportId($index, report)) {
+                <app-report-card [report]="report" (click)="onViewReport(report)"></app-report-card>
                 }
               </div>
-            </mat-tab>
+              } @else {
+              <div class="tab-empty-state">
+                <mat-icon>schedule</mat-icon>
+                <p>Nincs függőben lévő bejelentés</p>
+              </div>
+              }
+            </ng-template>
+          </mat-tab>
 
-            <!-- Resolved Tab -->
-            <mat-tab>
-              <ng-template mat-tab-label>
-                <div class="tab-label">
-                  <mat-icon>check_circle</mat-icon>
-                  <span>Megoldva</span>
-                  <span class="tab-count resolved">{{ stats.resolved }}</span>
-                </div>
-              </ng-template>
-              <div class="tab-content">
-                <div class="info-banner resolved">
-                  <mat-icon>info</mat-icon>
-                  <span>Ezeket a bejelentéseket sikeresen megoldottuk.</span>
-                </div>
-                @if (getReportsByStatus('resolved').length > 0) {
-                  <div class="reports-grid">
-                    @for (report of getReportsByStatus('resolved'); track trackByReportId($index, report)) {
-                      <app-report-card
-                        [report]="report"
-                        [showActions]="false"
-                        (view)="onViewReport($event)"
-                        (viewRoute)="onViewRoute($event)"
-                      ></app-report-card>
-                    }
-                  </div>
-                } @else {
-                  <div class="tab-empty-state">
-                    <mat-icon>done_all</mat-icon>
-                    <p>Nincs megoldott bejelentésed</p>
-                  </div>
+          <!-- In Review Reports Tab -->
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div class="tab-label">
+                <mat-icon>sync</mat-icon>
+                <span>Folyamatban</span>
+                <span class="tab-count in-review">{{ stats.in_review }}</span>
+              </div>
+            </ng-template>
+            <ng-template matTabContent>
+              <div class="info-banner in-review">
+                <mat-icon>sync</mat-icon>
+                <span>Ezeken a bejelentéseken jelenleg dolgozunk.</span>
+              </div>
+              @if (reports.length > 0) {
+              <div class="reports-grid">
+                @for (report of reports; track trackByReportId($index, report)) {
+                <app-report-card [report]="report" (click)="onViewReport(report)"></app-report-card>
                 }
               </div>
-            </mat-tab>
+              } @else {
+              <div class="tab-empty-state">
+                <mat-icon>sync</mat-icon>
+                <p>Nincs folyamatban lévő bejelentés</p>
+              </div>
+              }
+            </ng-template>
+          </mat-tab>
 
-            <!-- Dismissed Tab -->
-            <mat-tab>
-              <ng-template mat-tab-label>
-                <div class="tab-label">
-                  <mat-icon>cancel</mat-icon>
-                  <span>Elutasítva</span>
-                  <span class="tab-count dismissed">{{ stats.dismissed }}</span>
-                </div>
-              </ng-template>
-              <div class="tab-content">
-                <div class="info-banner dismissed">
-                  <mat-icon>info</mat-icon>
-                  <span>Ezeket a bejelentéseket elutasítottuk.</span>
-                </div>
-                @if (getReportsByStatus('dismissed').length > 0) {
-                  <div class="reports-grid">
-                    @for (report of getReportsByStatus('dismissed'); track trackByReportId($index, report)) {
-                      <app-report-card
-                        [report]="report"
-                        [showActions]="false"
-                        (view)="onViewReport($event)"
-                        (viewRoute)="onViewRoute($event)"
-                      ></app-report-card>
-                    }
-                  </div>
-                } @else {
-                  <div class="tab-empty-state">
-                    <mat-icon>block</mat-icon>
-                    <p>Nincs elutasított bejelentésed</p>
-                  </div>
+          <!-- Resolved Reports Tab -->
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div class="tab-label">
+                <mat-icon>check_circle</mat-icon>
+                <span>Megoldva</span>
+                <span class="tab-count resolved">{{ stats.resolved }}</span>
+              </div>
+            </ng-template>
+            <ng-template matTabContent>
+              <div class="info-banner resolved">
+                <mat-icon>check_circle</mat-icon>
+                <span>Ezek a problémák sikeresen meg lettek oldva.</span>
+              </div>
+              @if (reports.length > 0) {
+              <div class="reports-grid">
+                @for (report of reports; track trackByReportId($index, report)) {
+                <app-report-card [report]="report" (click)="onViewReport(report)"></app-report-card>
                 }
               </div>
-            </mat-tab>
-          </mat-tab-group>
-        </div>
+              } @else {
+              <div class="tab-empty-state">
+                <mat-icon>check_circle</mat-icon>
+                <p>Nincs megoldott bejelentés</p>
+              </div>
+              }
+            </ng-template>
+          </mat-tab>
+
+          <!-- Dismissed Reports Tab -->
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div class="tab-label">
+                <mat-icon>cancel</mat-icon>
+                <span>Elutasítva</span>
+                <span class="tab-count dismissed">{{ stats.dismissed }}</span>
+              </div>
+            </ng-template>
+            <ng-template matTabContent>
+              <div class="info-banner dismissed">
+                <mat-icon>cancel</mat-icon>
+                <span>Ezek a bejelentések el lettek utasítva.</span>
+              </div>
+              @if (reports.length > 0) {
+              <div class="reports-grid">
+                @for (report of reports; track trackByReportId($index, report)) {
+                <app-report-card [report]="report" (click)="onViewReport(report)"></app-report-card>
+                }
+              </div>
+              } @else {
+              <div class="tab-empty-state">
+                <mat-icon>cancel</mat-icon>
+                <p>Nincs elutasított bejelentés</p>
+              </div>
+              }
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
       }
     </div>
   </section>

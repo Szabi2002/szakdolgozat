@@ -7,6 +7,10 @@
 // HERO SECTION - LIGHT THEME (Mint/Teal)
 // ===========================
 
+// ===========================
+// HERO SECTION - LIGHT THEME (Mint/Teal)
+// ===========================
+
 .hero-section {
   position: relative;
   min-height: 100vh;
@@ -31,8 +35,8 @@
 
   @include mobile {
     min-height: auto;
-    padding: $spacing-10 $spacing-3;
-    padding-top: 80px;
+    padding: $spacing-6 $spacing-3;
+    padding-top: 70px; // Slightly reduced top padding
   }
 }
 
@@ -79,6 +83,13 @@
       background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
       animation: float-medium 10s ease-in-out infinite;
     }
+
+    @include mobile {
+      // Reduce shape sizes on mobile to be less distracting
+      &.shape-1 { width: 300px; height: 300px; top: -50px; right: -50px; }
+      &.shape-2 { width: 200px; height: 200px; bottom: -50px; left: -50px; }
+      &.shape-3 { width: 150px; height: 150px; }
+    }
   }
 }
 
@@ -105,7 +116,7 @@
   }
 
   @include mobile {
-    gap: $spacing-6;
+    gap: $spacing-8; // Ensure separation between content and visual
     padding: 0 $spacing-2;
   }
 }
@@ -121,6 +132,10 @@
 
   @include tablet {
     align-items: center;
+  }
+  
+  @include mobile {
+    gap: $spacing-4;
   }
 }
 
@@ -150,7 +165,14 @@
 
   @include mobile {
     padding: $spacing-1 $spacing-3;
+    gap: $spacing-1;
     font-size: $font-size-xs;
+    
+    mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+    }
   }
 }
 
@@ -178,6 +200,7 @@
 
   @include mobile {
     font-size: 2rem;
+    line-height: 1.25;
 
     br {
       display: none;
@@ -201,7 +224,8 @@
   }
 
   @include mobile {
-    font-size: 1rem;
+    font-size: 0.95rem; // Slightly smaller for better fit
+    line-height: 1.5;
   }
 }
 
@@ -223,6 +247,7 @@
     flex-direction: column;
     gap: $spacing-3;
     width: 100%;
+    margin-top: $spacing-1;
   }
 
   button {
@@ -247,6 +272,8 @@
     @include mobile {
       width: 100%;
       min-width: auto;
+      padding: 12px 20px; // Compact padding
+      font-size: 0.95rem;
     }
   }
 
@@ -297,9 +324,19 @@
   }
 
   @include mobile {
-    flex-direction: column;
+    // Switch to grid layout for better spacing on mobile
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); // 2 columns
     gap: $spacing-3;
-    align-items: flex-start;
+    width: 100%;
+    margin-top: $spacing-2;
+    justify-items: center; // Center items in grid cells
+    
+    // For odd number of items, make the last one span full width if needed, or just let it flow
+    .feature-item:last-child {
+         grid-column: span 2; // Span full width for the 3rd item (QR code)
+         justify-self: center;
+    }
   }
 
   .feature-item {
@@ -309,6 +346,11 @@
     color: rgba(255, 255, 255, 0.9);
     font-size: 0.9375rem;
     font-weight: 500;
+    
+    @include mobile {
+        font-size: 0.85rem;
+        width: auto;
+    }
 
     mat-icon {
       font-size: 20px;
@@ -330,6 +372,10 @@
 
   @include tablet {
     margin-top: $spacing-6;
+  }
+  
+  @include mobile {
+    margin-top: $spacing-4;
   }
 }
 
@@ -356,6 +402,9 @@
 
   @include mobile {
     padding: $spacing-6;
+    gap: $spacing-4;
+    width: 100%;
+    border-radius: $radius-xl;
   }
 }
 
@@ -381,9 +430,9 @@
   filter: drop-shadow(0 0 20px rgba($brand-primary, 0.3));
 
   @include mobile {
-    font-size: 90px;
-    width: 90px;
-    height: 90px;
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
   }
 }
 
@@ -401,7 +450,9 @@
   border-top: 1px solid $border-light;
 
   @include mobile {
-    gap: $spacing-4;
+    gap: $spacing-0; // Use space-between layout instead or equal spacing
+    justify-content: space-between; 
+    padding-top: $spacing-4;
   }
 
   .stat-item {
@@ -417,7 +468,7 @@
       line-height: 1;
 
       @include mobile {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
       }
     }
 
@@ -429,7 +480,8 @@
       letter-spacing: 0.8px;
 
       @include mobile {
-        font-size: 0.625rem;
+        font-size: 0.6rem;
+        letter-spacing: 0.5px;
       }
     }
   }
@@ -458,6 +510,12 @@
     color: $brand-primary;
     height: auto;
     min-height: 32px;
+
+    @include mobile {
+      padding: 4px 12px !important;
+      font-size: 0.75rem !important;
+      min-height: 28px;
+    }
 
     &:nth-child(1) {
       animation: fadeIn 0.6s ease-out 0.4s backwards;

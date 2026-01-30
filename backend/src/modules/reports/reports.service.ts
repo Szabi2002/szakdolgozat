@@ -199,6 +199,7 @@ export class ReportsService {
     userId: string,
     page: number = 1,
     limit: number = 20,
+    status?: ReportStatus,
   ): Promise<{ data: ReportResponseDto[]; total: number; page: number; limit: number }> {
     try {
       const supabase = this.supabaseService.getAdminClient();
@@ -210,10 +211,16 @@ export class ReportsService {
       const to = from + validLimit - 1;
 
       // Fetch reports without relationships - just raw data
-      const { data: reportsData, error, count } = await supabase
+      let query = supabase
         .from('reports')
         .select('*', { count: 'exact' })
-        .eq('user_id', userId)
+        .eq('user_id', userId);
+
+      if (status) {
+        query = query.eq('status', status);
+      }
+
+      const { data: reportsData, error, count } = await query
         .range(from, to)
         .order('created_at', { ascending: false });
 
@@ -343,6 +350,50 @@ export class ReportsService {
       }
       this.logger.error(`Error fetching user reports: ${error.message}`, error.stack);
       throw new InternalServerErrorException('Failed to fetch your reports');
+    }
+  }
+
+  /**
+   * Gets report statistics for the current user
+   * @param userId - User ID
+   * @returns Counts of reports by status
+   */
+  async findMyReportStats(userId: string): Promise<{ total: number; pending: number; in_review: number; resolved: number; dismissed: number }> {
+    try {
+      const supabase = this.supabaseService.getAdminClient();
+
+      const { data, error } = await supabase
+        .from('reports')
+        .select('status')
+        .eq('user_id', userId);
+
+      if (error) {
+        this.logger.error(`Failed to fetch user report stats: ${error.message}`, error);
+        throw new InternalServerErrorException('Failed to fetch report statistics');
+      }
+
+      const stats = {
+        total: data.length,
+        pending: 0,
+        in_review: 0,
+        resolved: 0,
+        dismissed: 0
+      };
+
+      data.forEach(report => {
+        if (report.status === 'pending') stats.pending++;
+        else if (report.status === 'in_review') stats.in_review++;
+        else if (report.status === 'resolved') stats.resolved++;
+        else if (report.status === 'dismissed') stats.dismissed++;
+      });
+
+      return stats;
+    } catch (error) {
+      if (error instanceof InternalServerErrorException) {
+        throw error;
+      }
+      this.logger.error(`Error fetching user report stats: ${error.message}`, error.stack);
+      throw new InternalServerErrorException('Failed to fetch report statistics');
     }
   }
 

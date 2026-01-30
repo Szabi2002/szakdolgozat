@@ -310,18 +310,25 @@ export class RatingsService {
    * Gets all ratings created by the current user
    * Includes all statuses (pending, approved, rejected)
    * @param userId - User ID
+   * @param status - Optional status filter
    * @returns Array of user's ratings
    */
-  async findMyRatings(userId: string): Promise<RatingResponseDto[]> {
+  async findMyRatings(userId: string, status?: 'pending' | 'approved' | 'rejected'): Promise<RatingResponseDto[]> {
     try {
       const supabase = this.supabaseService.getAdminClient();
 
       // Fetch ratings without relationships - just raw data
-      const { data: ratingsData, error: ratingsError } = await supabase
+      let query = supabase
         .from('ratings')
         .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false });
+
+      if (status) {
+        query = query.eq('status', status);
+      }
+
+      const { data: ratingsData, error: ratingsError } = await query;
 
       if (ratingsError) {
         this.logger.error(`Failed to fetch user ratings: ${ratingsError.message}`, ratingsError);
@@ -392,6 +399,51 @@ export class RatingsService {
       }
       this.logger.error(`Error fetching user ratings: ${error.message}`, error.stack);
       throw new InternalServerErrorException('Failed to fetch your ratings');
+    }
+  }
+
+  /**
+   * Gets rating statistics for the current user
+   * @param userId - User ID
+   * @returns Counts of ratings by status
+   */
+  async findMyRatingStats(userId: string): Promise<{ total: number; pending: number; approved: number; rejected: number }> {
+    try {
+      const supabase = this.supabaseService.getAdminClient();
+
+      // We need to fetch all ratings for the user to count them
+      // In a more optimized version with millions of rows, we might use a dedicated RPC or view
+      // But for a single user's ratings (likely < 1000), fetching 'status' column is fine
+      const { data, error } = await supabase
+        .from('ratings')
+        .select('status')
+        .eq('user_id', userId);
+
+      if (error) {
+        this.logger.error(`Failed to fetch user rating stats: ${error.message}`, error);
+        throw new InternalServerErrorException('Failed to fetch rating statistics');
+      }
+
+      const stats = {
+        total: data.length,
+        pending: 0,
+        approved: 0,
+        rejected: 0
+      };
+
+      data.forEach(rating => {
+        if (rating.status === 'pending') stats.pending++;
+        else if (rating.status === 'approved') stats.approved++;
+        else if (rating.status === 'rejected') stats.rejected++;
+      });
+
+      return stats;
+    } catch (error) {
+      if (error instanceof InternalServerErrorException) {
+        throw error;
+      }
+      this.logger.error(`Error fetching user rating stats: ${error.message}`, error.stack);
+      throw new InternalServerErrorException('Failed to fetch rating statistics');
     }
   }
 

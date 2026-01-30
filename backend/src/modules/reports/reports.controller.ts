@@ -172,6 +172,12 @@ export class ReportsController {
     type: Number,
     description: 'Items per page (default: 20, max: 100)',
   })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    enum: ['pending', 'in_review', 'resolved', 'dismissed'],
+    description: 'Filter by report status',
+  })
   @ApiResponse({
     status: 200,
     description: 'List of user reports',
@@ -185,11 +191,33 @@ export class ReportsController {
     @Req() req: any,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
+    @Query('status') status?: ReportStatus,
   ): Promise<{ data: ReportResponseDto[]; total: number; page: number; limit: number }> {
     const userId = req.user.id;
     const pageNum = page ? parseInt(page, 10) : undefined;
     const limitNum = limit ? parseInt(limit, 10) : undefined;
-    return this.reportsService.findMyReports(userId, pageNum, limitNum);
+    return this.reportsService.findMyReports(userId, pageNum, limitNum, status);
+  }
+
+  /**
+   * Get my report statistics
+   */
+  @Get('my-stats')
+  @ApiOperation({
+    summary: 'Get my report statistics',
+    description: 'Get counts of user reports by status',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'User report statistics',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  async getMyReportStats(@Req() req: any): Promise<{ total: number; pending: number; in_review: number; resolved: number; dismissed: number }> {
+    const userId = req.user.id;
+    return this.reportsService.findMyReportStats(userId);
   }
 
   /**

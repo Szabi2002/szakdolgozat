@@ -15,6 +15,8 @@ import { ReportDetailsModalComponent } from '../../components/report-details-mod
 import { EditReportDialogComponent } from '../../components/edit-report-dialog/edit-report-dialog.component';
 import { Report, ReportStatus, UserReportStats } from '@core/models/report.model';
 import { ReportsService } from '@core/services/reports.service';
+import { SupabaseService } from '@core/services/supabase.service';
+
 
 /**
  * My Reports page component
@@ -42,11 +44,13 @@ export class MyReportsComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
   private dialog = inject(MatDialog);
+  private supabaseService = inject(SupabaseService);
   private destroy$ = new Subject<void>();
 
-  allReports: Report[] = [];
+  reports: Report[] = [];
   isLoading = false;
-  selectedTabIndex = 0;
+  currentUserId: string | null = null;
+  selectedStatus: ReportStatus | undefined;
 
   // Statistics
   stats: UserReportStats = {
@@ -57,7 +61,14 @@ export class MyReportsComponent implements OnInit, OnDestroy {
     dismissed: 0
   };
 
+  // Pagination
+  currentPage = 1;
+  pageSize = 20;
+  totalItems = 0;
+
   ngOnInit(): void {
+    this.loadCurrentUser();
+    this.loadStats();
     this.loadReports();
   }
 
@@ -67,23 +78,51 @@ export class MyReportsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Load current user
+   */
+  private loadCurrentUser(): void {
+    try {
+      const user = this.supabaseService.user;
+      this.currentUserId = user?.id || null;
+    } catch (error) {
+      console.error('Failed to load user:', error);
+    }
+  }
+
+  /**
+   * Load report statistics
+   */
+  loadStats(): void {
+    this.reportsService.getMyReportStats()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (stats) => {
+          this.stats = stats;
+        },
+        error: (error) => {
+          console.error('Failed to load stats:', error);
+        }
+      });
+  }
+
+  /**
    * Load user's reports
    */
   loadReports(): void {
     this.isLoading = true;
 
-    this.reportsService.getMyReports()
+    this.reportsService.getMyReports(this.currentPage, this.pageSize, this.selectedStatus)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
-          this.allReports = response.data.sort((a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-          );
-          this.calculateStats();
+          this.reports = response.data || [];
+          this.totalItems = response.total || 0;
           this.isLoading = false;
         },
         error: (error) => {
           console.error('Failed to load reports:', error);
+          this.reports = [];
+          this.totalItems = 0;
           this.snackBar.open('Nem sikerült betölteni a bejelentéseket. Próbáld újra.', 'Bezár', {
             duration: 5000,
             panelClass: 'error-snackbar'
@@ -94,26 +133,19 @@ export class MyReportsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Calculate statistics from reports
+   * Handle tab change
+   * @param index Tab index
    */
-  private calculateStats(): void {
-    this.stats = {
-      total: this.allReports.length,
-      pending: this.allReports.filter(r => r.status === 'pending').length,
-      in_review: this.allReports.filter(r => r.status === 'in_review').length,
-      resolved: this.allReports.filter(r => r.status === 'resolved').length,
-      dismissed: this.allReports.filter(r => r.status === 'dismissed').length
-    };
-  }
-
-  /**
-   * Get reports filtered by status
-   */
-  getReportsByStatus(status?: ReportStatus): Report[] {
-    if (!status) {
-      return this.allReports;
+  onTabChange(index: number): void {
+    this.currentPage = 1; // Reset to first page
+    switch (index) {
+      case 0: this.selectedStatus = undefined; break;
+      case 1: this.selectedStatus = 'pending'; break;
+      case 2: this.selectedStatus = 'in_review'; break;
+      case 3: this.selectedStatus = 'resolved'; break;
+      case 4: this.selectedStatus = 'dismissed'; break;
     }
-    return this.allReports.filter(r => r.status === status);
+    this.loadReports();
   }
 
   /**
@@ -127,6 +159,7 @@ export class MyReportsComponent implements OnInit, OnDestroy {
    * Refresh reports list
    */
   refresh(): void {
+    this.loadStats();
     this.loadReports();
   }
 
@@ -174,6 +207,7 @@ export class MyReportsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(result => {
         if (result?.success) {
+          this.loadStats();
           this.loadReports(); // Refresh the list
         }
       });
@@ -206,6 +240,7 @@ export class MyReportsComponent implements OnInit, OnDestroy {
             duration: 3000,
             panelClass: 'success-snackbar'
           });
+          this.loadStats();
           this.loadReports();
         },
         error: (error) => {

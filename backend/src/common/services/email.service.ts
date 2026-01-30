@@ -30,11 +30,21 @@ export class EmailService {
       const from = this.configService.get<string>('SMTP_FROM');
 
       // Check if SMTP is configured
+      const hasHost = !!host;
+      const hasPort = !!port;
+      const hasUser = !!user;
+      const hasPass = !!pass;
+      const hasFrom = !!from;
+
+      this.logger.log(`SMTP Config check: Host=${hasHost}, Port=${hasPort}, User=${hasUser}, Pass=${hasPass}, From=${hasFrom}`);
+      this.logger.log(`SMTP Host value: ${host}`); // Temporary debug
+
       if (!host || !port || !user || !pass || !from) {
         this.logger.warn(
           'SMTP configuration is missing. Email sending will be simulated. ' +
           'Please configure SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, and SMTP_FROM in .env',
         );
+        this.logger.warn(`Missing: ${!host ? 'HOST ' : ''}${!port ? 'PORT ' : ''}${!user ? 'USER ' : ''}${!pass ? 'PASS ' : ''}${!from ? 'FROM ' : ''}`);
         this.isConfigured = false;
         return;
       }
@@ -88,7 +98,7 @@ export class EmailService {
     email: string,
     name: string,
     verificationLink: string,
-  ): Promise<{ success: boolean; message: string }> {
+  ): Promise<{ success: boolean; message: string; link?: string }> {
     try {
       const appName = 'Közlekedési Jegykezelő';
 
@@ -108,6 +118,7 @@ export class EmailService {
         return {
           success: true,
           message: 'Verification email logged to console (simulation mode - configure SMTP to send real emails)',
+          link: verificationLink,
         };
       }
 
@@ -160,6 +171,7 @@ ${appName} csapata
       return {
         success: false,
         message: 'Failed to send verification email, but link was logged',
+        link: verificationLink,
       };
     }
   }
@@ -171,111 +183,91 @@ ${appName} csapata
    * @param data - Template data
    * @returns HTML string
    */
+  /**
+   * Creates an HTML email template for email verification
+   * Design matches the application aesthetic (Teal/Mint #00a887)
+   */
   private createVerificationEmailTemplate(data: {
     userName: string;
     verificationLink: string;
     appName: string;
   }): string {
+    const primaryColor = '#00a887'; // From design.md
+    const backgroundColor = '#f3f4f6';
+    const surfaceColor = '#ffffff';
+    const textColor = '#1f2937';
+    const secondaryTextColor = '#6b7280';
+
     return `
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email megerősítés</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #1a184e; font-family: 'Segoe UI', Arial, Helvetica, sans-serif;">
-    <!-- Outer wrapper table -->
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #1a184e;">
+<body style="margin: 0; padding: 0; background-color: ${backgroundColor}; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
         <tr>
             <td align="center" style="padding: 40px 20px;">
-                <!-- Main content table -->
-                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="background-color: #292986; border-radius: 16px; border: 1px solid #3c36d4;">
-
-                    <!-- Header -->
+                <!-- Card Container -->
+                <table role="presentation" width="100%" style="max-width: 600px; background-color: ${surfaceColor}; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+                    
+                    <!-- Header with Logo/Icon -->
                     <tr>
-                        <td align="center" style="background-color: #292986; padding: 40px 30px; border-bottom: 1px solid #3c36d4; border-radius: 16px 16px 0 0;">
-                            <!-- Bus Icon -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                                <tr>
-                                    <td align="center" style="background-color: #5b64f9; width: 64px; height: 64px; border-radius: 16px;">
-                                        <img src="https://img.icons8.com/ios-filled/50/edf2ff/bus.png" alt="Bus" width="36" height="36" style="display: block;" />
-                                    </td>
-                                </tr>
-                            </table>
-                            <h1 style="margin: 16px 0 0 0; font-size: 26px; font-weight: 700; color: #edf2ff; letter-spacing: 0.5px;">${data.appName}</h1>
-                            <p style="margin: 8px 0 0 0; font-size: 14px; color: #a0b5ff;">Tömegközlekedési jegykezelő rendszer</p>
+                        <td align="center" style="background-color: ${primaryColor}; padding: 40px 0;">
+                            <div style="background-color: rgba(255, 255, 255, 0.2); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                                <!-- Simple Bus Icon -->
+                                <img src="https://img.icons8.com/ios-filled/50/ffffff/bus.png" alt="Bus" width="32" height="32" style="display: block; margin: 0 auto; padding-top: 16px;" />
+                            </div>
+                            <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 0.5px;">${data.appName}</h1>
                         </td>
                     </tr>
 
                     <!-- Content -->
                     <tr>
-                        <td style="background-color: #1a184e; padding: 40px 30px;">
-                            <h2 style="margin: 0 0 20px 0; font-size: 22px; font-weight: 600; color: #7a8bff;">Üdvözöljük, ${data.userName}!</h2>
-
-                            <p style="margin: 0 0 16px 0; font-size: 15px; line-height: 1.6; color: #c4d2ff;">
-                                Köszönjük, hogy regisztrált a <strong style="color: #edf2ff;">${data.appName}</strong> alkalmazásban!
+                        <td style="padding: 40px 40px;">
+                            <h2 style="margin: 0 0 24px; color: ${textColor}; font-size: 20px; font-weight: 600;">Kedves ${data.userName}!</h2>
+                            
+                            <p style="margin: 0 0 24px; color: ${secondaryTextColor}; font-size: 16px; line-height: 1.6;">
+                                Köszönjük, hogy csatlakozott a <strong>${data.appName}</strong> közösséghez! A regisztráció befejezéséhez kérjük, erősítse meg email címét az alábbi gombra kattintva.
                             </p>
 
-                            <p style="margin: 0 0 16px 0; font-size: 15px; line-height: 1.6; color: #c4d2ff;">
-                                Az email cím megerősítéséhez kérjük, kattintson az alábbi gombra:
+                            <!-- CTA Button -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td align="center" style="padding: 12px 0 32px;">
+                                        <a href="${data.verificationLink}" target="_blank" style="background-color: ${primaryColor}; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; display: inline-block; transition: background-color 0.2s;">
+                                            Email cím megerősítése
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div style="background-color: #f9fafb; border-left: 4px solid ${primaryColor}; padding: 16px; border-radius: 4px; margin-bottom: 24px;">
+                                <p style="margin: 0; color: ${secondaryTextColor}; font-size: 14px;">
+                                    <strong>Fontos:</strong> A link 24 óráig érvényes. Ha nem Ön regisztrált, kérjük hagyja figyelmen kívül ezt az emailt.
+                                </p>
+                            </div>
+
+                            <p style="margin: 0; color: ${secondaryTextColor}; font-size: 14px; line-height: 1.5;">
+                                Ha a gomb nem működik, másolja be az alábbi linket a böngészőjébe:<br>
+                                <a href="${data.verificationLink}" style="color: ${primaryColor}; text-decoration: none; word-break: break-all;">${data.verificationLink}</a>
                             </p>
-
-                            <!-- Button -->
-                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 35px 0;">
-                                <tr>
-                                    <td align="center">
-                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                                            <tr>
-                                                <td align="center" style="background-color: #5b64f9; border-radius: 12px;">
-                                                    <a href="${data.verificationLink}" target="_blank" style="display: inline-block; padding: 16px 48px; font-size: 16px; font-weight: 600; color: #ffffff; text-decoration: none; letter-spacing: 0.5px;">
-                                                        Email cím megerősítése
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <!-- Info box -->
-                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 25px 0;">
-                                <tr>
-                                    <td style="background-color: #292986; border-left: 4px solid #7a8bff; border-radius: 0 8px 8px 0; padding: 20px;">
-                                        <strong style="font-size: 14px; color: #7a8bff; text-transform: uppercase; letter-spacing: 0.5px;">FONTOS INFORMÁCIÓK</strong>
-                                        <ul style="margin: 12px 0 0 0; padding-left: 20px; color: #a0b5ff; font-size: 14px; line-height: 1.8;">
-                                            <li>A megerősítő link 24 óráig érvényes</li>
-                                            <li>Ha Ön nem regisztrált az alkalmazásban, kérjük, hagyja figyelmen kívül ezt az emailt</li>
-                                            <li>Biztonsági okokból ne ossza meg ezt a linket senkivel</li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <!-- Link section -->
-                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top: 30px; border-top: 1px solid #3c36d4; padding-top: 20px;">
-                                <tr>
-                                    <td>
-                                        <p style="margin: 0 0 12px 0; font-size: 13px; color: #a0b5ff;">
-                                            Ha a fenti gomb nem működik, másolja be az alábbi linket a böngészőjébe:
-                                        </p>
-                                        <p style="margin: 0; padding: 14px; background-color: #292986; border-radius: 8px; border: 1px solid #3c36d4; font-family: Consolas, Monaco, monospace; font-size: 12px; color: #7a8bff; word-break: break-all;">
-                                            ${data.verificationLink}
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
                         </td>
                     </tr>
 
                     <!-- Footer -->
                     <tr>
-                        <td align="center" style="background-color: #1a184e; padding: 25px 30px; border-top: 1px solid #3c36d4; border-radius: 0 0 16px 16px;">
-                            <p style="margin: 0 0 8px 0; font-size: 12px; color: #c4d2ff;">&copy; 2025 ${data.appName}. Minden jog fenntartva.</p>
-                            <p style="margin: 0; font-size: 12px; color: #a0b5ff;">Ez egy automatikusan generált email. Kérjük, ne válaszoljon rá.</p>
+                        <td style="background-color: #f9fafb; padding: 24px 40px; text-align: center; border-top: 1px solid #e5e7eb;">
+                            <p style="margin: 0; color: #9ca3af; font-size: 12px;">
+                                &copy; ${new Date().getFullYear()} ${data.appName}. Minden jog fenntartva.
+                            </p>
+                            <p style="margin: 8px 0 0; color: #9ca3af; font-size: 12px;">
+                                Ez egy automatikus üzenet, kérjük ne válaszoljon rá.
+                            </p>
                         </td>
                     </tr>
-
                 </table>
             </td>
         </tr>

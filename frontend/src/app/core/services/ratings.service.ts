@@ -20,7 +20,7 @@ import { environment } from '../../../environments/environment';
 export class RatingsService {
   private readonly apiUrl = `${environment.apiUrl}/ratings`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /**
    * Create a new rating for a route
@@ -57,10 +57,27 @@ export class RatingsService {
 
   /**
    * Get all ratings created by the current user
+   * @param status Optional status filter
    * @returns Array of user's ratings
    */
-  getMyRatings(): Observable<Rating[]> {
-    return this.http.get<Rating[]>(`${this.apiUrl}/my-ratings`).pipe(
+  getMyRatings(status?: 'pending' | 'approved' | 'rejected'): Observable<Rating[]> {
+    let url = `${this.apiUrl}/my-ratings`;
+    if (status) {
+      url += `?status=${status}`;
+    }
+    return this.http.get<Rating[]>(url).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * Get my rating statistics
+   * @returns Rating statistics
+   */
+  getMyRatingStats(): Observable<{ total: number; pending: number; approved: number; rejected: number }> {
+    return this.http.get<{ total: number; pending: number; approved: number; rejected: number }>(
+      `${this.apiUrl}/my-stats`
+    ).pipe(
       catchError(this.handleError)
     );
   }

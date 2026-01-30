@@ -36,12 +36,16 @@ import { RatingCardComponent } from '../../../../shared/components/rating-card/r
   styleUrls: ['./my-ratings.component.scss']
 })
 export class MyRatingsComponent implements OnInit, OnDestroy {
-  allRatings: Rating[] = [];
-  pendingRatings: Rating[] = [];
-  approvedRatings: Rating[] = [];
-  rejectedRatings: Rating[] = [];
+  ratings: Rating[] = [];
+  stats = {
+    total: 0,
+    pending: 0,
+    approved: 0,
+    rejected: 0
+  };
   currentUserId: string | null = null;
   isLoading = false;
+  selectedStatus: 'all' | 'pending' | 'approved' | 'rejected' = 'all';
 
   private destroy$ = new Subject<void>();
 
@@ -54,13 +58,8 @@ export class MyRatingsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // Defensive initialization to prevent array/pagination errors
-    this.allRatings = [];
-    this.pendingRatings = [];
-    this.approvedRatings = [];
-    this.rejectedRatings = [];
-
     this.loadCurrentUser();
+    this.loadStats();
     this.loadRatings();
   }
 
@@ -82,24 +81,37 @@ export class MyRatingsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Load all user ratings
+   * Load rating statistics
+   */
+  loadStats(): void {
+    this.ratingsService.getMyRatingStats()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (stats) => {
+          this.stats = stats;
+        },
+        error: (error) => {
+          console.error('Failed to load stats:', error);
+        }
+      });
+  }
+
+  /**
+   * Load ratings based on selected status
    */
   loadRatings(): void {
     this.isLoading = true;
+    const statusFilter = this.selectedStatus === 'all' ? undefined : this.selectedStatus;
 
-    this.ratingsService.getMyRatings()
+    this.ratingsService.getMyRatings(statusFilter)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (ratings) => {
-          // Ensure ratings is always an array
-          this.allRatings = Array.isArray(ratings) ? ratings : [];
-          this.filterRatingsByStatus();
+          this.ratings = Array.isArray(ratings) ? ratings : [];
           this.isLoading = false;
         },
         error: (error) => {
-          // Reset to empty arrays on error
-          this.allRatings = [];
-          this.filterRatingsByStatus();
+          this.ratings = [];
           this.snackBar.open(
             error.message || 'Nem sikerült betölteni az értékeléseket',
             'Bezár',
@@ -111,15 +123,17 @@ export class MyRatingsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Filter ratings by status
+   * Handle tab change
+   * @param index Tab index
    */
-  private filterRatingsByStatus(): void {
-    // Ensure allRatings is always an array to prevent filtering errors
-    const safeRatings = Array.isArray(this.allRatings) ? this.allRatings : [];
-
-    this.pendingRatings = safeRatings.filter(r => r && r.status === 'pending');
-    this.approvedRatings = safeRatings.filter(r => r && r.status === 'approved');
-    this.rejectedRatings = safeRatings.filter(r => r && r.status === 'rejected');
+  onTabChange(index: number): void {
+    switch (index) {
+      case 0: this.selectedStatus = 'all'; break;
+      case 1: this.selectedStatus = 'pending'; break;
+      case 2: this.selectedStatus = 'approved'; break;
+      case 3: this.selectedStatus = 'rejected'; break;
+    }
+    this.loadRatings();
   }
 
   /**
@@ -141,6 +155,7 @@ export class MyRatingsComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
       if (result) {
+        this.loadStats();
         this.loadRatings();
       }
     });
@@ -163,6 +178,7 @@ export class MyRatingsComponent implements OnInit, OnDestroy {
             duration: 3000,
             panelClass: ['success-snackbar']
           });
+          this.loadStats();
           this.loadRatings();
         },
         error: (error) => {
@@ -197,26 +213,8 @@ export class MyRatingsComponent implements OnInit, OnDestroy {
    * Refresh ratings list
    */
   onRefresh(): void {
+    this.loadStats();
     this.loadRatings();
-  }
-
-  /**
-   * Get status badge count
-   * @param status Status type
-   */
-  getStatusCount(status: 'all' | 'pending' | 'approved' | 'rejected'): number {
-    switch (status) {
-      case 'all':
-        return this.allRatings.length;
-      case 'pending':
-        return this.pendingRatings.length;
-      case 'approved':
-        return this.approvedRatings.length;
-      case 'rejected':
-        return this.rejectedRatings.length;
-      default:
-        return 0;
-    }
   }
 
   /**

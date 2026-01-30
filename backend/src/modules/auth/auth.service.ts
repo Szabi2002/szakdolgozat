@@ -20,7 +20,7 @@ export class AuthService {
   constructor(
     private supabaseService: SupabaseService,
     private emailService: EmailService,
-  ) {}
+  ) { }
 
   /**
    * Sign in with Google OAuth through Supabase
@@ -272,6 +272,13 @@ export class AuthService {
           this.logger.error(`Failed to create auth user: ${authError?.message}`);
           throw new BadRequestException('Felhasználó létrehozása sikertelen: ' + authError?.message);
         }
+
+        // DEBUG: Check immediately if user is confirmed
+        this.logger.log(`[DEBUG] Created Supabase Auth User: ID=${authData.user.id}, ConfirmedAt=${authData.user.email_confirmed_at}, Role=${authData.user.role}`);
+        if (authData.user.email_confirmed_at) {
+          this.logger.error(`[CRITICAL] User created with email_confirm: false, but Supabase returned email_confirmed_at! Auto-confirm is active.`);
+        }
+
         authUserId = authData.user.id;
       }
 
@@ -343,12 +350,31 @@ export class AuthService {
       // Send verification email using EmailService
       // This will either send a real email (if SMTP configured) or log to console (dev mode)
       try {
-        await this.emailService.sendVerificationEmail(dto.email, dto.name, verificationLink);
-        this.logger.log(`Verification email sent/logged for ${dto.email}`);
+        const emailResult = await this.emailService.sendVerificationEmail(dto.email, dto.name, verificationLink);
+
+        if (emailResult.link) {
+          this.logger.log(`[DEV AID] Verification link: ${emailResult.link}`);
+        } else {
+          this.logger.log(`Verification email sent for ${dto.email}`);
+        }
       } catch (emailError) {
         // Non-critical error - log it but don't fail registration
         this.logger.error(`Error sending verification email: ${emailError.message}`);
         this.logger.log(`Verification link: ${verificationLink}`);
+      }
+
+      // Check if user was automatically confirmed by Supabase (project setting: Enable Email Confirmations is OFF)
+      try {
+        const { data: checkUser } = await this.supabaseService.getAdminClient().auth.admin.getUserById(authUserId);
+        if (checkUser?.user?.email_confirmed_at) {
+          this.logger.warn(`
+            [WARNING] User ${dto.email} was automatically confirmed by Supabase immediately after registration.
+            This means the "Enable Email Confirmations" project setting is likely OFF in Supabase Dashboard.
+            Fix: Go to Supabase > Authentication > Providers > Email > Enable Email Confirmations.
+          `);
+        }
+      } catch (e) {
+        // Ignore check errors
       }
 
       return {
