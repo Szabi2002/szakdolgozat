@@ -5,8 +5,8 @@ WORKDIR /app
 
 COPY package*.json ./
 
-# Install dependencies needed for build
-RUN npm ci
+# Install dependencies needed for build (ensure devDeps are installed even if NODE_ENV=production)
+RUN npm ci --include=dev
 
 COPY . .
 
