@@ -26,22 +26,21 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy components needed for npm install
-COPY package*.json ./
-COPY backend/package*.json ./backend/
-COPY frontend/package*.json ./frontend/
+# Copy backend package files as if it were a standalone app
+# We rename them to remove the monorepo context completely
+COPY backend/package*.json ./
 
-# Install production dependencies for backend workspace
-# Using npm install instead of ci to be more forgiving with lockfile
-# And ensure we start fresh
-RUN npm install --omit=dev --workspace=backend
+# Install production dependencies using the backend's package.json
+# Since we are now "root", we don't need --workspace flags
+RUN npm install --omit=dev
 
 # Copy built application
 COPY --from=builder /app/backend/dist ./dist
 
 # Environment setup
 ENV NODE_ENV=production
+# Remove NODE_PATH hack as it shouldn't be needed with flat install
+# ENV NODE_PATH=./node_modules 
 EXPOSE 3000
 
-# Try to find where nestjs/swagger is if it fails again (debug step included? no, let's trust structure)
 CMD ["node", "dist/main"]
