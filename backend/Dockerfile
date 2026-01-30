@@ -3,31 +3,39 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Copy root package files
 COPY package*.json ./
 
-# Install dependencies needed for build (ensure devDeps are installed even if NODE_ENV=production)
+# Copy backend package files to backend directory (needed for workspace linkage)
+COPY backend/package*.json ./backend/
+
+# Copy frontend package files (needed to satisfy workspace references in package-lock.json)
+COPY frontend/package*.json ./frontend/
+
+# Install dependencies for all workspaces (including devDeps for build tools)
 RUN npm ci --include=dev
 
-COPY . .
+# Copy backend source code
+COPY backend ./backend
 
-# Build the application
-RUN npm run build
+# Build only the backend workspace
+RUN npm run build --workspace=backend
 
 # Production stage
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy built assets from builder
-COPY --from=builder /app/dist ./dist
+# Copy built assets from builder (adjust path for monorepo structure)
+COPY --from=builder /app/backend/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/backend/package*.json ./
 
 # Set environment to production
 ENV NODE_ENV=production
 
-# Expose port (Koyeb detects this, but good to have)
+# Expose port
 EXPOSE 3000
 
 # Start command
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/main"]
