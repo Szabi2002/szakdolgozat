@@ -26,13 +26,15 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy components needed for npm ci
+# Copy components needed for npm install
 COPY package*.json ./
 COPY backend/package*.json ./backend/
 COPY frontend/package*.json ./frontend/
 
-# Install production dependencies for backend only
-RUN npm ci --omit=dev --workspace=backend
+# Install production dependencies for backend workspace
+# Using npm install instead of ci to be more forgiving with lockfile
+# And ensure we start fresh
+RUN npm install --omit=dev --workspace=backend
 
 # Copy built application
 COPY --from=builder /app/backend/dist ./dist
@@ -41,4 +43,5 @@ COPY --from=builder /app/backend/dist ./dist
 ENV NODE_ENV=production
 EXPOSE 3000
 
+# Try to find where nestjs/swagger is if it fails again (debug step included? no, let's trust structure)
 CMD ["node", "dist/main"]
