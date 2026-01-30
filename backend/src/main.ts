@@ -48,8 +48,8 @@ async function bootstrap() {
             'https://api.mapbox.com',
             'https://*.tiles.mapbox.com',
             'https://events.mapbox.com',
-            'https://szakdolgozat-uc7f.onrender.com',
-            'https://szakdolgozat-uc7f.onrender.com/api',
+            'https://legislative-ginni-szakdolgozat-daff4e98.koyeb.app',
+            'https://legislative-ginni-szakdolgozat-daff4e98.koyeb.app/api',
             (process.env['FRONTEND_URL'] || 'http://localhost:4200'),
           ],
           fontSrc: ["'self'", 'https://fonts.gstatic.com'],
@@ -78,7 +78,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:4200',
       'https://menetrendek.netlify.app',
-      'https://szakdolgozat-uc7f.onrender.com', // for self-calls if needed
+      'https://legislative-ginni-szakdolgozat-daff4e98.koyeb.app', // for self-calls if needed
       configService.get('CORS_ORIGIN'),
     ].filter(Boolean), // remove undefined if env var is missing
     credentials: true,

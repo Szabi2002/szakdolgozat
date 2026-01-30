@@ -76,7 +76,7 @@
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
       img-src 'self' data: https: blob:;
-      connect-src 'self' https://*.supabase.co https://kozlekedesi-jegykezelo-backend-production.up.railway.app https://szakdolgozat-uc7f.onrender.com https://api.mapbox.com https://*.tiles.mapbox.com https://events.mapbox.com;
+      connect-src 'self' https://*.supabase.co https://kozlekedesi-jegykezelo-backend-production.up.railway.app https://legislative-ginni-szakdolgozat-daff4e98.koyeb.app https://api.mapbox.com https://*.tiles.mapbox.com https://events.mapbox.com;
       worker-src 'self' blob:;
       frame-ancestors 'none';
       base-uri 'self';
