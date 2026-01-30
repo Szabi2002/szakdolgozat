@@ -130,12 +130,13 @@ export class MyTicketsComponent implements OnInit, OnDestroy {
       filters.ticket_type_id = formValue.ticket_type_id;
     }
 
-    this.ticketsService.getMyTickets(this.selectedStatus || undefined)
+    // Use getHistory() instead of getMyTickets() - it supports all filters
+    this.ticketsService.getHistory(filters)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (tickets: Ticket[]) => {
-          this.tickets = tickets;
-          this.totalTickets = tickets.length;
+        next: (response: PaginatedHistory) => {
+          this.tickets = response.data;
+          this.totalTickets = response.total;
           this.isLoading = false;
         },
         error: () => {

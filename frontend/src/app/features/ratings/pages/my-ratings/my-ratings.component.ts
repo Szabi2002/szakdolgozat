@@ -46,6 +46,7 @@ export class MyRatingsComponent implements OnInit, OnDestroy {
   currentUserId: string | null = null;
   isLoading = false;
   selectedStatus: 'all' | 'pending' | 'approved' | 'rejected' = 'all';
+  selectedTabIndex = 0; // Track active tab for visual styling
 
   private destroy$ = new Subject<void>();
 
@@ -127,6 +128,7 @@ export class MyRatingsComponent implements OnInit, OnDestroy {
    * @param index Tab index
    */
   onTabChange(index: number): void {
+    this.selectedTabIndex = index;
     switch (index) {
       case 0: this.selectedStatus = 'all'; break;
       case 1: this.selectedStatus = 'pending'; break;

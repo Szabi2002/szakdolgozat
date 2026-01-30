@@ -59,7 +59,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.nameForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]]
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      displayName: ['', [Validators.maxLength(50)]]
     });
 
     this.passwordForm = this.fb.group({
@@ -86,7 +87,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         next: (user) => {
           if (user) {
             this.currentUser = user;
-            this.nameForm.patchValue({ name: user.name });
+            this.nameForm.patchValue({
+              name: user.name,
+              displayName: (user as any).display_name || ''
+            });
           }
           this.loading = false;
         },
@@ -109,7 +113,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   toggleEditName(): void {
     this.isEditingName = !this.isEditingName;
     if (this.isEditingName && this.currentUser) {
-      this.nameForm.patchValue({ name: this.currentUser.name });
+      this.nameForm.patchValue({
+        name: this.currentUser.name,
+        displayName: (this.currentUser as any).display_name || ''
+      });
     }
   }
 
@@ -118,10 +125,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
     this.savingName = true;
     try {
-      const newName = this.nameForm.value.name;
-      await firstValueFrom(this.userProfileService.updateProfile({ display_name: newName }));
+      const { name, displayName } = this.nameForm.value;
+      await firstValueFrom(this.userProfileService.updateProfile({
+        name: name,
+        display_name: displayName || null
+      }));
 
-      this.currentUser = { ...this.currentUser!, name: newName };
+      // Reload current user to get updated data
+      await firstValueFrom(this.authService.getCurrentUser());
+
       this.isEditingName = false;
       this.snackBar.open('Név sikeresen módosítva!', 'Bezár', { duration: 3000, panelClass: 'success-snackbar' });
 

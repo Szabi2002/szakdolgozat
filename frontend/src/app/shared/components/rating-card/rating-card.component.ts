@@ -46,8 +46,8 @@ export class RatingCardComponent {
    */
   shouldTruncateComment(): boolean {
     return !this.showFullComment &&
-           !!this.rating.comment &&
-           this.rating.comment.length > this.maxCommentLength;
+      !!this.rating.comment &&
+      this.rating.comment.length > this.maxCommentLength;
   }
 
   /**
@@ -171,7 +171,7 @@ export class RatingCardComponent {
    * Get user display name
    */
   getUserName(): string {
-    return this.rating.user?.name || 'Névtelen felhasználó';
+    return this.rating.user?.name || this.rating.user?.email || 'Névtelen felhasználó';
   }
 
   /**

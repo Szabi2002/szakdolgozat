@@ -191,7 +191,7 @@ export class AuthService {
     return {
       id: user.id,
       email: user.email,
-      name: user.name,
+      name: user.display_name || user.name, // Prefer display_name (user-customized) over name (OAuth default)
       profile_picture_url: user.profile_picture_url,
       role: user.role,
       created_at: user.created_at,

@@ -72,9 +72,16 @@
                 <form [formGroup]="nameForm" (ngSubmit)="saveName()" class="edit-form">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Név</mat-label>
-                    <input matInput formControlName="name" placeholder="Írd be az új neved">
+                    <input matInput formControlName="name" placeholder="Teljes neved">
                     <mat-error *ngIf="nameForm.get('name')?.hasError('required')">A név megadása kötelező</mat-error>
                     <mat-error *ngIf="nameForm.get('name')?.hasError('minlength')">Legalább 2 karakter</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Becenév (opcionális)</mat-label>
+                    <input matInput formControlName="displayName" placeholder="Pl.: Jani">
+                    <mat-hint>Ha be van állítva, ezt a nevet jelenítjük meg</mat-hint>
+                    <mat-error *ngIf="nameForm.get('displayName')?.hasError('maxlength')">Maximum 50
+                      karakter</mat-error>
                   </mat-form-field>
                   <div class="form-actions">
                     <button mat-stroked-button type="button" (click)="toggleEditName()"

@@ -51,6 +51,7 @@ export class MyReportsComponent implements OnInit, OnDestroy {
   isLoading = false;
   currentUserId: string | null = null;
   selectedStatus: ReportStatus | undefined;
+  selectedTabIndex = 0; // Track active tab for visual styling
 
   // Statistics
   stats: UserReportStats = {
@@ -137,6 +138,7 @@ export class MyReportsComponent implements OnInit, OnDestroy {
    * @param index Tab index
    */
   onTabChange(index: number): void {
+    this.selectedTabIndex = index;
     this.currentPage = 1; // Reset to first page
     switch (index) {
       case 0: this.selectedStatus = undefined; break;

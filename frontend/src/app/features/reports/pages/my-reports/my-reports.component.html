@@ -74,7 +74,8 @@
       <!-- Tabs -->
       @if (!isLoading) {
       <div class="tabs-card">
-        <mat-tab-group class="reports-tabs" animationDuration="300ms" (selectedIndexChange)="onTabChange($event)">
+        <mat-tab-group class="reports-tabs" animationDuration="300ms" [selectedIndex]="selectedTabIndex"
+          (selectedIndexChange)="onTabChange($event)">
           <!-- All Reports Tab -->
           <mat-tab>
             <ng-template mat-tab-label>

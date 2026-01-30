@@ -26,6 +26,7 @@ export interface UserStatistics {
 }
 
 export interface UpdateProfileDto {
+  name?: string;
   display_name?: string;
   preferred_language?: 'en' | 'hu';
 }
