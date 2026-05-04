@@ -139,7 +139,7 @@ SZABÁLYOK:
         headers: {
           'Authorization': `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
-          'HTTP-Referer': 'http://localhost:4200',
+          'HTTP-Referer': process.env['FRONTEND_URL'] || 'http://localhost:4200',
           'X-Title': 'Kozlekedesi Jegykezelo Chatbot',
         },
         body: JSON.stringify(requestBody),
