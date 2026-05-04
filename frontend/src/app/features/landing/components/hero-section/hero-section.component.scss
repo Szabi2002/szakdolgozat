@@ -376,6 +376,7 @@
   
   @include mobile {
     margin-top: $spacing-4;
+    display: none;
   }
 }
 

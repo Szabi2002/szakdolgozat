@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '@shared/components/header/header.component';
 import { FooterComponent } from '@shared/components/footer/footer.component';
 import { ChatbotComponent } from '@shared/components/chatbot/chatbot.component';
+import { KeepAliveService } from '@core/services/keep-alive.service';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,12 @@ import { ChatbotComponent } from '@shared/components/chatbot/chatbot.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Közlekedési Jegykezelő';
+
+  constructor(private keepAlive: KeepAliveService) {}
+
+  ngOnInit(): void {
+    this.keepAlive.start();
+  }
 }

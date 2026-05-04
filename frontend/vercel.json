@@ -1,0 +1,7 @@
+{
+  "buildCommand": "npm install && npm run build:prod",
+  "outputDirectory": "dist/kozlekedesi-jegykezelo/browser",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
